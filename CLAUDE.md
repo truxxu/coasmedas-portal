@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Portal Transaccional Coasmedas** - A Next.js 16 portal application using App Router, TypeScript, Tailwind CSS v4, and Atomic Design component architecture. The project is in early development stages with infrastructure configured but minimal implementation.
 
+**Backend API**: This portal consumes the Coasmedas Banking API (REST). See API documentation in `.claude/knowledge/api/`
+
 ## Development Commands
 
 ### Running the Application
@@ -83,3 +85,7 @@ The project has infrastructure configured but component directories (`atoms/`, `
 @.claude/coding-standards.md
 @.claude/workflows.md
 @.claude/documentation-policy.md
+
+## Backend API Documentation
+
+@.claude/knowledge/api/README.md
