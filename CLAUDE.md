@@ -89,3 +89,13 @@ The project has infrastructure configured but component directories (`atoms/`, `
 ## Backend API Documentation
 
 @.claude/knowledge/api/README.md
+
+## Features
+
+### Prehome Landing Page
+@.claude/knowledge/features/00-prehome/spec.md
+@.claude/knowledge/features/00-prehome/references.md
+@.claude/knowledge/features/00-prehome/implementation-plan.md
+
+
+- do not run the app by yourself, nor build it nor run automated tests. Also, do not make commits
