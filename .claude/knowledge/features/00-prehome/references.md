@@ -8,7 +8,7 @@
 ## Design Resources
 
 ### UI/UX Design
-- **Figma Design**: [Prehome Design](https://www.figma.com/design/VbXLRi0Ezy4HRRgzEPzcjo/Portal-transaccional_1?node-id=1409-340&t=wV8QeKEjFQ9tqGtr-4)
+- **Figma Design**: [Prehome Design](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1668-229&t=FmTV0BLrEQnPNsA9-0)
   - Last updated: 2025-11-26
   - Owner: Design Team
 

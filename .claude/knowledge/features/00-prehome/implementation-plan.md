@@ -1,15 +1,48 @@
 # Step-by-Step Implementation Plan: Prehome Feature
 
 **Feature**: 00-prehome (Landing Page)
-**Total Estimated Time**: 2 days
+**Total Estimated Time**: 3-4 days
 **Created**: 2025-11-26
+**Updated**: 2025-12-01 (Based on Figma MCP review)
+
+---
+
+## Design Analysis Summary
+
+Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
+
+### Page Sections (Top to Bottom)
+1. **Header** - Logo + "Vinculación Digital" + "Iniciar Sesión" buttons
+2. **Hero Section** - Navy blue background with main headline and 3 CTAs
+3. **Welcome Section** - "Hola, Bienvenido" + "Siempre cercanos" text
+4. **Services Grid** - 4 service cards (Ahorros, Créditos, Inversiones, Pagos y Transferencias)
+5. **News Section** - "Mantente Informado" with 3 news cards
+6. **Info Section** - "Mantén tus datos actualizados" + "Recomendaciones de Seguridad"
+7. **App Section** - "Lleva tu APP" with app store buttons and phone mockup
+8. **Footer** - Links: "Atención al Usuario", "Descargar Instructivo", "Preguntas Frecuentes"
+
+### Design Tokens
+- **Primary Blue**: `#007FFF`
+- **Navy Blue**: `#1D4E8F`
+- **Text Black**: `#111827`
+- **Gray High**: `#58585B`
+- **Gray Low/Border**: `#E4E6EA`
+- **Background Light Blue**: `#F0F9FF`
+- **White**: `#FFFFFF`
+- **Font**: Ubuntu (Bold, Medium, Regular)
+
+### Key UI Elements
+- Rounded buttons with shadows: `rounded-[6px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.1)]`
+- Service cards with gray borders
+- News cards with blue gradient headers
+- Wave/curved section dividers
 
 ---
 
 ## Prerequisites
 
 ### Before You Start
-- [ ] Review Figma design: [Prehome Design](https://www.figma.com/design/VbXLRi0Ezy4HRRgzEPzcjo/Portal-transaccional_1?node-id=1409-340&t=wV8QeKEjFQ9tqGtr-4)
+- [x] Review Figma design via MCP
 - [ ] Have design assets ready in `.claude/knowledge/features/00-prehome/attachments/designs/`
 - [ ] Confirm development environment is running (`yarn dev`)
 - [ ] Read [spec.md](./spec.md) for full feature requirements
@@ -19,979 +52,430 @@
 - ✅ Next.js 16 project initialized
 - ✅ Tailwind CSS v4 configured
 - ✅ TypeScript configured
-- ✅ Atomic Design directories created (empty)
+- ✅ Atomic Design directories created
 - ✅ Logo asset available
-- ⏳ Need to implement components
+- ✅ Basic components created (Button, Logo, Link, NavBar)
+- ⏳ Need to update components to match new design
 
 ---
 
-## Phase 1: Preparation & Assets (30 minutes)
+## Phase 1: Update Design Tokens & Theme (1 hour)
 
-### Step 1.1: Copy Design Assets
-```bash
-# Copy logo to public directory for Next.js optimization
-cp .claude/knowledge/features/00-prehome/attachments/designs/logo.svg public/logo.svg
+### Step 1.1: Update globals.css with Full Color Palette
 
-# Verify the file was copied
-ls -lh public/logo.svg
+**File**: `app/globals.css`
+
+```css
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Coasmedas brand colors */
+  --brand-primary: #007FFF;
+  --brand-navy: #1D4E8F;
+  --brand-border: #E4E6EA;
+  --brand-text-black: #111827;
+  --brand-gray-high: #58585B;
+  --brand-light-blue: #F0F9FF;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-border: var(--brand-border);
+  --color-brand-text-black: var(--brand-text-black);
+  --color-brand-gray-high: var(--brand-gray-high);
+  --color-brand-light-blue: var(--brand-light-blue);
+  --font-sans: 'Ubuntu', var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
 ```
 
-**Expected Result**: `public/logo.svg` exists and is accessible
+### Step 1.2: Add Ubuntu Font
 
-### Step 1.2: Review Design in Figma
-- [ ] Open Figma design link
-- [ ] Note color values (if not using default theme)
-- [ ] Identify required sections (header, hero, features, footer)
-- [ ] Screenshot or export any additional images needed
-- [ ] Document content copy (headlines, descriptions)
+**File**: `app/layout.tsx`
 
-### Step 1.3: Create Content Document (Optional)
-Create a temporary file with Spanish content from design:
-```bash
-# Create temporary content file
-touch .claude/knowledge/features/00-prehome/content.txt
-```
-
-Add content like:
-```
-HEADLINE: [Copy from Figma]
-SUBHEADLINE: [Copy from Figma]
-CTA PRIMARY: Ingresar
-CTA SECONDARY: Registrarse
-FEATURES: [List from Figma]
-```
+Add Ubuntu font import from Google Fonts or local files.
 
 ---
 
-## Phase 2: Atoms - Basic Building Blocks (2-3 hours)
+## Phase 2: Atoms - Enhanced Components (2-3 hours)
 
-### Step 2.1: Create Button Component
+### Step 2.1: Update Button Component
 
 **File**: `src/atoms/Button.tsx`
 
-```bash
-# Open editor
-# Create src/atoms/Button.tsx
-```
+Add new variants and sizes to match design:
+- `cta` variant - Blue gradient with shadow for main CTAs
+- `outline` variant - White background with border
+- Update text to use Ubuntu Bold font
 
-**Implementation**:
+### Step 2.2: Create Card Component
+
+**File**: `src/atoms/Card.tsx`
+
 ```typescript
-import Link from 'next/link';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface CardProps {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  href?: string;
+  variant?: 'default' | 'bordered' | 'news';
   className?: string;
 }
-
-export function Button({
-  children,
-  variant = 'primary',
-  size = 'md',
-  href,
-  className = '',
-  ...props
-}: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
-
-  const variants = {
-    primary: 'bg-foreground text-background hover:opacity-90',
-    secondary: 'bg-background text-foreground border-2 border-foreground hover:bg-foreground hover:text-background',
-    ghost: 'text-foreground hover:bg-foreground/10',
-  };
-
-  const sizes = {
-    sm: 'h-9 px-4 text-sm rounded-md',
-    md: 'h-11 px-6 text-base rounded-lg',
-    lg: 'h-14 px-8 text-lg rounded-xl',
-  };
-
-  const classes = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
-
-  if (href) {
-    return (
-      <Link href={href} className={classes}>
-        {children}
-      </Link>
-    );
-  }
-
-  return (
-    <button className={classes} {...props}>
-      {children}
-    </button>
-  );
-}
 ```
 
-**Test**:
-- [ ] Component exports correctly
-- [ ] TypeScript has no errors
-- [ ] Accepts variant and size props
+### Step 2.3: Create SectionTitle Component
 
-### Step 2.2: Create Logo Component
+**File**: `src/atoms/SectionTitle.tsx`
 
-**File**: `src/atoms/Logo.tsx`
+For consistent section headings with navy blue color.
 
-```typescript
-import Image from 'next/image';
+### Step 2.4: Create Icon Component (Optional)
 
-interface LogoProps {
-  className?: string;
-  width?: number;
-  height?: number;
-}
+**File**: `src/atoms/Icon.tsx`
 
-export function Logo({ className, width = 150, height = 50 }: LogoProps) {
-  return (
-    <Image
-      src="/logo.svg"
-      alt="Coasmedas"
-      width={width}
-      height={height}
-      className={className}
-      priority
-    />
-  );
-}
-```
-
-**Test**:
-- [ ] Logo renders without errors
-- [ ] SVG loads from public/logo.svg
-- [ ] Can customize width/height
-
-### Step 2.3: Create Link Component
-
-**File**: `src/atoms/Link.tsx`
-
-```typescript
-import NextLink from 'next/link';
-import { AnchorHTMLAttributes, ReactNode } from 'react';
-
-interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
-  children: ReactNode;
-  className?: string;
-  external?: boolean;
-}
-
-export function Link({
-  href,
-  children,
-  className = '',
-  external = false,
-  ...props
-}: LinkProps) {
-  const baseStyles = 'text-foreground hover:opacity-70 transition-opacity';
-  const classes = `${baseStyles} ${className}`;
-
-  if (external) {
-    return (
-      <a
-        href={href}
-        className={classes}
-        target="_blank"
-        rel="noopener noreferrer"
-        {...props}
-      >
-        {children}
-      </a>
-    );
-  }
-
-  return (
-    <NextLink href={href} className={classes} {...props}>
-      {children}
-    </NextLink>
-  );
-}
-```
-
-### Step 2.4: Update Atoms Index
-
-**File**: `src/atoms/index.ts`
-
-```typescript
-export { Button } from './Button';
-export { Logo } from './Logo';
-export { Link } from './Link';
-```
-
-**Test**:
-```bash
-# Run TypeScript check
-yarn tsc --noEmit
-
-# Run ESLint
-yarn lint
-```
-
-**Expected**: No errors
+If using custom icons for service cards.
 
 ---
 
-## Phase 3: Molecules - Component Combinations (2-3 hours)
+## Phase 3: Molecules - Page Sections (4-5 hours)
 
-### Step 3.1: Create NavBar Component
+### Step 3.1: Update NavBar
 
 **File**: `src/molecules/NavBar.tsx`
 
-```typescript
-import { Button } from '@/src/atoms';
-import { Logo } from '@/src/atoms';
+- Logo on left
+- "Vinculación Digital" button (secondary/outline)
+- "Iniciar Sesión" button (primary)
+- Proper spacing and shadow
 
-export function NavBar() {
-  return (
-    <nav className="flex items-center justify-between w-full px-6 py-4 md:px-8">
-      <div className="flex items-center">
-        <Logo />
-      </div>
+### Step 3.2: Create HeroBanner
 
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" href="/register" className="hidden sm:inline-flex">
-          Registrarse
-        </Button>
-        <Button variant="primary" href="/login">
-          Ingresar
-        </Button>
-      </div>
-    </nav>
-  );
-}
-```
+**File**: `src/molecules/HeroBanner.tsx`
 
-**Test**:
-- [ ] Logo displays
-- [ ] Buttons are visible
-- [ ] Responsive (register button hides on mobile)
+Navy blue background with:
+- Main headline: "Tus metas, nuestro compromiso."
+- Subheadline: "La plataforma digital para gestionar tus finanzas..."
+- Three CTAs: "Abre tu CDT Digital", "Solicita tu Crédito", "Conoce nuestros productos"
+- Decorative elements/CTAs for "Abre tu CDAT Digital" and "Solicita tu Crédito Digital"
 
-### Step 3.2: Create HeroSection Component
+### Step 3.3: Create WelcomeSection
 
-**File**: `src/molecules/HeroSection.tsx`
+**File**: `src/molecules/WelcomeSection.tsx`
+
+- "Hola, Bienvenido a tu portal transaccional" (navy)
+- "Siempre cercanos" (blue)
+- Wave/curved background transition
+
+### Step 3.4: Create ServiceCard
+
+**File**: `src/molecules/ServiceCard.tsx`
 
 ```typescript
-import { Button } from '@/src/atoms';
-
-export function HeroSection() {
-  return (
-    <section className="flex flex-col items-center justify-center px-6 py-16 md:py-24 text-center">
-      <h1 className="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
-        Bienvenido a Coasmedas
-      </h1>
-
-      <p className="text-lg md:text-xl text-foreground/80 mb-8 max-w-2xl">
-        Tu portal de servicios bancarios. Gestiona tus cuentas, realiza transferencias y más.
-      </p>
-
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Button variant="primary" size="lg" href="/login">
-          Ingresar
-        </Button>
-        <Button variant="secondary" size="lg" href="/register">
-          Crear Cuenta
-        </Button>
-      </div>
-    </section>
-  );
-}
-```
-
-**Note**: Replace placeholder text with actual copy from Figma design.
-
-**Test**:
-- [ ] Headline renders correctly
-- [ ] CTAs are visible
-- [ ] Responsive layout (stacks on mobile)
-
-### Step 3.3: Create FeatureCard Component
-
-**File**: `src/molecules/FeatureCard.tsx`
-
-```typescript
-import { ReactNode } from 'react';
-
-interface FeatureCardProps {
-  icon?: ReactNode;
+interface ServiceCardProps {
   title: string;
   description: string;
-}
-
-export function FeatureCard({ icon, title, description }: FeatureCardProps) {
-  return (
-    <div className="flex flex-col items-center text-center p-6 rounded-lg border border-foreground/10 hover:border-foreground/30 transition-colors">
-      {icon && (
-        <div className="mb-4 text-foreground">
-          {icon}
-        </div>
-      )}
-
-      <h3 className="text-xl font-semibold mb-2">
-        {title}
-      </h3>
-
-      <p className="text-foreground/70">
-        {description}
-      </p>
-    </div>
-  );
+  icon?: ReactNode;
 }
 ```
 
-**Test**:
-- [ ] Card renders with title and description
-- [ ] Optional icon displays
-- [ ] Hover effect works
+Service cards with:
+- Checkbox icon in top-left corner
+- Title in bold
+- Description in gray
+- Border styling
 
-### Step 3.4: Create Footer Component
+### Step 3.5: Create NewsCard
+
+**File**: `src/molecules/NewsCard.tsx`
+
+```typescript
+interface NewsCardProps {
+  title: string;
+  headline: string;
+  description: string;
+  link: string;
+}
+```
+
+News cards with:
+- Blue gradient header with "Noticia 1" etc.
+- White body with title, description
+- "Leer más" link
+
+### Step 3.6: Create InfoCard
+
+**File**: `src/molecules/InfoCard.tsx`
+
+For "Mantén tus datos actualizados" and "Recomendaciones de Seguridad" sections.
+
+### Step 3.7: Create AppPromoSection
+
+**File**: `src/molecules/AppPromoSection.tsx`
+
+Navy background with:
+- "Lleva tu APP morem ipsum" headline
+- Description text
+- App Store and Google Play buttons
+- Phone mockup image
+
+### Step 3.8: Update Footer
 
 **File**: `src/molecules/Footer.tsx`
 
-```typescript
-import { Link } from '@/src/atoms';
-
-export function Footer() {
-  const currentYear = new Date().getFullYear();
-
-  return (
-    <footer className="w-full px-6 py-8 border-t border-foreground/10">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-foreground/60">
-          © {currentYear} Coasmedas. Todos los derechos reservados.
-        </p>
-
-        <div className="flex gap-6">
-          <Link href="/privacy" className="text-sm text-foreground/60 hover:text-foreground">
-            Privacidad
-          </Link>
-          <Link href="/terms" className="text-sm text-foreground/60 hover:text-foreground">
-            Términos
-          </Link>
-          <Link href="/contact" className="text-sm text-foreground/60 hover:text-foreground">
-            Contacto
-          </Link>
-        </div>
-      </div>
-    </footer>
-  );
-}
-```
-
-**Test**:
-- [ ] Copyright year is current
-- [ ] Links render
-- [ ] Responsive layout
-
-### Step 3.5: Update Molecules Index
-
-**File**: `src/molecules/index.ts`
-
-```typescript
-export { NavBar } from './NavBar';
-export { HeroSection } from './HeroSection';
-export { FeatureCard } from './FeatureCard';
-export { Footer } from './Footer';
-```
-
-**Test**:
-```bash
-yarn tsc --noEmit
-yarn lint
-```
+Simple footer with:
+- "Atención al Usuario"
+- "Descargar Instructivo"
+- "Preguntas Frecuentes"
 
 ---
 
-## Phase 4: Organisms - Complex Sections (1-2 hours)
+## Phase 4: Organisms - Page Assembly (2-3 hours)
 
-### Step 4.1: Create PrehomeHeader
+### Step 4.1: Update PrehomeHeader
 
 **File**: `src/organisms/PrehomeHeader.tsx`
 
-```typescript
-import { NavBar } from '@/src/molecules';
-
-export function PrehomeHeader() {
-  return (
-    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-foreground/10">
-      <div className="max-w-7xl mx-auto">
-        <NavBar />
-      </div>
-    </header>
-  );
-}
-```
-
-**Test**:
-- [ ] Header is sticky
-- [ ] Backdrop blur works
-- [ ] Border displays correctly
+White background, border-bottom, contains updated NavBar.
 
 ### Step 4.2: Create PrehomeHero
 
 **File**: `src/organisms/PrehomeHero.tsx`
 
-```typescript
-import { HeroSection } from '@/src/molecules';
+Combines HeroBanner with proper styling and wave transitions.
 
-export function PrehomeHero() {
-  return (
-    <div className="w-full bg-gradient-to-b from-background to-foreground/5">
-      <div className="max-w-7xl mx-auto">
-        <HeroSection />
-      </div>
-    </div>
-  );
-}
-```
+### Step 4.3: Create PrehomeWelcome
 
-**Test**:
-- [ ] Gradient background displays
-- [ ] Content is centered
+**File**: `src/organisms/PrehomeWelcome.tsx`
 
-### Step 4.3: Create PrehomeFeaturesGrid
+Welcome section with wave background.
 
-**File**: `src/organisms/PrehomeFeaturesGrid.tsx`
+### Step 4.4: Create PrehomeServices
 
-```typescript
-import { FeatureCard } from '@/src/molecules';
+**File**: `src/organisms/PrehomeServices.tsx`
 
-export function PrehomeFeaturesGrid() {
-  // TODO: Replace with actual features from Figma design
-  const features = [
-    {
-      title: 'Seguro y Confiable',
-      description: 'Tu información está protegida con los más altos estándares de seguridad.',
-    },
-    {
-      title: 'Fácil de Usar',
-      description: 'Interfaz intuitiva diseñada para facilitar tus transacciones diarias.',
-    },
-    {
-      title: 'Disponible 24/7',
-      description: 'Accede a tus servicios bancarios en cualquier momento y lugar.',
-    },
-  ];
+Grid of 4 ServiceCards:
+1. Ahorros - "Planea tu futuro con nuestras opciones de ahorro flexibles y rentables."
+2. Créditos - "Impulso tus proyectos con créditos a tu medida y tasas preferenciales."
+3. Inversiones - "Haz crecer tu dinero con portafolios de inversión segura y diversificados."
+4. Pagos y Transferencias - "Realiza tus pagos y transferencias de forma rápida y segura."
 
-  return (
-    <section className="w-full px-6 py-16 md:py-24">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          ¿Por qué elegir Coasmedas?
-        </h2>
+### Step 4.5: Create PrehomeNews
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              title={feature.title}
-              description={feature.description}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-```
+**File**: `src/organisms/PrehomeNews.tsx`
 
-**Note**: Update features array with actual content from Figma.
+"Mantente Informado" section with 3 NewsCards.
 
-**Test**:
-- [ ] Grid displays (3 columns on desktop, 1 on mobile)
-- [ ] Cards render correctly
-- [ ] Section title displays
+### Step 4.6: Create PrehomeInfo
 
-### Step 4.4: Create PrehomeFooter
+**File**: `src/organisms/PrehomeInfo.tsx`
+
+Two-column layout:
+- Left: "Mantén tus datos actualizados" with CTA
+- Right: "Recomendaciones de Seguridad" list
+
+### Step 4.7: Create PrehomeApp
+
+**File**: `src/organisms/PrehomeApp.tsx`
+
+Navy section with app promotion and phone mockup.
+
+### Step 4.8: Update PrehomeFooter
 
 **File**: `src/organisms/PrehomeFooter.tsx`
 
-```typescript
-import { Footer } from '@/src/molecules';
-
-export function PrehomeFooter() {
-  return (
-    <div className="w-full bg-foreground/5">
-      <Footer />
-    </div>
-  );
-}
-```
-
-**Test**:
-- [ ] Footer renders
-- [ ] Background color displays
-
-### Step 4.5: Update Organisms Index
-
-**File**: `src/organisms/index.ts`
-
-```typescript
-export { PrehomeHeader } from './PrehomeHeader';
-export { PrehomeHero } from './PrehomeHero';
-export { PrehomeFeaturesGrid } from './PrehomeFeaturesGrid';
-export { PrehomeFooter } from './PrehomeFooter';
-```
-
-**Test**:
-```bash
-yarn tsc --noEmit
-yarn lint
-```
+Navy background with centered links.
 
 ---
 
-## Phase 5: Page Assembly (30 minutes)
+## Phase 5: Page Assembly (1 hour)
 
 ### Step 5.1: Update Root Page
 
 **File**: `app/page.tsx`
 
-Replace entire content with:
-
 ```typescript
 import {
   PrehomeHeader,
   PrehomeHero,
-  PrehomeFeaturesGrid,
+  PrehomeWelcome,
+  PrehomeServices,
+  PrehomeNews,
+  PrehomeInfo,
+  PrehomeApp,
   PrehomeFooter,
 } from '@/src/organisms';
 
 export default function PrehomePage() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-white">
       <PrehomeHeader />
       <PrehomeHero />
-      <PrehomeFeaturesGrid />
+      <PrehomeWelcome />
+      <PrehomeServices />
+      <PrehomeNews />
+      <PrehomeInfo />
+      <PrehomeApp />
       <PrehomeFooter />
     </main>
   );
 }
 ```
 
-**Test**:
-```bash
-# Start dev server if not running
-yarn dev
+---
 
-# Visit http://localhost:3000
+## Phase 6: Assets & Images (1-2 hours)
+
+### Step 6.1: Download/Export Figma Assets
+
+Using Figma MCP or manual export:
+- Wave/curve SVG backgrounds
+- App Store / Google Play badges
+- Phone mockup image
+- Service icons (if custom)
+- News card header images
+
+### Step 6.2: Organize Assets
+
 ```
-
-**Expected**:
-- [ ] Page loads without errors
-- [ ] All sections display
-- [ ] No console warnings/errors
-
----
-
-## Phase 6: Content Refinement (1-2 hours)
-
-### Step 6.1: Update with Actual Content from Figma
-
-For each component, replace placeholder text with actual design content:
-
-1. **HeroSection.tsx**:
-   - [ ] Update headline text
-   - [ ] Update subheadline text
-   - [ ] Verify CTA button text
-
-2. **PrehomeFeaturesGrid.tsx**:
-   - [ ] Update section title
-   - [ ] Replace features array with actual features
-   - [ ] Add icons if specified in design
-
-3. **Footer.tsx**:
-   - [ ] Update footer links (if different)
-   - [ ] Add any additional footer content
-
-### Step 6.2: Add Missing Design Elements
-
-Check Figma for:
-- [ ] Additional images
-- [ ] Icons for features
-- [ ] Background patterns
-- [ ] Brand colors (update if needed)
-
-### Step 6.3: Fine-tune Styling
-
-Match Figma design:
-- [ ] Spacing (padding, margins)
-- [ ] Font sizes
-- [ ] Colors (if custom beyond theme)
-- [ ] Border radius
-- [ ] Shadows (if any)
-
----
-
-## Phase 7: Responsive Design (1-2 hours)
-
-### Step 7.1: Test on Different Breakpoints
-
-Test using browser dev tools:
-
-**Mobile (375px)**:
-- [ ] Header is compact
-- [ ] Hero text is readable
-- [ ] Buttons stack vertically
-- [ ] Feature cards stack
-- [ ] Footer is readable
-
-**Tablet (768px)**:
-- [ ] Layout adapts appropriately
-- [ ] Navigation is accessible
-- [ ] Content is well-spaced
-
-**Desktop (1280px+)**:
-- [ ] Max-width containers work
-- [ ] Grid layouts display properly
-- [ ] No excessive whitespace
-
-### Step 7.2: Fix Responsive Issues
-
-Common issues:
-- [ ] Text too large/small on mobile
-- [ ] Buttons too wide/narrow
-- [ ] Insufficient padding on mobile
-- [ ] Grid not responsive
-
-Use Tailwind responsive prefixes:
-```tsx
-className="text-base md:text-lg lg:text-xl"
-className="px-4 md:px-6 lg:px-8"
-className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+public/
+├── logo.svg
+├── images/
+│   ├── hero-wave.svg
+│   ├── phone-mockup.png
+│   ├── app-store.svg
+│   └── google-play.svg
 ```
 
 ---
 
-## Phase 8: Accessibility (1 hour)
+## Phase 7: Content Integration (1-2 hours)
 
-### Step 8.1: Semantic HTML Audit
+### Step 7.1: Spanish Content
 
-Check:
-- [ ] Proper heading hierarchy (h1 → h2 → h3)
-- [ ] `<nav>` for navigation
-- [ ] `<main>` for main content
-- [ ] `<section>` for major sections
-- [ ] `<footer>` for footer
+Replace all placeholder text with actual content from Figma:
 
-### Step 8.2: Add ARIA Labels
+**Hero:**
+- "Tus metas, nuestro compromiso."
+- "La plataforma digital para gestionar tus finanzas y alcanzar tus sueños con seguridad y confianza."
 
-Where needed:
-```tsx
-<button aria-label="Cerrar menú">×</button>
-<nav aria-label="Navegación principal">...</nav>
-```
+**Welcome:**
+- "Hola, Bienvenido a tu portal transaccional"
+- "Siempre cercanos"
 
-### Step 8.3: Keyboard Navigation
+**Services:**
+- Ahorros, Créditos, Inversiones, Pagos y Transferencias
 
-Test:
-- [ ] Tab through all interactive elements
-- [ ] Focus indicators visible
-- [ ] Logical tab order
-- [ ] Enter/Space activates buttons
+**News:**
+- "Mantente Informado"
+- News card content
 
-### Step 8.4: Alt Text for Images
+**Info:**
+- "Mantén tus datos actualizados"
+- "Recomendaciones de Seguridad"
 
-```tsx
-<Image src="/logo.svg" alt="Coasmedas - Portal Bancario" ... />
-```
+**App:**
+- "Lleva tu APP morem ipsum"
 
-### Step 8.5: Color Contrast
-
-Check using browser dev tools or online tool:
-- [ ] Text on background has sufficient contrast (4.5:1 minimum)
-- [ ] Button text readable
-- [ ] Link text visible
+**Footer:**
+- "Atención al Usuario", "Descargar Instructivo", "Preguntas Frecuentes"
 
 ---
 
-## Phase 9: Dark Mode (30 minutes)
+## Phase 8: Responsive Design (2-3 hours)
 
-### Step 9.1: Test Dark Mode
+### Step 8.1: Mobile Layout (375px)
 
-Toggle system dark mode and verify:
-- [ ] Colors invert correctly (using CSS variables)
-- [ ] Logo is visible
-- [ ] Text is readable
-- [ ] Borders are visible
-- [ ] Buttons look correct
+- Stack header buttons
+- Full-width hero
+- Stack service cards (1 column)
+- Stack news cards (1 column)
+- Stack info sections
+- Adjust app section layout
 
-### Step 9.2: Fix Dark Mode Issues
+### Step 8.2: Tablet Layout (768px)
 
-If needed, add dark mode specific styles:
-```tsx
-className="bg-white dark:bg-black"
-className="text-black dark:text-white"
-```
+- 2-column service grid
+- 2-column news grid
+- Side-by-side info sections
 
-**Note**: Since we're using `--background` and `--foreground` CSS variables, most components should adapt automatically.
+### Step 8.3: Desktop Layout (1280px)
 
----
-
-## Phase 10: Performance Optimization (1 hour)
-
-### Step 10.1: Run Lighthouse Audit
-
-```bash
-# Build production version
-yarn build
-
-# Start production server
-yarn start
-```
-
-Open Chrome DevTools → Lighthouse → Run audit
-
-**Target Scores**:
-- [ ] Performance: > 90
-- [ ] Accessibility: > 95
-- [ ] Best Practices: > 90
-- [ ] SEO: > 90
-
-### Step 10.2: Optimize Images
-
-If Lighthouse flags:
-- [ ] Use Next.js Image component (already done for logo)
-- [ ] Compress images
-- [ ] Use appropriate formats (WebP, SVG)
-
-### Step 10.3: Lazy Load Below-Fold Content
-
-For performance:
-```tsx
-import dynamic from 'next/dynamic';
-
-const PrehomeFeaturesGrid = dynamic(() =>
-  import('@/src/organisms').then(mod => ({ default: mod.PrehomeFeaturesGrid }))
-);
-```
-
-### Step 10.4: Add Metadata
-
-**File**: `app/page.tsx`
-
-```typescript
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Coasmedas - Portal Bancario',
-  description: 'Portal de servicios bancarios de Coasmedas. Gestiona tus cuentas, realiza transferencias y más.',
-};
-
-export default function PrehomePage() {
-  // ...
-}
-```
+- Full 4-column service grid
+- 3-column news grid
+- Original design layout
 
 ---
 
-## Phase 11: Testing (1-2 hours)
+## Phase 9: Polish & Testing (2-3 hours)
 
-### Step 11.1: Manual Testing
+### Step 9.1: Accessibility
 
-**Desktop Browsers**:
-- [ ] Chrome
-- [ ] Firefox
-- [ ] Safari
-- [ ] Edge
+- Semantic HTML
+- ARIA labels
+- Keyboard navigation
+- Color contrast
 
-**Mobile Browsers**:
-- [ ] iOS Safari
-- [ ] Android Chrome
+### Step 9.2: Performance
 
-### Step 11.2: Functional Testing
+- Image optimization
+- Lazy loading
+- Lighthouse audit
 
-- [ ] All links work (even if pages don't exist yet)
-- [ ] Buttons navigate correctly
-- [ ] No 404 errors in console
-- [ ] No React warnings
+### Step 9.3: Browser Testing
 
-### Step 11.3: Build Verification
-
-```bash
-# Clean build
-rm -rf .next
-yarn build
-
-# Check for build errors
-# Should complete successfully
-```
-
-Expected output: `✓ Compiled successfully`
-
-### Step 11.4: TypeScript Check
-
-```bash
-yarn tsc --noEmit
-```
-
-Expected: No errors
-
-### Step 11.5: ESLint Check
-
-```bash
-yarn lint
-```
-
-Expected: No errors or only warnings
+- Chrome, Firefox, Safari, Edge
+- iOS Safari, Android Chrome
 
 ---
 
-## Phase 12: Documentation & Cleanup (30 minutes)
+## Updated Time Tracking
 
-### Step 12.1: Update Feature Status
-
-**File**: `.claude/knowledge/features/00-prehome/spec.md`
-
-Update status from "Planning" to "In Progress" or "Complete":
-```markdown
-**Status**: Complete
-```
-
-### Step 12.2: Check Off Acceptance Criteria
-
-In `spec.md`, mark completed items:
-```markdown
-- [x] Page loads at root URL `/`
-- [x] Responsive design (mobile, tablet, desktop)
-- [x] Follows Figma design specifications
-...
-```
-
-### Step 12.3: Document Any Deviations
-
-If you deviated from the design:
-- [ ] Document in spec.md under "Implementation Notes"
-- [ ] Note reasons for changes
-- [ ] Flag for design review if needed
-
-### Step 12.4: Clean Up Temporary Files
-
-```bash
-# Remove any temporary content files
-rm -f .claude/knowledge/features/00-prehome/content.txt
-
-# Remove any test files
-```
-
-### Step 12.5: Commit Changes
-
-```bash
-# Stage all changes
-git add .
-
-# Review changes
-git status
-
-# Commit (will be done by user or in separate step)
-```
+| Phase | Estimated | Notes |
+|-------|-----------|-------|
+| Phase 1: Design Tokens | 1 hr | |
+| Phase 2: Atoms | 2-3 hrs | |
+| Phase 3: Molecules | 4-5 hrs | |
+| Phase 4: Organisms | 2-3 hrs | |
+| Phase 5: Page Assembly | 1 hr | |
+| Phase 6: Assets | 1-2 hrs | |
+| Phase 7: Content | 1-2 hrs | |
+| Phase 8: Responsive | 2-3 hrs | |
+| Phase 9: Polish | 2-3 hrs | |
+| **Total** | **~20-25 hrs (3-4 days)** | |
 
 ---
 
-## Completion Checklist
+## Component Checklist
 
-### Functional Requirements
-- [ ] Page renders at `/` route
-- [ ] "Ingresar" button navigates to `/login` (route may not exist yet)
-- [ ] "Registrarse" button navigates to `/register` (route may not exist yet)
-- [ ] All links work correctly
-- [ ] Page is fully responsive (mobile, tablet, desktop)
-- [ ] Matches Figma design specifications
+### Atoms
+- [ ] Button (updated with cta, outline variants)
+- [ ] Logo (existing)
+- [ ] Link (existing)
+- [ ] Card
+- [ ] SectionTitle
 
-### Technical Requirements
-- [ ] Uses Atomic Design component structure
-- [ ] Components in appropriate directories (atoms/, molecules/, organisms/)
-- [ ] TypeScript types for all props
-- [ ] Follows coding standards (`.claude/coding-standards.md`)
-- [ ] No accessibility warnings
-- [ ] No console errors
-- [ ] Passes ESLint validation
-- [ ] Passes TypeScript compilation
+### Molecules
+- [ ] NavBar (updated)
+- [ ] HeroBanner
+- [ ] WelcomeSection
+- [ ] ServiceCard
+- [ ] NewsCard
+- [ ] InfoCard
+- [ ] AppPromoSection
+- [ ] Footer (updated)
 
-### Performance Requirements
-- [ ] Lighthouse score: Performance > 90
-- [ ] First Contentful Paint < 1.5s
-- [ ] Largest Contentful Paint < 2.5s
-- [ ] No layout shifts (CLS = 0)
-
-### Content Requirements
-- [ ] All text in Spanish
-- [ ] Correct spelling and grammar
-- [ ] Brand-consistent messaging
-- [ ] Clear call-to-action
-
----
-
-## Common Issues & Solutions
-
-### Issue: Logo not displaying
-**Solution**: Verify logo.svg is in public/ directory and path is correct in Logo component
-
-### Issue: Tailwind classes not working
-**Solution**:
-- Check tailwind.config is properly configured
-- Verify classes are not purged
-- Restart dev server
-
-### Issue: Build fails
-**Solution**:
-- Check for TypeScript errors: `yarn tsc --noEmit`
-- Check for ESLint errors: `yarn lint`
-- Clear .next folder and rebuild
-
-### Issue: Layout shifts on load
-**Solution**:
-- Add explicit width/height to images
-- Use CSS aspect-ratio or fixed dimensions
-
-### Issue: Dark mode not working
-**Solution**:
-- Verify CSS variables are defined in globals.css
-- Check theme configuration in tailwind.config
-- Use theme variables instead of hardcoded colors
-
----
-
-## Next Steps After Completion
-
-1. **Create Authentication Feature** (Feature 01-auth)
-   - Login page (`/login`)
-   - Registration page (`/register`)
-   - Connected from prehome CTAs
-
-2. **Update Links**
-   - Once auth pages exist, verify navigation works
-   - Test full user flow
-
-3. **Add Analytics** (if required)
-   - Track CTA clicks
-   - Monitor page performance
-
-4. **A/B Testing** (future)
-   - Test different headlines
-   - Optimize conversion
-
----
-
-## Time Tracking
-
-| Phase | Estimated | Actual | Notes |
-|-------|-----------|--------|-------|
-| Phase 1: Preparation | 30 min | | |
-| Phase 2: Atoms | 2-3 hrs | | |
-| Phase 3: Molecules | 2-3 hrs | | |
-| Phase 4: Organisms | 1-2 hrs | | |
-| Phase 5: Page Assembly | 30 min | | |
-| Phase 6: Content | 1-2 hrs | | |
-| Phase 7: Responsive | 1-2 hrs | | |
-| Phase 8: Accessibility | 1 hr | | |
-| Phase 9: Dark Mode | 30 min | | |
-| Phase 10: Performance | 1 hr | | |
-| Phase 11: Testing | 1-2 hrs | | |
-| Phase 12: Documentation | 30 min | | |
-| **Total** | **~16 hrs (2 days)** | | |
+### Organisms
+- [ ] PrehomeHeader (updated)
+- [ ] PrehomeHero
+- [ ] PrehomeWelcome
+- [ ] PrehomeServices
+- [ ] PrehomeNews
+- [ ] PrehomeInfo
+- [ ] PrehomeApp
+- [ ] PrehomeFooter (updated)
 
 ---
 
@@ -999,10 +483,18 @@ git status
 
 - **Feature Spec**: [spec.md](./spec.md)
 - **Design Resources**: [references.md](./references.md)
-- **Figma Design**: [Link](https://www.figma.com/design/VbXLRi0Ezy4HRRgzEPzcjo/Portal-transaccional_1?node-id=1409-340&t=wV8QeKEjFQ9tqGtr-4)
+- **Figma Design**: [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1668-229)
 - **Coding Standards**: `.claude/coding-standards.md`
 - **Workflows**: `.claude/workflows.md`
 
 ---
 
-**Ready to implement?** Start with Phase 1 and work through each step sequentially. Mark items as complete as you go. Good luck! 🚀
+**Key Changes from Original Plan:**
+1. More sections identified (8 vs 4 originally)
+2. More complex component hierarchy
+3. Additional design tokens needed
+4. Ubuntu font requirement
+5. Wave/curved backgrounds
+6. News cards with gradient headers
+7. App promotion section
+8. Estimated time increased to 3-4 days

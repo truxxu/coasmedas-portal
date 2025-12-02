@@ -1,9 +1,9 @@
 # Feature: Prehome (Landing Page)
 
-**Status**: Planning
+**Status**: In Progress
 **Priority**: Must Have
 **Feature Number**: 00 (Initial landing page)
-**Last Updated**: 2025-11-26
+**Last Updated**: 2025-12-01
 
 ---
 
@@ -21,13 +21,23 @@ The **Prehome** is the initial landing page of the Coasmedas Portal, displayed t
 
 ## UI Design
 
-**Figma Design**: [Prehome Design](https://www.figma.com/design/VbXLRi0Ezy4HRRgzEPzcjo/Portal-transaccional_1?node-id=1409-340&t=wV8QeKEjFQ9tqGtr-4)
+**Figma Design**: [Prehome Design](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1668-229)
 
 **Design Assets**:
 - Prehome layout: `./attachments/designs/prehome.svg`
 - Logo: `./attachments/designs/logo.svg`
 
 See [references.md](./references.md) for all design resources and implementation guidance.
+
+### Page Sections (from Figma review)
+1. **Header** - Logo + "Vinculación Digital" + "Iniciar Sesión" buttons
+2. **Hero Section** - Navy blue background with headline and 3 CTAs
+3. **Welcome Section** - "Hola, Bienvenido" + "Siempre cercanos"
+4. **Services Grid** - 4 cards (Ahorros, Créditos, Inversiones, Pagos y Transferencias)
+5. **News Section** - "Mantente Informado" with 3 news cards
+6. **Info Section** - Data update reminder + Security recommendations
+7. **App Section** - Mobile app promotion with store badges
+8. **Footer** - Help links
 
 ---
 
@@ -252,17 +262,20 @@ export default function PrehomePage() {
 
 ## Design Specifications
 
-### Colors
-From Tailwind theme (`app/globals.css`):
-- Background: `--background` (light: #ffffff, dark: #0a0a0a)
-- Foreground: `--foreground` (light: #171717, dark: #ededed)
-- Additional colors: Define as needed following Coasmedas brand
+### Colors (from Figma)
+- **Primary Blue**: `#007FFF` - Main CTAs, links
+- **Navy Blue**: `#1D4E8F` - Headlines, hero background
+- **Text Black**: `#111827` - Body text
+- **Gray High**: `#58585B` - Secondary text
+- **Gray Low/Border**: `#E4E6EA` - Borders, dividers
+- **Light Blue**: `#F0F9FF` - Background sections
+- **White**: `#FFFFFF` - Cards, backgrounds
 
 ### Typography
-- Font Sans: `--font-geist-sans` (Geist Sans)
-- Font Mono: `--font-geist-mono` (Geist Mono)
-- Headings: Font Sans, various weights
-- Body: Font Sans, regular weight
+- **Font Family**: Ubuntu (Bold, Medium, Regular)
+- Headings: Ubuntu Bold
+- Subheadings: Ubuntu Medium
+- Body: Ubuntu Regular
 
 ### Responsive Breakpoints
 ```css
@@ -449,5 +462,5 @@ export default function PrehomePage() {
 
 **Feature Owner**: Development Team
 **Design Reference**: Figma (see references.md)
-**Estimated Effort**: 2 days
+**Estimated Effort**: 3-4 days (updated based on Figma review)
 **Dependencies**: None (first feature)
