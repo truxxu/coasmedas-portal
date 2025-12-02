@@ -3,11 +3,25 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Coasmedas brand colors */
+  --brand-primary: #007FFF;
+  --brand-navy: #1D4E8F;
+  --brand-border: #E4E6EA;
+  --brand-text-black: #111827;
+  --brand-gray-high: #58585B;
+  --brand-light-blue: #F0F9FF;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-border: var(--brand-border);
+  --color-brand-text-black: var(--brand-text-black);
+  --color-brand-gray-high: var(--brand-gray-high);
+  --color-brand-light-blue: var(--brand-light-blue);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,5 +36,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-ubuntu), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }

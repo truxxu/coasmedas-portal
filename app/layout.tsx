@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ubuntu = Ubuntu({
+  weight: ['400', '500', '700'],
   subsets: ["latin"],
+  variable: "--font-ubuntu",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = ubuntu;
+const geistMono = ubuntu;
 
 export const metadata: Metadata = {
   title: "Portal Transaccional Coasmedas",
