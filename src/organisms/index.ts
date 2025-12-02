@@ -6,3 +6,5 @@ export { PrehomeNews } from './PrehomeNews';
 export { PrehomeInfo } from './PrehomeInfo';
 export { PrehomeApp } from './PrehomeApp';
 export { PrehomeFooter } from './PrehomeFooter';
+export { LoginForm } from './LoginForm';
+export { LoginCard } from './LoginCard';

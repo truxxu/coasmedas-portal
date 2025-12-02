@@ -1,5 +1,24 @@
 # Development Workflows
 
+## Adding Dependencies
+
+**IMPORTANT**: Do NOT run `yarn add` or `npm install` commands directly.
+
+When new dependencies are needed:
+1. Add them to `package.json` manually in the appropriate section
+2. User will install them later with `yarn install`
+3. Document the reason for the dependency in comments if needed
+
+Example:
+```json
+{
+  "dependencies": {
+    "react-hook-form": "^7.49.0",  // Form state management
+    "yup": "^1.3.0"                // Schema validation
+  }
+}
+```
+
 ## Adding New Components
 
 ### Creating an Atom

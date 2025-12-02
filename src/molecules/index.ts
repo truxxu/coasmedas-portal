@@ -6,3 +6,7 @@ export { NewsCard } from './NewsCard';
 export { InfoCard } from './InfoCard';
 export { AppPromoSection } from './AppPromoSection';
 export { Footer } from './Footer';
+export { FormField } from './FormField';
+export { SelectField } from './SelectField';
+export { PasswordField } from './PasswordField';
+export { CaptchaPlaceholder } from './CaptchaPlaceholder';

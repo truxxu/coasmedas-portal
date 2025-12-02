@@ -24,3 +24,30 @@
 - Follow existing theme variables in `globals.css`
 - Mobile-first responsive design
 - Use semantic color names from theme system
+
+## Forms
+- Use `react-hook-form` for all form handling
+- Use `yup` schemas for validation
+- Define validation schemas separately from components
+- Use TypeScript types inferred from yup schemas
+- Example structure:
+  ```typescript
+  // schemas/loginSchema.ts
+  import * as yup from 'yup';
+
+  export const loginSchema = yup.object({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+  });
+
+  export type LoginFormData = yup.InferType<typeof loginSchema>;
+
+  // components/LoginForm.tsx
+  import { useForm } from 'react-hook-form';
+  import { yupResolver } from '@hookform/resolvers/yup';
+  import { loginSchema, LoginFormData } from '@/schemas/loginSchema';
+
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+  });
+  ```
