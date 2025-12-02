@@ -7,7 +7,7 @@ export function GooglePlayButton({ href = '#', className = '' }: GooglePlayButto
   return (
     <a
       href={href}
-      className={`inline-flex items-center gap-2 px-4 py-2 bg-white text-black border border-brand-border rounded-lg hover:opacity-90 transition-opacity ${className}`}
+      className={`inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-black border border-brand-border rounded-lg hover:opacity-90 transition-opacity ${className}`}
     >
       <svg className="w-[26px] h-[26px]" viewBox="0 0 19 21" fill="none">
         <path d="M1.52672 0.12731L13.7818 6.82638L10.3558 10.1526L0.300781 0.304711C0.607796 -0.00124077 1.09541 -0.106404 1.52672 0.12731Z" fill="#0AE577"/>
