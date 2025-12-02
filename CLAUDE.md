@@ -85,6 +85,7 @@ The project has infrastructure configured but component directories (`atoms/`, `
 @.claude/coding-standards.md
 @.claude/workflows.md
 @.claude/documentation-policy.md
+@.claude/design-system.md
 
 ## Backend API Documentation
 
