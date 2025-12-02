@@ -1,0 +1,805 @@
+openapi: 3.0.3
+info:
+  title: Coasmedas Portal API
+  description: |
+    REST API for Coasmedas banking portal.
+
+    This API provides banking services including:
+    - User authentication and management
+    - Account queries and balances
+    - Internal and external transfers
+    - Payment processing
+    - Transaction history
+
+    **Authentication**: Most endpoints require JWT Bearer token in Authorization header.
+
+    **Base URL**: http://localhost:9030 (configurable)
+  version: 1.0.0
+  contact:
+    name: Coasmedas Development Team
+    email: dev@coasmedas.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:9030
+    description: Local development server
+  - url: https://staging-api.coasmedas.com
+    description: Staging server
+  - url: https://api.coasmedas.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication and registration
+  - name: Accounts
+    description: Account information and balances
+  - name: Transactions
+    description: Transaction history
+  - name: Internal Transfers
+    description: Transfers between internal accounts
+  - name: External Transfers
+    description: Transfers to external banks and entities
+  - name: Payments
+    description: Payment processing
+
+security:
+  - BearerAuth: []
+
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register new user
+      description: |
+        Creates a new user account with document validation and OTP verification.
+
+        **Flow**: RegisterFlow → ValJsonRequestFlow → Register_ValUserFlow → RegisterOk2Flow → RegisterOk3Flow
+
+        **Requirements**:
+        - User must not exist
+        - Valid OTP (sent via /send-otp)
+        - Password must be pre-hashed with salt
+      operationId: register
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              documentType: "CC"
+              documentNumber: "1234567890"
+              password: "$2a$10$N9qo8uLOickgx2ZMRZoMye"
+              salt: "randomSalt123456"
+              otp: "123456"
+              firstName: "Juan"
+              lastName: "Pérez"
+              email: "juan.perez@example.com"
+              mobile: "3001234567"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                status: "success"
+                message: "Usuario registrado exitosamente"
+                userId: "12345"
+                documentNumber: "1234567890"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                errorCode: "USR_002"
+                message: "El usuario ya se encuentra registrado"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User authentication
+      description: |
+        Authenticates user with credentials and OTP, returns JWT token.
+
+        **Flow**: LoginFlow → ValUserFlow → LoginOk3Flow → LoginOk4Flow
+
+        **Returns**: JWT token valid for configured time (JwtExpirationTime)
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              documentType: "CC"
+              documentNumber: "1234567890"
+              password: "$2a$10$N9qo8uLOickgx2ZMRZoMye"
+              otp: "123456"
+              deviceId: "device-uuid-123"
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                status: "success"
+                jwtToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+                userData:
+                  userId: "12345"
+                  documentNumber: "1234567890"
+                  firstName: "Juan"
+                  lastName: "Pérez"
+                  email: "juan.perez@example.com"
+        '401':
+          description: Invalid credentials or OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                errorCode: "AUTH_002"
+                message: "Credenciales inválidas"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                errorCode: "USR_001"
+                message: "Usuario no encontrado"
+
+  /send-otp:
+    post:
+      tags:
+        - Authentication
+      summary: Send OTP code
+      description: |
+        Sends OTP code to user's registered mobile number via SMS.
+
+        **Flow**: SendOTPFlow → SendOTPOk2Flow → GetTokenSMSFlow → SendSMSFlow
+
+        **Third-Party**: Inalambria SMS service
+
+        **OTP Lifetime**: Configured in OtpExpirationTime (typically 5 minutes)
+      operationId: sendOtp
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendOtpRequest'
+            example:
+              documentType: "CC"
+              documentNumber: "1234567890"
+              indPag: "1"
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendOtpResponse'
+              example:
+                status: "success"
+                message: "Código OTP enviado exitosamente"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          description: SMS service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                errorCode: "SRV_002"
+                message: "Error al enviar SMS"
+
+  /balances:
+    get:
+      tags:
+        - Accounts
+      summary: Get account balances
+      description: |
+        Retrieves all account balances for authenticated user.
+
+        **Flow**: BalancesFlow → Balances_ValUserFlow → BalancesOk2Flow → BalancesOk3Flow → BalancesOk4Flow
+
+        **Frame**: MapFrameConsultaSaldos.json
+
+        **Core System**: COBIS via SpAppMovil stored procedure
+      operationId: getBalances
+      parameters:
+        - name: documentType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [CC, CE, TI, PA]
+          example: "CC"
+        - name: documentNumber
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "1234567890"
+        - name: indPag
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "1"
+      responses:
+        '200':
+          description: Balances retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalancesResponse'
+              example:
+                status: "success"
+                accounts:
+                  - accountNumber: "1234567890"
+                    accountType: "AHORROS"
+                    productCode: "001"
+                    availableBalance: "1500000.00"
+                    currentBalance: "1520000.00"
+                    blockedBalance: "20000.00"
+                  - accountNumber: "9876543210"
+                    accountType: "CORRIENTE"
+                    productCode: "002"
+                    availableBalance: "2300000.00"
+                    currentBalance: "2300000.00"
+                    blockedBalance: "0.00"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: No accounts found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                errorCode: "ACC_001"
+                message: "No se encontraron cuentas"
+
+  /movements:
+    get:
+      tags:
+        - Transactions
+      summary: Get transaction history
+      description: |
+        Retrieves transaction history for a specific account.
+
+        **Flow**: MovementsFlow → Movements_ValUserFlow → MovementsOk2Flow → MovementsOk3Flow → MovementsOk4Flow
+
+        **Frame**: MapFrameMovimientos.json
+      operationId: getMovements
+      parameters:
+        - name: documentType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [CC, CE, TI, PA]
+        - name: documentNumber
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codigoProductoCobis
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Product code in COBIS core system
+        - name: idCuenta
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Account ID
+        - name: fechaConsulta
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Query date (yyyyMMdd)
+        - name: tipoCartera
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: indPag
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Movements retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovementsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /transfer/internal/createTransaction:
+    post:
+      tags:
+        - Internal Transfers
+      summary: Create internal transfer
+      description: |
+        Executes transfer between internal accounts with OTP validation.
+
+        **Flow**: TransferInternalFlow → TransferInternal_ValJwtFlow → TransferInternalOk3Flow → TransferInternalOk4Flow
+
+        **Frame**: MapFrameTransferenciaInterna.json
+
+        **Requires**: Valid OTP
+      operationId: createInternalTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InternalTransferRequest'
+      responses:
+        '200':
+          description: Transfer completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /transfer/external/listBanks:
+    get:
+      tags:
+        - External Transfers
+      summary: List banks for external transfers
+      description: |
+        Retrieves list of banks available for external transfers.
+
+        **Flow**: ListBanksVisionamosFlow → GetTokenVisionamosFlow → HttpPostEx
+
+        **Third-Party**: Visionamos
+      operationId: listBanks
+      responses:
+        '200':
+          description: Banks list retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BanksListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          description: Visionamos service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /payment/payzen/createTransaction:
+    post:
+      tags:
+        - Payments
+      summary: Create PayZen payment
+      description: |
+        Creates payment order in PayZen gateway and returns payment URL.
+
+        **Flow**: CreatePaymentPayzenFlow → CreatePaymentPayzen_ValUserFlow → CreatePaymentPayzenOk2Flow → CreatePaymentPayzenOk3Flow
+
+        **Third-Party**: PayZen payment gateway
+
+        **Process**:
+        1. Register payment intent in core
+        2. Create payment order in PayZen
+        3. Return payment URL to client
+        4. User completes payment on PayZen page
+      operationId: createPayzenPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayzenPaymentRequest'
+      responses:
+        '200':
+          description: Payment order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayzenPaymentResponse'
+              example:
+                status: "success"
+                paymentUrl: "https://payzen.com/payment/abc123"
+                orderId: "ORDER-12345"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          description: PayZen service error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /login endpoint
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - documentType
+        - documentNumber
+        - password
+        - salt
+        - otp
+      properties:
+        documentType:
+          type: string
+          enum: [CC, CE, TI, PA]
+          description: Document type (CC=Cedula, CE=Cedula Extranjeria, TI=Tarjeta Identidad, PA=Pasaporte)
+        documentNumber:
+          type: string
+          minLength: 5
+          maxLength: 16
+          pattern: '^[0-9]+$'
+          description: Document number
+        password:
+          type: string
+          minLength: 8
+          description: Pre-hashed password (BCrypt)
+        salt:
+          type: string
+          description: Random salt used for password hashing
+        otp:
+          type: string
+          pattern: '^[0-9]{6}$'
+          description: 6-digit OTP code
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        mobile:
+          type: string
+          pattern: '^3[0-9]{9}$'
+          description: Colombian mobile number (10 digits starting with 3)
+
+    RegisterResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        message:
+          type: string
+        userId:
+          type: string
+        documentNumber:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - documentType
+        - documentNumber
+        - password
+        - otp
+        - deviceId
+      properties:
+        documentType:
+          type: string
+          enum: [CC, CE, TI, PA]
+        documentNumber:
+          type: string
+        password:
+          type: string
+          description: Pre-hashed password
+        otp:
+          type: string
+          pattern: '^[0-9]{6}$'
+        deviceId:
+          type: string
+          description: Unique device identifier
+
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        jwtToken:
+          type: string
+          description: JWT token for subsequent requests
+        userData:
+          type: object
+          properties:
+            userId:
+              type: string
+            documentNumber:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+
+    SendOtpRequest:
+      type: object
+      required:
+        - documentType
+        - documentNumber
+        - indPag
+      properties:
+        documentType:
+          type: string
+          enum: [CC, CE, TI, PA]
+        documentNumber:
+          type: string
+        indPag:
+          type: string
+          description: Page indicator
+
+    SendOtpResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        message:
+          type: string
+
+    BalancesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBalance'
+
+    AccountBalance:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+        accountType:
+          type: string
+          enum: [AHORROS, CORRIENTE, CREDITO, INVERSION]
+        productCode:
+          type: string
+        availableBalance:
+          type: string
+          description: Available balance (formatted as string)
+        currentBalance:
+          type: string
+        blockedBalance:
+          type: string
+
+    MovementsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        movements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movement'
+
+    Movement:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+        reference:
+          type: string
+        amount:
+          type: string
+        type:
+          type: string
+          enum: [DEBITO, CREDITO]
+        balance:
+          type: string
+
+    InternalTransferRequest:
+      type: object
+      required:
+        - documentType
+        - documentNumber
+        - otp
+        - origen
+        - destino
+        - valorTransferencia
+      properties:
+        documentType:
+          type: string
+        documentNumber:
+          type: string
+        otp:
+          type: string
+        origen:
+          $ref: '#/components/schemas/TransferAccount'
+        destino:
+          $ref: '#/components/schemas/TransferAccount'
+        valorTransferencia:
+          type: string
+        descripcion:
+          type: string
+
+    TransferAccount:
+      type: object
+      properties:
+        codigoProductoCobis:
+          type: string
+        idCuenta:
+          type: string
+        tipoCuenta:
+          type: string
+
+    TransferResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        transactionId:
+          type: string
+        confirmationNumber:
+          type: string
+
+    BanksListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        banks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bank'
+
+    Bank:
+      type: object
+      properties:
+        bankCode:
+          type: string
+        bankName:
+          type: string
+        available:
+          type: boolean
+
+    PayzenPaymentRequest:
+      type: object
+      required:
+        - documentType
+        - documentNumber
+        - amount
+        - concept
+      properties:
+        documentType:
+          type: string
+        documentNumber:
+          type: string
+        amount:
+          type: string
+        concept:
+          type: string
+        productCode:
+          type: string
+
+    PayzenPaymentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        paymentUrl:
+          type: string
+          description: URL to redirect user for payment
+        orderId:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+        errorCode:
+          type: string
+          description: Internal error code (e.g., AUTH_001, USR_002)
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional error details (optional)
+
+  responses:
+    BadRequest:
+      description: Invalid request format or missing required fields
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: "error"
+            errorCode: "REQ_001"
+            message: "Solicitud inválida"
+
+    Unauthorized:
+      description: Invalid or expired JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: "error"
+            errorCode: "AUTH_001"
+            message: "Token inválido o expirado"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: "error"
+            errorCode: "NOT_FOUND"
+            message: "Recurso no encontrado"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            status: "error"
+            errorCode: "SRV_001"
+            message: "Error interno del servidor"

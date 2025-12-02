@@ -1,0 +1,8 @@
+export { PrehomeHeader } from './PrehomeHeader';
+export { PrehomeHero } from './PrehomeHero';
+export { PrehomeWelcome } from './PrehomeWelcome';
+export { PrehomeServices } from './PrehomeServices';
+export { PrehomeNews } from './PrehomeNews';
+export { PrehomeInfo } from './PrehomeInfo';
+export { PrehomeApp } from './PrehomeApp';
+export { PrehomeFooter } from './PrehomeFooter';
