@@ -2,11 +2,11 @@
 
 ## Adding Dependencies
 
-**IMPORTANT**: Do NOT run `yarn add` or `npm install` commands directly.
+**IMPORTANT**: Do NOT run `npm install` commands directly.
 
 When new dependencies are needed:
 1. Add them to `package.json` manually in the appropriate section
-2. User will install them later with `yarn install`
+2. User will install them later with `npm install`
 3. Document the reason for the dependency in comments if needed
 
 Example:
@@ -55,6 +55,6 @@ Example:
 
 ## Before Committing
 ```bash
-yarn lint           # Check for linting errors
-yarn build          # Ensure build succeeds
+npm run lint        # Check for linting errors
+npm run build       # Ensure build succeeds
 ```

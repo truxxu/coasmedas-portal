@@ -363,7 +363,7 @@ xl: 1280px  /* Desktops */
 ### Automated Testing
 - [ ] ESLint passes
 - [ ] TypeScript compilation successful
-- [ ] Build succeeds (`yarn build`)
+- [ ] Build succeeds (`npm run build`)
 - [ ] No React warnings in console
 - [ ] Lighthouse audit scores
 

@@ -12,16 +12,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Running the Application
 ```bash
-yarn dev             # Start development server (http://localhost:3000)
-yarn build           # Create production build
-yarn start           # Start production server
-yarn lint            # Run ESLint
+npm run dev          # Start development server (http://localhost:3000)
+npm run build        # Create production build
+npm run start        # Start production server
+npm run lint         # Run ESLint
 ```
 
 ### Key Development Notes
 - **Language**: Project uses Spanish (lang="es") for content
 - **Node Version**: Requires Node.js >=18
-- **Package Manager**: yarn
+- **Package Manager**: npm
 
 ## Architecture
 

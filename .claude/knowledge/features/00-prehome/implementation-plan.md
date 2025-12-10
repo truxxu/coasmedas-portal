@@ -44,7 +44,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 ### Before You Start
 - [x] Review Figma design via MCP
 - [ ] Have design assets ready in `.claude/knowledge/features/00-prehome/attachments/designs/`
-- [ ] Confirm development environment is running (`yarn dev`)
+- [ ] Confirm development environment is running (`npm run dev`)
 - [ ] Read [spec.md](./spec.md) for full feature requirements
 - [ ] Read [references.md](./references.md) for design guidance
 
