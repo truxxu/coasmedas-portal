@@ -10,3 +10,7 @@ export { Label } from './Label';
 export { ErrorMessage } from './ErrorMessage';
 export { AppStoreButton } from './AppStoreButton';
 export { GooglePlayButton } from './GooglePlayButton';
+export { Avatar } from './Avatar';
+export { Toggle } from './Toggle';
+export { Divider } from './Divider';
+export { ChevronIcon } from './ChevronIcon';
