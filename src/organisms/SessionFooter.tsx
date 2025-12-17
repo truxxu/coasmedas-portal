@@ -20,7 +20,7 @@ export function SessionFooter() {
   if (!session) return null;
 
   return (
-    <footer className="h-8 bg-white border-t border-brand-border px-8 flex items-center justify-center gap-8 text-xs text-[#B1B1B1]">
+    <footer className="h-8 bg-brand-light-blue border-t border-brand-border px-8 flex items-center justify-center gap-8 text-xs text-[#B1B1B1]">
       <span>Último ingreso: {formatDateTime(session.lastLogin)}</span>
       <span>Ingreso actual: {formatDateTime(session.currentLogin)}</span>
       <span>IP: {session.ipAddress}</span>
