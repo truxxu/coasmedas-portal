@@ -32,7 +32,6 @@ export function LoginForm() {
       {/* Document Type */}
       <SelectField
         label="Tipo de documento"
-        name="documentType"
         options={DOCUMENT_TYPES}
         placeholder="Selecciona un tipo"
         required
@@ -43,7 +42,6 @@ export function LoginForm() {
       {/* Document Number */}
       <FormField
         label="Número de documento"
-        name="documentNumber"
         type="text"
         placeholder=""
         required
@@ -54,7 +52,6 @@ export function LoginForm() {
       {/* Password */}
       <PasswordField
         label="Contraseña"
-        name="password"
         required
         error={errors.password?.message}
         {...register('password')}

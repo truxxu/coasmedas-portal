@@ -11,6 +11,13 @@
   --brand-text-black: #111827;
   --brand-gray-high: #58585B;
   --brand-light-blue: #F0F9FF;
+
+  /* Additional colors for Home feature */
+  --brand-positive: #006B00;
+  --brand-negative: #FF0000;
+  --brand-breb-purple: #32005E;
+  --brand-gray-secondary: #7D8290;
+  --brand-footer-text: #B1B1B1;
 }
 
 @theme inline {
@@ -22,6 +29,11 @@
   --color-brand-text-black: var(--brand-text-black);
   --color-brand-gray-high: var(--brand-gray-high);
   --color-brand-light-blue: var(--brand-light-blue);
+  --color-brand-positive: var(--brand-positive);
+  --color-brand-negative: var(--brand-negative);
+  --color-brand-breb-purple: var(--brand-breb-purple);
+  --color-brand-gray-secondary: var(--brand-gray-secondary);
+  --color-brand-footer-text: var(--brand-footer-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
