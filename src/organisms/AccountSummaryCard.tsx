@@ -37,20 +37,20 @@ export function AccountSummaryCard() {
 
       <hr className="border-brand-border my-4" />
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <p className="text-sm text-brand-gray-secondary">
           Saldo total: <span className="font-bold text-brand-text-black">{displayTotal}</span>
         </p>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
           <Link
             href="/bolsillos"
-            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors"
+            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
           >
             Ver Bolsillos
           </Link>
           <Link
             href="/movimientos"
-            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors"
+            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
           >
             Ver Movimientos
           </Link>

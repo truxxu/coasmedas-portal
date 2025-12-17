@@ -8,6 +8,9 @@ interface UIContextType {
   toggleHideBalances: () => void;
   sidebarExpanded: Record<string, boolean>;
   toggleSidebarItem: (itemId: string) => void;
+  mobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (value: boolean) => void;
+  toggleMobileSidebar: () => void;
 }
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
@@ -15,6 +18,7 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 export function UIProvider({ children }: { children: ReactNode }) {
   const [hideBalances, setHideBalances] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({});
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Persist hideBalances preference
@@ -39,6 +43,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
     }));
   };
 
+  const toggleMobileSidebar = () => setMobileSidebarOpen(!mobileSidebarOpen);
+
   return (
     <UIContext.Provider value={{
       hideBalances,
@@ -46,6 +52,9 @@ export function UIProvider({ children }: { children: ReactNode }) {
       toggleHideBalances,
       sidebarExpanded,
       toggleSidebarItem,
+      mobileSidebarOpen,
+      setMobileSidebarOpen,
+      toggleMobileSidebar,
     }}>
       {children}
     </UIContext.Provider>

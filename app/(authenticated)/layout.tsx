@@ -9,9 +9,9 @@ export default function AuthenticatedLayout({
   return (
     <UserProvider>
       <UIProvider>
-        <div className="flex min-h-screen">
+        <div className="min-h-screen">
           <Sidebar />
-          <div className="flex-1 flex flex-col">
+          <div className="flex flex-col lg:ml-[268px]">
             <TopBar />
             <WelcomeBar />
             <main className="flex-1 bg-brand-light-blue p-8 overflow-auto">

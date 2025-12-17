@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SidebarNavItem } from '@/src/molecules';
 import { Divider } from '@/src/atoms';
-import { useSidebar } from '@/src/hooks';
+import { useSidebar, useMobileSidebar } from '@/src/hooks';
 import { useUserContext } from '@/src/contexts';
 
 const menuItems = [
@@ -20,6 +20,7 @@ const menuItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { sidebarExpanded, toggleSidebarItem } = useSidebar();
+  const { mobileSidebarOpen, setMobileSidebarOpen } = useMobileSidebar();
   const { logout } = useUserContext();
 
   const handleLogout = () => {
@@ -27,8 +28,13 @@ export function Sidebar() {
     window.location.href = '/login';
   };
 
-  return (
-    <aside className="w-[268px] bg-brand-navy min-h-screen flex flex-col">
+  const handleNavClick = () => {
+    // Close mobile sidebar when navigating
+    setMobileSidebarOpen(false);
+  };
+
+  const sidebarContent = (
+    <aside className="w-[268px] bg-brand-navy h-screen flex flex-col overflow-y-auto">
       {/* Logo */}
       <div className="p-6">
         <Image
@@ -46,21 +52,23 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => (
-          <SidebarNavItem
-            key={item.id}
-            label={item.label}
-            href={item.href}
-            icon={item.icon}
-            isActive={pathname === item.href || pathname?.startsWith(item.href + '/')}
-            expandable={item.expandable}
-            isExpanded={sidebarExpanded[item.id]}
-            onToggle={() => toggleSidebarItem(item.id)}
-          />
+          <div key={item.id} onClick={handleNavClick}>
+            <SidebarNavItem
+              label={item.label}
+              href={item.href}
+              icon={item.icon}
+              isActive={pathname === item.href || pathname?.startsWith(item.href + '/')}
+              expandable={item.expandable}
+              isExpanded={sidebarExpanded[item.id]}
+              onToggle={() => toggleSidebarItem(item.id)}
+            />
+          </div>
         ))}
 
         {/* Bre-B with logo */}
         <Link
           href="/bre-b"
+          onClick={handleNavClick}
           className={`flex items-center gap-3 px-4 py-2 rounded-lg text-white font-bold hover:bg-white/10 ${
             pathname === '/bre-b' ? 'bg-brand-primary' : ''
           }`}
@@ -74,7 +82,10 @@ export function Sidebar() {
       {/* Logout */}
       <div className="p-4">
         <button
-          onClick={handleLogout}
+          onClick={() => {
+            handleNavClick();
+            handleLogout();
+          }}
           className="flex items-center gap-3 px-4 py-2 text-white font-bold hover:bg-white/10 rounded-lg w-full"
         >
           <Image src="/icons/logout.svg" alt="" width={20} height={20} className="brightness-0 invert" />
@@ -82,5 +93,29 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar - hidden on mobile, fixed position */}
+      <div className="hidden lg:block lg:fixed lg:inset-y-0 lg:left-0 lg:z-30">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile Sidebar - overlay */}
+      {mobileSidebarOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setMobileSidebarOpen(false)}
+          />
+          {/* Sidebar */}
+          <div className="fixed inset-y-0 left-0 z-50 lg:hidden">
+            {sidebarContent}
+          </div>
+        </>
+      )}
+    </>
   );
 }

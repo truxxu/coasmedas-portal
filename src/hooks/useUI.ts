@@ -9,3 +9,8 @@ export function useSidebar() {
   const { sidebarExpanded, toggleSidebarItem } = useUIContext();
   return { sidebarExpanded, toggleSidebarItem };
 }
+
+export function useMobileSidebar() {
+  const { mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar } = useUIContext();
+  return { mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar };
+}
