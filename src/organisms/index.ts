@@ -15,3 +15,6 @@ export { SessionFooter } from './SessionFooter';
 export { AccountSummaryCard } from './AccountSummaryCard';
 export { QuickAccessGrid } from './QuickAccessGrid';
 export { RecentTransactions } from './RecentTransactions';
+export { AportesInfoCard } from './AportesInfoCard';
+export { TransactionHistoryCard } from './TransactionHistoryCard';
+export { DownloadReportsCard } from './DownloadReportsCard';

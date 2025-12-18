@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SidebarNavItem } from '@/src/molecules';
+import { SidebarNavItem, SidebarSubItem } from '@/src/molecules';
 import { Divider } from '@/src/atoms';
 import { useSidebar, useMobileSidebar } from '@/src/hooks';
 import { useUserContext } from '@/src/contexts';
@@ -15,6 +15,14 @@ const menuItems = [
   { id: 'transferencias', label: 'Transferencias', icon: '/icons/transfers.svg', href: '/transferencias', expandable: true },
   { id: 'tarjeta', label: 'Tarjeta de Crédito', icon: '/icons/card.svg', href: '/tarjeta', expandable: false },
   { id: 'otros', label: 'Otros Servicios', icon: '/icons/config.svg', href: '/otros-servicios', expandable: false },
+];
+
+const productSubItems = [
+  { label: 'Aportes', href: '/productos/aportes' },
+  { label: 'Ahorros', href: '/productos/ahorros' },
+  { label: 'Inversiones', href: '/productos/inversiones' },
+  { label: 'Protección', href: '/productos/proteccion' },
+  { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 
 export function Sidebar() {
@@ -52,7 +60,7 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => (
-          <div key={item.id} onClick={handleNavClick}>
+          <div key={item.id}>
             <SidebarNavItem
               label={item.label}
               href={item.href}
@@ -61,7 +69,17 @@ export function Sidebar() {
               expandable={item.expandable}
               isExpanded={sidebarExpanded[item.id]}
               onToggle={() => toggleSidebarItem(item.id)}
-            />
+            >
+              {item.id === 'productos' && productSubItems.map((subItem) => (
+                <SidebarSubItem
+                  key={subItem.href}
+                  label={subItem.label}
+                  href={subItem.href}
+                  isActive={pathname === subItem.href}
+                  onClick={handleNavClick}
+                />
+              ))}
+            </SidebarNavItem>
           </div>
         ))}
 
