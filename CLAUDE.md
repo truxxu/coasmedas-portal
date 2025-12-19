@@ -81,9 +81,10 @@ app/
 └── (authenticated)/              # Route group for authenticated pages
     ├── layout.tsx                # Authenticated layout (Sidebar, TopBar)
     ├── home/page.tsx             # Dashboard home
-    └── productos/                # Products feature (in progress)
-        ├── page.tsx              # Products index
-        └── aportes/page.tsx      # Aportes product page
+    └── productos/                # Products feature
+        ├── page.tsx              # Products index (redirects)
+        ├── aportes/page.tsx      # Aportes product page (implemented)
+        └── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
 ```
 
 ## Tech Stack
@@ -154,12 +155,17 @@ const { hideBalances } = useUIContext();
 @.claude/knowledge/features/03-products/references.md
 @.claude/knowledge/features/03-products/implementation-plan.md
 
+### Products - Ahorros (Feature 04)
+@.claude/knowledge/features/04-ahorros/spec.md
+@.claude/knowledge/features/04-ahorros/references.md
+@.claude/knowledge/features/04-ahorros/implementation-plan.md
+
 ---
 
 ## Existing Components Reference
 
 ### Atoms (src/atoms/)
-- `Button` - Primary, secondary, outline variants
+- `Button` - Primary, secondary, outline, cta variants
 - `Card` - default, bordered, news variants
 - `Input` - Form text input with error state
 - `Select` - Dropdown with options
@@ -168,44 +174,147 @@ const { hideBalances } = useUIContext();
 - `Toggle` - Switch toggle component
 - `Avatar` - User avatar with initials
 - `Divider` - Horizontal divider (light/dark)
-- `ChevronIcon` - Directional chevron
+- `ChevronIcon` - Directional chevron (left/right/up/down)
 - `Logo` - Coasmedas logo
 - `Link` - Styled link component
 - `SectionTitle` - Section headings
+- `DateInput` - Date picker input with calendar icon
+- `BackButton` - Back navigation arrow button
+- `AppStoreButton` - App Store download button
+- `GooglePlayButton` - Google Play download button
 
 ### Molecules (src/molecules/)
 - `SidebarNavItem` - Sidebar navigation item (supports expandable with children)
+- `SidebarSubItem` - Sub-navigation item for sidebar accordion
 - `HideBalancesToggle` - Toggle for hiding balances
 - `TransactionItem` - Single transaction display
 - `FormField` - Label + Input + Error combination
 - `SelectField` - Label + Select + Error combination
+- `PasswordField` - Password input with visibility toggle
 - `UserAvatar` - Avatar with user name
 - `UserDropdown` - User menu dropdown
 - `QuickAccessCard` - Quick action cards
+- `Breadcrumbs` - Breadcrumb navigation trail
+- `DateRangeFilter` - Start/end date filter with apply button
+- `NavBar` - Top navigation bar
+- `HeroBanner` - Hero section for landing pages
+- `WelcomeSection` - Welcome message section
+- `ServiceCard` - Service feature card
+- `NewsCard` - News article card
+- `InfoCard` - Information card
+- `AppPromoSection` - App promotion section
+- `Footer` - Page footer
+- `CaptchaPlaceholder` - Captcha placeholder component
 
 ### Organisms (src/organisms/)
-- `Sidebar` - Main navigation sidebar
+- `Sidebar` - Main navigation sidebar with product accordion
 - `TopBar` - Top header bar
 - `WelcomeBar` - Welcome message bar
 - `SessionFooter` - Session info footer
 - `LoginForm` - Complete login form
+- `LoginCard` - Login card container
 - `AccountSummaryCard` - Account balance card
 - `RecentTransactions` - Transaction list
 - `QuickAccessGrid` - Grid of quick actions
+- `AportesInfoCard` - Aportes product information card
+- `TransactionHistoryCard` - Transaction list with date filter (reusable)
+- `DownloadReportsCard` - Monthly report download (reusable)
+- `PrehomeHeader` - Prehome page header
+- `PrehomeHero` - Prehome hero section
+- `PrehomeWelcome` - Prehome welcome section
+- `PrehomeServices` - Prehome services grid
+- `PrehomeNews` - Prehome news section
+- `PrehomeInfo` - Prehome info section
+- `PrehomeApp` - Prehome app promotion
+- `PrehomeFooter` - Prehome footer
 
 ### Contexts (src/contexts/)
 - `UIContext` - hideBalances, sidebarExpanded, mobileSidebarOpen
 - `UserContext` - User authentication state
+- `WelcomeBarContext` - Welcome bar visibility state
 
 ### Types (src/types/)
 - `User` - User information
 - `Account` - Account data
 - `Transaction` - Transaction data
+- `AportesProduct` - Aportes product data
+- `ProductDetail` - Product detail (vigentes, enMora, fechaCubrimiento)
+- `MonthOption` - Month dropdown option
+- `DateRangeFilter` - Date range filter state
 
 ### Utils (src/utils/)
 - `formatCurrency(amount)` - Format as Colombian Peso
-- `maskCurrency()` - Returns masked currency string
+- `maskCurrency()` - Returns masked currency string ("$ ****")
+- `maskNumber(number)` - Mask account/product numbers ("***4428")
 - `generateInitials(name)` - Get initials from name
+- `formatDate(date)` - Format date for display (Spanish locale)
+- `generateMonthOptions(count)` - Generate month options for dropdowns
+- `isValidDateRange(start, end, maxMonths)` - Validate date range
+
+### Mocks (src/mocks/)
+- `mockAportesData` - Aportes product mock data
+- `mockTransactions` - Transaction list mock data
+- `mockAvailableMonths` - Available months for reports
+
+---
+
+## Product Pages Pattern
+
+Product pages follow a consistent structure with reusable components:
+
+### Page Structure
+```tsx
+// app/(authenticated)/productos/{product}/page.tsx
+<div className="space-y-6">
+  {/* Header: BackButton + Title + Breadcrumbs + HideBalancesToggle */}
+  <ProductPageHeader title="..." breadcrumbs={[...]} />
+
+  {/* Section 1: Product-specific info card or carousel */}
+  <ProductInfoCard /> // or <ProductCarousel />
+
+  {/* Section 2: Transaction History (reusable) */}
+  <TransactionHistoryCard title="..." transactions={...} onFilter={...} />
+
+  {/* Section 3: Download Reports (reusable) */}
+  <DownloadReportsCard availableMonths={...} onDownload={...} />
+</div>
+```
+
+### Reusable Components Across Product Pages
+- `TransactionHistoryCard` - Transaction list with date filter
+- `DownloadReportsCard` - Monthly PDF report download
+- `Breadcrumbs` - Navigation breadcrumbs
+- `BackButton` - Back navigation
+- `HideBalancesToggle` - Balance visibility toggle
+
+### Product-Specific Components
+- **Aportes**: `AportesInfoCard` - Static info card with plan details
+- **Ahorros**: `ProductCarousel` + `SavingsProductCard` - Selectable product carousel
+
+---
+
+## Feature 04-ahorros: New Components
+
+The Ahorros feature introduces these new reusable components:
+
+### New Atoms (to be created)
+- `CarouselArrow` - Navigation arrow button (left/right)
+- `CarouselDots` - Pagination dot indicators
+
+### New Molecules (to be created)
+- `SavingsProductCard` - Product card for carousel display
+
+### New Organisms (to be created)
+- `ProductCarousel` - Reusable horizontal carousel (will be used by Inversiones, Coaspocket)
+
+### New Types (to be created)
+- `SavingsProduct` - Savings product data structure
+- `SavingsStatus` - Product status (activo/bloqueado/inactivo)
+- `CarouselState` - Carousel scroll state
+
+### New Utils (to be created)
+- `calculateTotalPages()` - Carousel pagination helper
+- `getVisibleItems()` - Responsive visible items calculator
 
 ---
 
