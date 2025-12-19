@@ -1,18 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { ProductPageHeader } from '@/src/molecules';
+import { useState, useEffect } from 'react';
+import { Breadcrumbs } from '@/src/molecules';
 import {
   AportesInfoCard,
   TransactionHistoryCard,
   DownloadReportsCard,
 } from '@/src/organisms';
+import { useWelcomeBar } from '@/src/contexts';
 import { mockAportesData, mockTransactions, mockAvailableMonths } from '@/src/mocks';
 import { maskNumber } from '@/src/utils';
 
 export default function AportesPage() {
+  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [transactions] = useState(mockTransactions);
   const [selectedMonth, setSelectedMonth] = useState(mockAvailableMonths[0]?.value || '');
+
+  // Configure WelcomeBar on mount, clear on unmount
+  useEffect(() => {
+    setWelcomeBar({
+      title: 'Aportes',
+      backHref: '/home',
+    });
+    return () => clearWelcomeBar();
+  }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleFilter = (startDate: string, endDate: string) => {
     // TODO: Call API to filter transactions
@@ -33,11 +44,7 @@ export default function AportesPage() {
 
   return (
     <div className="space-y-6">
-      <ProductPageHeader
-        title="Aportes"
-        backHref="/home"
-        breadcrumbs={['Inicio', 'Productos', 'Aportes']}
-      />
+      <Breadcrumbs items={['Inicio', 'Productos', 'Aportes']} />
 
       <AportesInfoCard
         planName={mockAportesData.planName}

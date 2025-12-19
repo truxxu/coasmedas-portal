@@ -18,5 +18,4 @@ export { HideBalancesToggle } from './HideBalancesToggle';
 export { QuickAccessCard } from './QuickAccessCard';
 export { TransactionItem } from './TransactionItem';
 export { Breadcrumbs } from './Breadcrumbs';
-export { ProductPageHeader } from './ProductPageHeader';
 export { DateRangeFilter } from './DateRangeFilter';
