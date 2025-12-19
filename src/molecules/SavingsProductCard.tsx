@@ -44,11 +44,11 @@ export function SavingsProductCard({
         }
       }}
       className={`
-        bg-white rounded-2xl p-5 cursor-pointer
+        rounded-2xl p-5 cursor-pointer
         transition-all duration-200
         ${isSelected
-          ? 'border-2 border-[#194E8D]'
-          : 'border border-[#E4E6EA] hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-[#194E8D]'
+          : 'bg-[#F3F4F6] border border-[#E4E6EA] hover:border-[#B1B1B1]'
         }
         ${className}
       `}
