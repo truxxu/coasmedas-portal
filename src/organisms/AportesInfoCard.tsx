@@ -77,7 +77,7 @@ export function AportesInfoCard({
       <Divider className="mb-6" />
 
       {/* Content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_3fr] gap-6">
         {/* Left column - General info */}
         <div className="space-y-3">
           <div className="flex justify-between items-center">
