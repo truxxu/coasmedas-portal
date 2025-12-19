@@ -12,7 +12,7 @@ export default function AuthenticatedLayout({
         <WelcomeBarProvider>
           <div className="min-h-screen">
             <Sidebar />
-            <div className="flex flex-col lg:ml-[268px]">
+            <div className="flex flex-col lg:ml-[268px] min-h-screen">
               <TopBar />
               <WelcomeBar />
               <main className="flex-1 bg-brand-light-blue p-8 overflow-auto">
