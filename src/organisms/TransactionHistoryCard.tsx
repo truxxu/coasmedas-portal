@@ -35,14 +35,15 @@ export function TransactionHistoryCard({
 
   return (
     <Card className={`p-6 rounded-2xl ${className}`}>
-      {/* Header */}
-      <div className="mb-4">
-        <h2 className="text-[19px] font-bold text-brand-navy">{title}</h2>
-        <p className="text-[14px] text-[#6A717F] mt-1">{subtitle}</p>
-      </div>
-
-      {/* Filter section */}
+      {/* Header with filter */}
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
+        {/* Title and subtitle */}
+        <div>
+          <h2 className="text-[19px] font-bold text-brand-navy">{title}</h2>
+          <p className="text-[14px] text-[#6A717F] mt-1">{subtitle}</p>
+        </div>
+
+        {/* Filter aligned right */}
         <DateRangeFilter
           startDate={startDate}
           endDate={endDate}

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { DateInput } from '@/src/atoms';
-import { Button } from '@/src/atoms';
+import { DateInput } from "@/src/atoms";
+import { Button } from "@/src/atoms";
 
 interface DateRangeFilterProps {
   startDate: string;
@@ -24,7 +24,7 @@ export function DateRangeFilter({
   maxRangeMonths = 3,
   helperText,
   disabled = false,
-  className = '',
+  className = "",
 }: DateRangeFilterProps) {
   const defaultHelperText = `El filtro de fecha solo permite un rango de los últimos ${maxRangeMonths} meses.`;
 
@@ -47,11 +47,11 @@ export function DateRangeFilter({
             className="w-full sm:w-auto"
           />
           <Button
-            variant="outline"
-            size="sm"
+            variant="secondary"
+            size="md"
             onClick={onApply}
             disabled={disabled}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto !bg-[#E4E6EA] !border-[#E4E6EA] hover:!bg-[#d4d6d8] hover:!text-brand-navy hover:!border-[#d4d6d8]"
           >
             Aplicar
           </Button>
