@@ -14,3 +14,5 @@ export { Avatar } from './Avatar';
 export { Toggle } from './Toggle';
 export { Divider } from './Divider';
 export { ChevronIcon } from './ChevronIcon';
+export { DateInput } from './DateInput';
+export { BackButton } from './BackButton';
