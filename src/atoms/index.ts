@@ -16,3 +16,5 @@ export { Divider } from './Divider';
 export { ChevronIcon } from './ChevronIcon';
 export { DateInput } from './DateInput';
 export { BackButton } from './BackButton';
+export { CarouselArrow } from './CarouselArrow';
+export { CarouselDots } from './CarouselDots';

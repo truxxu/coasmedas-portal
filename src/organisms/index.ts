@@ -18,3 +18,4 @@ export { RecentTransactions } from './RecentTransactions';
 export { AportesInfoCard } from './AportesInfoCard';
 export { TransactionHistoryCard } from './TransactionHistoryCard';
 export { DownloadReportsCard } from './DownloadReportsCard';
+export { ProductCarousel } from './ProductCarousel';
