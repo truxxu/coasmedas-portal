@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { DateRangeFilter } from '@/src/molecules';
-import { TransactionItem } from '@/src/molecules';
-import { Transaction } from '@/src/types/transaction';
-import { getDateMonthsAgo, getTodayDate } from '@/src/utils/dates';
+import { useState } from "react";
+import { Card, Divider } from "@/src/atoms";
+import { DateRangeFilter } from "@/src/molecules";
+import { TransactionItem } from "@/src/molecules";
+import { Transaction } from "@/src/types/transaction";
+import { getDateMonthsAgo, getTodayDate } from "@/src/utils/dates";
 
 interface TransactionHistoryCardProps {
   title: string;
@@ -19,12 +19,12 @@ interface TransactionHistoryCardProps {
 
 export function TransactionHistoryCard({
   title,
-  subtitle = 'Últimos movimientos registrados.',
+  subtitle = "Últimos movimientos registrados.",
   transactions,
   onFilter,
   maxRangeMonths = 3,
   loading = false,
-  className = '',
+  className = "",
 }: TransactionHistoryCardProps) {
   const [startDate, setStartDate] = useState(getDateMonthsAgo(maxRangeMonths));
   const [endDate, setEndDate] = useState(getTodayDate());
@@ -55,8 +55,6 @@ export function TransactionHistoryCard({
         />
       </div>
 
-      <Divider className="mb-6" />
-
       {/* Transactions list or empty state */}
       {loading ? (
         <div className="py-8 text-center">
@@ -75,8 +73,6 @@ export function TransactionHistoryCard({
           ))}
         </div>
       )}
-
-      <Divider className="mt-6" />
     </Card>
   );
 }
