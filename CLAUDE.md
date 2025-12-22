@@ -85,7 +85,8 @@ app/
         ├── page.tsx              # Products index (redirects)
         ├── aportes/page.tsx      # Aportes product page (implemented)
         ├── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
-        └── obligaciones/page.tsx # Obligaciones product page (05-obligaciones feature)
+        ├── obligaciones/page.tsx # Obligaciones product page (05-obligaciones feature)
+        └── inversiones/page.tsx  # Inversiones product page (06-inversiones feature)
 ```
 
 ## Tech Stack
@@ -166,6 +167,11 @@ const { hideBalances } = useUIContext();
 @.claude/knowledge/features/05-obligaciones/references.md
 @.claude/knowledge/features/05-obligaciones/implementation-plan.md
 
+### Products - Inversiones (Feature 06)
+@.claude/knowledge/features/06-inversiones/spec.md
+@.claude/knowledge/features/06-inversiones/references.md
+@.claude/knowledge/features/06-inversiones/implementation-plan.md
+
 ---
 
 ## Existing Components Reference
@@ -204,6 +210,7 @@ const { hideBalances } = useUIContext();
 - `DateRangeFilter` - Start/end date filter with apply button
 - `SavingsProductCard` - Savings product card for carousel (04-ahorros)
 - `ObligacionProductCard` - Loan product card with extended fields (05-obligaciones)
+- `InversionProductCard` - Investment/CDAT product card with term details (06-inversiones)
 - `NavBar` - Top navigation bar
 - `HeroBanner` - Hero section for landing pages
 - `WelcomeSection` - Welcome message section
@@ -229,6 +236,7 @@ const { hideBalances } = useUIContext();
 - `DownloadReportsCard` - Monthly report download (reusable)
 - `ProductCarousel` - Reusable carousel for savings products (04-ahorros)
 - `ObligacionCarousel` - Carousel for loan/credit products (05-obligaciones)
+- `InversionCarousel` - Carousel for investment/CDAT products (06-inversiones)
 - `PrehomeHeader` - Prehome page header
 - `PrehomeHero` - Prehome hero section
 - `PrehomeWelcome` - Prehome welcome section
@@ -255,6 +263,8 @@ const { hideBalances } = useUIContext();
 - `SavingsStatus` - Savings status (activo/bloqueado/inactivo)
 - `ObligacionProduct` - Loan/credit product data (05-obligaciones)
 - `ObligacionStatus` - Loan status (al_dia/en_mora)
+- `InversionProduct` - Investment/CDAT product data (06-inversiones)
+- `InversionStatus` - Investment status (activo/vencido)
 
 ### Utils (src/utils/)
 - `formatCurrency(amount)` - Format as Colombian Peso
@@ -273,6 +283,8 @@ const { hideBalances } = useUIContext();
 - `mockAhorrosTransactions` - Savings transactions
 - `mockObligacionProducts` - Loan products for carousel (05-obligaciones)
 - `mockObligacionTransactions` - Loan transactions
+- `mockInversionProducts` - Investment products for carousel (06-inversiones)
+- `mockInversionesTransactions` - Investment transactions
 
 ---
 
@@ -309,6 +321,7 @@ Product pages follow a consistent structure with reusable components:
 - **Aportes**: `AportesInfoCard` - Static info card with plan details
 - **Ahorros**: `ProductCarousel` + `SavingsProductCard` - Selectable product carousel
 - **Obligaciones**: `ObligacionCarousel` + `ObligacionProductCard` - Loan/credit product carousel with extended card design
+- **Inversiones**: `InversionCarousel` + `InversionProductCard` - Investment/CDAT product carousel with term details
 
 ---
 
@@ -368,6 +381,46 @@ The Obligaciones (Loans/Credits) feature introduces these new components:
 | Status Values | activo/bloqueado/inactivo | al_dia/en_mora |
 | Card Fields | Balance only | Disbursed amount + Balance + Next payment |
 | Product Prefix | None | "CR-" prefix before masked number |
+
+---
+
+## Feature 06-inversiones: New Components
+
+The Inversiones (Investments/CDAT) feature introduces these new components:
+
+### New Molecules (to be created)
+- `InversionProductCard` - Investment/CDAT product card for carousel with:
+  - Title: "CDAT" (Certificado de Depósito de Ahorro a Término)
+  - Masked product number with prefix (e.g., "DTA-***1234")
+  - Investment amount ("Monto" in blue #004680)
+  - Interest rate percentage (e.g., "7.5%")
+  - Term in days (e.g., "360 días")
+  - Creation and maturity dates
+  - Status: "Activo" (green) or "Vencido" (red)
+  - Gray background #E4E6EA (unselected), white (selected)
+
+### New Organisms (to be created)
+- `InversionCarousel` - Carousel specifically for investment products (similar to ObligacionCarousel but uses InversionProductCard)
+
+### New Types (to be created)
+- `InversionProduct` - Investment product data structure with:
+  - `id`, `title`, `productNumber`, `productPrefix`
+  - `amount` (monto)
+  - `interestRate` (tasa de interés)
+  - `termDays` (plazo en días)
+  - `creationDate`, `maturityDate`
+  - `status` (activo/vencido)
+- `InversionStatus` - Investment status type ('activo' | 'vencido')
+
+### Key Differences from Obligaciones
+| Aspect | Obligaciones | Inversiones |
+|--------|--------------|-------------|
+| Card Background (unselected) | Gray #F3F4F6 | Gray #E4E6EA |
+| Status Values | al_dia/en_mora | activo/vencido |
+| Card Fields | Balance + Disbursed + Next Payment | Amount + Rate + Term + Dates |
+| Product Prefix | "CR-" | "DTA-" |
+| Transaction Title Prefix | Product title | "CDAT-" prefix |
+| Monetary Values to Mask | 3 (balance, disbursed, next payment) | 1 (amount only) |
 
 ---
 
