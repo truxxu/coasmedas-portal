@@ -84,7 +84,8 @@ app/
     └── productos/                # Products feature
         ├── page.tsx              # Products index (redirects)
         ├── aportes/page.tsx      # Aportes product page (implemented)
-        └── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
+        ├── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
+        └── obligaciones/page.tsx # Obligaciones product page (05-obligaciones feature)
 ```
 
 ## Tech Stack
@@ -160,6 +161,11 @@ const { hideBalances } = useUIContext();
 @.claude/knowledge/features/04-ahorros/references.md
 @.claude/knowledge/features/04-ahorros/implementation-plan.md
 
+### Products - Obligaciones (Feature 05)
+@.claude/knowledge/features/05-obligaciones/spec.md
+@.claude/knowledge/features/05-obligaciones/references.md
+@.claude/knowledge/features/05-obligaciones/implementation-plan.md
+
 ---
 
 ## Existing Components Reference
@@ -196,6 +202,8 @@ const { hideBalances } = useUIContext();
 - `QuickAccessCard` - Quick action cards
 - `Breadcrumbs` - Breadcrumb navigation trail
 - `DateRangeFilter` - Start/end date filter with apply button
+- `SavingsProductCard` - Savings product card for carousel (04-ahorros)
+- `ObligacionProductCard` - Loan product card with extended fields (05-obligaciones)
 - `NavBar` - Top navigation bar
 - `HeroBanner` - Hero section for landing pages
 - `WelcomeSection` - Welcome message section
@@ -219,6 +227,8 @@ const { hideBalances } = useUIContext();
 - `AportesInfoCard` - Aportes product information card
 - `TransactionHistoryCard` - Transaction list with date filter (reusable)
 - `DownloadReportsCard` - Monthly report download (reusable)
+- `ProductCarousel` - Reusable carousel for savings products (04-ahorros)
+- `ObligacionCarousel` - Carousel for loan/credit products (05-obligaciones)
 - `PrehomeHeader` - Prehome page header
 - `PrehomeHero` - Prehome hero section
 - `PrehomeWelcome` - Prehome welcome section
@@ -241,6 +251,10 @@ const { hideBalances } = useUIContext();
 - `ProductDetail` - Product detail (vigentes, enMora, fechaCubrimiento)
 - `MonthOption` - Month dropdown option
 - `DateRangeFilter` - Date range filter state
+- `SavingsProduct` - Savings product data (04-ahorros)
+- `SavingsStatus` - Savings status (activo/bloqueado/inactivo)
+- `ObligacionProduct` - Loan/credit product data (05-obligaciones)
+- `ObligacionStatus` - Loan status (al_dia/en_mora)
 
 ### Utils (src/utils/)
 - `formatCurrency(amount)` - Format as Colombian Peso
@@ -255,6 +269,10 @@ const { hideBalances } = useUIContext();
 - `mockAportesData` - Aportes product mock data
 - `mockTransactions` - Transaction list mock data
 - `mockAvailableMonths` - Available months for reports
+- `mockSavingsProducts` - Savings products for carousel (04-ahorros)
+- `mockAhorrosTransactions` - Savings transactions
+- `mockObligacionProducts` - Loan products for carousel (05-obligaciones)
+- `mockObligacionTransactions` - Loan transactions
 
 ---
 
@@ -290,6 +308,7 @@ Product pages follow a consistent structure with reusable components:
 ### Product-Specific Components
 - **Aportes**: `AportesInfoCard` - Static info card with plan details
 - **Ahorros**: `ProductCarousel` + `SavingsProductCard` - Selectable product carousel
+- **Obligaciones**: `ObligacionCarousel` + `ObligacionProductCard` - Loan/credit product carousel with extended card design
 
 ---
 
@@ -315,6 +334,40 @@ The Ahorros feature introduces these new reusable components:
 ### New Utils (to be created)
 - `calculateTotalPages()` - Carousel pagination helper
 - `getVisibleItems()` - Responsive visible items calculator
+
+---
+
+## Feature 05-obligaciones: New Components
+
+The Obligaciones (Loans/Credits) feature introduces these new components:
+
+### New Molecules (to be created)
+- `ObligacionProductCard` - Extended product card for loan display with:
+  - Title, product type, masked product number with prefix (e.g., "CR-***1010")
+  - Disbursed amount ("Monto desembolsado")
+  - Total balance ("Saldo Total")
+  - Next payment date and amount section
+  - Status: "Al día" (green) or "En mora" (red)
+  - Gray background when unselected, white when selected
+
+### New Organisms (to be created)
+- `ObligacionCarousel` - Carousel specifically for loan products (similar to ProductCarousel but uses ObligacionProductCard)
+
+### New Types (to be created)
+- `ObligacionProduct` - Loan product data structure with extended fields:
+  - `id`, `title`, `productType`, `productNumber`, `productPrefix`
+  - `disbursedAmount`, `totalBalance`
+  - `nextPaymentDate`, `nextPaymentAmount`
+  - `status` (al_dia/en_mora)
+- `ObligacionStatus` - Loan status type ('al_dia' | 'en_mora')
+
+### Key Differences from Ahorros
+| Aspect | Ahorros | Obligaciones |
+|--------|---------|--------------|
+| Card Background | White (unselected), Blue border (selected) | Gray #F5F5F5 (unselected), White (selected) |
+| Status Values | activo/bloqueado/inactivo | al_dia/en_mora |
+| Card Fields | Balance only | Disbursed amount + Balance + Next payment |
+| Product Prefix | None | "CR-" prefix before masked number |
 
 ---
 

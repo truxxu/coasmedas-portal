@@ -20,3 +20,4 @@ export { TransactionItem } from './TransactionItem';
 export { Breadcrumbs } from './Breadcrumbs';
 export { DateRangeFilter } from './DateRangeFilter';
 export { SavingsProductCard } from './SavingsProductCard';
+export { ObligacionProductCard } from './ObligacionProductCard';
