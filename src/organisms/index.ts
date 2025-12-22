@@ -20,3 +20,4 @@ export { TransactionHistoryCard } from './TransactionHistoryCard';
 export { DownloadReportsCard } from './DownloadReportsCard';
 export { ProductCarousel } from './ProductCarousel';
 export { ObligacionCarousel } from './ObligacionCarousel';
+export { InversionCarousel } from './InversionCarousel';
