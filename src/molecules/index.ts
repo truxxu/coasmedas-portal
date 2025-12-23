@@ -22,3 +22,4 @@ export { DateRangeFilter } from './DateRangeFilter';
 export { SavingsProductCard } from './SavingsProductCard';
 export { ObligacionProductCard } from './ObligacionProductCard';
 export { InversionProductCard } from './InversionProductCard';
+export { ProteccionProductCard } from './ProteccionProductCard';
