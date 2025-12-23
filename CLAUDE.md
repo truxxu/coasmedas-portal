@@ -86,7 +86,8 @@ app/
         ├── aportes/page.tsx      # Aportes product page (implemented)
         ├── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
         ├── obligaciones/page.tsx # Obligaciones product page (05-obligaciones feature)
-        └── inversiones/page.tsx  # Inversiones product page (06-inversiones feature)
+        ├── inversiones/page.tsx  # Inversiones product page (06-inversiones feature)
+        └── proteccion/page.tsx   # Protección product page (07-proteccion feature)
 ```
 
 ## Tech Stack
@@ -172,6 +173,11 @@ const { hideBalances } = useUIContext();
 @.claude/knowledge/features/06-inversiones/references.md
 @.claude/knowledge/features/06-inversiones/implementation-plan.md
 
+### Products - Protección (Feature 07)
+@.claude/knowledge/features/07-proteccion/spec.md
+@.claude/knowledge/features/07-proteccion/references.md
+@.claude/knowledge/features/07-proteccion/implementation-plan.md
+
 ---
 
 ## Existing Components Reference
@@ -211,6 +217,7 @@ const { hideBalances } = useUIContext();
 - `SavingsProductCard` - Savings product card for carousel (04-ahorros)
 - `ObligacionProductCard` - Loan product card with extended fields (05-obligaciones)
 - `InversionProductCard` - Investment/CDAT product card with term details (06-inversiones)
+- `ProteccionProductCard` - Insurance/protection product card without main balance (07-proteccion)
 - `NavBar` - Top navigation bar
 - `HeroBanner` - Hero section for landing pages
 - `WelcomeSection` - Welcome message section
@@ -237,6 +244,7 @@ const { hideBalances } = useUIContext();
 - `ProductCarousel` - Reusable carousel for savings products (04-ahorros)
 - `ObligacionCarousel` - Carousel for loan/credit products (05-obligaciones)
 - `InversionCarousel` - Carousel for investment/CDAT products (06-inversiones)
+- `ProteccionCarousel` - Carousel for insurance/protection products (07-proteccion)
 - `PrehomeHeader` - Prehome page header
 - `PrehomeHero` - Prehome hero section
 - `PrehomeWelcome` - Prehome welcome section
@@ -265,6 +273,8 @@ const { hideBalances } = useUIContext();
 - `ObligacionStatus` - Loan status (al_dia/en_mora)
 - `InversionProduct` - Investment/CDAT product data (06-inversiones)
 - `InversionStatus` - Investment status (activo/vencido)
+- `ProteccionProduct` - Insurance/protection product data (07-proteccion)
+- `ProteccionStatus` - Protection status (activo/inactivo/cancelado)
 
 ### Utils (src/utils/)
 - `formatCurrency(amount)` - Format as Colombian Peso
@@ -285,6 +295,8 @@ const { hideBalances } = useUIContext();
 - `mockObligacionTransactions` - Loan transactions
 - `mockInversionProducts` - Investment products for carousel (06-inversiones)
 - `mockInversionesTransactions` - Investment transactions
+- `mockProteccionProducts` - Insurance/protection products for carousel (07-proteccion)
+- `mockProteccionTransactions` - Protection transactions
 
 ---
 
@@ -322,6 +334,7 @@ Product pages follow a consistent structure with reusable components:
 - **Ahorros**: `ProductCarousel` + `SavingsProductCard` - Selectable product carousel
 - **Obligaciones**: `ObligacionCarousel` + `ObligacionProductCard` - Loan/credit product carousel with extended card design
 - **Inversiones**: `InversionCarousel` + `InversionProductCard` - Investment/CDAT product carousel with term details
+- **Protección**: `ProteccionCarousel` + `ProteccionProductCard` - Insurance/protection product carousel without main balance field
 
 ---
 
@@ -421,6 +434,46 @@ The Inversiones (Investments/CDAT) feature introduces these new components:
 | Product Prefix | "CR-" | "DTA-" |
 | Transaction Title Prefix | Product title | "CDAT-" prefix |
 | Monetary Values to Mask | 3 (balance, disbursed, next payment) | 1 (amount only) |
+
+---
+
+## Feature 07-proteccion: New Components
+
+The Protección (Insurance/Protection) feature introduces these new components:
+
+### New Molecules (to be created)
+- `ProteccionProductCard` - Insurance/protection product card for carousel with:
+  - Title: Policy/insurance name (e.g., "Seguro de Vida")
+  - Masked product number with "No" prefix (e.g., "No******65-9")
+  - **NO main balance field** (unique among all product cards)
+  - Status: "Activo" (green), "Inactivo" (gray), or "Cancelado" (red)
+  - Pago Mínimo (minimum payment) in navy blue #194E8D
+  - Fecha Límite de Pago (payment deadline)
+  - Pago Total Anual (total annual payment) in navy blue #194E8D
+  - Gray background #E4E6EA (unselected), white (selected)
+
+### New Organisms (to be created)
+- `ProteccionCarousel` - Carousel specifically for insurance products (similar to InversionCarousel but uses ProteccionProductCard)
+
+### New Types (to be created)
+- `ProteccionProduct` - Insurance product data structure with:
+  - `id`, `title`, `productNumber`
+  - `status` (activo/inactivo/cancelado)
+  - `minimumPayment` (pago mínimo)
+  - `paymentDeadline` (fecha límite de pago)
+  - `annualPayment` (pago total anual)
+- `ProteccionStatus` - Protection status type ('activo' | 'inactivo' | 'cancelado')
+
+### Key Differences from Other Product Cards
+| Aspect | Inversiones | Protección |
+|--------|-------------|------------|
+| Card Background (unselected) | Gray #E4E6EA | Gray #E4E6EA |
+| Status Values | activo/vencido | activo/inactivo/cancelado |
+| Card Fields | Amount + Rate + Term + Dates | **No balance** + Min Payment + Deadline + Annual Payment |
+| Product Prefix | "DTA-" | "No" (followed by masked number) |
+| Transaction Title Prefix | "CDAT-" | Product title |
+| Monetary Values to Mask | 1 (amount) | 2 (minimumPayment, annualPayment) |
+| Section Title | "Resumen de Inversiones" | "Resumen de Pólizas y Seguros" |
 
 ---
 
