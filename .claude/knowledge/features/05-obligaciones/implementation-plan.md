@@ -469,21 +469,21 @@ export const mockObligacionesTransactions: Transaction[] = [
     date: '2024-11-25',
     description: 'Pago cuota mensual',
     amount: 850000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '2',
     date: '2024-10-25',
     description: 'Pago cuota mensual',
     amount: 850000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '3',
     date: '2024-09-25',
     description: 'Pago cuota mensual',
     amount: 850000,
-    type: 'debit',
+    type: 'DEBITO',
   },
 ];
 

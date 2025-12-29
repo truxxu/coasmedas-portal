@@ -490,21 +490,21 @@ export const mockProteccionTransactions: Transaction[] = [
     date: '2024-11-01',
     description: 'Pago prima mensual - Póliza de Vida',
     amount: 85000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '2',
     date: '2024-10-01',
     description: 'Pago prima mensual - Póliza de Vida',
     amount: 85000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '3',
     date: '2024-09-01',
     description: 'Pago prima mensual - Póliza de Vida',
     amount: 85000,
-    type: 'debit',
+    type: 'DEBITO',
   },
 ];
 

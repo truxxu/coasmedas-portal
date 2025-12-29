@@ -619,7 +619,7 @@ export const mockAhorrosTransactions: Transaction[] = [
     date: '2024-11-10',
     description: 'Retiro cajero',
     amount: 50000,
-    type: 'debit',
+    type: 'DEBITO',
   },
 ];
 

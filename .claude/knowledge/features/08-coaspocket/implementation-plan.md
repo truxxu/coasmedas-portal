@@ -594,7 +594,7 @@ export const mockCoaspocketTransactions: Transaction[] = [
     date: '2024-10-20',
     description: 'Retiro para gastos viaje',
     amount: 300000,
-    type: 'debit',
+    type: 'DEBITO',
   },
 ];
 

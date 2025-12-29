@@ -1,5 +1,6 @@
 import { InversionProduct } from '@/src/types/inversiones';
-import { Transaction, MonthOption } from '@/src/types/products';
+import { Transaction } from '@/src/types/transaction';
+import { MonthOption } from '@/src/types/products';
 import { generateMonthOptions } from '@/src/utils/dates';
 
 /**
@@ -53,14 +54,14 @@ export const mockInversionesTransactions: Transaction[] = [
     date: '2025-08-15',
     description: 'Apertura CDAT',
     amount: 25000000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '2',
     date: '2025-11-15',
     description: 'Liquidacion intereses',
     amount: 937500,
-    type: 'credit',
+    type: 'CREDITO',
   },
 ];
 

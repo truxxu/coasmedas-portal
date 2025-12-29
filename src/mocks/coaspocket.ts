@@ -1,5 +1,6 @@
 import { CoaspocketProduct } from "@/src/types/coaspocket";
-import { Transaction, MonthOption } from "@/src/types/products";
+import { Transaction } from "@/src/types/transaction";
+import { MonthOption } from "@/src/types/products";
 import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
@@ -31,21 +32,21 @@ export const mockCoaspocketTransactions: Transaction[] = [
     date: "2024-12-20",
     description: "Transferencia a bolsillo - Vacaciones",
     amount: 200000,
-    type: "credit",
+    type: "CREDITO",
   },
   {
     id: "2",
     date: "2024-12-15",
     description: "Transferencia a bolsillo - Fondo de Emergencia",
     amount: 500000,
-    type: "credit",
+    type: "CREDITO",
   },
   {
     id: "3",
     date: "2024-12-10",
     description: "Retiro de bolsillo - Educación",
     amount: 150000,
-    type: "debit",
+    type: "DEBITO",
   },
 ];
 

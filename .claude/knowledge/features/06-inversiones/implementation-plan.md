@@ -488,7 +488,7 @@ export const mockInversionesTransactions: Transaction[] = [
     date: '2025-08-15',
     description: 'Apertura CDAT',
     amount: 25000000,
-    type: 'debit',
+    type: 'DEBITO',
   },
   {
     id: '2',
