@@ -1,38 +1,24 @@
-import { CoaspocketProduct } from '@/src/types/coaspocket';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { CoaspocketProduct } from "@/src/types/coaspocket";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock Coaspocket (digital pocket) products for carousel
  */
 export const mockCoaspocketProducts: CoaspocketProduct[] = [
   {
-    id: '1',
-    title: 'Vacaciones',
-    pocketNumber: '1234',
+    id: "1",
+    title: "Vacaciones",
+    pocketNumber: "1234",
     balance: 1500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Fondo de Emergencia',
-    pocketNumber: '5678',
+    id: "2",
+    title: "Fondo de Emergencia",
+    pocketNumber: "5678",
     balance: 3200000,
-    status: 'activo',
-  },
-  {
-    id: '3',
-    title: 'Educación',
-    pocketNumber: '9012',
-    balance: 850000,
-    status: 'activo',
-  },
-  {
-    id: '4',
-    title: 'Navidad',
-    pocketNumber: '3456',
-    balance: 450000,
-    status: 'inactivo',
+    status: "activo",
   },
 ];
 
@@ -41,29 +27,30 @@ export const mockCoaspocketProducts: CoaspocketProduct[] = [
  */
 export const mockCoaspocketTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-12-20',
-    description: 'Transferencia a bolsillo - Vacaciones',
+    id: "1",
+    date: "2024-12-20",
+    description: "Transferencia a bolsillo - Vacaciones",
     amount: 200000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '2',
-    date: '2024-12-15',
-    description: 'Transferencia a bolsillo - Fondo de Emergencia',
+    id: "2",
+    date: "2024-12-15",
+    description: "Transferencia a bolsillo - Fondo de Emergencia",
     amount: 500000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '3',
-    date: '2024-12-10',
-    description: 'Retiro de bolsillo - Educación',
+    id: "3",
+    date: "2024-12-10",
+    description: "Retiro de bolsillo - Educación",
     amount: 150000,
-    type: 'debit',
+    type: "debit",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockCoaspocketAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockCoaspocketAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
