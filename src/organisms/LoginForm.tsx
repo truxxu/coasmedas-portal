@@ -1,27 +1,35 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { loginSchema, LoginFormData } from '@/src/schemas/loginSchema';
-import { FormField, SelectField, PasswordField, CaptchaPlaceholder } from '@/src/molecules';
-import { Button, Link } from '@/src/atoms';
-import { DOCUMENT_TYPES } from '@/src/constants/documentTypes';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema, LoginFormData } from "@/src/schemas/loginSchema";
+import {
+  FormField,
+  SelectField,
+  PasswordField,
+  CaptchaPlaceholder,
+} from "@/src/molecules";
+import { Button, Link } from "@/src/atoms";
+import { DOCUMENT_TYPES } from "@/src/constants/documentTypes";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
-    mode: 'onBlur',
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     // Future: API integration
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-    alert('Login exitoso (demo)');
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+    // alert('Login exitoso (demo)');
+    router.push("/home");
   };
 
   return (
@@ -36,7 +44,7 @@ export function LoginForm() {
         placeholder="Selecciona un tipo"
         required
         error={errors.documentType?.message}
-        {...register('documentType')}
+        {...register("documentType")}
       />
 
       {/* Document Number */}
@@ -46,7 +54,7 @@ export function LoginForm() {
         placeholder=""
         required
         error={errors.documentNumber?.message}
-        {...register('documentNumber')}
+        {...register("documentNumber")}
       />
 
       {/* Password */}
@@ -54,12 +62,12 @@ export function LoginForm() {
         label="Contraseña"
         required
         error={errors.password?.message}
-        {...register('password')}
+        {...register("password")}
       />
 
       {/* Terms & Conditions */}
       <p className="text-xs text-black text-center">
-        Al ingresar, aceptas nuestros{' '}
+        Al ingresar, aceptas nuestros{" "}
         <Link href="/terms" className="text-brand-navy font-medium text-[13px]">
           Términos y Condiciones
         </Link>
@@ -71,16 +79,19 @@ export function LoginForm() {
       {/* Submit Button */}
       <Button
         type="submit"
-        variant={isValid ? 'primary' : 'disabled'}
+        variant={isValid ? "primary" : "disabled"}
         disabled={!isValid || isSubmitting}
         size="md"
         className="w-full"
       >
-        {isSubmitting ? 'Ingresando...' : 'Ingresar'}
+        {isSubmitting ? "Ingresando..." : "Ingresar"}
       </Button>
 
       {/* Forgot Password */}
-      <Link href="/forgot-password" className="text-brand-navy text-center text-sm font-medium">
+      <Link
+        href="/forgot-password"
+        className="text-brand-navy text-center text-sm font-medium"
+      >
         ¿Olvidaste tu contraseña?
       </Link>
     </form>

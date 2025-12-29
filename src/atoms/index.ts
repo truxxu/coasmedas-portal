@@ -8,6 +8,7 @@ export { Select } from './Select';
 export type { SelectOption } from './Select';
 export { Label } from './Label';
 export { ErrorMessage } from './ErrorMessage';
+export { InfoBox } from './InfoBox';
 export { AppStoreButton } from './AppStoreButton';
 export { GooglePlayButton } from './GooglePlayButton';
 export { Avatar } from './Avatar';
