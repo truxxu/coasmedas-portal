@@ -11,6 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Running the Application
+
 ```bash
 npm run dev          # Start development server (http://localhost:3000)
 npm run build        # Create production build
@@ -19,6 +20,7 @@ npm run lint         # Run ESLint
 ```
 
 ### Key Development Notes
+
 - **Language**: Project uses Spanish (lang="es") for content
 - **Node Version**: Requires Node.js >=18
 - **Package Manager**: npm
@@ -26,7 +28,9 @@ npm run lint         # Run ESLint
 ## Architecture
 
 ### Next.js App Router (v16)
+
 This project uses the **App Router** (not Pages Router):
+
 - Routes are defined in `/app` directory using file-based routing
 - `app/layout.tsx` provides root layout with metadata and fonts
 - `app/page.tsx` maps to `/` route (Prehome landing page)
@@ -36,6 +40,7 @@ This project uses the **App Router** (not Pages Router):
 - API routes: create in `app/api/[endpoint]/route.ts`
 
 ### Component Structure: Atomic Design Pattern
+
 Components follow Atomic Design methodology in `/src`:
 
 ```
@@ -51,6 +56,7 @@ src/
 ```
 
 **Import Path**: Use `@/` alias for root imports:
+
 ```typescript
 import { Button, Card } from "@/src/atoms";
 import { SidebarNavItem } from "@/src/molecules";
@@ -61,18 +67,21 @@ import { Transaction } from "@/src/types";
 ```
 
 ### Styling with Tailwind CSS v4
+
 - Global styles in `/app/globals.css`
 - Uses new Tailwind v4 syntax: `@import "tailwindcss"`
 - Brand colors defined as CSS variables (see Design System below)
 - Custom brand classes: `bg-brand-navy`, `text-brand-primary`, etc.
 
 ### TypeScript Configuration
+
 - **Path Alias**: `@/*` maps to root directory
 - **Strict Mode**: Enabled
 - **Target**: ES2017
 - **JSX**: React 19 transform
 
 ### Current Project Structure
+
 ```
 app/
 ├── layout.tsx                    # Root layout
@@ -91,6 +100,7 @@ app/
 ```
 
 ## Tech Stack
+
 - **Next.js**: 16.0.3 (App Router)
 - **React**: 19.2.0
 - **TypeScript**: ^5
@@ -102,30 +112,37 @@ app/
 ## Important Patterns
 
 ### Component Creation
+
 - Follow Atomic Design hierarchy (atoms → molecules → organisms)
 - Export all components from `index.ts` in each directory
 - Use TypeScript interfaces for all props
 
 ### State Management
+
 - **UIContext**: UI state (hideBalances, sidebarExpanded, mobileSidebarOpen)
 - **UserContext**: User authentication state
 - Access via hooks: `useUIContext()`, `useUserContext()`
 
 ### Currency & Number Formatting
-```typescript
-import { formatCurrency, maskCurrency } from '@/src/utils';
 
-formatCurrency(890058)  // "$ 890.058"
-maskCurrency()          // "$ ****"
+```typescript
+import { formatCurrency, maskCurrency } from "@/src/utils";
+
+formatCurrency(890058); // "$ 890.058"
+maskCurrency(); // "$ ****"
 ```
 
 ### Hide Balances Pattern
+
 ```typescript
 const { hideBalances } = useUIContext();
-{hideBalances ? maskCurrency() : formatCurrency(amount)}
+{
+  hideBalances ? maskCurrency() : formatCurrency(amount);
+}
 ```
 
 ### Adding New Features
+
 1. Create feature documentation in `.claude/knowledge/features/{feature-name}/`
 2. Create types in `src/types/`
 3. Create utility functions in `src/utils/`
@@ -139,14 +156,16 @@ const { hideBalances } = useUIContext();
 
 @.claude/coding-standards.md
 @.claude/workflows.md
-@.claude/documentation-policy.md
+
+<!-- @.claude/documentation-policy.md -->
+
 @.claude/design-system.md
 
-## Backend API Documentation
+<!-- ## Backend API Documentation
 
-@.claude/knowledge/api/README.md
+@.claude/knowledge/api/README.md -->
 
-## Features
+<!-- ## Features
 
 ### Prehome Landing Page (Feature 00)
 @.claude/knowledge/features/00-prehome/spec.md
@@ -178,11 +197,12 @@ const { hideBalances } = useUIContext();
 @.claude/knowledge/features/07-proteccion/references.md
 @.claude/knowledge/features/07-proteccion/implementation-plan.md
 
----
+--- -->
 
 ## Existing Components Reference
 
 ### Atoms (src/atoms/)
+
 - `Button` - Primary, secondary, outline, cta variants
 - `Card` - default, bordered, news variants
 - `Input` - Form text input with error state
@@ -202,6 +222,7 @@ const { hideBalances } = useUIContext();
 - `GooglePlayButton` - Google Play download button
 
 ### Molecules (src/molecules/)
+
 - `SidebarNavItem` - Sidebar navigation item (supports expandable with children)
 - `SidebarSubItem` - Sub-navigation item for sidebar accordion
 - `HideBalancesToggle` - Toggle for hiding balances
@@ -229,6 +250,7 @@ const { hideBalances } = useUIContext();
 - `CaptchaPlaceholder` - Captcha placeholder component
 
 ### Organisms (src/organisms/)
+
 - `Sidebar` - Main navigation sidebar with product accordion
 - `TopBar` - Top header bar
 - `WelcomeBar` - Welcome message bar
@@ -255,11 +277,13 @@ const { hideBalances } = useUIContext();
 - `PrehomeFooter` - Prehome footer
 
 ### Contexts (src/contexts/)
+
 - `UIContext` - hideBalances, sidebarExpanded, mobileSidebarOpen
 - `UserContext` - User authentication state
 - `WelcomeBarContext` - Welcome bar visibility state
 
 ### Types (src/types/)
+
 - `User` - User information
 - `Account` - Account data
 - `Transaction` - Transaction data
@@ -277,15 +301,17 @@ const { hideBalances } = useUIContext();
 - `ProteccionStatus` - Protection status (activo/inactivo/cancelado)
 
 ### Utils (src/utils/)
+
 - `formatCurrency(amount)` - Format as Colombian Peso
-- `maskCurrency()` - Returns masked currency string ("$ ****")
-- `maskNumber(number)` - Mask account/product numbers ("***4428")
+- `maskCurrency()` - Returns masked currency string ("$ \*\*\*\*")
+- `maskNumber(number)` - Mask account/product numbers ("\*\*\*4428")
 - `generateInitials(name)` - Get initials from name
 - `formatDate(date)` - Format date for display (Spanish locale)
 - `generateMonthOptions(count)` - Generate month options for dropdowns
 - `isValidDateRange(start, end, maxMonths)` - Validate date range
 
 ### Mocks (src/mocks/)
+
 - `mockAportesData` - Aportes product mock data
 - `mockTransactions` - Transaction list mock data
 - `mockAvailableMonths` - Available months for reports
@@ -305,6 +331,7 @@ const { hideBalances } = useUIContext();
 Product pages follow a consistent structure with reusable components:
 
 ### Page Structure
+
 ```tsx
 // app/(authenticated)/productos/{product}/page.tsx
 <div className="space-y-6">
@@ -323,6 +350,7 @@ Product pages follow a consistent structure with reusable components:
 ```
 
 ### Reusable Components Across Product Pages
+
 - `TransactionHistoryCard` - Transaction list with date filter
 - `DownloadReportsCard` - Monthly PDF report download
 - `Breadcrumbs` - Navigation breadcrumbs
@@ -330,6 +358,7 @@ Product pages follow a consistent structure with reusable components:
 - `HideBalancesToggle` - Balance visibility toggle
 
 ### Product-Specific Components
+
 - **Aportes**: `AportesInfoCard` - Static info card with plan details
 - **Ahorros**: `ProductCarousel` + `SavingsProductCard` - Selectable product carousel
 - **Obligaciones**: `ObligacionCarousel` + `ObligacionProductCard` - Loan/credit product carousel with extended card design
@@ -343,21 +372,26 @@ Product pages follow a consistent structure with reusable components:
 The Ahorros feature introduces these new reusable components:
 
 ### New Atoms (to be created)
+
 - `CarouselArrow` - Navigation arrow button (left/right)
 - `CarouselDots` - Pagination dot indicators
 
 ### New Molecules (to be created)
+
 - `SavingsProductCard` - Product card for carousel display
 
 ### New Organisms (to be created)
+
 - `ProductCarousel` - Reusable horizontal carousel (will be used by Inversiones, Coaspocket)
 
 ### New Types (to be created)
+
 - `SavingsProduct` - Savings product data structure
 - `SavingsStatus` - Product status (activo/bloqueado/inactivo)
 - `CarouselState` - Carousel scroll state
 
 ### New Utils (to be created)
+
 - `calculateTotalPages()` - Carousel pagination helper
 - `getVisibleItems()` - Responsive visible items calculator
 
@@ -368,8 +402,9 @@ The Ahorros feature introduces these new reusable components:
 The Obligaciones (Loans/Credits) feature introduces these new components:
 
 ### New Molecules (to be created)
+
 - `ObligacionProductCard` - Extended product card for loan display with:
-  - Title, product type, masked product number with prefix (e.g., "CR-***1010")
+  - Title, product type, masked product number with prefix (e.g., "CR-\*\*\*1010")
   - Disbursed amount ("Monto desembolsado")
   - Total balance ("Saldo Total")
   - Next payment date and amount section
@@ -377,9 +412,11 @@ The Obligaciones (Loans/Credits) feature introduces these new components:
   - Gray background when unselected, white when selected
 
 ### New Organisms (to be created)
+
 - `ObligacionCarousel` - Carousel specifically for loan products (similar to ProductCarousel but uses ObligacionProductCard)
 
 ### New Types (to be created)
+
 - `ObligacionProduct` - Loan product data structure with extended fields:
   - `id`, `title`, `productType`, `productNumber`, `productPrefix`
   - `disbursedAmount`, `totalBalance`
@@ -388,12 +425,13 @@ The Obligaciones (Loans/Credits) feature introduces these new components:
 - `ObligacionStatus` - Loan status type ('al_dia' | 'en_mora')
 
 ### Key Differences from Ahorros
-| Aspect | Ahorros | Obligaciones |
-|--------|---------|--------------|
+
+| Aspect          | Ahorros                                    | Obligaciones                                |
+| --------------- | ------------------------------------------ | ------------------------------------------- |
 | Card Background | White (unselected), Blue border (selected) | Gray #F5F5F5 (unselected), White (selected) |
-| Status Values | activo/bloqueado/inactivo | al_dia/en_mora |
-| Card Fields | Balance only | Disbursed amount + Balance + Next payment |
-| Product Prefix | None | "CR-" prefix before masked number |
+| Status Values   | activo/bloqueado/inactivo                  | al_dia/en_mora                              |
+| Card Fields     | Balance only                               | Disbursed amount + Balance + Next payment   |
+| Product Prefix  | None                                       | "CR-" prefix before masked number           |
 
 ---
 
@@ -402,9 +440,10 @@ The Obligaciones (Loans/Credits) feature introduces these new components:
 The Inversiones (Investments/CDAT) feature introduces these new components:
 
 ### New Molecules (to be created)
+
 - `InversionProductCard` - Investment/CDAT product card for carousel with:
   - Title: "CDAT" (Certificado de Depósito de Ahorro a Término)
-  - Masked product number with prefix (e.g., "DTA-***1234")
+  - Masked product number with prefix (e.g., "DTA-\*\*\*1234")
   - Investment amount ("Monto" in blue #004680)
   - Interest rate percentage (e.g., "7.5%")
   - Term in days (e.g., "360 días")
@@ -413,9 +452,11 @@ The Inversiones (Investments/CDAT) feature introduces these new components:
   - Gray background #E4E6EA (unselected), white (selected)
 
 ### New Organisms (to be created)
+
 - `InversionCarousel` - Carousel specifically for investment products (similar to ObligacionCarousel but uses InversionProductCard)
 
 ### New Types (to be created)
+
 - `InversionProduct` - Investment product data structure with:
   - `id`, `title`, `productNumber`, `productPrefix`
   - `amount` (monto)
@@ -426,14 +467,15 @@ The Inversiones (Investments/CDAT) feature introduces these new components:
 - `InversionStatus` - Investment status type ('activo' | 'vencido')
 
 ### Key Differences from Obligaciones
-| Aspect | Obligaciones | Inversiones |
-|--------|--------------|-------------|
-| Card Background (unselected) | Gray #F3F4F6 | Gray #E4E6EA |
-| Status Values | al_dia/en_mora | activo/vencido |
-| Card Fields | Balance + Disbursed + Next Payment | Amount + Rate + Term + Dates |
-| Product Prefix | "CR-" | "DTA-" |
-| Transaction Title Prefix | Product title | "CDAT-" prefix |
-| Monetary Values to Mask | 3 (balance, disbursed, next payment) | 1 (amount only) |
+
+| Aspect                       | Obligaciones                         | Inversiones                  |
+| ---------------------------- | ------------------------------------ | ---------------------------- |
+| Card Background (unselected) | Gray #F3F4F6                         | Gray #E4E6EA                 |
+| Status Values                | al_dia/en_mora                       | activo/vencido               |
+| Card Fields                  | Balance + Disbursed + Next Payment   | Amount + Rate + Term + Dates |
+| Product Prefix               | "CR-"                                | "DTA-"                       |
+| Transaction Title Prefix     | Product title                        | "CDAT-" prefix               |
+| Monetary Values to Mask      | 3 (balance, disbursed, next payment) | 1 (amount only)              |
 
 ---
 
@@ -442,9 +484,10 @@ The Inversiones (Investments/CDAT) feature introduces these new components:
 The Protección (Insurance/Protection) feature introduces these new components:
 
 ### New Molecules (to be created)
+
 - `ProteccionProductCard` - Insurance/protection product card for carousel with:
   - Title: Policy/insurance name (e.g., "Seguro de Vida")
-  - Masked product number with "No" prefix (e.g., "No******65-9")
+  - Masked product number with "No" prefix (e.g., "No**\*\***65-9")
   - **NO main balance field** (unique among all product cards)
   - Status: "Activo" (green), "Inactivo" (gray), or "Cancelado" (red)
   - Pago Mínimo (minimum payment) in navy blue #194E8D
@@ -453,9 +496,11 @@ The Protección (Insurance/Protection) feature introduces these new components:
   - Gray background #E4E6EA (unselected), white (selected)
 
 ### New Organisms (to be created)
+
 - `ProteccionCarousel` - Carousel specifically for insurance products (similar to InversionCarousel but uses ProteccionProductCard)
 
 ### New Types (to be created)
+
 - `ProteccionProduct` - Insurance product data structure with:
   - `id`, `title`, `productNumber`
   - `status` (activo/inactivo/cancelado)
@@ -465,15 +510,16 @@ The Protección (Insurance/Protection) feature introduces these new components:
 - `ProteccionStatus` - Protection status type ('activo' | 'inactivo' | 'cancelado')
 
 ### Key Differences from Other Product Cards
-| Aspect | Inversiones | Protección |
-|--------|-------------|------------|
-| Card Background (unselected) | Gray #E4E6EA | Gray #E4E6EA |
-| Status Values | activo/vencido | activo/inactivo/cancelado |
-| Card Fields | Amount + Rate + Term + Dates | **No balance** + Min Payment + Deadline + Annual Payment |
-| Product Prefix | "DTA-" | "No" (followed by masked number) |
-| Transaction Title Prefix | "CDAT-" | Product title |
-| Monetary Values to Mask | 1 (amount) | 2 (minimumPayment, annualPayment) |
-| Section Title | "Resumen de Inversiones" | "Resumen de Pólizas y Seguros" |
+
+| Aspect                       | Inversiones                  | Protección                                               |
+| ---------------------------- | ---------------------------- | -------------------------------------------------------- |
+| Card Background (unselected) | Gray #E4E6EA                 | Gray #E4E6EA                                             |
+| Status Values                | activo/vencido               | activo/inactivo/cancelado                                |
+| Card Fields                  | Amount + Rate + Term + Dates | **No balance** + Min Payment + Deadline + Annual Payment |
+| Product Prefix               | "DTA-"                       | "No" (followed by masked number)                         |
+| Transaction Title Prefix     | "CDAT-"                      | Product title                                            |
+| Monetary Values to Mask      | 1 (amount)                   | 2 (minimumPayment, annualPayment)                        |
+| Section Title                | "Resumen de Inversiones"     | "Resumen de Pólizas y Seguros"                           |
 
 ---
 
