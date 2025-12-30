@@ -1,14 +1,23 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { BackButton } from "@/src/atoms";
-import { Breadcrumbs, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs } from "@/src/molecules";
 import { PaymentOptionsGrid } from "@/src/organisms";
+import { useWelcomeBar } from "@/src/contexts";
 
 export default function PagarMisProductosPage() {
   const router = useRouter();
+  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const breadcrumbs = ["Inicio", "Pagos", "Pagar mis productos"];
+  // Configure WelcomeBar on mount, clear on unmount
+  useEffect(() => {
+    setWelcomeBar({
+      title: "Pagar mis productos",
+      backHref: "/home",
+    });
+    return () => clearWelcomeBar();
+  }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleOptionClick = (optionId: string) => {
     // TODO: Navigate to payment flow when routes are defined
@@ -18,24 +27,8 @@ export default function PagarMisProductosPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex items-start justify-between">
-        <div className="space-y-4">
-          {/* Back Button + Page Title */}
-          <div className="flex items-center gap-4">
-            <BackButton />
-            <h1 className="text-xl font-medium text-gray-900">
-              Pagar mis productos
-            </h1>
-          </div>
-
-          {/* Breadcrumbs */}
-          <Breadcrumbs items={breadcrumbs} />
-        </div>
-
-        {/* Hide Balances Toggle */}
-        <HideBalancesToggle />
-      </div>
+      {/* Breadcrumbs */}
+      <Breadcrumbs items={["Inicio", "Pagos", "Pagar mis productos"]} />
 
       {/* White Container for Main Content */}
       <div className="bg-white rounded-2xl p-8 shadow-sm">
