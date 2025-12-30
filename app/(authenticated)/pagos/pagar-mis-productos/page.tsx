@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { BackButton } from '@/src/atoms';
-import { Breadcrumbs, HideBalancesToggle } from '@/src/molecules';
-import { PaymentOptionsGrid } from '@/src/organisms';
+import { useRouter } from "next/navigation";
+import { BackButton } from "@/src/atoms";
+import { Breadcrumbs, HideBalancesToggle } from "@/src/molecules";
+import { PaymentOptionsGrid } from "@/src/organisms";
 
 export default function PagarMisProductosPage() {
   const router = useRouter();
 
-  const breadcrumbs = ['Inicio', 'Pagos', 'Pagar mis productos'];
+  const breadcrumbs = ["Inicio", "Pagos", "Pagar mis productos"];
 
   const handleOptionClick = (optionId: string) => {
     // TODO: Navigate to payment flow when routes are defined
@@ -37,14 +37,14 @@ export default function PagarMisProductosPage() {
         <HideBalancesToggle />
       </div>
 
-      {/* Main Content Section */}
-      <div className="space-y-8">
+      {/* White Container for Main Content */}
+      <div className="bg-white rounded-2xl p-8 shadow-sm">
         {/* Section Heading */}
-        <div className="space-y-3">
-          <h2 className="text-[21px] font-bold text-brand-navy">
+        <div className="space-y-3 mb-8">
+          <h2 className="text-[21px] font-bold text-brand-navy text-center">
             Pago mis productos
           </h2>
-          <p className="text-[15px] text-gray-900">
+          <p className="text-[15px] text-gray-900 text-center">
             ¿Qué producto deseas pagar hoy?
           </p>
         </div>

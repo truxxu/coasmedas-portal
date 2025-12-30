@@ -21,7 +21,7 @@ export function PaymentOptionCard({
     <button
       onClick={onClick}
       className={`
-        w-full text-left rounded-2xl p-6
+        w-full text-center rounded-2xl px-6 py-8
         transition-all duration-300 ease-in-out
         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
         ${
