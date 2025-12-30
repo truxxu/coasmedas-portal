@@ -8,3 +8,4 @@ export * from './inversiones';
 export * from './proteccion';
 export * from './coaspocket';
 export * from './payment';
+export * from './stepper';

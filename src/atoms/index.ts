@@ -19,3 +19,5 @@ export { DateInput } from './DateInput';
 export { BackButton } from './BackButton';
 export { CarouselArrow } from './CarouselArrow';
 export { CarouselDots } from './CarouselDots';
+export { StepperCircle } from './StepperCircle';
+export { StepperConnector } from './StepperConnector';
