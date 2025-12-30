@@ -15,6 +15,7 @@ interface TransactionHistoryCardProps {
   maxRangeMonths?: number;
   loading?: boolean;
   className?: string;
+  infoBox?: React.ReactNode;
 }
 
 export function TransactionHistoryCard({
@@ -25,6 +26,7 @@ export function TransactionHistoryCard({
   maxRangeMonths = 3,
   loading = false,
   className = "",
+  infoBox,
 }: TransactionHistoryCardProps) {
   const [startDate, setStartDate] = useState(getDateMonthsAgo(maxRangeMonths));
   const [endDate, setEndDate] = useState(getTodayDate());
@@ -73,6 +75,9 @@ export function TransactionHistoryCard({
           ))}
         </div>
       )}
+
+      {/* Optional info box (e.g., for suggestions) */}
+      {infoBox && <div className="mt-6">{infoBox}</div>}
     </Card>
   );
 }

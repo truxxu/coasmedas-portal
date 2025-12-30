@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { Breadcrumbs } from '@/src/molecules';
+import { InfoBox } from '@/src/atoms';
 import {
   CoaspocketCarousel,
   TransactionHistoryCard,
@@ -13,6 +14,7 @@ import {
   mockCoaspocketProducts,
   mockCoaspocketTransactions,
   mockCoaspocketAvailableMonths,
+  mockCoaspocketInfoText,
 } from '@/src/mocks';
 import { maskNumber } from '@/src/utils';
 
@@ -81,12 +83,17 @@ export default function CoaspocketPage() {
         onCreatePocket={handleCreatePocket}
       />
 
-      {/* Section 2: Transaction History */}
+      {/* Section 2: Transaction History with InfoBox */}
       <TransactionHistoryCard
         title={transactionTitle}
         subtitle="Últimos movimientos registrados."
         transactions={transactions}
         onFilter={handleFilter}
+        infoBox={
+          <InfoBox>
+            {mockCoaspocketInfoText}
+          </InfoBox>
+        }
       />
 
       {/* Section 3: Download Reports */}

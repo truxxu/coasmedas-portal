@@ -55,3 +55,9 @@ export const mockCoaspocketTransactions: Transaction[] = [
  */
 export const mockCoaspocketAvailableMonths: MonthOption[] =
   generateMonthOptions(12);
+
+/**
+ * Informational text for the InfoBox
+ */
+export const mockCoaspocketInfoText =
+  'Sugerencia: Para agregar o retirar dinero de tus bolsillos, ve a la sección de Transferencias Internas y selecciona "Entre mis cuentas".';
