@@ -26,6 +26,12 @@ const productSubItems = [
   { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 
+const pagosSubItems = [
+  { label: 'Pagar mis productos', href: '/pagos/pagar-mis-productos' },
+  { label: 'Pago a otros asociado', href: '/pagos/pago-otros-asociado' },
+  { label: 'Pagar servicios públicos', href: '/pagos/pagar-servicios-publicos' },
+];
+
 export function Sidebar() {
   const pathname = usePathname();
   const { sidebarExpanded, toggleSidebarItem } = useSidebar();
@@ -72,6 +78,15 @@ export function Sidebar() {
               onToggle={() => toggleSidebarItem(item.id)}
             >
               {item.id === 'productos' && productSubItems.map((subItem) => (
+                <SidebarSubItem
+                  key={subItem.href}
+                  label={subItem.label}
+                  href={subItem.href}
+                  isActive={pathname === subItem.href}
+                  onClick={handleNavClick}
+                />
+              ))}
+              {item.id === 'pagos' && pagosSubItems.map((subItem) => (
                 <SidebarSubItem
                   key={subItem.href}
                   label={subItem.label}

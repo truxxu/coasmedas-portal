@@ -25,3 +25,4 @@ export { InversionProductCard } from './InversionProductCard';
 export { ProteccionProductCard } from './ProteccionProductCard';
 export { CoaspocketProductCard } from './CoaspocketProductCard';
 export { CreatePocketCard } from './CreatePocketCard';
+export { PaymentOptionCard } from './PaymentOptionCard';

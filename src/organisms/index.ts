@@ -23,3 +23,4 @@ export { ObligacionCarousel } from './ObligacionCarousel';
 export { InversionCarousel } from './InversionCarousel';
 export { ProteccionCarousel } from './ProteccionCarousel';
 export { CoaspocketCarousel } from './CoaspocketCarousel';
+export { PaymentOptionsGrid } from './PaymentOptionsGrid';
