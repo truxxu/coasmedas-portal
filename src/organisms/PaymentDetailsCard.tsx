@@ -54,6 +54,7 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
                 {option.label}
               </option>
             ))}
+            <option value="pse">PSE (Pagos con otras entidades)</option>
           </select>
           <button
             type="button"

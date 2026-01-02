@@ -36,20 +36,27 @@ export default function PagoUnificadoPage() {
       return;
     }
 
-    const selectedAccount = mockPaymentAccounts.find(
-      (acc) => acc.id === selectedAccountId
-    );
+    // Check if PSE is selected
+    const isPSE = selectedAccountId === "pse";
 
-    if (
-      selectedAccount &&
-      selectedAccount.balance < mockPendingPayments.total
-    ) {
-      setError("Saldo insuficiente en la cuenta seleccionada");
-      return;
+    // Only validate balance for account payments, not PSE
+    if (!isPSE) {
+      const selectedAccount = mockPaymentAccounts.find(
+        (acc) => acc.id === selectedAccountId
+      );
+
+      if (
+        selectedAccount &&
+        selectedAccount.balance < mockPendingPayments.total
+      ) {
+        setError("Saldo insuficiente en la cuenta seleccionada");
+        return;
+      }
     }
 
     // Store data in sessionStorage for next step
     sessionStorage.setItem("paymentAccountId", selectedAccountId);
+    sessionStorage.setItem("paymentMethod", isPSE ? "pse" : "account");
 
     // Navigate to confirmation
     router.push("/pagos/pagar-mis-productos/pago-unificado/confirmacion");

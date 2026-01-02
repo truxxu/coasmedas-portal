@@ -35,10 +35,28 @@ export default function ConfirmacionPage() {
   // Load data from sessionStorage
   useEffect(() => {
     const accountId = sessionStorage.getItem("paymentAccountId");
+    const paymentMethod = sessionStorage.getItem("paymentMethod");
 
     if (!accountId) {
       // No data from step 1, redirect back
       router.push("/pagos/pagar-mis-productos/pago-unificado");
+      return;
+    }
+
+    // Handle PSE payment method
+    if (paymentMethod === "pse") {
+      const data: PaymentConfirmationData = {
+        titular: mockUserData.name,
+        documento: mockUserData.document,
+        aportes: mockPendingPayments.aportes,
+        obligaciones: mockPendingPayments.obligaciones,
+        proteccion: mockPendingPayments.proteccion,
+        debitAccount: "PSE (Pagos con otras entidades)",
+        debitAccountNumber: "",
+        totalAmount: mockPendingPayments.total,
+      };
+      setConfirmationData(data);
+      setIsLoading(false);
       return;
     }
 
@@ -77,8 +95,15 @@ export default function ConfirmacionPage() {
       );
     }
 
-    // Navigate to SMS verification
-    router.push("/pagos/pagar-mis-productos/pago-unificado/verificacion");
+    // Check payment method and navigate accordingly
+    const paymentMethod = sessionStorage.getItem("paymentMethod");
+    if (paymentMethod === "pse") {
+      // Navigate to PSE loading page
+      router.push("/pagos/pagar-mis-productos/pago-unificado/pse");
+    } else {
+      // Navigate to SMS verification
+      router.push("/pagos/pagar-mis-productos/pago-unificado/verificacion");
+    }
   };
 
   const handleBack = () => {
