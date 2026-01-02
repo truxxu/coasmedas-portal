@@ -20,9 +20,7 @@ export default function PagarMisProductosPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleOptionClick = (optionId: string) => {
-    // TODO: Navigate to payment flow when routes are defined
-    console.log(`Payment option selected: ${optionId}`);
-    // Example: router.push(`/pagos/pagar-mis-productos/${optionId}`);
+    router.push(`/pagos/pagar-mis-productos/${optionId}`);
   };
 
   return (

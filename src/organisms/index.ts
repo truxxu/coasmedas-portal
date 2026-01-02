@@ -24,3 +24,7 @@ export { InversionCarousel } from './InversionCarousel';
 export { ProteccionCarousel } from './ProteccionCarousel';
 export { CoaspocketCarousel } from './CoaspocketCarousel';
 export { PaymentOptionsGrid } from './PaymentOptionsGrid';
+export { PaymentDetailsCard } from './PaymentDetailsCard';
+export { PaymentConfirmationCard } from './PaymentConfirmationCard';
+export { CodeInputCard } from './CodeInputCard';
+export { TransactionResultCard } from './TransactionResultCard';
