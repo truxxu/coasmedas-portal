@@ -1,5 +1,5 @@
-import React from 'react';
-import { StepperCircle, StepperConnector } from '@/src/atoms';
+import React from "react";
+import { StepperCircle, StepperConnector } from "@/src/atoms";
 
 interface Step {
   number: number;
@@ -15,19 +15,19 @@ interface StepperProps {
 export const Stepper: React.FC<StepperProps> = ({
   currentStep,
   steps,
-  className = '',
+  className = "",
 }) => {
   const getStepStatus = (
     stepNumber: number
-  ): 'pending' | 'active' | 'completed' => {
-    if (stepNumber < currentStep) return 'completed';
-    if (stepNumber === currentStep) return 'active';
-    return 'pending';
+  ): "pending" | "active" | "completed" => {
+    if (stepNumber < currentStep) return "completed";
+    if (stepNumber === currentStep) return "active";
+    return "pending";
   };
 
   return (
     <div
-      className={`flex items-start justify-center ${className}`}
+      className={`flex items-start justify-center ${className} bg-white py-4`}
       role="navigation"
       aria-label="Progreso del pago"
     >
@@ -45,7 +45,9 @@ export const Stepper: React.FC<StepperProps> = ({
               </div>
             )}
           </div>
-          {index < steps.length - 1 && <div className="w-[56px] sm:w-[76px] md:w-[144px]" />}
+          {index < steps.length - 1 && (
+            <div className="w-[56px] sm:w-[76px] md:w-[144px]" />
+          )}
         </React.Fragment>
       ))}
     </div>
