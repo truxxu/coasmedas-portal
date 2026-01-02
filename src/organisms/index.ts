@@ -26,3 +26,4 @@ export { CoaspocketCarousel } from './CoaspocketCarousel';
 export { PaymentOptionsGrid } from './PaymentOptionsGrid';
 export { PaymentDetailsCard } from './PaymentDetailsCard';
 export { PaymentConfirmationCard } from './PaymentConfirmationCard';
+export { CodeInputCard } from './CodeInputCard';

@@ -21,3 +21,4 @@ export { CarouselArrow } from './CarouselArrow';
 export { CarouselDots } from './CarouselDots';
 export { StepperCircle } from './StepperCircle';
 export { StepperConnector } from './StepperConnector';
+export { CodeInput } from './CodeInput';
