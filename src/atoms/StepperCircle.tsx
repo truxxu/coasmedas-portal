@@ -32,12 +32,12 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
   return (
     <div className="flex flex-col items-center">
       <div
-        className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${circleClasses[status]}`}
+        className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${circleClasses[status]}`}
         role="presentation"
       >
         {status === 'completed' ? (
           <svg
-            className="w-5 h-5 text-white"
+            className="w-4 h-4 md:w-5 md:h-5 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -51,12 +51,12 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
             />
           </svg>
         ) : (
-          <span className={`text-base ${numberClasses[status]}`}>
+          <span className={`text-sm md:text-base ${numberClasses[status]}`}>
             {stepNumber}
           </span>
         )}
       </div>
-      <span className={`text-sm mt-2 ${labelClasses[status]}`}>{label}</span>
+      <span className={`text-xs md:text-sm mt-1 md:mt-2 ${labelClasses[status]}`}>{label}</span>
     </div>
   );
 };

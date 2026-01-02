@@ -40,12 +40,12 @@ export const Stepper: React.FC<StepperProps> = ({
               status={getStepStatus(step.number)}
             />
             {index < steps.length - 1 && (
-              <div className="absolute left-full top-[18px] ml-3 w-[120px]">
+              <div className="absolute left-full top-[14px] md:top-[18px] ml-2 md:ml-3 w-[40px] sm:w-[60px] md:w-[120px]">
                 <StepperConnector isActive={step.number < currentStep} />
               </div>
             )}
           </div>
-          {index < steps.length - 1 && <div className="w-[144px]" />}
+          {index < steps.length - 1 && <div className="w-[56px] sm:w-[76px] md:w-[144px]" />}
         </React.Fragment>
       ))}
     </div>

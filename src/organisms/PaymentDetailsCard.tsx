@@ -38,15 +38,15 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
         </p>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-base font-medium text-[#111827] mb-2">
-            ¿De cuál cuenta quieres transferir?
-          </label>
+      <div>
+        <label className="block text-base font-medium text-[#111827] mb-2">
+          ¿De cuál cuenta quieres transferir?
+        </label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <select
             value={selectedAccountId}
             onChange={(e) => onAccountChange(e.target.value)}
-            className="w-full h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-[#111827] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
+            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-[#111827] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
           >
             <option value="">Seleccionar cuenta</option>
             {accountOptions.map((option) => (
@@ -55,13 +55,10 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
               </option>
             ))}
           </select>
-        </div>
-
-        <div className="flex justify-end">
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-sm text-[#007FFF] hover:underline"
+            className="text-sm text-[#007FFF] hover:underline whitespace-nowrap self-end sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>
