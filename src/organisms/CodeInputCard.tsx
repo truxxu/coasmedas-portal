@@ -26,7 +26,7 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
   disabled = false,
 }) => {
   return (
-    <Card className="p-6 md:p-8 max-w-2xl mx-auto">
+    <Card className="p-6 md:p-8 max-w-2xl mx-auto max-w-full">
       {/* Header */}
       <div className="text-center mb-6 md:mb-8">
         <h2 className="text-xl md:text-2xl font-bold text-[#1D4E8F] mb-2">
@@ -50,17 +50,21 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
 
       {/* Error Message */}
       {hasError && errorMessage && (
-        <p className="text-sm text-[#FF0D00] text-center mb-4">{errorMessage}</p>
+        <p className="text-sm text-[#FF0D00] text-center mb-4">
+          {errorMessage}
+        </p>
       )}
 
       {/* Resend Link */}
       <div className="text-center">
-        <span className="text-sm text-[#58585B]">¿No recibiste la clave? </span>
+        <span className="text-sm md:text-base text-[#58585B]">
+          ¿No recibiste la clave?{" "}
+        </span>
         <button
           type="button"
           onClick={onResend}
           disabled={resendDisabled}
-          className={`text-sm font-medium ${
+          className={`text-sm md:text-base ${
             resendDisabled
               ? "text-[#808284] cursor-not-allowed"
               : "text-[#007FFF] hover:underline"

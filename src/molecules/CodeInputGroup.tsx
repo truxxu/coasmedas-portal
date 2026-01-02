@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { CodeInput } from "@/src/atoms";
 
 interface CodeInputGroupProps {
   value: string;
@@ -21,7 +20,7 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Split value into array of digits
-  const digits = value.padEnd(CODE_LENGTH, "").split("").slice(0, CODE_LENGTH);
+  const digits = value.split("").concat(Array(CODE_LENGTH).fill("")).slice(0, CODE_LENGTH);
 
   // Auto-focus first input on mount
   useEffect(() => {
@@ -30,26 +29,24 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
     }
   }, [disabled]);
 
-  const handleDigitChange = (index: number, newDigit: string) => {
+  const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDigit = e.target.value.replace(/\D/g, "").slice(-1);
+
     const newDigits = [...digits];
     newDigits[index] = newDigit;
-    const newValue = newDigits.join("");
-    onChange(newValue.replace(/\s/g, ""));
+    const newValue = newDigits.join("").replace(/\s/g, "");
+    onChange(newValue);
 
-    // Auto-advance to next input
+    // Auto-advance to next input if digit was entered
     if (newDigit && index < CODE_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
 
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     // Handle backspace
     if (e.key === "Backspace") {
       if (!digits[index] && index > 0) {
-        // If current is empty, go to previous
         inputRefs.current[index - 1]?.focus();
       }
     }
@@ -65,23 +62,18 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
     }
   };
 
-  const handleFocus = (index: number) => {
-    // Select content when focused
-    inputRefs.current[index]?.select();
-  };
-
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text").replace(/\D/g, "");
 
     if (pastedData) {
-      // Distribute pasted digits across inputs
       const newValue = pastedData.slice(0, CODE_LENGTH);
       onChange(newValue);
 
-      // Focus the appropriate input after paste
       const focusIndex = Math.min(newValue.length, CODE_LENGTH - 1);
-      inputRefs.current[focusIndex]?.focus();
+      setTimeout(() => {
+        inputRefs.current[focusIndex]?.focus();
+      }, 0);
     }
   };
 
@@ -91,20 +83,32 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
       role="group"
       aria-label="Código de verificación de 6 dígitos"
     >
-      {digits.map((digit, index) => (
-        <CodeInput
+      {Array.from({ length: CODE_LENGTH }).map((_, index) => (
+        <input
           key={index}
           ref={(el) => {
             inputRefs.current[index] = el;
           }}
-          value={digit.trim()}
-          onChange={(newDigit) => handleDigitChange(index, newDigit)}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={1}
+          value={digits[index] || ""}
+          onChange={(e) => handleChange(index, e)}
           onKeyDown={(e) => handleKeyDown(index, e)}
-          onFocus={() => handleFocus(index)}
           onPaste={handlePaste}
-          hasError={hasError}
+          onFocus={(e) => e.target.select()}
           disabled={disabled}
-          ariaLabel={`Dígito ${index + 1} de ${CODE_LENGTH}`}
+          aria-label={`Dígito ${index + 1} de ${CODE_LENGTH}`}
+          className={`
+            w-12 h-14 md:w-14 md:h-16
+            bg-transparent text-[#111827]
+            text-center text-xl md:text-2xl font-medium
+            border-0 border-b-2 rounded-none
+            focus:outline-none focus:border-b-[#007FFF]
+            disabled:bg-gray-100 disabled:cursor-not-allowed
+            ${hasError ? "border-b-[#FF0D00]" : "border-b-[#B1B1B1]"}
+          `}
         />
       ))}
     </div>
