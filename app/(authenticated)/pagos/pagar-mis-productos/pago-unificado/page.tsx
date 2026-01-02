@@ -14,7 +14,7 @@ import {
 } from "@/src/mocks/mockPaymentData";
 
 export default function PagoUnificadoPage() {
-  const { clearWelcomeBar } = useWelcomeBar();
+  const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
@@ -22,8 +22,12 @@ export default function PagoUnificadoPage() {
 
   // Clear welcome bar on mount
   useEffect(() => {
-    clearWelcomeBar();
-  }, [clearWelcomeBar]);
+    setWelcomeBar({
+      title: "Pago Unificado",
+      backHref: "/pagos/pagar-mis-productos",
+    });
+    return () => clearWelcomeBar();
+  }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleContinue = () => {
     // Validation
@@ -63,7 +67,9 @@ export default function PagoUnificadoPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]} />
+        <Breadcrumbs
+          items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
+        />
         <Stepper currentStep={1} steps={PAYMENT_STEPS} />
       </div>
 
