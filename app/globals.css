@@ -5,19 +5,21 @@
   --foreground: #171717;
 
   /* Coasmedas brand colors */
-  --brand-primary: #007FFF;
-  --brand-navy: #1D4E8F;
-  --brand-border: #E4E6EA;
+  --brand-primary: #007fff;
+  --brand-navy: #1d4e8f;
+  --brand-border: #e4e6ea;
   --brand-text-black: #111827;
-  --brand-gray-high: #58585B;
-  --brand-light-blue: #F0F9FF;
+  --brand-gray-high: #58585b;
+  --brand-light-blue: #f0f9ff;
 
   /* Additional colors for Home feature */
-  --brand-positive: #006B00;
-  --brand-negative: #FF0000;
-  --brand-breb-purple: #32005E;
-  --brand-gray-secondary: #7D8290;
-  --brand-footer-text: #B1B1B1;
+  --brand-positive: #006b00;
+  --brand-negative: #ff0000;
+  --brand-success: #0a8900;
+  --brand-error: #ff0d00;
+  --brand-breb-purple: #32005e;
+  --brand-gray-secondary: #7d8290;
+  --brand-footer-text: #b1b1b1;
 }
 
 @theme inline {
@@ -31,6 +33,8 @@
   --color-brand-light-blue: var(--brand-light-blue);
   --color-brand-positive: var(--brand-positive);
   --color-brand-negative: var(--brand-negative);
+  --color-brand-success: var(--brand-success);
+  --color-brand-error: var(--brand-error);
   --color-brand-breb-purple: var(--brand-breb-purple);
   --color-brand-gray-secondary: var(--brand-gray-secondary);
   --color-brand-footer-text: var(--brand-footer-text);
@@ -48,7 +52,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-ubuntu), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-ubuntu), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 /* Hide scrollbar for carousel and other horizontally scrolling elements */
