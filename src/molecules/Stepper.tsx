@@ -27,20 +27,25 @@ export const Stepper: React.FC<StepperProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-center ${className}`}
+      className={`flex items-start justify-center ${className}`}
       role="navigation"
       aria-label="Progreso del pago"
     >
       {steps.map((step, index) => (
         <React.Fragment key={step.number}>
-          <StepperCircle
-            stepNumber={step.number}
-            label={step.label}
-            status={getStepStatus(step.number)}
-          />
-          {index < steps.length - 1 && (
-            <StepperConnector isActive={step.number < currentStep} />
-          )}
+          <div className="relative flex items-start">
+            <StepperCircle
+              stepNumber={step.number}
+              label={step.label}
+              status={getStepStatus(step.number)}
+            />
+            {index < steps.length - 1 && (
+              <div className="absolute left-full top-[18px] ml-3 w-[120px]">
+                <StepperConnector isActive={step.number < currentStep} />
+              </div>
+            )}
+          </div>
+          {index < steps.length - 1 && <div className="w-[144px]" />}
         </React.Fragment>
       ))}
     </div>

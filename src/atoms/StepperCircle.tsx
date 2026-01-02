@@ -30,9 +30,9 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center">
       <div
-        className={`w-10 h-10 rounded-full flex items-center justify-center ${circleClasses[status]}`}
+        className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${circleClasses[status]}`}
         role="presentation"
       >
         {status === 'completed' ? (
@@ -56,7 +56,7 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
           </span>
         )}
       </div>
-      <span className={`text-sm ${labelClasses[status]}`}>{label}</span>
+      <span className={`text-sm mt-2 ${labelClasses[status]}`}>{label}</span>
     </div>
   );
 };

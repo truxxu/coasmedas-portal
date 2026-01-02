@@ -9,7 +9,7 @@ export const StepperConnector: React.FC<StepperConnectorProps> = ({
 }) => {
   return (
     <div
-      className={`h-0.5 flex-1 ${isActive ? 'bg-[#007FFF]' : 'bg-[#E4E6EA]'}`}
+      className={`h-1 w-full rounded-full ${isActive ? 'bg-[#007FFF]' : 'bg-[#E4E6EA]'}`}
       role="presentation"
     />
   );
