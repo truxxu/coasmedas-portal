@@ -9,3 +9,4 @@ export * from './proteccion';
 export * from './coaspocket';
 export * from './payment';
 export * from './stepper';
+export * from './aportes-payment';
