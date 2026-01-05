@@ -28,3 +28,6 @@ export { PaymentDetailsCard } from './PaymentDetailsCard';
 export { PaymentConfirmationCard } from './PaymentConfirmationCard';
 export { CodeInputCard } from './CodeInputCard';
 export { TransactionResultCard } from './TransactionResultCard';
+export { AportesDetailsCard } from './AportesDetailsCard';
+export { AportesConfirmationCard } from './AportesConfirmationCard';
+export { AportesTransactionResultCard } from './AportesTransactionResultCard';
