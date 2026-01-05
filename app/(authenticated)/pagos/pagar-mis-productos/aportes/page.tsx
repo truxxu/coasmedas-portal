@@ -63,7 +63,7 @@ export default function PagoAportesPage() {
       JSON.stringify(mockAportesPaymentBreakdown)
     );
 
-    router.push('/pagos/pago-aportes/confirmacion');
+    router.push('/pagos/pagar-mis-productos/aportes/confirmacion');
   };
 
   const handleNeedMoreBalance = () => {
