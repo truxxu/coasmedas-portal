@@ -39,3 +39,7 @@ export { BeneficiarySelectionCard } from './BeneficiarySelectionCard';
 export { OtrosAsociadosDetailsCard } from './OtrosAsociadosDetailsCard';
 export { OtrosAsociadosConfirmationCard } from './OtrosAsociadosConfirmationCard';
 export { OtrosAsociadosResultCard } from './OtrosAsociadosResultCard';
+export { FlowSelectionCard } from './FlowSelectionCard';
+export { UtilityRegistrationForm } from './UtilityRegistrationForm';
+export { UtilityConfirmationCard } from './UtilityConfirmationCard';
+export { UtilityRegistrationResultCard } from './UtilityRegistrationResultCard';

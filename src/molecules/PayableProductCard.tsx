@@ -31,8 +31,8 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
   };
 
   return (
-    <div className="border border-[#E4E6EA] p-4">
-      <div className="flex items-start gap-3">
+    <div className="border border-[#E4E6EA] p-3 sm:p-4">
+      <div className="flex items-start gap-2 sm:gap-3">
         {/* Checkbox */}
         <div className="pt-1">
           <Checkbox
@@ -43,23 +43,23 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
         </div>
 
         {/* Product Info */}
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 min-w-0 space-y-2">
           {/* Product Title */}
-          <h3 className="text-lg font-bold text-[#1D4E8F]">
+          <h3 className="text-base sm:text-lg font-bold text-[#1D4E8F] break-words">
             {product.name} ({product.productNumber})
           </h3>
 
           {/* Payment Info Row */}
-          <div className="flex flex-col gap-2 text-md text-black">
-            <div className="flex justify-between">
-              <span className="text-[#58585B]">Pago Mínimo: </span>
-              <span className="font-medium">
+          <div className="flex flex-col gap-2 text-sm sm:text-base text-black">
+            <div className="flex justify-between gap-2">
+              <span className="text-[#58585B]">Pago Mínimo:</span>
+              <span className="font-medium text-right">
                 {formatAmount(product.minimumPayment)}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-[#58585B]">Pago Total: </span>
-              <span className="font-medium">
+            <div className="flex justify-between gap-2">
+              <span className="text-[#58585B]">Pago Total:</span>
+              <span className="font-medium text-right">
                 {formatTotalPayment(product.totalPayment)}
               </span>
             </div>
@@ -68,7 +68,7 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
           {/* Amount Input - Always visible, disabled when not selected */}
           <div className="flex flex-col gap-1 pt-2">
             <span
-              className={`text-md ${
+              className={`text-sm sm:text-base ${
                 product.isSelected ? "text-black" : "text-[#808284]"
               }`}
             >

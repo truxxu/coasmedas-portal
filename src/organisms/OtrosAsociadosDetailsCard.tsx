@@ -32,7 +32,7 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
   hideBalances,
 }) => {
   return (
-    <Card className="p-6 space-y-6">
+    <Card className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Title with Beneficiary Name */}
       <h2 className="text-lg font-bold text-[#1D4E8F]">
         Pago de {beneficiaryName}
@@ -43,11 +43,11 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
         <label className="block text-[15px] text-black">
           ¿De cuál cuenta quiere pagar?
         </label>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
           <select
             value={selectedAccountId}
             onChange={(e) => onAccountChange(e.target.value)}
-            className="flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-black bg-white focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
+            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-black bg-white focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
           >
             <option value="">Seleccionar cuenta</option>
             {accounts.map((account) => (
@@ -59,7 +59,7 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap"
+            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap self-start sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>
@@ -96,11 +96,11 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
 
         <Divider />
 
-        <div className="flex justify-between items-center">
-          <span className="text-xl font-bold text-[#1D4E8F]">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4">
+          <span className="text-lg sm:text-xl font-bold text-[#1D4E8F]">
             Total a Pagar:
           </span>
-          <span className="text-xl font-medium text-black">
+          <span className="text-lg sm:text-xl font-medium text-black">
             {hideBalances ? maskCurrency() : formatCurrency(totalAmount)}
           </span>
         </div>

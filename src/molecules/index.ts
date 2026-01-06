@@ -35,3 +35,4 @@ export { PaymentTypeButton } from './PaymentTypeButton';
 export { BeneficiaryListItem } from './BeneficiaryListItem';
 export { PayableProductCard } from './PayableProductCard';
 export { ConfirmationRow } from './ConfirmationRow';
+export { FlowOptionCard } from './FlowOptionCard';
