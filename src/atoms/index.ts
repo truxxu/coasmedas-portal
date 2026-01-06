@@ -24,3 +24,5 @@ export { StepperConnector } from './StepperConnector';
 export { CodeInput } from './CodeInput';
 export { CurrencyInput } from './CurrencyInput';
 export { Checkbox } from './Checkbox';
+export { SuccessIcon } from './SuccessIcon';
+export { ErrorIcon } from './ErrorIcon';
