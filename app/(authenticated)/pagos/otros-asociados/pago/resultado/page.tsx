@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { OtrosAsociadosResultCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -11,16 +11,15 @@ import {
   OTROS_ASOCIADOS_PAYMENT_STEPS,
   mockOtrosAsociadosTransactionResult,
 } from "@/src/mocks";
-import {
-  OtrosAsociadosTransactionResult,
-  PayableProduct,
-} from "@/src/types";
+import { OtrosAsociadosTransactionResult, PayableProduct } from "@/src/types";
 
 export default function OtrosAsociadosResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<OtrosAsociadosTransactionResult | null>(null);
+  const [result, setResult] = useState<OtrosAsociadosTransactionResult | null>(
+    null
+  );
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -62,7 +61,7 @@ export default function OtrosAsociadosResultadoPage() {
     sessionStorage.removeItem("otrosAsociadosTotalAmount");
     sessionStorage.removeItem("otrosAsociadosConfirmation");
 
-    router.push("/pagos");
+    router.push("/pagos/otros-asociados");
   };
 
   if (!result) {
@@ -78,7 +77,6 @@ export default function OtrosAsociadosResultadoPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-        <HideBalancesToggle />
       </div>
 
       <Stepper currentStep={4} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
@@ -86,7 +84,7 @@ export default function OtrosAsociadosResultadoPage() {
       <OtrosAsociadosResultCard result={result} hideBalances={hideBalances} />
 
       <div className="flex justify-end gap-4">
-        <Button variant="outline" onClick={handlePrintSave}>
+        <Button variant="secondary" onClick={handlePrintSave}>
           Imprimir/Guardar
         </Button>
         <Button variant="primary" onClick={handleFinish}>
