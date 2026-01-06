@@ -11,3 +11,4 @@ export * from './payment';
 export * from './stepper';
 export * from './aportes-payment';
 export * from './obligacion-payment';
+export * from './otros-asociados-payment';

@@ -32,3 +32,6 @@ export { CodeInputGroup } from './CodeInputGroup';
 export { AportesPaymentDetailRow } from './AportesPaymentDetailRow';
 export { ObligacionPaymentCard } from './ObligacionPaymentCard';
 export { PaymentTypeButton } from './PaymentTypeButton';
+export { BeneficiaryListItem } from './BeneficiaryListItem';
+export { PayableProductCard } from './PayableProductCard';
+export { ConfirmationRow } from './ConfirmationRow';
