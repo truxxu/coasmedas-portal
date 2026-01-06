@@ -30,3 +30,5 @@ export { Stepper } from './Stepper';
 export { PaymentSummaryRow } from './PaymentSummaryRow';
 export { CodeInputGroup } from './CodeInputGroup';
 export { AportesPaymentDetailRow } from './AportesPaymentDetailRow';
+export { ObligacionPaymentCard } from './ObligacionPaymentCard';
+export { PaymentTypeButton } from './PaymentTypeButton';

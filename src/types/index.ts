@@ -10,3 +10,4 @@ export * from './coaspocket';
 export * from './payment';
 export * from './stepper';
 export * from './aportes-payment';
+export * from './obligacion-payment';
