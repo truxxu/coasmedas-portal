@@ -6,3 +6,4 @@ export * from './proteccion';
 export * from './coaspocket';
 export * from './mockPaymentData';
 export * from './mockAportesPaymentData';
+export * from './mockObligacionPaymentData';
