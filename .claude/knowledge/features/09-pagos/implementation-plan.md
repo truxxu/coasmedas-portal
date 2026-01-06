@@ -381,7 +381,7 @@ const productSubItems = [
 // ADD THIS:
 const pagosSubItems = [
   { label: "Pagar mis productos", href: "/pagos/pagar-mis-productos" },
-  { label: "Pago a otros asociado", href: "/pagos/pago-otros-asociado" },
+  { label: "Pago a otros asociado", href: "/pagos/otros-asociados" },
   {
     label: "Pagar servicios públicos",
     href: "/pagos/pagar-servicios-publicos",

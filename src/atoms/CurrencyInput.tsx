@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface CurrencyInputProps {
   value: number;
@@ -14,15 +14,15 @@ interface CurrencyInputProps {
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   value,
   onChange,
-  prefix = '$',
+  prefix = "$",
   hasError = false,
   disabled = false,
-  className = '',
+  className = "",
 }) => {
-  const [displayValue, setDisplayValue] = useState<string>('');
+  const [displayValue, setDisplayValue] = useState<string>("");
 
   const formatNumberForDisplay = (num: number): string => {
-    return num.toLocaleString('es-CO');
+    return num.toLocaleString("es-CO");
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     // Only allow digits
-    const cleaned = rawValue.replace(/[^\d]/g, '');
+    const cleaned = rawValue.replace(/[^\d]/g, "");
     const numericValue = parseInt(cleaned, 10) || 0;
 
     onChange(numericValue);
@@ -44,9 +44,18 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
     setDisplayValue(formatNumberForDisplay(value));
   };
 
+  // Check if full width is requested
+  const isFullWidth = className.includes("w-full");
+
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <span className="text-xl font-bold text-black">{prefix}</span>
+      <span
+        className={`text-xl font-bold ${
+          disabled ? "text-[#808284]" : "text-black"
+        }`}
+      >
+        {prefix}
+      </span>
       <input
         type="text"
         inputMode="numeric"
@@ -55,14 +64,18 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
         onBlur={handleBlur}
         disabled={disabled}
         className={`
-          w-32 h-10 px-3 text-right text-lg font-medium rounded-md
-          border transition-colors
+          ${
+            isFullWidth ? "flex-1" : "w-32"
+          } h-10 px-3 text-right text-lg font-medium
+          border-b transition-colors
           ${
             hasError
-              ? 'border-[#FF0D00] focus:border-[#FF0D00] focus:ring-2 focus:ring-[#FF0D00]'
-              : 'border-[#1D4E8F] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF]'
+              ? "border-[#FF0D00] focus:border-[#FF0D00] focus:ring-2 focus:ring-[#FF0D00]"
+              : disabled
+              ? "border-[#D1D2D4]"
+              : "border-[#1D4E8F] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF]"
           }
-          ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
+          ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}
           focus:outline-none
         `}
         aria-label="Valor a pagar"

@@ -1,35 +1,74 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { SidebarNavItem, SidebarSubItem } from '@/src/molecules';
-import { Divider } from '@/src/atoms';
-import { useSidebar, useMobileSidebar } from '@/src/hooks';
-import { useUserContext } from '@/src/contexts';
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { SidebarNavItem, SidebarSubItem } from "@/src/molecules";
+import { Divider } from "@/src/atoms";
+import { useSidebar, useMobileSidebar } from "@/src/hooks";
+import { useUserContext } from "@/src/contexts";
 
 const menuItems = [
-  { id: 'inicio', label: 'Inicio', icon: '/icons/home.svg', href: '/home', expandable: false },
-  { id: 'productos', label: 'Productos', icon: '/icons/products.svg', href: '/productos', expandable: true },
-  { id: 'pagos', label: 'Pagos', icon: '/icons/payments.svg', href: '/pagos', expandable: true },
-  { id: 'transferencias', label: 'Transferencias', icon: '/icons/transfers.svg', href: '/transferencias', expandable: true },
-  { id: 'tarjeta', label: 'Tarjeta de Crédito', icon: '/icons/card.svg', href: '/tarjeta', expandable: false },
-  { id: 'otros', label: 'Otros Servicios', icon: '/icons/config.svg', href: '/otros-servicios', expandable: false },
+  {
+    id: "inicio",
+    label: "Inicio",
+    icon: "/icons/home.svg",
+    href: "/home",
+    expandable: false,
+  },
+  {
+    id: "productos",
+    label: "Productos",
+    icon: "/icons/products.svg",
+    href: "/productos",
+    expandable: true,
+  },
+  {
+    id: "pagos",
+    label: "Pagos",
+    icon: "/icons/payments.svg",
+    href: "/pagos",
+    expandable: true,
+  },
+  {
+    id: "transferencias",
+    label: "Transferencias",
+    icon: "/icons/transfers.svg",
+    href: "/transferencias",
+    expandable: true,
+  },
+  {
+    id: "tarjeta",
+    label: "Tarjeta de Crédito",
+    icon: "/icons/card.svg",
+    href: "/tarjeta",
+    expandable: false,
+  },
+  {
+    id: "otros",
+    label: "Otros Servicios",
+    icon: "/icons/config.svg",
+    href: "/otros-servicios",
+    expandable: false,
+  },
 ];
 
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" },
 ];
 
 const pagosSubItems = [
-  { label: 'Pagar mis productos', href: '/pagos/pagar-mis-productos' },
-  { label: 'Pago a otros asociado', href: '/pagos/pago-otros-asociado' },
-  { label: 'Pagar servicios públicos', href: '/pagos/pagar-servicios-publicos' },
+  { label: "Pagar mis productos", href: "/pagos/pagar-mis-productos" },
+  { label: "Pago a otros asociados", href: "/pagos/otros-asociados" },
+  {
+    label: "Pagar servicios públicos",
+    href: "/pagos/pagar-servicios-publicos",
+  },
 ];
 
 export function Sidebar() {
@@ -40,7 +79,7 @@ export function Sidebar() {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/login';
+    window.location.href = "/login";
   };
 
   const handleNavClick = () => {
@@ -72,29 +111,33 @@ export function Sidebar() {
               label={item.label}
               href={item.href}
               icon={item.icon}
-              isActive={pathname === item.href || pathname?.startsWith(item.href + '/')}
+              isActive={
+                pathname === item.href || pathname?.startsWith(item.href + "/")
+              }
               expandable={item.expandable}
               isExpanded={sidebarExpanded[item.id]}
               onToggle={() => toggleSidebarItem(item.id)}
             >
-              {item.id === 'productos' && productSubItems.map((subItem) => (
-                <SidebarSubItem
-                  key={subItem.href}
-                  label={subItem.label}
-                  href={subItem.href}
-                  isActive={pathname === subItem.href}
-                  onClick={handleNavClick}
-                />
-              ))}
-              {item.id === 'pagos' && pagosSubItems.map((subItem) => (
-                <SidebarSubItem
-                  key={subItem.href}
-                  label={subItem.label}
-                  href={subItem.href}
-                  isActive={pathname === subItem.href}
-                  onClick={handleNavClick}
-                />
-              ))}
+              {item.id === "productos" &&
+                productSubItems.map((subItem) => (
+                  <SidebarSubItem
+                    key={subItem.href}
+                    label={subItem.label}
+                    href={subItem.href}
+                    isActive={pathname === subItem.href}
+                    onClick={handleNavClick}
+                  />
+                ))}
+              {item.id === "pagos" &&
+                pagosSubItems.map((subItem) => (
+                  <SidebarSubItem
+                    key={subItem.href}
+                    label={subItem.label}
+                    href={subItem.href}
+                    isActive={pathname === subItem.href}
+                    onClick={handleNavClick}
+                  />
+                ))}
             </SidebarNavItem>
           </div>
         ))}
@@ -104,10 +147,15 @@ export function Sidebar() {
           href="/bre-b"
           onClick={handleNavClick}
           className={`flex items-center gap-3 px-4 py-2 rounded-lg text-white font-bold hover:bg-white/10 ${
-            pathname === '/bre-b' ? 'bg-brand-primary' : ''
+            pathname === "/bre-b" ? "bg-brand-primary" : ""
           }`}
         >
-          <Image src="/icons/Bre-b-logo-blanco.svg" alt="Bre-B" width={38} height={11} />
+          <Image
+            src="/icons/Bre-b-logo-blanco.svg"
+            alt="Bre-B"
+            width={38}
+            height={11}
+          />
         </Link>
       </nav>
 
@@ -122,7 +170,13 @@ export function Sidebar() {
           }}
           className="flex items-center gap-3 px-4 py-2 text-white font-bold hover:bg-white/10 rounded-lg w-full"
         >
-          <Image src="/icons/logout.svg" alt="" width={20} height={20} className="brightness-0 invert" />
+          <Image
+            src="/icons/logout.svg"
+            alt=""
+            width={20}
+            height={20}
+            className="brightness-0 invert"
+          />
           Cerrar Sesión
         </button>
       </div>
