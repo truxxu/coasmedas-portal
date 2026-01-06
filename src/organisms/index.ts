@@ -38,3 +38,4 @@ export { ObligacionResultCard } from './ObligacionResultCard';
 export { BeneficiarySelectionCard } from './BeneficiarySelectionCard';
 export { OtrosAsociadosDetailsCard } from './OtrosAsociadosDetailsCard';
 export { OtrosAsociadosConfirmationCard } from './OtrosAsociadosConfirmationCard';
+export { OtrosAsociadosResultCard } from './OtrosAsociadosResultCard';
