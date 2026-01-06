@@ -97,7 +97,6 @@ export default function OtrosAsociadosConfirmacionPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-        <HideBalancesToggle />
       </div>
 
       <Stepper currentStep={2} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />

@@ -12,20 +12,19 @@ import {
   mockPayableProducts,
   OTROS_ASOCIADOS_PAYMENT_STEPS,
 } from "@/src/mocks";
-import {
-  RegisteredBeneficiary,
-  PayableProduct,
-} from "@/src/types";
+import { RegisteredBeneficiary, PayableProduct } from "@/src/types";
 
 export default function OtrosAsociadosPagoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [beneficiary, setBeneficiary] = useState<RegisteredBeneficiary | null>(null);
+  const [beneficiary, setBeneficiary] = useState<RegisteredBeneficiary | null>(
+    null
+  );
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
   const [products, setProducts] = useState<PayableProduct[]>(
-    mockPayableProducts.map(p => ({ ...p }))
+    mockPayableProducts.map((p) => ({ ...p }))
   );
   const [error, setError] = useState<string>("");
 
@@ -52,23 +51,29 @@ export default function OtrosAsociadosPagoPage() {
     .filter((p) => p.isSelected)
     .reduce((sum, p) => sum + p.amountToPay, 0);
 
-  const handleProductSelectionChange = useCallback((productId: string, selected: boolean) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === productId ? { ...p, isSelected: selected } : p
-      )
-    );
-    setError("");
-  }, []);
+  const handleProductSelectionChange = useCallback(
+    (productId: string, selected: boolean) => {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId ? { ...p, isSelected: selected } : p
+        )
+      );
+      setError("");
+    },
+    []
+  );
 
-  const handleProductAmountChange = useCallback((productId: string, amount: number) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === productId ? { ...p, amountToPay: amount } : p
-      )
-    );
-    setError("");
-  }, []);
+  const handleProductAmountChange = useCallback(
+    (productId: string, amount: number) => {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId ? { ...p, amountToPay: amount } : p
+        )
+      );
+      setError("");
+    },
+    []
+  );
 
   const handleContinue = () => {
     // Validation
@@ -85,11 +90,15 @@ export default function OtrosAsociadosPagoPage() {
 
     const hasZeroAmount = selectedProducts.some((p) => p.amountToPay <= 0);
     if (hasZeroAmount) {
-      setError("El valor a pagar debe ser mayor a 0 para todos los productos seleccionados");
+      setError(
+        "El valor a pagar debe ser mayor a 0 para todos los productos seleccionados"
+      );
       return;
     }
 
-    const selectedAccount = mockSourceAccounts.find((a) => a.id === selectedAccountId);
+    const selectedAccount = mockSourceAccounts.find(
+      (a) => a.id === selectedAccountId
+    );
     if (selectedAccount && totalAmount > selectedAccount.balance) {
       setError("Saldo insuficiente en la cuenta seleccionada");
       return;
@@ -97,7 +106,10 @@ export default function OtrosAsociadosPagoPage() {
 
     // Store data in sessionStorage
     sessionStorage.setItem("otrosAsociadosAccountId", selectedAccountId);
-    sessionStorage.setItem("otrosAsociadosProducts", JSON.stringify(selectedProducts));
+    sessionStorage.setItem(
+      "otrosAsociadosProducts",
+      JSON.stringify(selectedProducts)
+    );
     sessionStorage.setItem("otrosAsociadosTotalAmount", totalAmount.toString());
 
     router.push("/pagos/otros-asociados/pago/confirmacion");
@@ -124,7 +136,6 @@ export default function OtrosAsociadosPagoPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-        <HideBalancesToggle />
       </div>
 
       <Stepper currentStep={1} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
