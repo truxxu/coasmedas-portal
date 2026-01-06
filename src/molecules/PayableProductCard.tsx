@@ -50,14 +50,14 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
           </h3>
 
           {/* Payment Info Row */}
-          <div className="flex gap-8 text-xs text-black">
-            <div>
+          <div className="flex flex-col gap-2 text-md text-black">
+            <div className="flex justify-between">
               <span className="text-[#58585B]">Pago Mínimo: </span>
               <span className="font-medium">
                 {formatAmount(product.minimumPayment)}
               </span>
             </div>
-            <div>
+            <div className="flex justify-between">
               <span className="text-[#58585B]">Pago Total: </span>
               <span className="font-medium">
                 {formatTotalPayment(product.totalPayment)}
@@ -65,17 +65,23 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
             </div>
           </div>
 
-          {/* Amount Input - Only show when selected */}
-          {product.isSelected && (
-            <div className="flex items-center gap-2 pt-2">
-              <span className="text-sm text-black">Valor a Pagar:</span>
-              <CurrencyInput
-                value={product.amountToPay}
-                onChange={onAmountChange}
-                prefix="$"
-              />
-            </div>
-          )}
+          {/* Amount Input - Always visible, disabled when not selected */}
+          <div className="flex flex-col gap-1 pt-2">
+            <span
+              className={`text-md ${
+                product.isSelected ? "text-black" : "text-[#808284]"
+              }`}
+            >
+              Valor a Pagar:
+            </span>
+            <CurrencyInput
+              value={product.amountToPay}
+              onChange={onAmountChange}
+              prefix="$"
+              disabled={!product.isSelected}
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
     </div>
