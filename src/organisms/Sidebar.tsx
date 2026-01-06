@@ -67,7 +67,7 @@ const pagosSubItems = [
   { label: "Pago a otros asociados", href: "/pagos/otros-asociados" },
   {
     label: "Pagar servicios públicos",
-    href: "/pagos/pagar-servicios-publicos",
+    href: "/pagos/servicios-publicos",
   },
 ];
 

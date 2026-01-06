@@ -8,3 +8,4 @@ export * from './mockPaymentData';
 export * from './mockAportesPaymentData';
 export * from './mockObligacionPaymentData';
 export * from './mockOtrosAsociadosPaymentData';
+export * from './mockUtilityRegistrationData';
