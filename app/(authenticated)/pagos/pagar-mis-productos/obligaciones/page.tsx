@@ -26,13 +26,18 @@ export default function PagoObligacionesPage() {
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Obligaciones",
-      backHref: "/home",
+      title: "Pago de Obligaciones",
+      backHref: "/pagos/pagar-mis-productos",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  const breadcrumbItems = ["Inicio", "Pagos", "Pago de Obligaciones"];
+  const breadcrumbItems = [
+    "Inicio",
+    "Pagos",
+    "Pagar mis productos",
+    "Pago de Obligaciones",
+  ];
 
   const handleProductSelect = (productId: string) => {
     setSelectedProductId(productId);
@@ -108,7 +113,7 @@ export default function PagoObligacionesPage() {
       JSON.stringify(selectedProduct)
     );
 
-    router.push("/pagos/pago-obligaciones/confirmacion");
+    router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
   };
 
   const handleNeedMoreBalance = () => {
