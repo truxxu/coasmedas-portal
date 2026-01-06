@@ -35,3 +35,7 @@ export { ObligacionDetailsCard } from './ObligacionDetailsCard';
 export { ObligacionConfirmationCard } from './ObligacionConfirmationCard';
 export { PSELoadingCard } from './PSELoadingCard';
 export { ObligacionResultCard } from './ObligacionResultCard';
+export { BeneficiarySelectionCard } from './BeneficiarySelectionCard';
+export { OtrosAsociadosDetailsCard } from './OtrosAsociadosDetailsCard';
+export { OtrosAsociadosConfirmationCard } from './OtrosAsociadosConfirmationCard';
+export { OtrosAsociadosResultCard } from './OtrosAsociadosResultCard';
