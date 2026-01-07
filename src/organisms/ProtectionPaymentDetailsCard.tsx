@@ -55,38 +55,38 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
 
       {/* Source Account Section */}
       <div className="space-y-2">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
-          <label className="block text-[15px] text-black">
-            De cual cuenta quiere pagar?
-          </label>
+        <label className="block text-[15px] text-black">
+          De cual cuenta quiere pagar?
+        </label>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <select
+            value={selectedAccountId}
+            onChange={(e) => {
+              const value = e.target.value;
+              const isPSE = value === 'pse';
+              onAccountChange(value, isPSE ? 'pse' : 'account');
+            }}
+            className={`
+              w-full sm:flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
+              focus:outline-none focus:ring-2 focus:ring-[#007FFF]
+              ${errors.sourceAccount ? 'border-[#FF0D00]' : 'border-[#B1B1B1]'}
+            `}
+          >
+            <option value="">Seleccionar cuenta</option>
+            {sourceAccounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {getAccountDisplayName(account)}
+              </option>
+            ))}
+            <option value="pse">PSE (Pagos con otras entidades)</option>
+          </select>
           <a
             href="/productos/ahorros"
-            className="text-xs text-[#1D4E8F] hover:underline"
+            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap"
           >
             Necesitas mas saldo?
           </a>
         </div>
-        <select
-          value={selectedAccountId}
-          onChange={(e) => {
-            const value = e.target.value;
-            const isPSE = value === 'pse';
-            onAccountChange(value, isPSE ? 'pse' : 'account');
-          }}
-          className={`
-            w-full h-11 px-3 rounded-md border text-base text-black bg-white
-            focus:outline-none focus:ring-2 focus:ring-[#007FFF]
-            ${errors.sourceAccount ? 'border-[#FF0D00]' : 'border-[#B1B1B1]'}
-          `}
-        >
-          <option value="">Seleccionar cuenta</option>
-          {sourceAccounts.map((account) => (
-            <option key={account.id} value={account.id}>
-              {getAccountDisplayName(account)}
-            </option>
-          ))}
-          <option value="pse">PSE (Pagos con otras entidades)</option>
-        </select>
         {errors.sourceAccount && (
           <p className="text-sm text-[#FF0D00]">{errors.sourceAccount}</p>
         )}
