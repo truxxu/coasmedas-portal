@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { AportesTransactionResult } from '@/src/types/aportes-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider } from "@/src/atoms";
+import { AportesTransactionResult } from "@/src/types/aportes-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface AportesTransactionResultCardProps {
   result: AportesTransactionResult;
@@ -13,7 +13,7 @@ interface AportesTransactionResultCardProps {
 export const AportesTransactionResultCard: React.FC<
   AportesTransactionResultCardProps
 > = ({ result, hideBalances }) => {
-  const isSuccess = result.status === 'success';
+  const isSuccess = result.status === "success";
 
   const displayAmount = (amount: number) =>
     hideBalances ? maskCurrency() : formatCurrency(amount);
@@ -61,19 +61,21 @@ export const AportesTransactionResultCard: React.FC<
 
       {/* Result Title */}
       <h2 className="text-xl md:text-[22px] font-bold text-[#1D4E8F] text-center">
-        {isSuccess ? 'Transaccion Exitosa' : 'Transaccion Fallida'}
+        {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
       </h2>
 
       {/* Transaction Details Section 1 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Linea credito:</span>
+          <span className="text-[15px] text-[#111827]">Linea crédito:</span>
           <span className="text-[15px] font-medium text-[#111827]">
             {result.lineaCredito}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Numero de producto:</span>
+          <span className="text-[15px] text-[#111827]">
+            Numero de producto:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {result.numeroProducto}
           </span>
@@ -85,7 +87,7 @@ export const AportesTransactionResultCard: React.FC<
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Costo transaccion:</span>
+          <span className="text-[15px] text-[#111827]">Costo transacción:</span>
           <span className="text-[15px] font-medium text-[#111827]">
             {formatCurrency(result.costoTransaccion)}
           </span>
@@ -97,19 +99,25 @@ export const AportesTransactionResultCard: React.FC<
       {/* Transaction Details Section 2 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Fecha de Transmision:</span>
+          <span className="text-[15px] text-[#111827]">
+            Fecha de Transmision:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {result.fechaTransmision}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Hora de Transaccion:</span>
+          <span className="text-[15px] text-[#111827]">
+            Hora de Transacción:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {result.horaTransaccion}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Numero de Aprobacion:</span>
+          <span className="text-[15px] text-[#111827]">
+            Numero de Aprobacion:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {result.numeroAprobacion}
           </span>
@@ -118,7 +126,7 @@ export const AportesTransactionResultCard: React.FC<
           <span className="text-[15px] text-[#111827]">Descripcion:</span>
           <span
             className={`text-[15px] font-medium ${
-              isSuccess ? 'text-[#00A44C]' : 'text-[#FF0D00]'
+              isSuccess ? "text-[#00A44C]" : "text-[#FF0D00]"
             }`}
           >
             {result.descripcion}

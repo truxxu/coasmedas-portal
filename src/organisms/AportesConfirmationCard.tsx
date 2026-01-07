@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { AportesConfirmationData } from '@/src/types/aportes-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider } from "@/src/atoms";
+import { AportesConfirmationData } from "@/src/types/aportes-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface AportesConfirmationCardProps {
   confirmationData: AportesConfirmationData;
   hideBalances: boolean;
 }
 
-export const AportesConfirmationCard: React.FC<AportesConfirmationCardProps> = ({
-  confirmationData,
-  hideBalances,
-}) => {
+export const AportesConfirmationCard: React.FC<
+  AportesConfirmationCardProps
+> = ({ confirmationData, hideBalances }) => {
   const displayAmount = (amount: number) =>
     hideBalances ? maskCurrency() : formatCurrency(amount);
 
@@ -26,8 +25,8 @@ export const AportesConfirmationCard: React.FC<AportesConfirmationCardProps> = (
 
       {/* Description */}
       <p className="text-[15px] text-[#111827]">
-        Por favor, verifica que los datos de la transaccion sean correctos
-        antes de continuar.
+        Por favor, verifica que los datos de la transacción sean correctos antes
+        de continuar.
       </p>
 
       {/* User Info Section */}
@@ -57,13 +56,17 @@ export const AportesConfirmationCard: React.FC<AportesConfirmationCardProps> = (
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Numero de Producto:</span>
+          <span className="text-[15px] text-[#111827]">
+            Numero de Producto:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {confirmationData.numeroProducto}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Producto a Debitar:</span>
+          <span className="text-[15px] text-[#111827]">
+            Producto a Debitar:
+          </span>
           <span className="text-[15px] font-medium text-[#111827]">
             {confirmationData.productoADebitar}
           </span>

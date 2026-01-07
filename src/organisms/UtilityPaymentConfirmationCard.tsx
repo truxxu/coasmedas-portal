@@ -28,7 +28,7 @@ export function UtilityPaymentConfirmationCard({
 
       {/* Description */}
       <p className="text-[15px] text-black">
-        Por favor, verifica que los datos de la transaccion sean correctos antes
+        Por favor, verifica que los datos de la transacción sean correctos antes
         de continuar.
       </p>
 

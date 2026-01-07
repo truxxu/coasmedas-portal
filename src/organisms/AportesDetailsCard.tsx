@@ -123,7 +123,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
           value={paymentBreakdown.fechaLimitePago}
         />
         <AportesPaymentDetailRow
-          label="Costo de la Transaccion:"
+          label="Costo de la Transacción:"
           value={formatCurrency(paymentBreakdown.costoTransaccion)}
         />
 

@@ -31,7 +31,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
           Confirmacion de Pagos
         </h2>
         <p className="text-[15px] text-black">
-          Por favor, verifica que los datos de la transaccion sean correctos
+          Por favor, verifica que los datos de la transacción sean correctos
           antes de continuar.
         </p>
       </div>

@@ -67,7 +67,7 @@ export default function PSERedirectPage() {
       case "processing":
         return "Procesando pago en tu banco...";
       case "returning":
-        return "Finalizando transaccion...";
+        return "Finalizando transacción...";
       default:
         return "Conectando con PSE...";
     }
