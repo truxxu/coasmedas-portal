@@ -24,8 +24,7 @@ export default function ServiciosPublicosPage() {
   };
 
   const handleSelectPagar = () => {
-    // Future feature - for now redirect to inscribir or show a message
-    router.push('/pagos/servicios-publicos/pagar');
+    router.push('/pagos/servicios-publicos/pagar/detalle');
   };
 
   return (
