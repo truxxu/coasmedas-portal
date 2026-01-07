@@ -7,6 +7,7 @@ import type {
   SourceAccount,
   RegisteredService,
   UtilityPaymentDetails,
+  UtilityPaymentMethod,
 } from "@/src/types";
 
 interface UtilityPaymentDetailsFormProps {
@@ -17,7 +18,7 @@ interface UtilityPaymentDetailsFormProps {
     sourceAccount?: string;
     service?: string;
   };
-  onSourceAccountChange: (accountId: string) => void;
+  onSourceAccountChange: (accountId: string, paymentMethod: UtilityPaymentMethod) => void;
   onServiceChange: (serviceId: string) => void;
   onSubmit: () => void;
   onBack: () => void;
@@ -35,11 +36,14 @@ export function UtilityPaymentDetailsForm({
   onBack,
   isLoading = false,
 }: UtilityPaymentDetailsFormProps) {
-  // Convert source accounts to select options
-  const accountOptions = sourceAccounts.map((account) => ({
-    value: account.id,
-    label: account.displayName,
-  }));
+  // Convert source accounts to select options, adding PSE at the end
+  const accountOptions = [
+    ...sourceAccounts.map((account) => ({
+      value: account.id,
+      label: account.displayName,
+    })),
+    { value: "pse", label: "PSE (Pagos con otras entidades)" },
+  ];
 
   // Convert registered services to select options
   const serviceOptions = registeredServices.map((service) => ({
@@ -48,7 +52,9 @@ export function UtilityPaymentDetailsForm({
   }));
 
   const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onSourceAccountChange(e.target.value);
+    const value = e.target.value;
+    const isPSE = value === "pse";
+    onSourceAccountChange(value, isPSE ? "pse" : "account");
   };
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

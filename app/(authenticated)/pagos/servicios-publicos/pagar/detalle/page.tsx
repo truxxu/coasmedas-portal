@@ -12,7 +12,7 @@ import {
   mockRegisteredServices,
   UTILITY_PAYMENT_STEPS,
 } from "@/src/mocks";
-import type { UtilityPaymentDetails } from "@/src/types";
+import type { UtilityPaymentDetails, UtilityPaymentMethod } from "@/src/types";
 
 const initialFormData: UtilityPaymentDetails = {
   sourceAccountId: "",
@@ -21,6 +21,7 @@ const initialFormData: UtilityPaymentDetails = {
   serviceDisplay: "",
   serviceType: "",
   amount: 0,
+  paymentMethod: "account",
 };
 
 export default function PagarServiciosDetallePage() {
@@ -44,12 +45,15 @@ export default function PagarServiciosDetallePage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  const handleSourceAccountChange = (accountId: string) => {
+  const handleSourceAccountChange = (accountId: string, paymentMethod: UtilityPaymentMethod) => {
+    const isPSE = paymentMethod === "pse";
     const account = mockUtilitySourceAccounts.find((a) => a.id === accountId);
+
     setFormData((prev) => ({
       ...prev,
       sourceAccountId: accountId,
-      sourceAccountDisplay: account?.displayName || "",
+      sourceAccountDisplay: isPSE ? "PSE (Pagos con otras entidades)" : (account?.displayName || ""),
+      paymentMethod,
     }));
     setErrors((prev) => ({ ...prev, sourceAccount: undefined }));
   };
@@ -76,8 +80,8 @@ export default function PagarServiciosDetallePage() {
       newErrors.service = "Por favor selecciona un servicio a pagar";
     }
 
-    // Check if amount exceeds account balance
-    if (formData.sourceAccountId && formData.amount > 0) {
+    // Check if amount exceeds account balance (only for account payments, not PSE)
+    if (formData.sourceAccountId && formData.amount > 0 && formData.paymentMethod === "account") {
       const selectedAccount = mockUtilitySourceAccounts.find(
         (a) => a.id === formData.sourceAccountId
       );

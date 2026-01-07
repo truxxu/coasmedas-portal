@@ -24,6 +24,11 @@ export interface RegisteredService {
 }
 
 /**
+ * Payment method type for utility payments
+ */
+export type UtilityPaymentMethod = 'account' | 'pse';
+
+/**
  * Step 1 - Payment details form data
  */
 export interface UtilityPaymentDetails {
@@ -33,6 +38,7 @@ export interface UtilityPaymentDetails {
   serviceDisplay: string;
   serviceType: string;
   amount: number;
+  paymentMethod: UtilityPaymentMethod;
 }
 
 /**

@@ -62,10 +62,19 @@ export default function PagarServiciosConfirmacionPage() {
         JSON.stringify(confirmation)
       );
 
-      // Simulate SMS send delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Check payment method from details
+      const detailsStr = sessionStorage.getItem("utilityPaymentDetails");
+      const details: UtilityPaymentDetails | null = detailsStr ? JSON.parse(detailsStr) : null;
+      const isPSE = details?.paymentMethod === "pse";
 
-      router.push("/pagos/servicios-publicos/pagar/codigo-sms");
+      if (isPSE) {
+        // Navigate to PSE loading page
+        router.push("/pagos/servicios-publicos/pagar/pse");
+      } else {
+        // Simulate SMS send delay for account-based payment
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push("/pagos/servicios-publicos/pagar/codigo-sms");
+      }
     } catch (error) {
       console.error("Error:", error);
     } finally {
