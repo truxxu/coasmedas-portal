@@ -43,3 +43,4 @@ export { FlowSelectionCard } from './FlowSelectionCard';
 export { UtilityRegistrationForm } from './UtilityRegistrationForm';
 export { UtilityConfirmationCard } from './UtilityConfirmationCard';
 export { UtilityRegistrationResultCard } from './UtilityRegistrationResultCard';
+export { UtilityPaymentDetailsForm } from './UtilityPaymentDetailsForm';
