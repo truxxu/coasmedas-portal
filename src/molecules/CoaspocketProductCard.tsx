@@ -20,8 +20,8 @@ export function CoaspocketProductCard({
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: 'text-[#00A44C]',
-    inactivo: 'text-[#808284]',
+    activo: 'text-brand-success-icon',
+    inactivo: 'text-brand-gray-medium',
   }[product.status];
 
   const statusLabel = {
@@ -48,8 +48,8 @@ export function CoaspocketProductCard({
         rounded-2xl p-5 cursor-pointer min-w-[280px]
         transition-all duration-200
         ${isSelected
-          ? 'bg-white border-2 border-[#194E8D]'
-          : 'bg-[#E4E6EA] border border-[#E4E6EA] hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-brand-navy-dark'
+          : 'bg-brand-border border border-brand-border hover:border-brand-footer-text'
         }
         ${className}
       `}
@@ -66,7 +66,7 @@ export function CoaspocketProductCard({
 
       {/* Balance Section */}
       <p className="text-[15px] text-black">Saldo del bolsillo</p>
-      <p className="text-[21px] font-bold text-[#004680]">
+      <p className="text-[21px] font-bold text-brand-navy-alt">
         {hideBalances ? maskCurrency() : formatCurrency(product.balance)}
       </p>
 

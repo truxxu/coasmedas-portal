@@ -15,16 +15,16 @@ export function InfoBox({
     <div
       role="note"
       className={`
-        bg-[#F0F9FF] rounded-lg p-4 flex items-start gap-3
+        bg-brand-light-blue rounded-lg p-4 flex items-start gap-3
         ${className}
       `}
     >
       {icon && (
-        <div className="flex-shrink-0 text-[#1D4E8F]">
+        <div className="flex-shrink-0 text-brand-navy">
           {icon}
         </div>
       )}
-      <div className="text-[16px] text-[#1D4E8F] font-bold leading-[22px]">
+      <div className="text-[16px] text-brand-navy font-bold leading-[22px]">
         {children}
       </div>
     </div>

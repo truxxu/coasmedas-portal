@@ -7,15 +7,19 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 import {
-  OTROS_ASOCIADOS_PAYMENT_STEPS,
-  MOCK_VALID_CODE,
-} from "@/src/mocks";
+  OBLIGACION_PAYMENT_STEPS_ACCOUNT,
+  MOCK_OBLIGACION_VALID_CODE,
+  mockObligacionTransactionResult,
+  mockObligacionTransactionResultError,
+} from "@/src/mocks/mockObligacionPaymentData";
+import { ObligacionConfirmationData } from "@/src/types/obligacion-payment";
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
-export default function OtrosAsociadosSmsPage() {
+export default function ObligacionCodigoSmsPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+
   const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
@@ -25,17 +29,17 @@ export default function OtrosAsociadosSmsPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago a otros asociados",
-      backHref: "/pagos/otros-asociados/pago/confirmacion",
+      title: "Pago de Obligaciones",
+      backHref: "/pagos/pagar-mis-productos/obligaciones/confirmacion",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   // Check if previous steps were completed
   useEffect(() => {
-    const confirmationData = sessionStorage.getItem("otrosAsociadosConfirmation");
+    const confirmationData = sessionStorage.getItem("obligacionPaymentConfirmation");
     if (!confirmationData) {
-      router.push("/pagos/otros-asociados/pago");
+      router.push("/pagos/pagar-mis-productos/obligaciones");
     }
   }, [router]);
 
@@ -61,12 +65,13 @@ export default function OtrosAsociadosSmsPage() {
     console.log("Resending code...");
     setIsResendDisabled(true);
     setResendCountdown(RESEND_COOLDOWN_SECONDS);
-    // TODO: API call to resend SMS code
+    setCode("");
+    setError("");
   }, []);
 
   const handlePay = async () => {
     if (code.length !== 6) {
-      setError("Por favor ingresa el código de 6 dígitos");
+      setError("Por favor ingresa el codigo de 6 digitos");
       return;
     }
 
@@ -77,10 +82,32 @@ export default function OtrosAsociadosSmsPage() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      if (code === MOCK_VALID_CODE) {
-        router.push("/pagos/otros-asociados/pago/resultado");
+      if (code === MOCK_OBLIGACION_VALID_CODE) {
+        // Get confirmation data to populate result with actual values
+        const confirmationStr = sessionStorage.getItem("obligacionPaymentConfirmation");
+        if (confirmationStr) {
+          const confirmation: ObligacionConfirmationData = JSON.parse(confirmationStr);
+          const result = {
+            ...mockObligacionTransactionResult,
+            lineaCredito: confirmation.productoAPagar,
+            numeroProducto: confirmation.numeroProducto,
+            valorPagado: confirmation.valorAPagar,
+          };
+          sessionStorage.setItem("obligacionPaymentResult", JSON.stringify(result));
+        } else {
+          sessionStorage.setItem(
+            "obligacionPaymentResult",
+            JSON.stringify(mockObligacionTransactionResult)
+          );
+        }
+        router.push("/pagos/pagar-mis-productos/obligaciones/resultado");
       } else {
-        setError("Código incorrecto. Por favor intenta nuevamente.");
+        // Store error result
+        sessionStorage.setItem(
+          "obligacionPaymentResult",
+          JSON.stringify(mockObligacionTransactionResultError)
+        );
+        setError("Codigo incorrecto. Por favor intenta nuevamente.");
       }
     } catch {
       setError("Error al procesar el pago. Por favor intenta nuevamente.");
@@ -90,16 +117,18 @@ export default function OtrosAsociadosSmsPage() {
   };
 
   const handleBack = () => {
-    router.push("/pagos/otros-asociados/pago/confirmacion");
+    router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
   };
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-        <Stepper currentStep={3} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pago de Obligaciones"]} />
+        <Stepper currentStep={3} steps={OBLIGACION_PAYMENT_STEPS_ACCOUNT} />
       </div>
 
+      {/* SMS Code Input Card */}
       <CodeInputCard
         code={code}
         onCodeChange={handleCodeChange}
@@ -111,11 +140,12 @@ export default function OtrosAsociadosSmsPage() {
         disabled={isLoading}
       />
 
+      {/* Footer Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
           disabled={isLoading}
-          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
         >
           Volver
         </button>

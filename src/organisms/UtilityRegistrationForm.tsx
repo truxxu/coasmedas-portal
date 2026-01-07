@@ -128,7 +128,7 @@ export function UtilityRegistrationForm({
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-[#004266] hover:underline"
+            className="text-sm font-medium text-brand-teal-dark hover:underline"
           >
             Volver
           </button>

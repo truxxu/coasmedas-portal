@@ -93,7 +93,7 @@ export function ProductCarousel({
   return (
     <div className={`bg-white rounded-2xl p-6 ${className}`}>
       {/* Title */}
-      <h2 className="text-[20px] font-bold text-[#194E8D] mb-4">
+      <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
         {title}
       </h2>
 

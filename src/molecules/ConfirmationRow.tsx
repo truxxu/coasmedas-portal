@@ -15,8 +15,8 @@ export const ConfirmationRow: React.FC<ConfirmationRowProps> = ({
 }) => {
   const colorClasses = {
     default: 'text-black',
-    success: 'text-[#00A44C]',
-    error: 'text-[#FF0D00]',
+    success: 'text-brand-success-icon',
+    error: 'text-brand-error',
   };
 
   return (

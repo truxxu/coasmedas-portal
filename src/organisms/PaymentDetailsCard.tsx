@@ -29,24 +29,24 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
   return (
     <Card className="space-y-6 p-8">
       <div>
-        <h2 className="text-2xl font-bold text-[#1D4E8F] mb-2">
+        <h2 className="text-2xl font-bold text-brand-navy mb-2">
           Resumen de Pago Unificado
         </h2>
-        <p className="text-base text-[#58585B]">
+        <p className="text-base text-brand-gray-high">
           A continuación, se presenta el resumen de todos tus pagos mínimos
           pendientes. Puedes pagar todo desde aquí.
         </p>
       </div>
 
       <div>
-        <label className="block text-base font-medium text-[#111827] mb-2">
+        <label className="block text-base font-medium text-brand-text-black mb-2">
           ¿De cuál cuenta quieres transferir?
         </label>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <select
             value={selectedAccountId}
             onChange={(e) => onAccountChange(e.target.value)}
-            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-[#111827] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
+            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-brand-footer-text text-base text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none"
           >
             <option value="">Seleccionar cuenta</option>
             {accountOptions.map((option) => (
@@ -59,7 +59,7 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-sm text-[#007FFF] hover:underline whitespace-nowrap self-end sm:self-auto"
+            className="text-sm text-brand-primary hover:underline whitespace-nowrap self-end sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>

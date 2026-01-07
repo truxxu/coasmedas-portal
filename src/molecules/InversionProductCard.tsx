@@ -21,7 +21,7 @@ export function InversionProductCard({
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: "text-[#00A44C]",
+    activo: "text-brand-success-icon",
     vencido: "text-red-600",
   }[product.status];
 
@@ -55,8 +55,8 @@ export function InversionProductCard({
         transition-all duration-200
         ${
           isSelected
-            ? "bg-white border-2 border-[#194E8D]"
-            : "bg-[#E4E6EA] border border-[#E4E6EA] hover:border-[#B1B1B1]"
+            ? "bg-white border-2 border-brand-navy-dark"
+            : "bg-brand-border border border-brand-border hover:border-brand-footer-text"
         }
         ${className}
       `}
@@ -73,7 +73,7 @@ export function InversionProductCard({
 
       {/* Amount Section */}
       <p className="text-[15px] text-black">Monto del CDAT</p>
-      <p className="text-[21px] font-bold text-[#004680]">
+      <p className="text-[21px] font-bold text-brand-navy-alt">
         {hideBalances ? maskCurrency() : formatCurrency(product.amount)}
       </p>
 
@@ -81,13 +81,13 @@ export function InversionProductCard({
       <p className={`text-[15px] ${statusColor}`}>{statusLabel}</p>
 
       {/* Divider */}
-      <div className="border-t border-[#E4E6EA] my-3" />
+      <div className="border-t border-brand-border my-3" />
 
       {/* Investment Details Section */}
       <div className="space-y-1">
         {/* Tasa E.A. */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">Tasa E.A.:</span>
+          <span className="text-[14px] text-brand-gray-muted">Tasa E.A.:</span>
           <span className="text-[14px] font-medium text-black">
             {product.interestRate}
           </span>
@@ -95,7 +95,7 @@ export function InversionProductCard({
 
         {/* Plazo */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">Plazo:</span>
+          <span className="text-[14px] text-brand-gray-muted">Plazo:</span>
           <span className="text-[14px] font-medium text-black">
             {displayTerm}
           </span>
@@ -103,7 +103,7 @@ export function InversionProductCard({
 
         {/* F. Creacion */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">F. Creación:</span>
+          <span className="text-[14px] text-brand-gray-muted">F. Creación:</span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.creationDate)}
           </span>
@@ -111,7 +111,7 @@ export function InversionProductCard({
 
         {/* F. Vencimiento */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">F. Vencimiento:</span>
+          <span className="text-[14px] text-brand-gray-muted">F. Vencimiento:</span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.maturityDate)}
           </span>

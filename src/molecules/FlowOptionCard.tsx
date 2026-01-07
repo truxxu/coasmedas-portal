@@ -21,7 +21,7 @@ export function FlowOptionCard({
       className="
         w-full h-44 px-6 py-8
         bg-white
-        border border-[#E4E6EA]
+        border border-brand-border
         text-center
         cursor-pointer
         transition-all duration-200 ease-in-out

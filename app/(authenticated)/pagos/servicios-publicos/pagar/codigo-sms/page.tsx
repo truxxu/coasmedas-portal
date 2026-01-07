@@ -142,7 +142,7 @@ export default function PagarServiciosCodigoSmsPage() {
         <button
           onClick={handleBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#004266] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
         >
           Volver
         </button>

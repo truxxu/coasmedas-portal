@@ -17,7 +17,7 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
   onClick,
   hideBalances,
 }) => {
-  const statusColor = product.status === 'al_dia' ? 'text-[#00A44C]' : 'text-[#E1172B]';
+  const statusColor = product.status === 'al_dia' ? 'text-brand-success-icon' : 'text-brand-error';
   const statusText = product.status === 'al_dia' ? 'Al día' : 'En mora';
 
   return (
@@ -27,8 +27,8 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
       className={`
         w-full p-4 rounded-lg text-left transition-all
         ${selected
-          ? 'border-2 border-[#007FFF] bg-white'
-          : 'border border-[#E4E6EA] bg-white'
+          ? 'border-2 border-brand-primary bg-white'
+          : 'border border-brand-border bg-white'
         }
       `}
       aria-pressed={selected}

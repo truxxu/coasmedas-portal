@@ -5,39 +5,55 @@ import { Card, Divider, CurrencyInput } from "@/src/atoms";
 import { ObligacionPaymentCard, PaymentTypeButton } from "@/src/molecules";
 import {
   ObligacionPaymentProduct,
+  ObligacionSourceAccount,
+  ObligacionPaymentMethod,
   PaymentType,
 } from "@/src/types/obligacion-payment";
 import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface ObligacionDetailsCardProps {
   products: ObligacionPaymentProduct[];
+  sourceAccounts: ObligacionSourceAccount[];
   selectedProductId: string;
+  selectedAccountId: string;
   valorAPagar: number;
   activePaymentType: PaymentType | null;
   onProductSelect: (productId: string) => void;
+  onAccountChange: (accountId: string, paymentMethod: ObligacionPaymentMethod) => void;
   onValorChange: (valor: number) => void;
   onPaymentTypeSelect: (type: PaymentType) => void;
   onNeedMoreBalance: () => void;
   hideBalances: boolean;
+  accountError?: string;
 }
 
 export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
   products,
+  sourceAccounts,
   selectedProductId,
+  selectedAccountId,
   valorAPagar,
   activePaymentType,
   onProductSelect,
+  onAccountChange,
   onValorChange,
   onPaymentTypeSelect,
   onNeedMoreBalance,
   hideBalances,
+  accountError,
 }) => {
   const selectedProduct = products.find((p) => p.id === selectedProductId);
+
+  const getAccountDisplayName = (account: ObligacionSourceAccount): string => {
+    const accountType = account.type === 'ahorros' ? 'Cuenta de Ahorros' : 'Cuenta Corriente';
+    const balance = hideBalances ? maskCurrency() : formatCurrency(account.balance);
+    return `${accountType} - Saldo: ${balance}`;
+  };
 
   return (
     <Card className="space-y-6 p-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-[#1D4E8F]">Pago de Obligaciones</h2>
+      <h2 className="text-lg font-bold text-brand-navy">Pago de Obligaciones</h2>
 
       {/* Payment Method Selector */}
       <div className="space-y-2">
@@ -46,19 +62,37 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
         </label>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <select
-            disabled
-            className="flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-black bg-white cursor-not-allowed"
+            value={selectedAccountId}
+            onChange={(e) => {
+              const value = e.target.value;
+              const isPSE = value === 'pse';
+              onAccountChange(value, isPSE ? 'pse' : 'account');
+            }}
+            className={`
+              flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
+              focus:outline-none focus:ring-2 focus:ring-brand-primary
+              ${accountError ? 'border-brand-error' : 'border-brand-footer-text'}
+            `}
           >
-            <option>PSE (Pagos con otras entidades)</option>
+            <option value="">Seleccionar cuenta</option>
+            {sourceAccounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {getAccountDisplayName(account)}
+              </option>
+            ))}
+            <option value="pse">PSE (Pagos con otras entidades)</option>
           </select>
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap self-end sm:self-auto"
+            className="text-xs text-brand-navy hover:underline whitespace-nowrap self-end sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>
         </div>
+        {accountError && (
+          <p className="text-sm text-brand-error">{accountError}</p>
+        )}
       </div>
 
       {/* Product Selection Section */}
@@ -82,7 +116,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
       {/* Payment Details Section - Only show if product selected */}
       {selectedProduct && (
         <div className="space-y-4">
-          <h3 className="text-sm font-medium text-[#1D4E8F]">
+          <h3 className="text-sm font-medium text-brand-navy">
             Detalle del Pago
           </h3>
 
@@ -145,7 +179,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
 
           {/* Value Input */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pt-2">
-            <span className="text-base font-bold text-[#1D4E8F]">
+            <span className="text-base font-bold text-brand-navy">
               Valor a Pagar
             </span>
             <CurrencyInput

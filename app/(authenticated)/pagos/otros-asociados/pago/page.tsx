@@ -11,6 +11,7 @@ import {
   mockSourceAccounts,
   mockPayableProducts,
   OTROS_ASOCIADOS_PAYMENT_STEPS,
+  OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
 } from "@/src/mocks";
 import { RegisteredBeneficiary, PayableProduct } from "@/src/types";
 
@@ -51,6 +52,12 @@ export default function OtrosAsociadosPagoPage() {
     .filter((p) => p.isSelected)
     .reduce((sum, p) => sum + p.amountToPay, 0);
 
+  // Determine which stepper to show based on selected funding source
+  const selectedAccount = mockSourceAccounts.find((a) => a.id === selectedAccountId);
+  const paymentSteps = selectedAccount?.sourceType === "pse"
+    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+    : OTROS_ASOCIADOS_PAYMENT_STEPS;
+
   const handleProductSelectionChange = useCallback(
     (productId: string, selected: boolean) => {
       setProducts((prev) =>
@@ -78,7 +85,7 @@ export default function OtrosAsociadosPagoPage() {
   const handleContinue = () => {
     // Validation
     if (!selectedAccountId) {
-      setError("Por favor selecciona una cuenta");
+      setError("Por favor selecciona un origen de fondos");
       return;
     }
 
@@ -96,16 +103,16 @@ export default function OtrosAsociadosPagoPage() {
       return;
     }
 
-    const selectedAccount = mockSourceAccounts.find(
-      (a) => a.id === selectedAccountId
-    );
-    if (selectedAccount && totalAmount > selectedAccount.balance) {
-      setError("Saldo insuficiente en la cuenta seleccionada");
+    const account = mockSourceAccounts.find((a) => a.id === selectedAccountId);
+    // Skip balance validation for PSE (paid from external bank)
+    if (account && account.sourceType !== "pse" && totalAmount > account.balance) {
+      setError("Saldo insuficiente en el origen de fondos seleccionado");
       return;
     }
 
     // Store data in sessionStorage
     sessionStorage.setItem("otrosAsociadosAccountId", selectedAccountId);
+    sessionStorage.setItem("otrosAsociadosSourceType", account?.sourceType || "cuenta");
     sessionStorage.setItem(
       "otrosAsociadosProducts",
       JSON.stringify(selectedProducts)
@@ -126,7 +133,7 @@ export default function OtrosAsociadosPagoPage() {
   if (!beneficiary) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-[#58585B]">Cargando...</p>
+        <p className="text-brand-gray-high">Cargando...</p>
       </div>
     );
   }
@@ -138,7 +145,7 @@ export default function OtrosAsociadosPagoPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={1} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
+      <Stepper currentStep={1} steps={paymentSteps} />
 
       <OtrosAsociadosDetailsCard
         beneficiaryName={beneficiary.fullName}
@@ -154,13 +161,13 @@ export default function OtrosAsociadosPagoPage() {
       />
 
       {error && (
-        <div className="text-sm text-[#FF0D00] text-center">{error}</div>
+        <div className="text-sm text-brand-error text-center">{error}</div>
       )}
 
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-[#004266] hover:underline"
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
         >
           Volver
         </button>

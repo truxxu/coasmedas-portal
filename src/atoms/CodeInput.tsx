@@ -54,12 +54,12 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(
         aria-label={ariaLabel}
         className={`
           w-12 h-14 md:w-14 md:h-16
-          bg-white text-[#111827]
+          bg-white text-brand-text-black
           text-center text-xl md:text-2xl font-medium
           border-2 rounded-lg
-          focus:outline-none focus:ring-2 focus:ring-[#007FFF] focus:border-[#007FFF]
+          focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary
           disabled:bg-gray-100 disabled:cursor-not-allowed
-          ${hasError ? "border-[#FF0D00]" : "border-[#B1B1B1]"}
+          ${hasError ? "border-brand-error" : "border-brand-footer-text"}
         `}
       />
     );

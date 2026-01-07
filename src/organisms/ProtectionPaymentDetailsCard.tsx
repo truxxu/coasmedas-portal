@@ -49,7 +49,7 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
   return (
     <Card className="p-4 sm:p-6 space-y-5 sm:space-y-6">
       {/* Card Title */}
-      <h2 className="text-lg font-bold text-[#194E8D]">
+      <h2 className="text-lg font-bold text-brand-navy-dark">
         Pago de Proteccion
       </h2>
 
@@ -68,8 +68,8 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
             }}
             className={`
               w-full sm:flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
-              focus:outline-none focus:ring-2 focus:ring-[#007FFF]
-              ${errors.sourceAccount ? 'border-[#FF0D00]' : 'border-[#B1B1B1]'}
+              focus:outline-none focus:ring-2 focus:ring-brand-primary
+              ${errors.sourceAccount ? 'border-brand-error' : 'border-brand-footer-text'}
             `}
           >
             <option value="">Seleccionar cuenta</option>
@@ -82,13 +82,13 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
           </select>
           <a
             href="/productos/ahorros"
-            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap"
+            className="text-xs text-brand-navy hover:underline whitespace-nowrap"
           >
             Necesitas mas saldo?
           </a>
         </div>
         {errors.sourceAccount && (
-          <p className="text-sm text-[#FF0D00]">{errors.sourceAccount}</p>
+          <p className="text-sm text-brand-error">{errors.sourceAccount}</p>
         )}
       </div>
 
@@ -112,12 +112,12 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
         </div>
 
         {/* Helper Text */}
-        <p className="text-sm text-[#636363] text-center">
+        <p className="text-sm text-brand-gray-muted text-center">
           Selecciona el producto que deseas pagar
         </p>
 
         {errors.product && (
-          <p className="text-sm text-[#FF0D00] text-center">{errors.product}</p>
+          <p className="text-sm text-brand-error text-center">{errors.product}</p>
         )}
       </div>
 
@@ -127,7 +127,7 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
           type="button"
           onClick={onBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#1D4E8F] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
         >
           Volver
         </button>

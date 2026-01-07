@@ -89,7 +89,7 @@ export default function PagarServiciosConfirmacionPage() {
   if (!confirmation) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-[#58585B]">Cargando...</p>
+        <p className="text-brand-gray-high">Cargando...</p>
       </div>
     );
   }

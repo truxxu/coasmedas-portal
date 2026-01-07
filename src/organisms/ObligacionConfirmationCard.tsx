@@ -16,7 +16,7 @@ export const ObligacionConfirmationCard: React.FC<
   return (
     <Card className="space-y-6 p-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-[#1D4E8F]">
+      <h2 className="text-lg font-bold text-brand-navy">
         Confirmación de Pagos
       </h2>
 

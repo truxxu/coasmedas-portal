@@ -20,7 +20,7 @@ export function SavingsProductCard({
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: 'text-[#00A44C]',
+    activo: 'text-brand-success-icon',
     bloqueado: 'text-red-600',
     inactivo: 'text-gray-500',
   }[product.status];
@@ -47,8 +47,8 @@ export function SavingsProductCard({
         rounded-2xl p-5 cursor-pointer
         transition-all duration-200
         ${isSelected
-          ? 'bg-white border-2 border-[#194E8D]'
-          : 'bg-[#F3F4F6] border border-[#E4E6EA] hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-brand-navy-dark'
+          : 'bg-brand-gray-light border border-brand-border hover:border-brand-footer-text'
         }
         ${className}
       `}
@@ -70,7 +70,7 @@ export function SavingsProductCard({
 
       {/* Balance Section */}
       <p className="text-[15px] text-black">Saldo Total</p>
-      <p className="text-[21px] font-bold text-[#112E7F]">
+      <p className="text-[21px] font-bold text-brand-navy">
         {hideBalances ? maskCurrency() : formatCurrency(product.balance)}
       </p>
 

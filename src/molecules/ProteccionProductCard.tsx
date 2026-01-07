@@ -28,8 +28,8 @@ export function ProteccionProductCard({
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: 'text-[#00A44C]',
-    inactivo: 'text-[#808284]',
+    activo: 'text-brand-success-icon',
+    inactivo: 'text-brand-gray-medium',
     cancelado: 'text-red-600',
   }[product.status];
 
@@ -58,8 +58,8 @@ export function ProteccionProductCard({
         rounded-2xl p-5 cursor-pointer min-w-[280px]
         transition-all duration-200
         ${isSelected
-          ? 'bg-white border-2 border-[#194E8D]'
-          : 'bg-[#E4E6EA] border border-[#E4E6EA] hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-brand-navy-dark'
+          : 'bg-brand-border border border-brand-border hover:border-brand-footer-text'
         }
         ${className}
       `}
@@ -83,15 +83,15 @@ export function ProteccionProductCard({
       <div className="space-y-2">
         {/* Pago Mínimo */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">Pago Mínimo:</span>
-          <span className="text-[14px] font-medium text-[#194E8D]">
+          <span className="text-[14px] text-brand-gray-muted">Pago Mínimo:</span>
+          <span className="text-[14px] font-medium text-brand-navy-dark">
             {hideBalances ? maskCurrency() : formatCurrency(product.minimumPayment)}
           </span>
         </div>
 
         {/* Fecha Límite de Pago */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">Fecha Límite de Pago:</span>
+          <span className="text-[14px] text-brand-gray-muted">Fecha Límite de Pago:</span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.paymentDeadline)}
           </span>
@@ -99,8 +99,8 @@ export function ProteccionProductCard({
 
         {/* Pago Total Anual */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-[#636363]">Pago Total Anual:</span>
-          <span className="text-[14px] font-medium text-[#194E8D]">
+          <span className="text-[14px] text-brand-gray-muted">Pago Total Anual:</span>
+          <span className="text-[14px] font-medium text-brand-navy-dark">
             {hideBalances ? maskCurrency() : formatCurrency(product.annualPayment)}
           </span>
         </div>

@@ -32,6 +32,8 @@ export const mockRegisteredBeneficiaries: RegisteredBeneficiary[] = [
 
 /**
  * Mock source accounts
+ * Note: 'cuenta' sourceType requires SMS validation after confirmation
+ *       'pse' sourceType redirects to PSE payment gateway
  */
 export const mockSourceAccounts: SourceAccount[] = [
   {
@@ -39,12 +41,21 @@ export const mockSourceAccounts: SourceAccount[] = [
     type: "Cuenta de Ahorros",
     balance: 8730500,
     number: "****4428",
+    sourceType: "cuenta",
   },
   {
     id: "2",
     type: "Cuenta Corriente",
     balance: 5200000,
     number: "****7891",
+    sourceType: "cuenta",
+  },
+  {
+    id: "pse",
+    type: "PSE",
+    balance: 0,
+    number: "",
+    sourceType: "pse",
   },
 ];
 
@@ -122,12 +133,22 @@ export const mockOtrosAsociadosTransactionResultError: OtrosAsociadosTransaction
   };
 
 /**
- * Payment flow steps
+ * Payment flow steps (for account funding - requires SMS)
  */
 export const OTROS_ASOCIADOS_PAYMENT_STEPS: Step[] = [
   { number: 1, label: "Detalle" },
   { number: 2, label: "Confirmación" },
   { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
+];
+
+/**
+ * Payment flow steps (for PSE - redirects to bank, no SMS in app)
+ */
+export const OTROS_ASOCIADOS_PAYMENT_STEPS_PSE: Step[] = [
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "PSE" },
   { number: 4, label: "Finalización" },
 ];
 

@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider, CurrencyInput } from '@/src/atoms';
-import { AportesPaymentDetailRow } from '@/src/molecules';
-import { PaymentAccount } from '@/src/types/payment';
-import { AportesPaymentBreakdown } from '@/src/types/aportes-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider, CurrencyInput } from "@/src/atoms";
+import { AportesPaymentDetailRow } from "@/src/molecules";
+import { PaymentAccount } from "@/src/types/payment";
+import { AportesPaymentBreakdown } from "@/src/types/aportes-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
+import {
+  PSE_PAYMENT_ID,
+  PSE_PAYMENT_NAME,
+  isPSEPayment,
+} from "@/src/mocks/mockAportesPaymentData";
 
 interface AportesDetailsCardProps {
   accounts: PaymentAccount[];
@@ -16,6 +21,7 @@ interface AportesDetailsCardProps {
   onValorChange: (valor: number) => void;
   onNeedMoreBalance: () => void;
   hideBalances: boolean;
+  showPSEOption?: boolean;
 }
 
 export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
@@ -27,6 +33,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   onValorChange,
   onNeedMoreBalance,
   hideBalances,
+  showPSEOption = true,
 }) => {
   const accountOptions = accounts.map((account) => ({
     value: account.id,
@@ -35,23 +42,26 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
     }`,
   }));
 
+  // Check if PSE is currently selected
+  const isPSESelected = isPSEPayment(selectedAccountId);
+
   return (
     <Card className="space-y-6 p-6 md:p-8">
       {/* Title */}
-      <h2 className="text-xl md:text-2xl font-bold text-[#1D4E8F]">
+      <h2 className="text-xl md:text-2xl font-bold text-brand-navy">
         Pago de Aportes
       </h2>
 
       {/* Account Selector Section */}
       <div className="space-y-2">
-        <label className="block text-base font-medium text-[#111827]">
+        <label className="block text-base font-medium text-brand-text-black">
           De cual cuenta quiere pagar?
         </label>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <select
             value={selectedAccountId}
             onChange={(e) => onAccountChange(e.target.value)}
-            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-[#111827] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
+            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-brand-footer-text text-base text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none"
           >
             <option value="">Seleccionar cuenta</option>
             {accountOptions.map((option) => (
@@ -59,11 +69,12 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
                 {option.label}
               </option>
             ))}
+            <option value={PSE_PAYMENT_ID}>{PSE_PAYMENT_NAME}</option>
           </select>
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-sm text-[#1D4E8F] hover:underline whitespace-nowrap self-end sm:self-auto"
+            className="text-sm text-brand-navy hover:underline whitespace-nowrap self-end sm:self-auto"
           >
             Necesitas mas saldo?
           </button>
@@ -72,7 +83,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
 
       {/* Payment Breakdown Section */}
       <div className="space-y-3">
-        <h3 className="text-sm font-medium text-[#1D4E8F]">
+        <h3 className="text-sm font-medium text-brand-navy">
           Detalle del Pago - {paymentBreakdown.planName}
         </h3>
 
@@ -112,7 +123,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
           value={paymentBreakdown.fechaLimitePago}
         />
         <AportesPaymentDetailRow
-          label="Costo de la Transaccion:"
+          label="Costo de la Transacción:"
           value={formatCurrency(paymentBreakdown.costoTransaccion)}
         />
 
@@ -120,7 +131,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
 
         {/* Editable Value Section */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pt-2">
-          <span className="text-sm font-medium text-[#1D4E8F]">Valor</span>
+          <span className="text-sm font-medium text-brand-navy">Valor</span>
           <CurrencyInput
             value={valorAPagar}
             onChange={onValorChange}

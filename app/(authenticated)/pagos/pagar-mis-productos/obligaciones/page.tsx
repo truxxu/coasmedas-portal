@@ -7,10 +7,12 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ObligacionDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
-import { PaymentType } from "@/src/types/obligacion-payment";
+import { PaymentType, ObligacionPaymentMethod } from "@/src/types/obligacion-payment";
 import {
   mockObligacionProducts,
+  mockObligacionSourceAccounts,
   OBLIGACION_PAYMENT_STEPS,
+  OBLIGACION_PAYMENT_STEPS_ACCOUNT,
 } from "@/src/mocks/mockObligacionPaymentData";
 
 export default function PagoObligacionesPage() {
@@ -19,10 +21,13 @@ export default function PagoObligacionesPage() {
   const { hideBalances } = useUIContext();
 
   const [selectedProductId, setSelectedProductId] = useState<string>("");
+  const [selectedAccountId, setSelectedAccountId] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] = useState<ObligacionPaymentMethod>("account");
   const [valorAPagar, setValorAPagar] = useState<number>(0);
   const [activePaymentType, setActivePaymentType] =
     useState<PaymentType | null>(null);
   const [error, setError] = useState<string>("");
+  const [accountError, setAccountError] = useState<string>("");
 
   useEffect(() => {
     setWelcomeBar({
@@ -50,6 +55,12 @@ export default function PagoObligacionesPage() {
     }
   };
 
+  const handleAccountChange = (accountId: string, method: ObligacionPaymentMethod) => {
+    setSelectedAccountId(accountId);
+    setPaymentMethod(method);
+    setAccountError("");
+  };
+
   const handlePaymentTypeSelect = (type: PaymentType) => {
     const product = mockObligacionProducts.find(
       (p) => p.id === selectedProductId
@@ -72,6 +83,11 @@ export default function PagoObligacionesPage() {
 
   const handleContinue = () => {
     // Validation
+    if (!selectedAccountId) {
+      setAccountError("Por favor selecciona una cuenta origen");
+      return;
+    }
+
     if (!selectedProductId) {
       setError("Por favor selecciona un producto");
       return;
@@ -105,6 +121,26 @@ export default function PagoObligacionesPage() {
       return;
     }
 
+    // Check if balance is sufficient (only for account payments, not PSE)
+    if (paymentMethod === 'account') {
+      const selectedAccount = mockObligacionSourceAccounts.find(
+        (a) => a.id === selectedAccountId
+      );
+      if (selectedAccount && valorAPagar > selectedAccount.balance) {
+        setAccountError('Saldo insuficiente en la cuenta seleccionada');
+        return;
+      }
+    }
+
+    // Determine source account display
+    const isPSE = paymentMethod === 'pse';
+    const selectedAccount = mockObligacionSourceAccounts.find(
+      (a) => a.id === selectedAccountId
+    );
+    const sourceAccountDisplay = isPSE
+      ? 'PSE (Pagos con otras entidades)'
+      : (selectedAccount?.displayName || '');
+
     // Store data in sessionStorage
     sessionStorage.setItem("obligacionPaymentProductId", selectedProductId);
     sessionStorage.setItem("obligacionPaymentValor", valorAPagar.toString());
@@ -112,6 +148,9 @@ export default function PagoObligacionesPage() {
       "obligacionPaymentProduct",
       JSON.stringify(selectedProduct)
     );
+    sessionStorage.setItem("obligacionPaymentMethod", paymentMethod);
+    sessionStorage.setItem("obligacionSourceAccountId", selectedAccountId);
+    sessionStorage.setItem("obligacionSourceAccountDisplay", sourceAccountDisplay);
 
     router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
   };
@@ -125,32 +164,41 @@ export default function PagoObligacionesPage() {
     router.push("/pagos/pagar-mis-productos");
   };
 
+  // Determine which steps to show based on payment method
+  const currentSteps = paymentMethod === 'pse'
+    ? OBLIGACION_PAYMENT_STEPS
+    : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
+
   return (
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <Stepper currentStep={1} steps={OBLIGACION_PAYMENT_STEPS} />
+      <Stepper currentStep={1} steps={currentSteps} />
 
       <ObligacionDetailsCard
         products={mockObligacionProducts}
+        sourceAccounts={mockObligacionSourceAccounts}
         selectedProductId={selectedProductId}
+        selectedAccountId={selectedAccountId}
         valorAPagar={valorAPagar}
         activePaymentType={activePaymentType}
         onProductSelect={handleProductSelect}
+        onAccountChange={handleAccountChange}
         onValorChange={handleValorChange}
         onPaymentTypeSelect={handlePaymentTypeSelect}
         onNeedMoreBalance={handleNeedMoreBalance}
         hideBalances={hideBalances}
+        accountError={accountError}
       />
 
       {error && (
-        <div className="text-sm text-[#FF0D00] text-center">{error}</div>
+        <div className="text-sm text-brand-error text-center">{error}</div>
       )}
 
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-[#1D4E8F] hover:underline"
+          className="text-sm font-medium text-brand-navy hover:underline"
         >
           Volver
         </button>

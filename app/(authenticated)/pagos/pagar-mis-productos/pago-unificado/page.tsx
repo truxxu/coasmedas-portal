@@ -90,7 +90,7 @@ export default function PagoUnificadoPage() {
       />
 
       {error && (
-        <div className="text-sm text-[#FF0D00] text-center">{error}</div>
+        <div className="text-sm text-brand-error text-center">{error}</div>
       )}
 
       <div className="flex justify-between">

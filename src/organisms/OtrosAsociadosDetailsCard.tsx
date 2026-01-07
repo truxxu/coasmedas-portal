@@ -34,32 +34,35 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
   return (
     <Card className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Title with Beneficiary Name */}
-      <h2 className="text-lg font-bold text-[#1D4E8F]">
+      <h2 className="text-lg font-bold text-brand-navy">
         Pago de {beneficiaryName}
       </h2>
 
-      {/* Source Account Selection */}
+      {/* Funding Source Selection */}
       <div className="space-y-2">
         <label className="block text-[15px] text-black">
-          ¿De cuál cuenta quiere pagar?
+          ¿De dónde quiere pagar?
         </label>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
           <select
             value={selectedAccountId}
             onChange={(e) => onAccountChange(e.target.value)}
-            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-black bg-white focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
+            className="w-full sm:flex-1 h-11 px-3 rounded-md border border-brand-footer-text text-base text-black bg-white focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none"
           >
-            <option value="">Seleccionar cuenta</option>
+            <option value="">Seleccionar origen de fondos</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
-                {account.type} - Saldo: {hideBalances ? maskCurrency() : formatCurrency(account.balance)}
+                {account.sourceType === 'pse'
+                  ? account.type
+                  : `${account.type} - Saldo: ${hideBalances ? maskCurrency() : formatCurrency(account.balance)}`
+                }
               </option>
             ))}
           </select>
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap self-start sm:self-auto"
+            className="text-xs text-brand-navy hover:underline whitespace-nowrap self-start sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>
@@ -90,14 +93,14 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
 
       {/* Payment Summary */}
       <div className="space-y-4 pt-4">
-        <h3 className="text-lg font-bold text-[#1D4E8F]">
+        <h3 className="text-lg font-bold text-brand-navy">
           Resumen del Pago
         </h3>
 
         <Divider />
 
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-4">
-          <span className="text-lg sm:text-xl font-bold text-[#1D4E8F]">
+          <span className="text-lg sm:text-xl font-bold text-brand-navy">
             Total a Pagar:
           </span>
           <span className="text-lg sm:text-xl font-medium text-black">

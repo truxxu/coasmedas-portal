@@ -33,19 +33,19 @@ function DetailColumn({ title, data, hideBalances }: DetailColumnProps) {
       </h3>
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <span className="text-[14px] text-[#6A717F]">Vigentes:</span>
+          <span className="text-[14px] text-brand-gray-label">Vigentes:</span>
           <span className="text-[14px] font-medium text-black">
             {displayCurrency(data.vigentes)}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[14px] text-[#6A717F]">En mora:</span>
+          <span className="text-[14px] text-brand-gray-label">En mora:</span>
           <span className={`text-[15px] font-bold ${data.enMora > 0 ? 'text-red-600' : 'text-red-600'}`}>
             {displayCurrency(data.enMora)}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[14px] text-[#6A717F]">Fecha cubrimiento:</span>
+          <span className="text-[14px] text-brand-gray-label">Fecha cubrimiento:</span>
           <span className="text-[14px] font-medium text-black">
             {formatDateCapitalized(data.fechaCubrimiento)}
           </span>
@@ -81,19 +81,19 @@ export function AportesInfoCard({
         {/* Left column - General info */}
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-[#6A717F]">Número de producto:</span>
+            <span className="text-[14px] text-brand-gray-label">Número de producto:</span>
             <span className="text-[14px] font-medium text-black">
               {maskNumber(productNumber)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-[#6A717F]">Saldo total aportes:</span>
+            <span className="text-[14px] text-brand-gray-label">Saldo total aportes:</span>
             <span className="text-[18px] font-bold text-brand-navy">
               {displayCurrency(totalBalance)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-[#6A717F]">Fecha límite de pago:</span>
+            <span className="text-[14px] text-brand-gray-label">Fecha límite de pago:</span>
             <span className="text-[14px] font-medium text-black">
               {formatDateCapitalized(paymentDeadline)}
             </span>

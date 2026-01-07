@@ -117,7 +117,7 @@ export default function VerificacionPage() {
   if (isCheckingData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-[#58585B]">Cargando...</div>
+        <div className="text-brand-gray-high">Cargando...</div>
       </div>
     );
   }

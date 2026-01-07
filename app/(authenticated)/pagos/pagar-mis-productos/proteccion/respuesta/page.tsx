@@ -54,7 +54,7 @@ export default function ProteccionRespuestaPage() {
   if (!result) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-[15px] text-[#58585B]">Cargando...</p>
+        <p className="text-[15px] text-brand-gray-high">Cargando...</p>
       </div>
     );
   }

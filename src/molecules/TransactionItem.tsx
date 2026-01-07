@@ -24,7 +24,7 @@ export function TransactionItem({ transaction, showDivider = true }: Transaction
           <p className="font-bold text-brand-text-black">{transaction.description}</p>
           <p className="text-sm text-brand-gray-secondary">{transaction.date}</p>
         </div>
-        <p className={`font-medium ${isPositive ? 'text-[#006B00]' : 'text-red-600'}`}>
+        <p className={`font-medium ${isPositive ? 'text-brand-positive' : 'text-red-600'}`}>
           {displayAmount}
         </p>
       </div>

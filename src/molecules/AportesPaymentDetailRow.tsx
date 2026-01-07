@@ -17,9 +17,9 @@ export const AportesPaymentDetailRow: React.FC<AportesPaymentDetailRowProps> = (
 }) => {
   const colorClasses: Record<AportesValueColor, string> = {
     default: 'text-black',
-    red: 'text-[#E1172B]',
-    navy: 'text-[#1D4E8F]',
-    green: 'text-[#00A44C]',
+    red: 'text-brand-error',
+    navy: 'text-brand-navy',
+    green: 'text-brand-success-icon',
   };
 
   return (

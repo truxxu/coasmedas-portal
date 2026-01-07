@@ -51,7 +51,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
     <div className={`flex items-center gap-2 ${className}`}>
       <span
         className={`text-xl font-bold ${
-          disabled ? "text-[#808284]" : "text-black"
+          disabled ? "text-brand-gray-medium" : "text-black"
         }`}
       >
         {prefix}
@@ -70,10 +70,10 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
           border-b transition-colors
           ${
             hasError
-              ? "border-[#FF0D00] focus:border-[#FF0D00] focus:ring-2 focus:ring-[#FF0D00]"
+              ? "border-brand-error focus:border-brand-error focus:ring-2 focus:ring-brand-error"
               : disabled
-              ? "border-[#D1D2D4]"
-              : "border-[#1D4E8F] focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF]"
+              ? "border-brand-gray-low"
+              : "border-brand-navy focus:border-brand-primary focus:ring-2 focus:ring-brand-primary"
           }
           ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}
           focus:outline-none

@@ -15,17 +15,17 @@ export const PSELoadingCard: React.FC<PSELoadingCardProps> = ({
       <div className="flex flex-col items-center justify-center space-y-6">
         {/* Loading Spinner */}
         <div className="relative">
-          <div className="w-16 h-16 border-4 border-[#E4E6EA] rounded-full"></div>
-          <div className="absolute top-0 left-0 w-16 h-16 border-4 border-[#007FFF] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-brand-border rounded-full"></div>
+          <div className="absolute top-0 left-0 w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
 
         {/* Message */}
         <div className="text-center space-y-2">
-          <h2 className="text-xl font-bold text-[#1D4E8F]">{message}</h2>
-          <p className="text-[15px] text-[#58585B]">
+          <h2 className="text-xl font-bold text-brand-navy">{message}</h2>
+          <p className="text-[15px] text-brand-gray-high">
             Serás redirigido al sitio seguro de tu banco para completar el pago.
           </p>
-          <p className="text-sm text-[#808284]">
+          <p className="text-sm text-brand-gray-medium">
             Por favor, no cierres esta ventana.
           </p>
         </div>

@@ -24,8 +24,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       disabled={disabled}
       aria-label={ariaLabel}
       className={`
-        w-4 h-4 rounded border-[#B1B1B1]
-        text-[#007FFF] focus:ring-[#007FFF] focus:ring-2
+        w-4 h-4 rounded border-brand-footer-text
+        text-brand-primary focus:ring-brand-primary focus:ring-2
         ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
       `}
     />

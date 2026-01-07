@@ -42,7 +42,7 @@ export function TransactionHistoryCard({
         {/* Title and subtitle */}
         <div>
           <h2 className="text-[19px] font-bold text-brand-navy">{title}</h2>
-          <p className="text-[14px] text-[#6A717F] mt-1">{subtitle}</p>
+          <p className="text-[14px] text-brand-gray-label mt-1">{subtitle}</p>
         </div>
 
         {/* Filter aligned right */}
@@ -60,11 +60,11 @@ export function TransactionHistoryCard({
       {/* Transactions list or empty state */}
       {loading ? (
         <div className="py-8 text-center">
-          <p className="text-[16px] text-[#6A717F]">Cargando movimientos...</p>
+          <p className="text-[16px] text-brand-gray-label">Cargando movimientos...</p>
         </div>
       ) : transactions.length === 0 ? (
         <div className="py-8 text-center">
-          <p className="text-[16px] text-[#6A717F]">
+          <p className="text-[16px] text-brand-gray-label">
             No se encontraron movimientos en el período seleccionado.
           </p>
         </div>
