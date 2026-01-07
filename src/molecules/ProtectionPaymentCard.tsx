@@ -50,12 +50,12 @@ export const ProtectionPaymentCard: React.FC<ProtectionPaymentCardProps> = ({
       aria-label={`Seleccionar ${product.title}`}
       className={`
         w-full min-w-[280px] max-w-[320px] p-5
-        rounded-lg border-2 transition-all duration-200
+        rounded-2xl transition-all duration-200
         text-left cursor-pointer
-        focus:outline-none focus:ring-2 focus:ring-[#007FFF] focus:ring-offset-2
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007FFF] focus-visible:ring-offset-2
         ${isSelected
-          ? 'bg-white border-[#007FFF]'
-          : 'bg-white border-[#E4E6EA] hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-[#194E8D]'
+          : 'bg-[#E4E6EA] border-2 border-transparent hover:border-[#B1B1B1]'
         }
       `}
     >
