@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider, CurrencyInput } from '@/src/atoms';
-import { AportesPaymentDetailRow } from '@/src/molecules';
-import { PaymentAccount } from '@/src/types/payment';
-import { AportesPaymentBreakdown } from '@/src/types/aportes-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider, CurrencyInput } from "@/src/atoms";
+import { AportesPaymentDetailRow } from "@/src/molecules";
+import { PaymentAccount } from "@/src/types/payment";
+import { AportesPaymentBreakdown } from "@/src/types/aportes-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
+import {
+  PSE_PAYMENT_ID,
+  PSE_PAYMENT_NAME,
+  isPSEPayment,
+} from "@/src/mocks/mockAportesPaymentData";
 
 interface AportesDetailsCardProps {
   accounts: PaymentAccount[];
@@ -16,6 +21,7 @@ interface AportesDetailsCardProps {
   onValorChange: (valor: number) => void;
   onNeedMoreBalance: () => void;
   hideBalances: boolean;
+  showPSEOption?: boolean;
 }
 
 export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
@@ -27,6 +33,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   onValorChange,
   onNeedMoreBalance,
   hideBalances,
+  showPSEOption = true,
 }) => {
   const accountOptions = accounts.map((account) => ({
     value: account.id,
@@ -34,6 +41,9 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
       hideBalances ? maskCurrency() : formatCurrency(account.balance)
     }`,
   }));
+
+  // Check if PSE is currently selected
+  const isPSESelected = isPSEPayment(selectedAccountId);
 
   return (
     <Card className="space-y-6 p-6 md:p-8">
@@ -59,6 +69,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
                 {option.label}
               </option>
             ))}
+            <option value={PSE_PAYMENT_ID}>{PSE_PAYMENT_NAME}</option>
           </select>
           <button
             type="button"

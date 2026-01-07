@@ -11,6 +11,8 @@ import {
   mockAportesPaymentAccounts,
   mockAportesPaymentBreakdown,
   APORTES_PAYMENT_STEPS,
+  isPSEPayment,
+  getPaymentMethod,
 } from '@/src/mocks/mockAportesPaymentData';
 
 export default function PagoAportesPage() {
@@ -37,7 +39,7 @@ export default function PagoAportesPage() {
   const handleContinue = () => {
     // Validation
     if (!selectedAccountId) {
-      setError('Por favor selecciona una cuenta');
+      setError('Por favor selecciona una cuenta o metodo de pago');
       return;
     }
 
@@ -46,13 +48,16 @@ export default function PagoAportesPage() {
       return;
     }
 
-    const selectedAccount = mockAportesPaymentAccounts.find(
-      (acc) => acc.id === selectedAccountId
-    );
+    // Only check balance if paying from an internal account (not PSE)
+    if (!isPSEPayment(selectedAccountId)) {
+      const selectedAccount = mockAportesPaymentAccounts.find(
+        (acc) => acc.id === selectedAccountId
+      );
 
-    if (selectedAccount && selectedAccount.balance < valorAPagar) {
-      setError('Saldo insuficiente en la cuenta seleccionada');
-      return;
+      if (selectedAccount && selectedAccount.balance < valorAPagar) {
+        setError('Saldo insuficiente en la cuenta seleccionada');
+        return;
+      }
     }
 
     // Store data in sessionStorage
@@ -61,6 +66,10 @@ export default function PagoAportesPage() {
     sessionStorage.setItem(
       'aportesPaymentBreakdown',
       JSON.stringify(mockAportesPaymentBreakdown)
+    );
+    sessionStorage.setItem(
+      'aportesPaymentMethod',
+      getPaymentMethod(selectedAccountId)
     );
 
     router.push('/pagos/pagar-mis-productos/aportes/confirmacion');

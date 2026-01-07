@@ -64,6 +64,7 @@ export default function ResultadoAportesPage() {
     sessionStorage.removeItem("aportesPaymentValor");
     sessionStorage.removeItem("aportesPaymentBreakdown");
     sessionStorage.removeItem("aportesPaymentConfirmation");
+    sessionStorage.removeItem("aportesPaymentMethod");
 
     router.push("/pagos/pagar-mis-productos");
   };

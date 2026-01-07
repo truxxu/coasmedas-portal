@@ -3,7 +3,18 @@ import { Step } from "@/src/types/stepper";
 import {
   AportesPaymentBreakdown,
   AportesTransactionResult,
+  AportesPaymentMethod,
 } from "@/src/types/aportes-payment";
+
+/**
+ * PSE payment option identifier
+ */
+export const PSE_PAYMENT_ID = "pse";
+
+/**
+ * PSE payment option display name
+ */
+export const PSE_PAYMENT_NAME = "PSE - Pagos con otras entidades";
 
 /**
  * Mock payment accounts for aportes payment
@@ -89,3 +100,17 @@ export const APORTES_PAYMENT_STEPS: Step[] = [
  * Mock SMS verification code (for testing)
  */
 export const APORTES_MOCK_VALID_CODE = "123456";
+
+/**
+ * Helper to determine payment method from selected ID
+ */
+export function getPaymentMethod(selectedId: string): AportesPaymentMethod {
+  return selectedId === PSE_PAYMENT_ID ? "pse" : "account";
+}
+
+/**
+ * Helper to check if PSE is selected
+ */
+export function isPSEPayment(selectedId: string): boolean {
+  return selectedId === PSE_PAYMENT_ID;
+}

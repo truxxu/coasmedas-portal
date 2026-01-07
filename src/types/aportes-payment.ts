@@ -3,6 +3,11 @@
 // ============================================================================
 
 /**
+ * Payment method type
+ */
+export type AportesPaymentMethod = 'account' | 'pse';
+
+/**
  * Aportes payment breakdown details
  */
 export interface AportesPaymentBreakdown {
@@ -32,8 +37,9 @@ export interface AportesConfirmationData {
   documento: string; // Masked
   productoAPagar: string; // Plan name
   numeroProducto: string; // Masked
-  productoADebitar: string; // Account name
+  productoADebitar: string; // Account name or "PSE - Pagos con otras entidades"
   valorAPagar: number;
+  paymentMethod: AportesPaymentMethod;
 }
 
 /**
@@ -57,6 +63,7 @@ export interface AportesTransactionResult {
 export interface AportesPaymentFlowState {
   currentStep: 1 | 2 | 3 | 4;
   selectedAccountId: string | null;
+  paymentMethod: AportesPaymentMethod;
   paymentBreakdown: AportesPaymentBreakdown | null;
   valorAPagar: number;
   confirmationData: AportesConfirmationData | null;

@@ -11,10 +11,12 @@ import {
   mockAportesPaymentAccounts,
   mockAportesUserData,
   APORTES_PAYMENT_STEPS,
+  PSE_PAYMENT_NAME,
 } from '@/src/mocks/mockAportesPaymentData';
 import {
   AportesConfirmationData,
   AportesPaymentBreakdown,
+  AportesPaymentMethod,
 } from '@/src/types/aportes-payment';
 
 export default function ConfirmacionAportesPage() {
@@ -39,16 +41,34 @@ export default function ConfirmacionAportesPage() {
     const accountId = sessionStorage.getItem('aportesPaymentAccountId');
     const valor = sessionStorage.getItem('aportesPaymentValor');
     const breakdownStr = sessionStorage.getItem('aportesPaymentBreakdown');
+    const paymentMethod = sessionStorage.getItem('aportesPaymentMethod') as AportesPaymentMethod || 'account';
 
     if (!accountId || !valor || !breakdownStr) {
       router.push('/pagos/pagar-mis-productos/aportes');
       return;
     }
 
+    const breakdown: AportesPaymentBreakdown = JSON.parse(breakdownStr);
+
+    // For PSE, we don't need to find an account
+    if (paymentMethod === 'pse') {
+      setConfirmationData({
+        titular: mockAportesUserData.name,
+        documento: mockAportesUserData.document,
+        productoAPagar: breakdown.planName,
+        numeroProducto: breakdown.productNumber,
+        productoADebitar: PSE_PAYMENT_NAME,
+        valorAPagar: parseInt(valor, 10),
+        paymentMethod: 'pse',
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // For account payment, find the account
     const account = mockAportesPaymentAccounts.find(
       (acc) => acc.id === accountId
     );
-    const breakdown: AportesPaymentBreakdown = JSON.parse(breakdownStr);
 
     if (!account) {
       router.push('/pagos/pagar-mis-productos/aportes');
@@ -62,6 +82,7 @@ export default function ConfirmacionAportesPage() {
       numeroProducto: breakdown.productNumber,
       productoADebitar: account.name,
       valorAPagar: parseInt(valor, 10),
+      paymentMethod: 'account',
     });
     setIsLoading(false);
   }, [router]);
@@ -72,10 +93,16 @@ export default function ConfirmacionAportesPage() {
         'aportesPaymentConfirmation',
         JSON.stringify(confirmationData)
       );
-    }
 
-    // Navigate to verification step
-    router.push('/pagos/pagar-mis-productos/aportes/verificacion');
+      // Navigate based on payment method
+      if (confirmationData.paymentMethod === 'pse') {
+        // PSE: Go to PSE redirect/loading page
+        router.push('/pagos/pagar-mis-productos/aportes/pse-redirect');
+      } else {
+        // Account: Go to SMS verification step
+        router.push('/pagos/pagar-mis-productos/aportes/verificacion');
+      }
+    }
   };
 
   const handleBack = () => {
