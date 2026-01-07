@@ -3,6 +3,23 @@
 // ============================================================================
 
 /**
+ * Source account for obligacion payment
+ */
+export interface ObligacionSourceAccount {
+  id: string;
+  type: 'ahorros' | 'corriente';
+  accountNumber: string;
+  maskedNumber: string;
+  balance: number;
+  displayName: string;
+}
+
+/**
+ * Payment method type for obligaciones
+ */
+export type ObligacionPaymentMethod = 'account' | 'pse';
+
+/**
  * Loan/credit product for payment selection
  */
 export interface ObligacionPaymentProduct {
@@ -19,7 +36,9 @@ export interface ObligacionPaymentProduct {
  * Step 1: Obligacion payment details form data
  */
 export interface ObligacionPaymentDetailsData {
-  paymentMethod: 'PSE';
+  paymentMethod: ObligacionPaymentMethod;
+  sourceAccountId: string;
+  sourceAccountDisplay: string;
   selectedProductId: string;
   selectedProduct: ObligacionPaymentProduct;
   valorAPagar: number; // User-entered/selected amount
