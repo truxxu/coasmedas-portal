@@ -26,13 +26,19 @@ export interface PayableProduct {
 }
 
 /**
+ * Source type for payment funding
+ */
+export type FundingSourceType = 'cuenta' | 'pse';
+
+/**
  * Source account for payment
  */
 export interface SourceAccount {
   id: string;
-  type: string;              // "Cuenta de Ahorros"
+  type: string;              // "Cuenta de Ahorros", "Aportes"
   balance: number;           // 8730500
   number: string;            // masked "****4428"
+  sourceType: FundingSourceType;  // 'aportes' = no SMS, 'cuenta' = SMS required
 }
 
 /**

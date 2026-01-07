@@ -38,10 +38,10 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
         Pago de {beneficiaryName}
       </h2>
 
-      {/* Source Account Selection */}
+      {/* Funding Source Selection */}
       <div className="space-y-2">
         <label className="block text-[15px] text-black">
-          ¿De cuál cuenta quiere pagar?
+          ¿De dónde quiere pagar?
         </label>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
           <select
@@ -49,10 +49,13 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
             onChange={(e) => onAccountChange(e.target.value)}
             className="w-full sm:flex-1 h-11 px-3 rounded-md border border-[#B1B1B1] text-base text-black bg-white focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none"
           >
-            <option value="">Seleccionar cuenta</option>
+            <option value="">Seleccionar origen de fondos</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
-                {account.type} - Saldo: {hideBalances ? maskCurrency() : formatCurrency(account.balance)}
+                {account.sourceType === 'pse'
+                  ? account.type
+                  : `${account.type} - Saldo: ${hideBalances ? maskCurrency() : formatCurrency(account.balance)}`
+                }
               </option>
             ))}
           </select>

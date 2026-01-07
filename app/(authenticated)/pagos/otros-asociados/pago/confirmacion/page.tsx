@@ -11,11 +11,13 @@ import {
   mockUserData,
   mockSourceAccounts,
   OTROS_ASOCIADOS_PAYMENT_STEPS,
+  OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
 } from "@/src/mocks";
 import {
   RegisteredBeneficiary,
   PayableProduct,
   OtrosAsociadosConfirmationData,
+  FundingSourceType,
 } from "@/src/types";
 
 export default function OtrosAsociadosConfirmacionPage() {
@@ -24,6 +26,12 @@ export default function OtrosAsociadosConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [confirmationData, setConfirmationData] =
     useState<OtrosAsociadosConfirmationData | null>(null);
+  const [sourceType, setSourceType] = useState<FundingSourceType>("cuenta");
+
+  // Determine which stepper to use based on funding source
+  const paymentSteps = sourceType === "pse"
+    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+    : OTROS_ASOCIADOS_PAYMENT_STEPS;
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -40,6 +48,7 @@ export default function OtrosAsociadosConfirmacionPage() {
     const accountId = sessionStorage.getItem("otrosAsociadosAccountId");
     const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
     const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
+    const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
 
     if (!beneficiaryStr || !accountId || !productsStr || !totalAmount) {
       router.push("/pagos/otros-asociados/pago");
@@ -53,6 +62,11 @@ export default function OtrosAsociadosConfirmacionPage() {
     if (!account) {
       router.push("/pagos/otros-asociados/pago");
       return;
+    }
+
+    // Set the source type for stepper display
+    if (storedSourceType) {
+      setSourceType(storedSourceType);
     }
 
     setConfirmationData({
@@ -76,8 +90,16 @@ export default function OtrosAsociadosConfirmacionPage() {
       );
     }
 
-    // Navigate to SMS verification
-    router.push("/pagos/otros-asociados/pago/sms");
+    // Check funding source type to determine next step
+    const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType");
+
+    if (storedSourceType === "cuenta") {
+      // Accounts require SMS verification
+      router.push("/pagos/otros-asociados/pago/sms");
+    } else {
+      // PSE redirects to bank payment gateway
+      router.push("/pagos/otros-asociados/pago/pse");
+    }
   };
 
   const handleBack = () => {
@@ -99,7 +121,7 @@ export default function OtrosAsociadosConfirmacionPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={2} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
+      <Stepper currentStep={2} steps={paymentSteps} />
 
       <OtrosAsociadosConfirmationCard
         confirmationData={confirmationData}

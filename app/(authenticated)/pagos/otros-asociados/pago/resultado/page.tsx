@@ -9,9 +9,10 @@ import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
 import {
   OTROS_ASOCIADOS_PAYMENT_STEPS,
+  OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
   mockOtrosAsociadosTransactionResult,
 } from "@/src/mocks";
-import { OtrosAsociadosTransactionResult, PayableProduct } from "@/src/types";
+import { OtrosAsociadosTransactionResult, PayableProduct, FundingSourceType } from "@/src/types";
 
 export default function OtrosAsociadosResultadoPage() {
   const router = useRouter();
@@ -20,6 +21,15 @@ export default function OtrosAsociadosResultadoPage() {
   const [result, setResult] = useState<OtrosAsociadosTransactionResult | null>(
     null
   );
+  const [sourceType, setSourceType] = useState<FundingSourceType>("cuenta");
+
+  // Determine which stepper to use based on funding source
+  const paymentSteps = sourceType === "pse"
+    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+    : OTROS_ASOCIADOS_PAYMENT_STEPS;
+
+  // Current step is final step: 4 for both flows
+  const currentStep = 4;
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -33,6 +43,12 @@ export default function OtrosAsociadosResultadoPage() {
     // Get data from session and build result
     const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
     const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
+    const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
+
+    // Set the source type for stepper display
+    if (storedSourceType) {
+      setSourceType(storedSourceType);
+    }
 
     if (totalAmount && productsStr) {
       const products: PayableProduct[] = JSON.parse(productsStr);
@@ -57,6 +73,7 @@ export default function OtrosAsociadosResultadoPage() {
     // Clear session storage
     sessionStorage.removeItem("otrosAsociadosBeneficiary");
     sessionStorage.removeItem("otrosAsociadosAccountId");
+    sessionStorage.removeItem("otrosAsociadosSourceType");
     sessionStorage.removeItem("otrosAsociadosProducts");
     sessionStorage.removeItem("otrosAsociadosTotalAmount");
     sessionStorage.removeItem("otrosAsociadosConfirmation");
@@ -79,7 +96,7 @@ export default function OtrosAsociadosResultadoPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={4} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
+      <Stepper currentStep={currentStep} steps={paymentSteps} />
 
       <OtrosAsociadosResultCard result={result} hideBalances={hideBalances} />
 
