@@ -14,7 +14,7 @@ export const BeneficiarySelectionCard: React.FC<BeneficiarySelectionCardProps> =
 }) => {
   return (
     <Card className="p-6 space-y-4">
-      <h2 className="text-lg font-bold text-[#1D4E8F]">
+      <h2 className="text-lg font-bold text-brand-navy">
         Asociados inscritos
       </h2>
 
@@ -31,7 +31,7 @@ export const BeneficiarySelectionCard: React.FC<BeneficiarySelectionCardProps> =
       </div>
 
       {beneficiaries.length === 0 && (
-        <p className="text-center text-[#58585B] py-8">
+        <p className="text-center text-brand-gray-high py-8">
           No tienes asociados inscritos.
         </p>
       )}

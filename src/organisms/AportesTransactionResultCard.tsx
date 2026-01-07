@@ -23,9 +23,9 @@ export const AportesTransactionResultCard: React.FC<
       {/* Success/Error Icon */}
       <div className="flex justify-center">
         {isSuccess ? (
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-[#00A44C] flex items-center justify-center">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-brand-success-icon flex items-center justify-center">
             <svg
-              className="w-8 h-8 md:w-10 md:h-10 text-[#00A44C]"
+              className="w-8 h-8 md:w-10 md:h-10 text-brand-success-icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -40,9 +40,9 @@ export const AportesTransactionResultCard: React.FC<
             </svg>
           </div>
         ) : (
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-[#FF0D00] flex items-center justify-center">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-brand-error flex items-center justify-center">
             <svg
-              className="w-8 h-8 md:w-10 md:h-10 text-[#FF0D00]"
+              className="w-8 h-8 md:w-10 md:h-10 text-brand-error"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -60,35 +60,35 @@ export const AportesTransactionResultCard: React.FC<
       </div>
 
       {/* Result Title */}
-      <h2 className="text-xl md:text-[22px] font-bold text-[#1D4E8F] text-center">
+      <h2 className="text-xl md:text-[22px] font-bold text-brand-navy text-center">
         {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
       </h2>
 
       {/* Transaction Details Section 1 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Linea crédito:</span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">Linea crédito:</span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.lineaCredito}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">
             Numero de producto:
           </span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.numeroProducto}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Valor pagado:</span>
-          <span className="text-lg font-medium text-[#1D4E8F]">
+          <span className="text-[15px] text-brand-text-black">Valor pagado:</span>
+          <span className="text-lg font-medium text-brand-navy">
             {displayAmount(result.valorPagado)}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Costo transacción:</span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">Costo transacción:</span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {formatCurrency(result.costoTransaccion)}
           </span>
         </div>
@@ -99,34 +99,34 @@ export const AportesTransactionResultCard: React.FC<
       {/* Transaction Details Section 2 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">
             Fecha de Transmision:
           </span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.fechaTransmision}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">
             Hora de Transacción:
           </span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.horaTransaccion}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">
+          <span className="text-[15px] text-brand-text-black">
             Numero de Aprobacion:
           </span>
-          <span className="text-[15px] font-medium text-[#111827]">
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.numeroAprobacion}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-[#111827]">Descripcion:</span>
+          <span className="text-[15px] text-brand-text-black">Descripcion:</span>
           <span
             className={`text-[15px] font-medium ${
-              isSuccess ? "text-[#00A44C]" : "text-[#FF0D00]"
+              isSuccess ? "text-brand-success-icon" : "text-brand-error"
             }`}
           >
             {result.descripcion}

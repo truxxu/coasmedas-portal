@@ -192,13 +192,13 @@ export default function PagoObligacionesPage() {
       />
 
       {error && (
-        <div className="text-sm text-[#FF0D00] text-center">{error}</div>
+        <div className="text-sm text-brand-error text-center">{error}</div>
       )}
 
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-[#1D4E8F] hover:underline"
+          className="text-sm font-medium text-brand-navy hover:underline"
         >
           Volver
         </button>

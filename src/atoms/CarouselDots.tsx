@@ -32,8 +32,8 @@ export function CarouselDots({
           className={`
             w-2 h-2 rounded-full transition-colors cursor-pointer
             ${index === activeDot
-              ? 'bg-[#194E8D]'
-              : 'border border-[#E4E6EA] bg-white hover:border-[#B1B1B1]'
+              ? 'bg-brand-navy-dark'
+              : 'border border-brand-border bg-white hover:border-brand-footer-text'
             }
           `}
         />

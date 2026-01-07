@@ -19,8 +19,8 @@ export const PaymentTypeButton: React.FC<PaymentTypeButtonProps> = ({
         px-4 py-2 text-[10px] font-medium rounded-[9px]
         shadow-sm transition-all
         ${active
-          ? 'bg-[#007FFF] text-white'
-          : 'bg-[#E4E6EA] text-black hover:bg-[#D1D2D4]'
+          ? 'bg-brand-primary text-white'
+          : 'bg-brand-border text-black hover:bg-brand-gray-low'
         }
       `}
     >

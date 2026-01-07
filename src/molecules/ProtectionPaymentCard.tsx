@@ -12,9 +12,9 @@ interface ProtectionPaymentCardProps {
 }
 
 const statusColors: Record<ProtectionPaymentProduct['status'], string> = {
-  activo: 'text-[#00A44C]',
-  inactivo: 'text-[#808284]',
-  cancelado: 'text-[#FF0D00]',
+  activo: 'text-brand-success-icon',
+  inactivo: 'text-brand-gray-medium',
+  cancelado: 'text-brand-error',
 };
 
 const statusLabels: Record<ProtectionPaymentProduct['status'], string> = {
@@ -52,10 +52,10 @@ export const ProtectionPaymentCard: React.FC<ProtectionPaymentCardProps> = ({
         w-full min-w-[280px] max-w-[320px] p-5
         rounded-2xl transition-all duration-200
         text-left cursor-pointer
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007FFF] focus-visible:ring-offset-2
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2
         ${isSelected
-          ? 'bg-white border-2 border-[#194E8D]'
-          : 'bg-[#E4E6EA] border-2 border-transparent hover:border-[#B1B1B1]'
+          ? 'bg-white border-2 border-brand-navy-dark'
+          : 'bg-brand-border border-2 border-transparent hover:border-brand-footer-text'
         }
       `}
     >
@@ -72,7 +72,7 @@ export const ProtectionPaymentCard: React.FC<ProtectionPaymentCardProps> = ({
       {/* Next Payment Section */}
       <div className="mb-3">
         <p className="text-sm text-black mb-1">Proximo Pago</p>
-        <p className="text-[19px] font-medium text-[#194E8D]">
+        <p className="text-[19px] font-medium text-brand-navy-dark">
           {hideBalances ? maskCurrency() : formatCurrency(product.nextPaymentAmount)}
         </p>
       </div>

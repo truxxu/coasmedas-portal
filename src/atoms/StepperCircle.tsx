@@ -12,21 +12,21 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
   status,
 }) => {
   const circleClasses = {
-    pending: "border-2 border-[#E4E6EA] bg-white",
-    active: "border-2 border-[#007FFF] bg-[#007FFF]",
-    completed: "border-2 border-[#007FFF] bg-[#007FFF]",
+    pending: "border-2 border-brand-border bg-white",
+    active: "border-2 border-brand-primary bg-brand-primary",
+    completed: "border-2 border-brand-primary bg-brand-primary",
   };
 
   const numberClasses = {
-    pending: "text-[#808284]",
+    pending: "text-brand-gray-medium",
     active: "text-white",
     completed: "text-white",
   };
 
   const labelClasses = {
-    pending: "text-[#808284]",
-    active: "text-[#007FFF] font-bold",
-    completed: "text-[#007FFF]",
+    pending: "text-brand-gray-medium",
+    active: "text-brand-primary font-bold",
+    completed: "text-brand-primary",
   };
 
   return (

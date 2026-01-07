@@ -23,11 +23,11 @@ export function LoginCard() {
       <LoginForm />
 
       {/* Divider */}
-      <hr className="border-t border-[#B1B1B1]" />
+      <hr className="border-t border-brand-footer-text" />
 
       {/* App Promotion */}
       <div className="text-center flex flex-col gap-4">
-        <p className="text-sm text-[#004266] font-medium">
+        <p className="text-sm text-brand-teal-dark font-medium">
           Lleva a Coas en tu bolsillo
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

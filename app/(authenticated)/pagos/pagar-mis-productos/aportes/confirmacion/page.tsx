@@ -112,7 +112,7 @@ export default function ConfirmacionAportesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-[#1D4E8F]">Cargando...</div>
+        <div className="text-brand-navy">Cargando...</div>
       </div>
     );
   }

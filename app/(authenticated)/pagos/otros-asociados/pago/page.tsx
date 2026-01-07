@@ -133,7 +133,7 @@ export default function OtrosAsociadosPagoPage() {
   if (!beneficiary) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-[#58585B]">Cargando...</p>
+        <p className="text-brand-gray-high">Cargando...</p>
       </div>
     );
   }
@@ -161,13 +161,13 @@ export default function OtrosAsociadosPagoPage() {
       />
 
       {error && (
-        <div className="text-sm text-[#FF0D00] text-center">{error}</div>
+        <div className="text-sm text-brand-error text-center">{error}</div>
       )}
 
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-[#004266] hover:underline"
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
         >
           Volver
         </button>

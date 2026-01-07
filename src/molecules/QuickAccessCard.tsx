@@ -26,7 +26,7 @@ export function QuickAccessCard({
       className={`
         block p-6 rounded-[5px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.1)] transition-shadow hover:shadow-lg
         ${isFeatured
-          ? 'bg-[#32005E] text-white'
+          ? 'bg-brand-breb-purple text-white'
           : 'bg-white text-brand-text-black border border-brand-border'
         }
       `}

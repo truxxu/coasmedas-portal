@@ -84,7 +84,7 @@ export default function OtrosAsociadosResultadoPage() {
   if (!result) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-[#58585B]">Cargando resultado...</p>
+        <p className="text-brand-gray-high">Cargando resultado...</p>
       </div>
     );
   }

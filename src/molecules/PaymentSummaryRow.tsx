@@ -19,16 +19,16 @@ export const PaymentSummaryRow: React.FC<PaymentSummaryRowProps> = ({
   return (
     <div
       className={`flex justify-between items-center ${
-        isTotal ? 'pt-4 mt-4 border-t border-[#E4E6EA]' : 'py-2'
+        isTotal ? 'pt-4 mt-4 border-t border-brand-border' : 'py-2'
       }`}
     >
       <span
-        className={`text-base ${isTotal ? 'font-bold' : 'font-normal'} text-[#111827]`}
+        className={`text-base ${isTotal ? 'font-bold' : 'font-normal'} text-brand-text-black`}
       >
         {label}
       </span>
       <span
-        className={`text-base ${isTotal ? 'font-bold' : 'font-normal'} text-[#111827]`}
+        className={`text-base ${isTotal ? 'font-bold' : 'font-normal'} text-brand-text-black`}
       >
         {hideAmount ? maskCurrency() : formatCurrency(amount)}
       </span>

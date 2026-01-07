@@ -14,7 +14,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ options, error, placeholder, className = '', ...props }, ref) => {
     const baseStyles = 'h-11 px-3 rounded-[6px] text-base font-normal w-full transition-colors bg-white';
-    const defaultStyles = 'border border-[#B1B1B1] focus:border-2 focus:border-brand-primary focus:outline-none';
+    const defaultStyles = 'border border-brand-footer-text focus:border-2 focus:border-brand-primary focus:outline-none';
     const errorStyles = 'border-2 border-red-600';
 
     // Add placeholder text color style - gray when empty, black when selected

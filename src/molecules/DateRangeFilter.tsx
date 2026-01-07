@@ -32,7 +32,7 @@ export function DateRangeFilter({
     <div className={className}>
       {/* Filter row */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <span className="text-[14px] text-[#6A717F]">Filtrar:</span>
+        <span className="text-[14px] text-brand-gray-label">Filtrar:</span>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <DateInput
             value={startDate}
@@ -51,7 +51,7 @@ export function DateRangeFilter({
             size="md"
             onClick={onApply}
             disabled={disabled}
-            className="w-full sm:w-auto !bg-[#E4E6EA] !border-[#E4E6EA] hover:!bg-[#d4d6d8] hover:!text-brand-navy hover:!border-[#d4d6d8]"
+            className="w-full sm:w-auto !bg-brand-border !border-brand-border hover:!bg-brand-gray-low hover:!text-brand-navy hover:!border-brand-gray-low"
           >
             Aplicar
           </Button>
@@ -59,7 +59,7 @@ export function DateRangeFilter({
       </div>
 
       {/* Helper text */}
-      <p className="mt-2 text-[12px] text-[#9AA1AD]">
+      <p className="mt-2 text-[12px] text-brand-gray-secondary">
         {helperText || defaultHelperText}
       </p>
     </div>

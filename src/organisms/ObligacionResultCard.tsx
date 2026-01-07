@@ -21,9 +21,9 @@ export const ObligacionResultCard: React.FC<ObligacionResultCardProps> = ({
       {/* Success/Error Icon */}
       <div className="flex justify-center">
         {isSuccess ? (
-          <div className="w-16 h-16 rounded-full border-4 border-[#00AFA9] flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full border-4 border-brand-teal flex items-center justify-center">
             <svg
-              className="w-8 h-8 text-[#00A44C]"
+              className="w-8 h-8 text-brand-success-icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -37,9 +37,9 @@ export const ObligacionResultCard: React.FC<ObligacionResultCardProps> = ({
             </svg>
           </div>
         ) : (
-          <div className="w-16 h-16 rounded-full border-4 border-[#FF0D00] flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full border-4 border-brand-error flex items-center justify-center">
             <svg
-              className="w-8 h-8 text-[#FF0D00]"
+              className="w-8 h-8 text-brand-error"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,7 +56,7 @@ export const ObligacionResultCard: React.FC<ObligacionResultCardProps> = ({
       </div>
 
       {/* Result Title */}
-      <h2 className="text-[22px] font-bold text-[#1D4E8F] text-center">
+      <h2 className="text-[22px] font-bold text-brand-navy text-center">
         {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
       </h2>
 
@@ -126,7 +126,7 @@ export const ObligacionResultCard: React.FC<ObligacionResultCardProps> = ({
           <span className="text-[15px] text-black">Descripción:</span>
           <span
             className={`text-[15px] font-medium ${
-              isSuccess ? "text-[#00A44C]" : "text-[#FF0D00]"
+              isSuccess ? "text-brand-success-icon" : "text-brand-error"
             }`}
           >
             {result.descripcion}

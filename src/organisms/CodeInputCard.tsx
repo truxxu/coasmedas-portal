@@ -29,10 +29,10 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
     <Card className="p-6 md:p-8 max-w-2xl mx-auto max-w-full">
       {/* Header */}
       <div className="text-center mb-6 md:mb-8">
-        <h2 className="text-xl md:text-2xl font-bold text-[#1D4E8F] mb-2">
+        <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">
           Código Enviado a tu Teléfono
         </h2>
-        <p className="text-sm md:text-base text-[#58585B]">
+        <p className="text-sm md:text-base text-brand-gray-high">
           Ingresa la clave de 6 dígitos enviada a tu dispositivo para autorizar
           la transacción
         </p>
@@ -50,14 +50,14 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
 
       {/* Error Message */}
       {hasError && errorMessage && (
-        <p className="text-sm text-[#FF0D00] text-center mb-4">
+        <p className="text-sm text-brand-error text-center mb-4">
           {errorMessage}
         </p>
       )}
 
       {/* Resend Link */}
       <div className="text-center">
-        <span className="text-sm md:text-base text-[#58585B]">
+        <span className="text-sm md:text-base text-brand-gray-high">
           ¿No recibiste la clave?{" "}
         </span>
         <button
@@ -66,8 +66,8 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
           disabled={resendDisabled}
           className={`text-sm md:text-base ${
             resendDisabled
-              ? "text-[#808284] cursor-not-allowed"
-              : "text-[#007FFF] hover:underline"
+              ? "text-brand-gray-medium cursor-not-allowed"
+              : "text-brand-primary hover:underline"
           }`}
         >
           {resendDisabled && resendCountdown

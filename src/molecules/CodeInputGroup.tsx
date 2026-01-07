@@ -102,12 +102,12 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
           aria-label={`Dígito ${index + 1} de ${CODE_LENGTH}`}
           className={`
             w-12 h-14 md:w-14 md:h-16
-            bg-transparent text-[#111827]
+            bg-transparent text-brand-text-black
             text-center text-xl md:text-2xl font-medium
             border-0 border-b-2 rounded-none
-            focus:outline-none focus:border-b-[#007FFF]
+            focus:outline-none focus:border-b-brand-primary
             disabled:bg-gray-100 disabled:cursor-not-allowed
-            ${hasError ? "border-b-[#FF0D00]" : "border-b-[#B1B1B1]"}
+            ${hasError ? "border-b-brand-error" : "border-b-brand-footer-text"}
           `}
         />
       ))}

@@ -18,7 +18,7 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
   return (
     <Card className="p-6 space-y-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-[#1D4E8F]">
+      <h2 className="text-lg font-bold text-brand-navy">
         Confirmación de Pago
       </h2>
 
@@ -45,7 +45,7 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
 
       {/* Products Section */}
       <div className="space-y-3">
-        <h3 className="text-base font-medium text-[#1D4E8F]">
+        <h3 className="text-base font-medium text-brand-navy">
           Productos a pagar para {confirmationData.beneficiaryName}
         </h3>
 

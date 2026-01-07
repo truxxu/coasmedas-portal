@@ -44,13 +44,13 @@ export function AccountSummaryCard() {
         <div className="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
           <Link
             href="/bolsillos"
-            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
+            className="text-sm font-medium text-brand-text-black bg-brand-border px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
           >
             Ver Bolsillos
           </Link>
           <Link
             href="/movimientos"
-            className="text-sm font-medium text-brand-text-black bg-[#E4E6EA] px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
+            className="text-sm font-medium text-brand-text-black bg-brand-border px-4 py-2 rounded-full hover:bg-gray-300 transition-colors text-center flex-1 sm:flex-none"
           >
             Ver Movimientos
           </Link>

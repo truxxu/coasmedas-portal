@@ -134,7 +134,7 @@ export default function ConfirmacionPage() {
         <button
           onClick={handleBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#1D4E8F] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
         >
           Volver
         </button>

@@ -27,7 +27,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
     <Card className="p-4 sm:p-6 space-y-5 sm:space-y-6">
       {/* Card Title */}
       <div className="space-y-2">
-        <h2 className="text-lg font-bold text-[#1D4E8F]">
+        <h2 className="text-lg font-bold text-brand-navy">
           Confirmacion de Pagos
         </h2>
         <p className="text-[15px] text-black">
@@ -66,7 +66,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
       {/* Amount Section */}
       <div className="flex justify-between items-center">
         <span className="text-[15px] font-bold text-black">Valor a Pagar:</span>
-        <span className="text-lg font-bold text-[#194E8D]">
+        <span className="text-lg font-bold text-brand-navy-dark">
           {hideBalances
             ? maskCurrency()
             : formatCurrency(confirmation.amountToPay)}
@@ -79,7 +79,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
           type="button"
           onClick={onBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#1D4E8F] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
         >
           Volver
         </button>

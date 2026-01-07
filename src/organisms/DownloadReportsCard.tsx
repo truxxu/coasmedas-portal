@@ -33,7 +33,7 @@ export function DownloadReportsCard({
     <Card className={`p-6 rounded-2xl ${className}`}>
       {/* Header */}
       <h2 className="text-[19px] font-bold text-brand-navy mb-2">{title}</h2>
-      <p className="text-[14px] text-[#6A717F] mb-4">{description}</p>
+      <p className="text-[14px] text-brand-gray-label mb-4">{description}</p>
 
       {/* Month selector */}
       <Select

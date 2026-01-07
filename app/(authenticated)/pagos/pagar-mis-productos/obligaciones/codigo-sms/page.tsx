@@ -145,7 +145,7 @@ export default function ObligacionCodigoSmsPage() {
         <button
           onClick={handleBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#004266] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
         >
           Volver
         </button>

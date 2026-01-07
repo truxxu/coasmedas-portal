@@ -18,7 +18,7 @@ export function TopBar() {
   const { toggleMobileSidebar } = useMobileSidebar();
 
   return (
-    <header className="py-4 lg:py-8 bg-[#F0F9FF] border-b border-brand-border px-4 lg:px-8 flex items-center justify-between lg:justify-end">
+    <header className="py-4 lg:py-8 bg-brand-light-blue border-b border-brand-border px-4 lg:px-8 flex items-center justify-between lg:justify-end">
       {/* Mobile: Hamburger menu and logo */}
       <div className="flex items-center gap-4 lg:hidden">
         <button

@@ -24,7 +24,7 @@ export function SessionFooter() {
   if (!session) return null;
 
   return (
-    <footer className="bg-brand-light-blue border-t border-brand-border px-4 py-2 lg:px-8 lg:py-0 lg:h-8 flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-8 text-xs text-[#B1B1B1]">
+    <footer className="bg-brand-light-blue border-t border-brand-border px-4 py-2 lg:px-8 lg:py-0 lg:h-8 flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-8 text-xs text-brand-footer-text">
       <span>Último ingreso: {formatDateTime(session.lastLogin)}</span>
       <span>IP: {session.ipAddress}</span>
     </footer>

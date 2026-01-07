@@ -28,16 +28,16 @@ export function CarouselArrow({
       aria-disabled={disabled}
       className={`
         w-[42px] h-[42px] rounded-full bg-white
-        border border-[#E4E6EA] shadow-sm
+        border border-brand-border shadow-sm
         flex items-center justify-center
-        hover:bg-[#F0F9FF] transition-colors
+        hover:bg-brand-light-blue transition-colors
         disabled:opacity-50 disabled:cursor-not-allowed
         ${className}
       `}
     >
       <ChevronIcon
         direction={direction}
-        className="w-4 h-4 text-[#6A717F]"
+        className="w-4 h-4 text-brand-gray-label"
       />
     </button>
   );

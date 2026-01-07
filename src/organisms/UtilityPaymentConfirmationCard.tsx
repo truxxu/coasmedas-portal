@@ -24,7 +24,7 @@ export function UtilityPaymentConfirmationCard({
   return (
     <Card className="p-6 md:p-8 space-y-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-[#004266]">Confirmacion de Pago</h2>
+      <h2 className="text-lg font-bold text-brand-teal-dark">Confirmacion de Pago</h2>
 
       {/* Description */}
       <p className="text-[15px] text-black">
@@ -77,7 +77,7 @@ export function UtilityPaymentConfirmationCard({
           type="button"
           onClick={onBack}
           disabled={isLoading}
-          className="text-sm font-medium text-[#004266] hover:underline disabled:opacity-50"
+          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
         >
           Volver
         </button>

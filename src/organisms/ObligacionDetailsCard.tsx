@@ -53,7 +53,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
   return (
     <Card className="space-y-6 p-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-[#1D4E8F]">Pago de Obligaciones</h2>
+      <h2 className="text-lg font-bold text-brand-navy">Pago de Obligaciones</h2>
 
       {/* Payment Method Selector */}
       <div className="space-y-2">
@@ -70,8 +70,8 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
             }}
             className={`
               flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
-              focus:outline-none focus:ring-2 focus:ring-[#007FFF]
-              ${accountError ? 'border-[#FF0D00]' : 'border-[#B1B1B1]'}
+              focus:outline-none focus:ring-2 focus:ring-brand-primary
+              ${accountError ? 'border-brand-error' : 'border-brand-footer-text'}
             `}
           >
             <option value="">Seleccionar cuenta</option>
@@ -85,13 +85,13 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
           <button
             type="button"
             onClick={onNeedMoreBalance}
-            className="text-xs text-[#1D4E8F] hover:underline whitespace-nowrap self-end sm:self-auto"
+            className="text-xs text-brand-navy hover:underline whitespace-nowrap self-end sm:self-auto"
           >
             ¿Necesitas más saldo?
           </button>
         </div>
         {accountError && (
-          <p className="text-sm text-[#FF0D00]">{accountError}</p>
+          <p className="text-sm text-brand-error">{accountError}</p>
         )}
       </div>
 
@@ -116,7 +116,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
       {/* Payment Details Section - Only show if product selected */}
       {selectedProduct && (
         <div className="space-y-4">
-          <h3 className="text-sm font-medium text-[#1D4E8F]">
+          <h3 className="text-sm font-medium text-brand-navy">
             Detalle del Pago
           </h3>
 
@@ -179,7 +179,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
 
           {/* Value Input */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pt-2">
-            <span className="text-base font-bold text-[#1D4E8F]">
+            <span className="text-base font-bold text-brand-navy">
               Valor a Pagar
             </span>
             <CurrencyInput

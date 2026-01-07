@@ -72,7 +72,7 @@ export default function ResultadoAportesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-[#1D4E8F]">Cargando resultado...</div>
+        <div className="text-brand-navy">Cargando resultado...</div>
       </div>
     );
   }

@@ -69,7 +69,7 @@ export function UtilityPaymentDetailsForm({
   return (
     <Card className="p-6 md:p-8">
       {/* Section Title */}
-      <h2 className="text-lg font-bold text-[#004266] mb-6">
+      <h2 className="text-lg font-bold text-brand-teal-dark mb-6">
         Pago de Servicios Publicos
       </h2>
 
@@ -111,7 +111,7 @@ export function UtilityPaymentDetailsForm({
             type="text"
             value={formData.amount > 0 ? formatCurrency(formData.amount) : ""}
             readOnly
-            className="w-full h-11 px-3 rounded-md border border-[#E4E6EA] text-base text-black bg-gray-50 cursor-not-allowed"
+            className="w-full h-11 px-3 rounded-md border border-brand-border text-base text-black bg-gray-50 cursor-not-allowed"
           />
         </div>
 
@@ -120,7 +120,7 @@ export function UtilityPaymentDetailsForm({
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-[#004266] hover:underline"
+            className="text-sm font-medium text-brand-teal-dark hover:underline"
           >
             Volver
           </button>
