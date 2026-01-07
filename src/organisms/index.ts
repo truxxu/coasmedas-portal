@@ -44,3 +44,5 @@ export { UtilityRegistrationForm } from './UtilityRegistrationForm';
 export { UtilityConfirmationCard } from './UtilityConfirmationCard';
 export { UtilityRegistrationResultCard } from './UtilityRegistrationResultCard';
 export { UtilityPaymentDetailsForm } from './UtilityPaymentDetailsForm';
+export { UtilityPaymentConfirmationCard } from './UtilityPaymentConfirmationCard';
+export { UtilityPaymentResultCard } from './UtilityPaymentResultCard';
