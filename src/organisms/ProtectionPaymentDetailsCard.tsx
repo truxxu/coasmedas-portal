@@ -6,6 +6,7 @@ import { ProtectionPaymentCard } from '@/src/molecules';
 import type {
   ProtectionPaymentSourceAccount,
   ProtectionPaymentProduct,
+  ProtectionPaymentMethod,
 } from '@/src/types/protection-payment';
 import { formatCurrency, maskCurrency } from '@/src/utils';
 
@@ -14,7 +15,7 @@ interface ProtectionPaymentDetailsCardProps {
   products: ProtectionPaymentProduct[];
   selectedAccountId: string;
   selectedProduct: ProtectionPaymentProduct | null;
-  onAccountChange: (accountId: string) => void;
+  onAccountChange: (accountId: string, paymentMethod: ProtectionPaymentMethod) => void;
   onProductSelect: (product: ProtectionPaymentProduct) => void;
   onBack: () => void;
   onContinue: () => void;
@@ -67,7 +68,11 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
         </div>
         <select
           value={selectedAccountId}
-          onChange={(e) => onAccountChange(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isPSE = value === 'pse';
+            onAccountChange(value, isPSE ? 'pse' : 'account');
+          }}
           className={`
             w-full h-11 px-3 rounded-md border text-base text-black bg-white
             focus:outline-none focus:ring-2 focus:ring-[#007FFF]
@@ -80,6 +85,7 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
               {getAccountDisplayName(account)}
             </option>
           ))}
+          <option value="pse">PSE (Pagos con otras entidades)</option>
         </select>
         {errors.sourceAccount && (
           <p className="text-sm text-[#FF0D00]">{errors.sourceAccount}</p>

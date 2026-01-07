@@ -14,12 +14,14 @@ import {
 import type {
   ProtectionPaymentProduct,
   ProtectionPaymentDetailsFormData,
+  ProtectionPaymentMethod,
 } from '@/src/types';
 
 const initialFormData: ProtectionPaymentDetailsFormData = {
   sourceAccountId: '',
   sourceAccountDisplay: '',
   selectedProduct: null,
+  paymentMethod: 'account',
 };
 
 export default function ProteccionDetallePage() {
@@ -44,12 +46,15 @@ export default function ProteccionDetallePage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  const handleAccountChange = (accountId: string) => {
+  const handleAccountChange = (accountId: string, paymentMethod: ProtectionPaymentMethod) => {
+    const isPSE = paymentMethod === 'pse';
     const account = mockProtectionSourceAccounts.find((a) => a.id === accountId);
+
     setFormData((prev) => ({
       ...prev,
       sourceAccountId: accountId,
-      sourceAccountDisplay: account?.displayName || '',
+      sourceAccountDisplay: isPSE ? 'PSE (Pagos con otras entidades)' : (account?.displayName || ''),
+      paymentMethod,
     }));
     setErrors((prev) => ({ ...prev, sourceAccount: undefined }));
   };
@@ -73,8 +78,8 @@ export default function ProteccionDetallePage() {
       newErrors.product = 'Por favor selecciona un producto de proteccion';
     }
 
-    // Check if balance is sufficient
-    if (formData.sourceAccountId && selectedProduct) {
+    // Check if balance is sufficient (only for account payments, not PSE)
+    if (formData.sourceAccountId && selectedProduct && formData.paymentMethod === 'account') {
       const selectedAccount = mockProtectionSourceAccounts.find(
         (a) => a.id === formData.sourceAccountId
       );

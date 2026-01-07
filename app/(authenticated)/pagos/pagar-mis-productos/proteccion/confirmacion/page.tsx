@@ -10,6 +10,7 @@ import { PROTECTION_PAYMENT_STEPS } from '@/src/mocks';
 import type {
   ProtectionPaymentDetailsFormData,
   ProtectionPaymentConfirmationData,
+  ProtectionPaymentMethod,
 } from '@/src/types';
 
 export default function ProteccionConfirmacionPage() {
@@ -18,13 +19,14 @@ export default function ProteccionConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [confirmation, setConfirmation] = useState<ProtectionPaymentConfirmationData | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<ProtectionPaymentMethod>('account');
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
       title: 'Pago de Proteccion',
-      backHref: '/pagos/pagar-mis-productos/proteccion/detalle',
+      backHref: '/pagos/pagar-mis-productos/proteccion',
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -33,11 +35,20 @@ export default function ProteccionConfirmacionPage() {
   useEffect(() => {
     const detailsStr = sessionStorage.getItem('protectionPaymentDetails');
     if (!detailsStr) {
-      router.push('/pagos/pagar-mis-productos/proteccion/detalle');
+      router.push('/pagos/pagar-mis-productos/proteccion');
       return;
     }
 
     const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
+
+    // Store payment method for routing decision
+    setPaymentMethod(details.paymentMethod);
+
+    // Determine product to debit display
+    const isPSE = details.paymentMethod === 'pse';
+    const productToDebit = isPSE
+      ? 'PSE (Pagos con otras entidades)'
+      : (details.sourceAccountDisplay.split(' - ')[0] || 'Cuenta de Ahorros');
 
     // Build confirmation data from details + mock user data
     const confirmationData: ProtectionPaymentConfirmationData = {
@@ -45,7 +56,7 @@ export default function ProteccionConfirmacionPage() {
       holderDocument: 'CC 1.***.***234',
       productToPay: details.selectedProduct?.title || '',
       policyNumber: details.selectedProduct?.productNumber || '',
-      productToDebit: details.sourceAccountDisplay.split(' - ')[0] || 'Cuenta de Ahorros',
+      productToDebit,
       amountToPay: details.selectedProduct?.nextPaymentAmount || 0,
     };
 
@@ -61,10 +72,14 @@ export default function ProteccionConfirmacionPage() {
       // Store confirmation data for result page
       sessionStorage.setItem('protectionPaymentConfirmation', JSON.stringify(confirmation));
 
-      // Simulate SMS send delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      router.push('/pagos/pagar-mis-productos/proteccion/codigo-sms');
+      if (paymentMethod === 'pse') {
+        // PSE flow: redirect to PSE loading page (then external site)
+        router.push('/pagos/pagar-mis-productos/proteccion/pse');
+      } else {
+        // Account flow: simulate SMS send delay, then go to code input
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push('/pagos/pagar-mis-productos/proteccion/codigo-sms');
+      }
     } catch (error) {
       console.error('Error:', error);
       setIsLoading(false);
@@ -72,7 +87,7 @@ export default function ProteccionConfirmacionPage() {
   };
 
   const handleBack = () => {
-    router.push('/pagos/pagar-mis-productos/proteccion/detalle');
+    router.push('/pagos/pagar-mis-productos/proteccion');
   };
 
   if (!confirmation) {

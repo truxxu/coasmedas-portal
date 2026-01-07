@@ -27,12 +27,18 @@ export interface ProtectionPaymentProduct {
 }
 
 /**
+ * Payment method type
+ */
+export type ProtectionPaymentMethod = 'account' | 'pse';
+
+/**
  * Step 1 - Payment details form data
  */
 export interface ProtectionPaymentDetailsFormData {
   sourceAccountId: string;
   sourceAccountDisplay: string;
   selectedProduct: ProtectionPaymentProduct | null;
+  paymentMethod: ProtectionPaymentMethod;
 }
 
 /**

@@ -38,7 +38,7 @@ export default function ProteccionCodigoSmsPage() {
   useEffect(() => {
     const confirmationData = sessionStorage.getItem("protectionPaymentConfirmation");
     if (!confirmationData) {
-      router.push("/pagos/pagar-mis-productos/proteccion/detalle");
+      router.push("/pagos/pagar-mis-productos/proteccion");
     }
   }, [router]);
 

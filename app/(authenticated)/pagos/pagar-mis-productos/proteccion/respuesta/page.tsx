@@ -31,7 +31,7 @@ export default function ProteccionRespuestaPage() {
   useEffect(() => {
     const resultStr = sessionStorage.getItem("protectionPaymentResult");
     if (!resultStr) {
-      router.push("/pagos/pagar-mis-productos/proteccion/detalle");
+      router.push("/pagos/pagar-mis-productos/proteccion");
       return;
     }
 
