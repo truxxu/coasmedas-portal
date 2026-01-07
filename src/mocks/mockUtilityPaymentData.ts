@@ -41,6 +41,7 @@ export const mockRegisteredServices: RegisteredService[] = [
     serviceType: 'Energia',
     reference: '123456789',
     displayName: 'Luz Apartamento (ENEL - Energia)',
+    amount: 185000,
   },
   {
     id: '2',
@@ -49,6 +50,7 @@ export const mockRegisteredServices: RegisteredService[] = [
     serviceType: 'Gas',
     reference: '987654321',
     displayName: 'Gas Casa (Vanti - Gas)',
+    amount: 95000,
   },
   {
     id: '3',
@@ -57,6 +59,7 @@ export const mockRegisteredServices: RegisteredService[] = [
     serviceType: 'Agua',
     reference: '456789123',
     displayName: 'Agua Oficina (EAAB - Agua)',
+    amount: 120000,
   },
 ];
 

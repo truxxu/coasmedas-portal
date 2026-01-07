@@ -1,7 +1,8 @@
 "use client";
 
-import { Card, Button, CurrencyInput } from "@/src/atoms";
-import { SelectField, CaptchaPlaceholder } from "@/src/molecules";
+import { Card, Button } from "@/src/atoms";
+import { SelectField } from "@/src/molecules";
+import { formatCurrency } from "@/src/utils";
 import type {
   SourceAccount,
   RegisteredService,
@@ -15,11 +16,9 @@ interface UtilityPaymentDetailsFormProps {
   errors: {
     sourceAccount?: string;
     service?: string;
-    amount?: string;
   };
   onSourceAccountChange: (accountId: string) => void;
   onServiceChange: (serviceId: string) => void;
-  onAmountChange: (amount: number) => void;
   onSubmit: () => void;
   onBack: () => void;
   isLoading?: boolean;
@@ -32,7 +31,6 @@ export function UtilityPaymentDetailsForm({
   errors,
   onSourceAccountChange,
   onServiceChange,
-  onAmountChange,
   onSubmit,
   onBack,
   isLoading = false,
@@ -48,11 +46,6 @@ export function UtilityPaymentDetailsForm({
     value: service.id,
     label: service.displayName,
   }));
-
-  // Get selected service to display service type
-  const selectedService = registeredServices.find(
-    (s) => s.id === formData.serviceId
-  );
 
   const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onSourceAccountChange(e.target.value);
@@ -76,7 +69,7 @@ export function UtilityPaymentDetailsForm({
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Cuenta Origen Select */}
-        <div className="max-w-[500px]">
+        <div className="max-w-[500px] mx-auto">
           <SelectField
             label="Cuenta Origen"
             name="cuentaOrigen"
@@ -90,7 +83,7 @@ export function UtilityPaymentDetailsForm({
         </div>
 
         {/* Servicio a Pagar Select */}
-        <div className="max-w-[500px]">
+        <div className="max-w-[500px] mx-auto">
           <SelectField
             label="Servicio a Pagar"
             name="servicio"
@@ -103,40 +96,17 @@ export function UtilityPaymentDetailsForm({
           />
         </div>
 
-        {/* Tipo de Servicio (Read-only) */}
-        {selectedService && (
-          <div className="max-w-[500px]">
-            <label className="block text-sm font-medium text-black mb-1">
-              Tipo de Servicio
-            </label>
-            <input
-              type="text"
-              value={selectedService.serviceType}
-              readOnly
-              className="w-full h-11 px-3 rounded-md border border-[#E4E6EA] text-base text-black bg-gray-50 cursor-not-allowed"
-            />
-          </div>
-        )}
-
-        {/* Valor a Pagar */}
-        <div className="max-w-[500px]">
+        {/* Valor a Pagar (read-only, set by selected service) */}
+        <div className="max-w-[500px] mx-auto">
           <label className="block text-sm font-medium text-black mb-1">
-            Valor a Pagar <span className="text-[#FF0D00]">*</span>
+            Valor a Pagar
           </label>
-          <CurrencyInput
-            value={formData.amount}
-            onChange={onAmountChange}
-            hasError={!!errors.amount}
-            className="w-full"
+          <input
+            type="text"
+            value={formData.amount > 0 ? formatCurrency(formData.amount) : ""}
+            readOnly
+            className="w-full h-11 px-3 rounded-md border border-[#E4E6EA] text-base text-black bg-gray-50 cursor-not-allowed"
           />
-          {errors.amount && (
-            <p className="text-sm text-[#FF0D00] mt-1">{errors.amount}</p>
-          )}
-        </div>
-
-        {/* Captcha Placeholder */}
-        <div className="max-w-[500px]">
-          <CaptchaPlaceholder />
         </div>
 
         {/* Footer Actions */}

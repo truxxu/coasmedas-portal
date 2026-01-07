@@ -20,6 +20,7 @@ export interface RegisteredService {
   serviceType: string;
   reference: string;
   displayName: string;
+  amount: number;
 }
 
 /**

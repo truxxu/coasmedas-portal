@@ -32,7 +32,6 @@ export default function PagarServiciosDetallePage() {
   const [errors, setErrors] = useState<{
     sourceAccount?: string;
     service?: string;
-    amount?: string;
   }>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,16 +61,9 @@ export default function PagarServiciosDetallePage() {
       serviceId,
       serviceDisplay: service?.displayName || "",
       serviceType: service?.serviceType || "",
+      amount: service?.amount || 0,
     }));
     setErrors((prev) => ({ ...prev, service: undefined }));
-  };
-
-  const handleAmountChange = (amount: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      amount,
-    }));
-    setErrors((prev) => ({ ...prev, amount: undefined }));
   };
 
   const validateForm = (): boolean => {
@@ -83,9 +75,6 @@ export default function PagarServiciosDetallePage() {
     if (!formData.serviceId) {
       newErrors.service = "Por favor selecciona un servicio a pagar";
     }
-    if (!formData.amount || formData.amount <= 0) {
-      newErrors.amount = "Por favor ingresa un valor valido";
-    }
 
     // Check if amount exceeds account balance
     if (formData.sourceAccountId && formData.amount > 0) {
@@ -93,7 +82,7 @@ export default function PagarServiciosDetallePage() {
         (a) => a.id === formData.sourceAccountId
       );
       if (selectedAccount && formData.amount > selectedAccount.balance) {
-        newErrors.amount = "Saldo insuficiente en la cuenta seleccionada";
+        newErrors.sourceAccount = "Saldo insuficiente en la cuenta seleccionada";
       }
     }
 
@@ -134,7 +123,6 @@ export default function PagarServiciosDetallePage() {
         errors={errors}
         onSourceAccountChange={handleSourceAccountChange}
         onServiceChange={handleServiceChange}
-        onAmountChange={handleAmountChange}
         onSubmit={handleSubmit}
         onBack={handleBack}
         isLoading={isLoading}
