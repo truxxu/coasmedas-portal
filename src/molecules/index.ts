@@ -36,3 +36,4 @@ export { BeneficiaryListItem } from './BeneficiaryListItem';
 export { PayableProductCard } from './PayableProductCard';
 export { ConfirmationRow } from './ConfirmationRow';
 export { FlowOptionCard } from './FlowOptionCard';
+export { ProtectionPaymentCard } from './ProtectionPaymentCard';
