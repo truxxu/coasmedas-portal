@@ -62,28 +62,28 @@ export function UtilityPaymentResultCard({
 
       {/* Result Title */}
       <h2 className="text-[22px] font-bold text-[#1D4E8F] text-center">
-        {isSuccess ? "Transaccion Exitosa" : "Transaccion Fallida"}
+        {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
       </h2>
 
       <Divider />
 
       {/* Transaction Details */}
       <div className="space-y-2">
-        <ConfirmationRow label="Linea credito:" value={result.creditLine} />
+        <ConfirmationRow label="Linea crédito:" value={result.creditLine} />
         <ConfirmationRow
-          label="Numero de producto:"
+          label="Número de producto:"
           value={result.productNumber}
         />
         <ConfirmationRow
           label="Valor pagado:"
-          value={hideBalances ? maskCurrency() : formatCurrency(result.amountPaid)}
+          value={
+            hideBalances ? maskCurrency() : formatCurrency(result.amountPaid)
+          }
         />
       </div>
 
-      <Divider />
-
       <ConfirmationRow
-        label="Costo transaccion:"
+        label="Costo transacción:"
         value={formatCurrency(result.transactionCost)}
       />
 
@@ -91,19 +91,19 @@ export function UtilityPaymentResultCard({
 
       <div className="space-y-2">
         <ConfirmationRow
-          label="Fecha de Transmision:"
+          label="Fecha de Transmisión:"
           value={result.transmissionDate}
         />
         <ConfirmationRow
-          label="Hora de Transaccion:"
+          label="Hora de Transacción:"
           value={result.transactionTime}
         />
         <ConfirmationRow
-          label="Numero de Aprobacion:"
+          label="Numero de Aprobación:"
           value={result.approvalNumber || "-"}
         />
         <ConfirmationRow
-          label="Descripcion:"
+          label="Descripción:"
           value={result.description}
           valueColor={isSuccess ? "success" : "error"}
         />
@@ -111,7 +111,7 @@ export function UtilityPaymentResultCard({
 
       {/* Footer Actions */}
       <div className="flex justify-end items-center gap-4 pt-4">
-        <Button variant="outline" onClick={onPrint}>
+        <Button variant="secondary" onClick={onPrint}>
           Imprimir/Guardar
         </Button>
         <Button variant="primary" onClick={onFinish}>

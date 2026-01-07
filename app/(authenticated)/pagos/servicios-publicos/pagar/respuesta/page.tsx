@@ -36,15 +36,6 @@ export default function PagarServiciosRespuestaPage() {
     setResult(JSON.parse(resultStr));
   }, [router]);
 
-  // Cleanup sessionStorage on unmount
-  useEffect(() => {
-    return () => {
-      sessionStorage.removeItem("utilityPaymentDetails");
-      sessionStorage.removeItem("utilityPaymentConfirmation");
-      sessionStorage.removeItem("utilityPaymentResult");
-    };
-  }, []);
-
   const handlePrint = () => {
     window.print();
   };
@@ -55,7 +46,7 @@ export default function PagarServiciosRespuestaPage() {
     sessionStorage.removeItem("utilityPaymentConfirmation");
     sessionStorage.removeItem("utilityPaymentResult");
 
-    router.push("/home");
+    router.push("/pagos/servicios-publicos");
   };
 
   if (!result) {
