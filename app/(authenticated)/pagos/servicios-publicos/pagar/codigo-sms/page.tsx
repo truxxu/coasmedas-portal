@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
+import { useSMSCodeVerification } from "@/src/hooks";
 import {
   UTILITY_PAYMENT_STEPS,
   MOCK_VALID_CODE,
@@ -13,17 +14,51 @@ import {
   mockUtilityPaymentResultError,
 } from "@/src/mocks";
 
-const RESEND_COOLDOWN_SECONDS = 60;
-
 export default function PagarServiciosCodigoSmsPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [code, setCode] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
-  const [resendCountdown, setResendCountdown] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleSuccess = () => {
+    const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
+    if (confirmationStr) {
+      const confirmation = JSON.parse(confirmationStr);
+      const result = {
+        ...mockUtilityPaymentResult,
+        amountPaid: confirmation.totalAmount,
+      };
+      sessionStorage.setItem("utilityPaymentResult", JSON.stringify(result));
+    } else {
+      sessionStorage.setItem(
+        "utilityPaymentResult",
+        JSON.stringify(mockUtilityPaymentResult)
+      );
+    }
+  };
+
+  const handleError = () => {
+    sessionStorage.setItem(
+      "utilityPaymentResult",
+      JSON.stringify(mockUtilityPaymentResultError)
+    );
+  };
+
+  const {
+    code,
+    error,
+    isResendDisabled,
+    resendCountdown,
+    isLoading,
+    handleCodeChange,
+    handleResendCode,
+    handleSubmit,
+  } = useSMSCodeVerification({
+    validCode: MOCK_VALID_CODE,
+    sessionKey: "utilityPaymentConfirmation",
+    fallbackPath: "/pagos/servicios-publicos/pagar/detalle",
+    successPath: "/pagos/servicios-publicos/pagar/respuesta",
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -33,85 +68,6 @@ export default function PagarServiciosCodigoSmsPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  // Check if previous steps were completed
-  useEffect(() => {
-    const confirmationData = sessionStorage.getItem("utilityPaymentConfirmation");
-    if (!confirmationData) {
-      router.push("/pagos/servicios-publicos/pagar/detalle");
-    }
-  }, [router]);
-
-  // Countdown timer for resend button
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (resendCountdown > 0) {
-      timer = setTimeout(() => {
-        setResendCountdown((prev) => prev - 1);
-      }, 1000);
-    } else if (resendCountdown === 0 && isResendDisabled) {
-      setIsResendDisabled(false);
-    }
-    return () => clearTimeout(timer);
-  }, [resendCountdown, isResendDisabled]);
-
-  const handleCodeChange = useCallback((newCode: string) => {
-    setCode(newCode);
-    setError("");
-  }, []);
-
-  const handleResendCode = useCallback(() => {
-    console.log("Resending code...");
-    setIsResendDisabled(true);
-    setResendCountdown(RESEND_COOLDOWN_SECONDS);
-    setCode("");
-    setError("");
-  }, []);
-
-  const handlePay = async () => {
-    if (code.length !== 6) {
-      setError("Por favor ingresa el codigo de 6 digitos");
-      return;
-    }
-
-    setIsLoading(true);
-    setError("");
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      if (code === MOCK_VALID_CODE) {
-        // Get confirmation data to populate result with actual amount
-        const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
-        if (confirmationStr) {
-          const confirmation = JSON.parse(confirmationStr);
-          const result = {
-            ...mockUtilityPaymentResult,
-            amountPaid: confirmation.totalAmount,
-          };
-          sessionStorage.setItem("utilityPaymentResult", JSON.stringify(result));
-        } else {
-          sessionStorage.setItem(
-            "utilityPaymentResult",
-            JSON.stringify(mockUtilityPaymentResult)
-          );
-        }
-        router.push("/pagos/servicios-publicos/pagar/respuesta");
-      } else {
-        // Store error result
-        sessionStorage.setItem(
-          "utilityPaymentResult",
-          JSON.stringify(mockUtilityPaymentResultError)
-        );
-        setError("Codigo incorrecto. Por favor intenta nuevamente.");
-      }
-    } catch {
-      setError("Error al procesar el pago. Por favor intenta nuevamente.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleBack = () => {
     router.push("/pagos/servicios-publicos/pagar/confirmacion");
@@ -146,7 +102,7 @@ export default function PagarServiciosCodigoSmsPage() {
         >
           Volver
         </button>
-        <Button variant="primary" onClick={handlePay} disabled={isLoading}>
+        <Button variant="primary" onClick={handleSubmit} disabled={isLoading}>
           {isLoading ? "Procesando..." : "Pagar"}
         </Button>
       </div>

@@ -1,17 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import { PSELoadingCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
-
-const PSE_REDIRECT_DELAY = 2000; // 2 seconds before "redirect"
-const PSE_RETURN_DELAY = 3000; // 3 seconds to simulate bank interaction
+import { usePSERedirect } from "@/src/hooks";
 
 export default function OtrosAsociadosPSEPage() {
-  const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [message, setMessage] = useState("Conectando con PSE...");
+
+  const { message } = usePSERedirect({
+    sessionKey: "otrosAsociadosConfirmation",
+    fallbackPath: "/pagos/otros-asociados/pago",
+    successPath: "/pagos/otros-asociados/pago/resultado",
+    phases: [
+      { message: "Conectando con PSE...", duration: 2000 },
+      { message: "Redirigiendo al banco...", duration: 2000 },
+      { message: "Procesando pago en tu banco...", duration: 3000 },
+      { message: "Confirmando transaccion...", duration: 1000 },
+    ],
+  });
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -20,41 +27,6 @@ export default function OtrosAsociadosPSEPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  // Check if previous steps were completed
-  useEffect(() => {
-    const confirmationData = sessionStorage.getItem(
-      "otrosAsociadosConfirmation"
-    );
-    if (!confirmationData) {
-      router.push("/pagos/otros-asociados/pago");
-    }
-  }, [router]);
-
-  // Simulate PSE redirect flow
-  useEffect(() => {
-    // Step 1: Show connecting message
-    const redirectTimer = setTimeout(() => {
-      setMessage("Redirigiendo al banco...");
-
-      // Step 2: Simulate being at bank site
-      setTimeout(() => {
-        setMessage("Procesando pago en tu banco...");
-
-        // Step 3: Simulate returning from bank
-        setTimeout(() => {
-          setMessage("Confirmando transacción...");
-
-          // Step 4: Navigate to result
-          setTimeout(() => {
-            router.push("/pagos/otros-asociados/pago/resultado");
-          }, 1000);
-        }, PSE_RETURN_DELAY);
-      }, PSE_REDIRECT_DELAY);
-    }, PSE_REDIRECT_DELAY);
-
-    return () => clearTimeout(redirectTimer);
-  }, [router]);
 
   return (
     <div className="space-y-6">

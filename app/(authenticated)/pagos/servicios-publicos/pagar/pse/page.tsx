@@ -4,15 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/src/atoms";
 import { useWelcomeBar } from "@/src/contexts";
+import { usePSERedirect } from "@/src/hooks";
 import { mockUtilityPaymentResult } from "@/src/mocks";
-
-const PSE_REDIRECT_DELAY = 3000; // 3 seconds before "redirecting"
-const PSE_RETURN_DELAY = 5000; // 5 seconds simulating external site
 
 export default function UtilityPaymentPSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
-  const [isCheckingData, setIsCheckingData] = useState(true);
+  const [isPSEMethodValid, setIsPSEMethodValid] = useState(false);
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -23,64 +21,48 @@ export default function UtilityPaymentPSEPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Check for required data from previous steps
+  // Verify PSE payment method was selected
   useEffect(() => {
-    const confirmationData = sessionStorage.getItem("utilityPaymentConfirmation");
     const detailsData = sessionStorage.getItem("utilityPaymentDetails");
-
-    if (!confirmationData || !detailsData) {
-      // No data, redirect to start
-      router.push("/pagos/servicios-publicos/pagar/detalle");
-      return;
+    if (detailsData) {
+      const details = JSON.parse(detailsData);
+      if (details.paymentMethod === "pse") {
+        setIsPSEMethodValid(true);
+        return;
+      }
     }
-
-    // Verify PSE was selected
-    const details = JSON.parse(detailsData);
-    if (details.paymentMethod !== "pse") {
-      router.push("/pagos/servicios-publicos/pagar/detalle");
-      return;
-    }
-
-    setIsCheckingData(false);
+    router.push("/pagos/servicios-publicos/pagar/detalle");
   }, [router]);
 
-  // Simulate PSE flow: loading -> redirect -> return with result
-  useEffect(() => {
-    if (isCheckingData) return;
+  const handleBeforeRedirect = () => {
+    const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
+    if (confirmationStr) {
+      const confirmation = JSON.parse(confirmationStr);
+      const result = {
+        ...mockUtilityPaymentResult,
+        amountPaid: confirmation.totalAmount,
+      };
+      sessionStorage.setItem("utilityPaymentResult", JSON.stringify(result));
+    } else {
+      sessionStorage.setItem(
+        "utilityPaymentResult",
+        JSON.stringify(mockUtilityPaymentResult)
+      );
+    }
+  };
 
-    // First, show loading for a few seconds
-    const redirectTimer = setTimeout(() => {
-      // In a real app, this would redirect to the PSE external site
-      // window.location.href = 'https://pse.example.com/pay?...'
+  const { message, isSessionValid } = usePSERedirect({
+    sessionKey: "utilityPaymentConfirmation",
+    fallbackPath: "/pagos/servicios-publicos/pagar/detalle",
+    successPath: "/pagos/servicios-publicos/pagar/respuesta",
+    phases: [
+      { message: "Conectando a PSE", duration: 3000 },
+      { message: "Procesando pago", duration: 5000 },
+    ],
+    onBeforeRedirect: handleBeforeRedirect,
+  });
 
-      // For demo, we'll simulate returning from PSE after a delay
-      const returnTimer = setTimeout(() => {
-        // Get confirmation to populate result with actual amount
-        const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
-        if (confirmationStr) {
-          const confirmation = JSON.parse(confirmationStr);
-          const result = {
-            ...mockUtilityPaymentResult,
-            amountPaid: confirmation.totalAmount,
-          };
-          sessionStorage.setItem("utilityPaymentResult", JSON.stringify(result));
-        } else {
-          sessionStorage.setItem(
-            "utilityPaymentResult",
-            JSON.stringify(mockUtilityPaymentResult)
-          );
-        }
-
-        router.push("/pagos/servicios-publicos/pagar/respuesta");
-      }, PSE_RETURN_DELAY);
-
-      return () => clearTimeout(returnTimer);
-    }, PSE_REDIRECT_DELAY);
-
-    return () => clearTimeout(redirectTimer);
-  }, [isCheckingData, router]);
-
-  if (isCheckingData) {
+  if (!isSessionValid || !isPSEMethodValid) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-brand-gray-high">Cargando...</div>
@@ -98,7 +80,7 @@ export default function UtilityPaymentPSEPage() {
 
         {/* Title */}
         <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">
-          Conectando a PSE
+          {message}
         </h2>
 
         {/* Description */}

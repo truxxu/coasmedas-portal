@@ -4,14 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/src/atoms";
 import { useWelcomeBar } from "@/src/contexts";
-
-const PSE_REDIRECT_DELAY = 3000; // 3 seconds before "redirecting"
-const PSE_RETURN_DELAY = 5000; // 5 seconds simulating external site
+import { usePSERedirect } from "@/src/hooks";
 
 export default function PSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
-  const [isCheckingData, setIsCheckingData] = useState(true);
+  const [isPSEMethodValid, setIsPSEMethodValid] = useState(false);
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -22,43 +20,32 @@ export default function PSEPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Check for required data from previous steps
+  // Check if PSE payment method was selected
   useEffect(() => {
-    const confirmationData = sessionStorage.getItem("paymentConfirmationData");
     const paymentMethod = sessionStorage.getItem("paymentMethod");
-
-    if (!confirmationData || paymentMethod !== "pse") {
-      // No data or not PSE flow, redirect to start
+    if (paymentMethod === "pse") {
+      setIsPSEMethodValid(true);
+    } else {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
-      return;
     }
-
-    setIsCheckingData(false);
   }, [router]);
 
-  // Simulate PSE flow: loading -> redirect -> return with result
-  useEffect(() => {
-    if (isCheckingData) return;
+  const handleBeforeRedirect = () => {
+    sessionStorage.setItem("paymentStatus", "success");
+  };
 
-    // First, show loading for a few seconds
-    const redirectTimer = setTimeout(() => {
-      // In a real app, this would redirect to the PSE external site
-      // window.location.href = 'https://pse.example.com/pay?...'
+  const { message, isSessionValid } = usePSERedirect({
+    sessionKey: "paymentConfirmationData",
+    fallbackPath: "/pagos/pagar-mis-productos/pago-unificado",
+    successPath: "/pagos/pagar-mis-productos/pago-unificado/resultado",
+    phases: [
+      { message: "Conectando a PSE", duration: 3000 },
+      { message: "Procesando pago", duration: 5000 },
+    ],
+    onBeforeRedirect: handleBeforeRedirect,
+  });
 
-      // For demo, we'll simulate returning from PSE after a delay
-      const returnTimer = setTimeout(() => {
-        // Simulate successful payment
-        sessionStorage.setItem("paymentStatus", "success");
-        router.push("/pagos/pagar-mis-productos/pago-unificado/resultado");
-      }, PSE_RETURN_DELAY);
-
-      return () => clearTimeout(returnTimer);
-    }, PSE_REDIRECT_DELAY);
-
-    return () => clearTimeout(redirectTimer);
-  }, [isCheckingData, router]);
-
-  if (isCheckingData) {
+  if (!isSessionValid || !isPSEMethodValid) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-brand-gray-high">Cargando...</div>
@@ -76,7 +63,7 @@ export default function PSEPage() {
 
         {/* Title */}
         <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">
-          Conectando a PSE
+          {message}
         </h2>
 
         {/* Description */}
