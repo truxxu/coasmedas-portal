@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 
 interface UIContextType {
   hideBalances: boolean;
@@ -19,20 +19,28 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [hideBalances, setHideBalances] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({});
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  // Use ref instead of state for hydration tracking to avoid cascading renders
+  const isHydrated = useRef(false);
 
-  // Persist hideBalances preference
+  // Load hideBalances from localStorage on mount
   useEffect(() => {
-    setIsHydrated(true);
     const stored = localStorage.getItem('hideBalances');
-    if (stored) setHideBalances(JSON.parse(stored));
+    if (stored) {
+      const parsedValue = JSON.parse(stored);
+      // Only update state if different from default to avoid unnecessary render
+      if (parsedValue !== false) {
+        setHideBalances(parsedValue);
+      }
+    }
+    isHydrated.current = true;
   }, []);
 
+  // Persist hideBalances to localStorage when it changes
   useEffect(() => {
-    if (isHydrated) {
+    if (isHydrated.current) {
       localStorage.setItem('hideBalances', JSON.stringify(hideBalances));
     }
-  }, [hideBalances, isHydrated]);
+  }, [hideBalances]);
 
   const toggleHideBalances = () => setHideBalances(!hideBalances);
 
