@@ -13,10 +13,7 @@ interface ProtectionPaymentConfirmationCardProps {
 
 export const ProtectionPaymentConfirmationCard: React.FC<
   ProtectionPaymentConfirmationCardProps
-> = ({
-  confirmation,
-  hideBalances = false,
-}) => {
+> = ({ confirmation, hideBalances = false }) => {
   return (
     <Card className="p-4 sm:p-6 space-y-5 sm:space-y-6">
       {/* Card Title */}
@@ -48,7 +45,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
           value={confirmation.productToPay}
         />
         <ConfirmationRow
-          label="Numero de Poliza"
+          label="Número de Poliza"
           value={confirmation.policyNumber}
         />
         <ConfirmationRow

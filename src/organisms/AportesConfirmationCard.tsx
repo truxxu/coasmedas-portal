@@ -50,14 +50,16 @@ export const AportesConfirmationCard: React.FC<
       {/* Payment Info Section */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-brand-text-black">Producto a Pagar:</span>
+          <span className="text-[15px] text-brand-text-black">
+            Producto a Pagar:
+          </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {confirmationData.productoAPagar}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
-            Numero de Producto:
+            Número de Producto:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {confirmationData.numeroProducto}
@@ -72,7 +74,9 @@ export const AportesConfirmationCard: React.FC<
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-brand-text-black">Valor a Pagar:</span>
+          <span className="text-[15px] text-brand-text-black">
+            Valor a Pagar:
+          </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {displayAmount(confirmationData.valorAPagar)}
           </span>

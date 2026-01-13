@@ -26,7 +26,7 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
   {
     id: "desde-cupos-rotativos",
     title: "Desde cupos rotativos",
-    description: "Utiliza tus cupos de credito para transferir a tus cuentas.",
+    description: "Utiliza tus cupos de crédito para transferir a tus cuentas.",
     href: "/transferencias/internas/desde-cupos-rotativos",
     enabled: false,
   },

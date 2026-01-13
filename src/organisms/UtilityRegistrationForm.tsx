@@ -89,7 +89,7 @@ export function UtilityRegistrationForm({
 
         {/* Bill Number Input */}
         <FormField
-          label="Numero de Factura o Referencia"
+          label="Número de Factura o Referencia"
           name="billNumber"
           type="text"
           placeholder="Ingresa el numero de factura"

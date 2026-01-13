@@ -51,3 +51,5 @@ export { ProtectionPaymentConfirmationCard } from './ProtectionPaymentConfirmati
 export { ProtectionPaymentResultCard } from './ProtectionPaymentResultCard';
 export { InternasFlowGrid } from './InternasFlowGrid';
 export { TransferDetailsCard } from './TransferDetailsCard';
+export { TransferConfirmationCard } from './TransferConfirmationCard';
+export { TransferResultCard } from './TransferResultCard';

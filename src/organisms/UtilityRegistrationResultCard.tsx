@@ -48,7 +48,7 @@ export function UtilityRegistrationResultCard({
         <ConfirmationRow label="Alias:" value={result.alias} />
         <ConfirmationRow label="Convenio:" value={result.convenio} />
         <ConfirmationRow label="Ciudad:" value={result.city} />
-        <ConfirmationRow label="Numero de Factura:" value={result.billNumber} />
+        <ConfirmationRow label="Número de Factura:" value={result.billNumber} />
       </div>
 
       {/* Action Buttons */}

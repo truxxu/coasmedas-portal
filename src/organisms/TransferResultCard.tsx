@@ -1,31 +1,32 @@
 "use client";
 
-import React from "react";
 import { Card, Divider } from "@/src/atoms";
-import { AportesTransactionResult } from "@/src/types/aportes-payment";
+import type { TransferResult } from "@/src/types/transfer";
 import { formatCurrency, maskCurrency } from "@/src/utils";
 
-interface AportesTransactionResultCardProps {
-  result: AportesTransactionResult;
+interface TransferResultCardProps {
+  result: TransferResult;
   hideBalances: boolean;
 }
 
-export const AportesTransactionResultCard: React.FC<
-  AportesTransactionResultCardProps
-> = ({ result, hideBalances }) => {
+export function TransferResultCard({
+  result,
+  hideBalances,
+}: TransferResultCardProps) {
   const isSuccess = result.status === "success";
 
-  const displayAmount = (amount: number) =>
-    hideBalances ? maskCurrency() : formatCurrency(amount);
-
   return (
-    <Card className="p-6 md:p-8 space-y-6">
+    <Card className="space-y-6 p-8">
       {/* Success/Error Icon */}
-      <div className="flex justify-center">
-        {isSuccess ? (
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-brand-success-icon flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div
+          className={`w-[60px] h-[60px] rounded-full flex items-center justify-center border-2 ${
+            isSuccess ? "border-brand-teal" : "border-brand-error"
+          }`}
+        >
+          {isSuccess ? (
             <svg
-              className="w-8 h-8 md:w-10 md:h-10 text-brand-success-icon"
+              className="w-8 h-8 text-brand-teal"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -38,11 +39,9 @@ export const AportesTransactionResultCard: React.FC<
                 d="M5 13l4 4L19 7"
               />
             </svg>
-          </div>
-        ) : (
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-brand-error flex items-center justify-center">
+          ) : (
             <svg
-              className="w-8 h-8 md:w-10 md:h-10 text-brand-error"
+              className="w-8 h-8 text-brand-error"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -55,23 +54,22 @@ export const AportesTransactionResultCard: React.FC<
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </div>
-        )}
+          )}
+        </div>
+
+        <h2 className="text-[22px] font-bold text-brand-navy">
+          {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
+        </h2>
       </div>
 
-      {/* Result Title */}
-      <h2 className="text-xl md:text-[22px] font-bold text-brand-navy text-center">
-        {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
-      </h2>
-
-      {/* Transaction Details Section 1 */}
-      <div className="space-y-3">
+      {/* Transaction Details */}
+      <div className="space-y-4">
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
             Linea crédito:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {result.lineaCredito}
+            {result.sourceType}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
@@ -79,15 +77,18 @@ export const AportesTransactionResultCard: React.FC<
             Número de producto:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {result.numeroProducto}
+            {result.productNumber}
           </span>
         </div>
+
+        <Divider />
+
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
             Valor pagado:
           </span>
-          <span className="text-lg font-medium text-brand-navy">
-            {displayAmount(result.valorPagado)}
+          <span className="text-[15px] font-medium text-brand-text-black">
+            {hideBalances ? maskCurrency() : formatCurrency(result.amountPaid)}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
@@ -95,21 +96,18 @@ export const AportesTransactionResultCard: React.FC<
             Costo transacción:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {formatCurrency(result.costoTransaccion)}
+            {formatCurrency(result.transactionCost)}
           </span>
         </div>
-      </div>
 
-      <Divider />
+        <Divider />
 
-      {/* Transaction Details Section 2 */}
-      <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
             Fecha de Transmisión:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {result.fechaTransmision}
+            {result.transmissionDate}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
@@ -117,7 +115,7 @@ export const AportesTransactionResultCard: React.FC<
             Hora de Transacción:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {result.horaTransaccion}
+            {result.transactionTime}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
@@ -125,7 +123,7 @@ export const AportesTransactionResultCard: React.FC<
             Número de Aprobación:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
-            {result.numeroAprobacion}
+            {result.approvalNumber}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
@@ -137,10 +135,10 @@ export const AportesTransactionResultCard: React.FC<
               isSuccess ? "text-brand-success-icon" : "text-brand-error"
             }`}
           >
-            {result.descripcion}
+            {result.description}
           </span>
         </div>
       </div>
     </Card>
   );
-};
+}

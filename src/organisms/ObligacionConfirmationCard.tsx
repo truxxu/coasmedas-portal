@@ -22,8 +22,8 @@ export const ObligacionConfirmationCard: React.FC<
 
       {/* Description */}
       <p className="text-[15px] text-black">
-        Por favor, verifica que los datos de la transacción sean correctos
-        antes de continuar.
+        Por favor, verifica que los datos de la transacción sean correctos antes
+        de continuar.
       </p>
 
       {/* User Info Section */}
@@ -53,7 +53,7 @@ export const ObligacionConfirmationCard: React.FC<
           </span>
         </div>
         <div className="flex justify-between py-2">
-          <span className="text-[15px] text-black">Numero de Producto:</span>
+          <span className="text-[15px] text-black">Número de Producto:</span>
           <span className="text-[15px] font-medium text-black">
             {confirmationData.numeroProducto}
           </span>
