@@ -21,6 +21,8 @@ export default function TransferenciasInternasPage() {
   const handleSelectFlow = (flowId: string) => {
     if (flowId === "entre-mis-cuentas") {
       router.push("/transferencias/internas/entre-mis-cuentas");
+    } else if (flowId === "cuentas-mi-red") {
+      router.push("/transferencias/internas/cuentas-mi-red");
     }
   };
 

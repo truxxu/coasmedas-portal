@@ -37,3 +37,7 @@ export { PayableProductCard } from './PayableProductCard';
 export { ConfirmationRow } from './ConfirmationRow';
 export { FlowOptionCard } from './FlowOptionCard';
 export { ProtectionPaymentCard } from './ProtectionPaymentCard';
+export { DestinationProductCard } from './DestinationProductCard';
+export { TransferAmountInput } from './TransferAmountInput';
+export { InfoNoteBox } from './InfoNoteBox';
+export { RegisteredAccountItem } from './RegisteredAccountItem';
