@@ -17,11 +17,11 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     enabled: true,
   },
   {
-    id: "a-cuentas-mi-red",
+    id: "cuentas-mi-red",
     title: "A cuentas de mi red",
     description: "Transfiere a cuentas de asociados previamente inscritos.",
-    href: "/transferencias/internas/a-cuentas-mi-red",
-    enabled: false,
+    href: "/transferencias/internas/cuentas-mi-red",
+    enabled: true,
   },
   {
     id: "desde-cupos-rotativos",
