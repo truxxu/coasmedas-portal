@@ -30,7 +30,7 @@ export default function ServiciosPublicosPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
-      <Breadcrumbs items={["Inicio", "Pagos", "Pagar servicios publicos"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pagar servicios públicos"]} />
 
       {/* Flow Selection Card */}
       <FlowSelectionCard

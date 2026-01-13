@@ -30,7 +30,7 @@ export default function ConfirmacionPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de servicios publicos",
+      title: "Pago de servicios públicos",
       backHref: "/pagos/servicios-publicos/inscribir",
     });
     return () => clearWelcomeBar();
