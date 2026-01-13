@@ -68,7 +68,7 @@ export function InversionProductCard({
 
       {/* Product Number */}
       <p className="text-[14px] text-black mb-3">
-        Numero de producto: {displayProductNumber}
+        Número de producto: {displayProductNumber}
       </p>
 
       {/* Amount Section */}
@@ -103,7 +103,9 @@ export function InversionProductCard({
 
         {/* F. Creacion */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">F. Creación:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            F. Creación:
+          </span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.creationDate)}
           </span>
@@ -111,7 +113,9 @@ export function InversionProductCard({
 
         {/* F. Vencimiento */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">F. Vencimiento:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            F. Vencimiento:
+          </span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.maturityDate)}
           </span>

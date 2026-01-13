@@ -7,6 +7,7 @@ interface FlowOptionCardProps {
   description: string;
   onClick: () => void;
   icon?: ReactNode;
+  disabled?: boolean;
 }
 
 export function FlowOptionCard({
@@ -14,21 +15,25 @@ export function FlowOptionCard({
   description,
   onClick,
   icon,
+  disabled = false,
 }: FlowOptionCardProps) {
   return (
     <button
       onClick={onClick}
-      className="
+      disabled={disabled}
+      className={`
         w-full h-44 px-6 py-8
         bg-white
-        border border-brand-border
+        border border-brand-footer-text
         text-center
-        cursor-pointer
         transition-all duration-200 ease-in-out
-        hover:border-solid hover:bg-blue-50 hover:shadow-md
         focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-2
-        active:bg-blue-100
-      "
+        ${
+          disabled
+            ? "opacity-50 cursor-not-allowed"
+            : "cursor-pointer hover:border-solid hover:border-brand-navy hover:bg-brand-light-blue hover:shadow-md active:bg-blue-100"
+        }
+      `}
       type="button"
       aria-label={title}
     >

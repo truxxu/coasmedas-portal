@@ -11,3 +11,4 @@ export * from './mockOtrosAsociadosPaymentData';
 export * from './mockUtilityRegistrationData';
 export * from './mockUtilityPaymentData';
 export * from './mockProtectionPaymentData';
+export * from './mockTransferData';

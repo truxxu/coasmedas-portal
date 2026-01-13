@@ -98,7 +98,7 @@ export const ProtectionPaymentResultCard: React.FC<
           value={result.transactionTime}
         />
         <ConfirmationRow
-          label="Numero de Aprobación"
+          label="Número de Aprobación"
           value={result.approvalNumber || "-"}
         />
         <ConfirmationRow

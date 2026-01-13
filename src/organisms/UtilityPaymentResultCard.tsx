@@ -99,7 +99,7 @@ export function UtilityPaymentResultCard({
           value={result.transactionTime}
         />
         <ConfirmationRow
-          label="Numero de Aprobación:"
+          label="Número de Aprobación:"
           value={result.approvalNumber || "-"}
         />
         <ConfirmationRow

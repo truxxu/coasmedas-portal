@@ -16,7 +16,7 @@ export default function OtrosAsociadosPSEPage() {
       { message: "Conectando con PSE...", duration: 2000 },
       { message: "Redirigiendo al banco...", duration: 2000 },
       { message: "Procesando pago en tu banco...", duration: 3000 },
-      { message: "Confirmando transaccion...", duration: 1000 },
+      { message: "Confirmando transacción...", duration: 1000 },
     ],
   });
 

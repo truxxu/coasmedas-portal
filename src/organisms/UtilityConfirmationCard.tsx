@@ -28,7 +28,7 @@ export function UtilityConfirmationCard({
         <ConfirmationRow label="Ciudad:" value={confirmationData.city} />
         <ConfirmationRow label="Convenio:" value={confirmationData.convenio} />
         <ConfirmationRow
-          label="Numero de Factura:"
+          label="Número de Factura:"
           value={confirmationData.billNumber}
         />
         <ConfirmationRow label="Alias:" value={confirmationData.alias} />
