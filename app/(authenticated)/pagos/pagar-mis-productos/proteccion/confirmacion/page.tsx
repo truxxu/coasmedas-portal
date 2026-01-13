@@ -1,42 +1,44 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/src/atoms';
-import { Breadcrumbs, Stepper, HideBalancesToggle } from '@/src/molecules';
-import { ProtectionPaymentConfirmationCard } from '@/src/organisms';
-import { useUIContext } from '@/src/contexts/UIContext';
-import { useWelcomeBar } from '@/src/contexts';
-import { PROTECTION_PAYMENT_STEPS } from '@/src/mocks';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
+import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { ProtectionPaymentConfirmationCard } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts/UIContext";
+import { useWelcomeBar } from "@/src/contexts";
+import { PROTECTION_PAYMENT_STEPS } from "@/src/mocks";
 import type {
   ProtectionPaymentDetailsFormData,
   ProtectionPaymentConfirmationData,
   ProtectionPaymentMethod,
-} from '@/src/types';
+} from "@/src/types";
 
 export default function ProteccionConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmation, setConfirmation] = useState<ProtectionPaymentConfirmationData | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<ProtectionPaymentMethod>('account');
+  const [confirmation, setConfirmation] =
+    useState<ProtectionPaymentConfirmationData | null>(null);
+  const [paymentMethod, setPaymentMethod] =
+    useState<ProtectionPaymentMethod>("account");
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: 'Pago de Proteccion',
-      backHref: '/pagos/pagar-mis-productos/proteccion',
+      title: "Pago de Proteccion",
+      backHref: "/pagos/pagar-mis-productos/proteccion",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   // Load details from sessionStorage and build confirmation data
   useEffect(() => {
-    const detailsStr = sessionStorage.getItem('protectionPaymentDetails');
+    const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
     if (!detailsStr) {
-      router.push('/pagos/pagar-mis-productos/proteccion');
+      router.push("/pagos/pagar-mis-productos/proteccion");
       return;
     }
 
@@ -46,17 +48,17 @@ export default function ProteccionConfirmacionPage() {
     setPaymentMethod(details.paymentMethod);
 
     // Determine product to debit display
-    const isPSE = details.paymentMethod === 'pse';
+    const isPSE = details.paymentMethod === "pse";
     const productToDebit = isPSE
-      ? 'PSE (Pagos con otras entidades)'
-      : (details.sourceAccountDisplay.split(' - ')[0] || 'Cuenta de Ahorros');
+      ? "PSE (Pagos con otras entidades)"
+      : details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros";
 
     // Build confirmation data from details + mock user data
     const confirmationData: ProtectionPaymentConfirmationData = {
-      holderName: 'CAMILO ANDRES CRUZ',
-      holderDocument: 'CC 1.***.***234',
-      productToPay: details.selectedProduct?.title || '',
-      policyNumber: details.selectedProduct?.productNumber || '',
+      holderName: "CAMILO ANDRES CRUZ",
+      holderDocument: "CC 1.***.***234",
+      productToPay: details.selectedProduct?.title || "",
+      policyNumber: details.selectedProduct?.productNumber || "",
       productToDebit,
       amountToPay: details.selectedProduct?.nextPaymentAmount || 0,
     };
@@ -71,24 +73,27 @@ export default function ProteccionConfirmacionPage() {
 
     try {
       // Store confirmation data for result page
-      sessionStorage.setItem('protectionPaymentConfirmation', JSON.stringify(confirmation));
+      sessionStorage.setItem(
+        "protectionPaymentConfirmation",
+        JSON.stringify(confirmation)
+      );
 
-      if (paymentMethod === 'pse') {
+      if (paymentMethod === "pse") {
         // PSE flow: redirect to PSE loading page (then external site)
-        router.push('/pagos/pagar-mis-productos/proteccion/pse');
+        router.push("/pagos/pagar-mis-productos/proteccion/pse");
       } else {
         // Account flow: simulate SMS send delay, then go to code input
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        router.push('/pagos/pagar-mis-productos/proteccion/codigo-sms');
+        router.push("/pagos/pagar-mis-productos/proteccion/codigo-sms");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       setIsLoading(false);
     }
   };
 
   const handleBack = () => {
-    router.push('/pagos/pagar-mis-productos/proteccion');
+    router.push("/pagos/pagar-mis-productos/proteccion");
   };
 
   if (!confirmation) {
@@ -103,8 +108,7 @@ export default function ProteccionConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs items={['Inicio', 'Pagos', 'Pagos de Proteccion']} />
-        <HideBalancesToggle />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
       </div>
 
       {/* Stepper */}
@@ -126,7 +130,7 @@ export default function ProteccionConfirmacionPage() {
           Volver
         </button>
         <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? 'Procesando...' : 'Confirmar Pago'}
+          {isLoading ? "Procesando..." : "Confirmar Pago"}
         </Button>
       </div>
     </div>
