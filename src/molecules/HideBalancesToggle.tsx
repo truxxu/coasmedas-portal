@@ -11,6 +11,7 @@ export function HideBalancesToggle() {
       checked={hideBalances}
       onChange={toggleHideBalances}
       label="Ocultar saldos"
+      labelClassName="hidden sm:inline"
     />
   );
 }
