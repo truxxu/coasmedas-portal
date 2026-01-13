@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/src/atoms';
 import { Breadcrumbs, Stepper, HideBalancesToggle } from '@/src/molecules';
 import { ProtectionPaymentDetailsCard } from '@/src/organisms';
 import { useUIContext } from '@/src/contexts/UIContext';
@@ -130,12 +131,22 @@ export default function ProteccionDetallePage() {
         selectedProduct={selectedProduct}
         onAccountChange={handleAccountChange}
         onProductSelect={handleProductSelect}
-        onBack={handleBack}
-        onContinue={handleContinue}
         errors={errors}
-        isLoading={isLoading}
         hideBalances={hideBalances}
       />
+
+      {/* Footer Actions */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handleBack}
+          className="text-sm font-medium text-brand-navy hover:underline"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleContinue}>
+          Continuar
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Card, Button } from '@/src/atoms';
+import { Card } from '@/src/atoms';
 import { ProtectionPaymentCard } from '@/src/molecules';
 import type {
   ProtectionPaymentSourceAccount,
@@ -17,13 +17,10 @@ interface ProtectionPaymentDetailsCardProps {
   selectedProduct: ProtectionPaymentProduct | null;
   onAccountChange: (accountId: string, paymentMethod: ProtectionPaymentMethod) => void;
   onProductSelect: (product: ProtectionPaymentProduct) => void;
-  onBack: () => void;
-  onContinue: () => void;
   errors?: {
     sourceAccount?: string;
     product?: string;
   };
-  isLoading?: boolean;
   hideBalances?: boolean;
 }
 
@@ -34,10 +31,7 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
   selectedProduct,
   onAccountChange,
   onProductSelect,
-  onBack,
-  onContinue,
   errors = {},
-  isLoading = false,
   hideBalances = false,
 }) => {
   const getAccountDisplayName = (account: ProtectionPaymentSourceAccount): string => {
@@ -119,25 +113,6 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
         {errors.product && (
           <p className="text-sm text-brand-error text-center">{errors.product}</p>
         )}
-      </div>
-
-      {/* Footer Actions */}
-      <div className="flex justify-between items-center pt-4">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button
-          variant="primary"
-          onClick={onContinue}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Procesando...' : 'Continuar'}
-        </Button>
       </div>
     </Card>
   );
