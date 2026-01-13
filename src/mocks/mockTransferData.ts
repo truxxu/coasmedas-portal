@@ -113,4 +113,4 @@ export const TRANSFER_STEPS: Step[] = [
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = "123456";
+export const TRANSFER_MOCK_VALID_CODE = "123456";

@@ -24,14 +24,14 @@ export function FlowOptionCard({
       className={`
         w-full h-44 px-6 py-8
         bg-white
-        border border-[#B1B1B1]
+        border border-brand-footer-text
         text-center
         transition-all duration-200 ease-in-out
         focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-2
         ${
           disabled
             ? "opacity-50 cursor-not-allowed"
-            : "cursor-pointer hover:border-solid hover:border-[#1D4E8F] hover:bg-[#F0F9FF] hover:shadow-md active:bg-blue-100"
+            : "cursor-pointer hover:border-solid hover:border-brand-navy hover:bg-brand-light-blue hover:shadow-md active:bg-blue-100"
         }
       `}
       type="button"
