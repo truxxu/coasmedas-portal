@@ -46,10 +46,10 @@ export function InternasFlowGrid({
   return (
     <div className={`bg-white rounded-2xl p-8 shadow-sm ${className}`}>
       <div className="mb-6">
-        <h2 className="text-[21px] font-bold text-brand-navy mb-2">
+        <h2 className="text-[21px] font-bold text-brand-navy mb-2 text-center">
           Transferencias Internas
         </h2>
-        <p className="text-[15px] text-gray-900">
+        <p className="text-[15px] text-gray-900 text-center">
           Transfiere entre tus productos financieros, a otros asociados de la
           cooperativa o trae dinero desde otros bancos de manera rapida y
           sencilla.

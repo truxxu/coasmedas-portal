@@ -50,3 +50,4 @@ export { ProtectionPaymentDetailsCard } from './ProtectionPaymentDetailsCard';
 export { ProtectionPaymentConfirmationCard } from './ProtectionPaymentConfirmationCard';
 export { ProtectionPaymentResultCard } from './ProtectionPaymentResultCard';
 export { InternasFlowGrid } from './InternasFlowGrid';
+export { TransferDetailsCard } from './TransferDetailsCard';
