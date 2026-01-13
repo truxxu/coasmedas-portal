@@ -66,8 +66,22 @@ const pagosSubItems = [
   { label: "Pagar mis productos", href: "/pagos/pagar-mis-productos" },
   { label: "Pago a otros asociados", href: "/pagos/otros-asociados" },
   {
-    label: "Pagar servicios públicos",
+    label: "Pagar servicios publicos",
     href: "/pagos/servicios-publicos",
+  },
+];
+
+const transferenciasSubItems = [
+  { label: "Internas", href: "/transferencias/internas" },
+  { label: "Inscribir cuentas", href: "/transferencias/inscribir-cuentas" },
+  { label: "A otros bancos", href: "/transferencias/otros-bancos" },
+  {
+    label: "Cuentas de mi red Coopcentral",
+    href: "/transferencias/cuentas-coopcentral",
+  },
+  {
+    label: "Programar transferencias",
+    href: "/transferencias/programar",
   },
 ];
 
@@ -135,6 +149,19 @@ export function Sidebar() {
                     label={subItem.label}
                     href={subItem.href}
                     isActive={pathname === subItem.href}
+                    onClick={handleNavClick}
+                  />
+                ))}
+              {item.id === "transferencias" &&
+                transferenciasSubItems.map((subItem) => (
+                  <SidebarSubItem
+                    key={subItem.href}
+                    label={subItem.label}
+                    href={subItem.href}
+                    isActive={
+                      pathname === subItem.href ||
+                      pathname?.startsWith(subItem.href + "/")
+                    }
                     onClick={handleNavClick}
                   />
                 ))}
