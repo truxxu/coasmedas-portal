@@ -16,7 +16,7 @@ export function FlowSelectionCard({
       {/* Header */}
       <div className="space-y-3 mb-8">
         <h2 className="text-[21px] font-bold text-brand-navy text-center">
-          Pago de Servicios Publicos
+          Pago de Servicios Públicos
         </h2>
         <p className="text-[15px] text-gray-900 text-center">
           ¿Que deseas hacer hoy?

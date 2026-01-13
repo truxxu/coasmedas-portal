@@ -18,7 +18,10 @@ interface UtilityPaymentDetailsFormProps {
     sourceAccount?: string;
     service?: string;
   };
-  onSourceAccountChange: (accountId: string, paymentMethod: UtilityPaymentMethod) => void;
+  onSourceAccountChange: (
+    accountId: string,
+    paymentMethod: UtilityPaymentMethod
+  ) => void;
   onServiceChange: (serviceId: string) => void;
 }
 
@@ -59,7 +62,7 @@ export function UtilityPaymentDetailsForm({
     <Card className="p-6 md:p-8">
       {/* Section Title */}
       <h2 className="text-lg font-bold text-brand-teal-dark mb-6">
-        Pago de Servicios Publicos
+        Pago de Servicios Públicos
       </h2>
 
       <div className="space-y-5">

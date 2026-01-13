@@ -27,7 +27,7 @@ export function UtilityRegistrationResultCard({
           <ErrorIcon size="md" className="mb-4" />
         )}
         <h2 className="text-[23px] font-bold text-brand-navy text-center">
-          {isSuccess ? "Inscripcion Aceptada" : "Inscripcion Rechazada"}
+          {isSuccess ? "Inscripción Aceptada" : "Inscripción Rechazada"}
         </h2>
       </div>
 
@@ -41,7 +41,7 @@ export function UtilityRegistrationResultCard({
       {/* Registration Details */}
       <div className="space-y-1 border-t border-b border-gray-200 py-4">
         <ConfirmationRow
-          label="Estado de Inscripcion:"
+          label="Estado de Inscripción:"
           value={result.status}
           valueColor={isSuccess ? "success" : "error"}
         />

@@ -1,6 +1,6 @@
 /**
  * Utility Registration Types
- * Types for the Public Utilities Registration feature (Pagar Servicios Publicos)
+ * Types for the Public Utilities Registration feature (Pagar Servicios Públicos)
  */
 
 /**
@@ -46,7 +46,7 @@ export interface UtilityConfirmationData {
 /**
  * Registration status type
  */
-export type RegistrationStatus = 'Aceptada' | 'Rechazada' | 'Pendiente';
+export type RegistrationStatus = "Aceptada" | "Rechazada" | "Pendiente";
 
 /**
  * Registration result structure
@@ -65,7 +65,7 @@ export interface UtilityRegistrationResult {
 /**
  * Flow selection type
  */
-export type UtilityFlowType = 'inscribir' | 'pagar';
+export type UtilityFlowType = "inscribir" | "pagar";
 
 /**
  * Form validation errors

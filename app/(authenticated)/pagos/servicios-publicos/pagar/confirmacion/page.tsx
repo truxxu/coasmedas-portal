@@ -8,20 +8,24 @@ import { UtilityPaymentConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
 import { mockRegisteredServices, UTILITY_PAYMENT_STEPS } from "@/src/mocks";
-import type { UtilityPaymentDetails, UtilityPaymentConfirmation } from "@/src/types";
+import type {
+  UtilityPaymentDetails,
+  UtilityPaymentConfirmation,
+} from "@/src/types";
 
 export default function PagarServiciosConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmation, setConfirmation] = useState<UtilityPaymentConfirmation | null>(null);
+  const [confirmation, setConfirmation] =
+    useState<UtilityPaymentConfirmation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos/pagar/detalle",
     });
     return () => clearWelcomeBar();
@@ -36,15 +40,20 @@ export default function PagarServiciosConfirmacionPage() {
     }
 
     const details: UtilityPaymentDetails = JSON.parse(detailsStr);
-    const service = mockRegisteredServices.find((s) => s.id === details.serviceId);
+    const service = mockRegisteredServices.find(
+      (s) => s.id === details.serviceId
+    );
 
     // Build confirmation data from details + mock user context
     const confirmationData: UtilityPaymentConfirmation = {
       holderName: "CAMILO ANDRES CRUZ", // Would come from user context
       holderDocument: "CC 1.***.***234", // Would come from user context (masked)
-      serviceToPay: service ? `${service.provider} - ${service.serviceType}` : "",
+      serviceToPay: service
+        ? `${service.provider} - ${service.serviceType}`
+        : "",
       invoiceReference: service?.reference || "",
-      productToDebit: details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros",
+      productToDebit:
+        details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros",
       totalAmount: details.amount,
     };
 
@@ -65,7 +74,9 @@ export default function PagarServiciosConfirmacionPage() {
 
       // Check payment method from details
       const detailsStr = sessionStorage.getItem("utilityPaymentDetails");
-      const details: UtilityPaymentDetails | null = detailsStr ? JSON.parse(detailsStr) : null;
+      const details: UtilityPaymentDetails | null = detailsStr
+        ? JSON.parse(detailsStr)
+        : null;
       const isPSE = details?.paymentMethod === "pse";
 
       if (isPSE) {

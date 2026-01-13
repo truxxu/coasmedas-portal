@@ -19,7 +19,9 @@ export default function PagarServiciosCodigoSmsPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const handleSuccess = () => {
-    const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
+    const confirmationStr = sessionStorage.getItem(
+      "utilityPaymentConfirmation"
+    );
     if (confirmationStr) {
       const confirmation = JSON.parse(confirmationStr);
       const result = {
@@ -63,7 +65,7 @@ export default function PagarServiciosCodigoSmsPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos/pagar/confirmacion",
     });
     return () => clearWelcomeBar();

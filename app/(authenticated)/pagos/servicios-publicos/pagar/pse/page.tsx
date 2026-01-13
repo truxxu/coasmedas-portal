@@ -15,7 +15,7 @@ export default function UtilityPaymentPSEPage() {
   // Configure WelcomeBar on mount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos",
     });
     return () => clearWelcomeBar();
@@ -35,7 +35,9 @@ export default function UtilityPaymentPSEPage() {
   }, [router]);
 
   const handleBeforeRedirect = () => {
-    const confirmationStr = sessionStorage.getItem("utilityPaymentConfirmation");
+    const confirmationStr = sessionStorage.getItem(
+      "utilityPaymentConfirmation"
+    );
     if (confirmationStr) {
       const confirmation = JSON.parse(confirmationStr);
       const result = {

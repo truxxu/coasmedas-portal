@@ -16,7 +16,7 @@ export function UtilityConfirmationCard({
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-lg font-bold text-brand-navy mb-2">
-          Confirmar Inscripcion
+          Confirmar Inscripción
         </h2>
         <p className="text-[15px] text-black">
           Verifica los datos del servicio que vas a inscribir.

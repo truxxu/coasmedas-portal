@@ -79,7 +79,7 @@ export default function ResultadoPage() {
     <div className="space-y-6">
       {/* Breadcrumbs */}
       <Breadcrumbs
-        items={["Inicio", "Pagos", "Inscribir Servicios Publicos"]}
+        items={["Inicio", "Pagos", "Inscribir Servicios Públicos"]}
       />
 
       {/* Result Card */}

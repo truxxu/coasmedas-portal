@@ -22,7 +22,9 @@ export default function ConfirmacionPage() {
 
   const [confirmationData, setConfirmationData] =
     useState<UtilityConfirmationData | null>(null);
-  const [formData, setFormData] = useState<UtilityRegistrationForm | null>(null);
+  const [formData, setFormData] = useState<UtilityRegistrationForm | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
@@ -99,7 +101,9 @@ export default function ConfirmacionPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
-      <Breadcrumbs items={["Inicio", "Pagos", "Inscribir Servicios Publicos"]} />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Inscribir Servicios Públicos"]}
+      />
 
       {/* Confirmation Card */}
       <UtilityConfirmationCard confirmationData={confirmationData} />
@@ -115,7 +119,7 @@ export default function ConfirmacionPage() {
           Volver
         </button>
         <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Confirmando..." : "Confirmar Inscripcion"}
+          {isLoading ? "Confirmando..." : "Confirmar Inscripción"}
         </Button>
       </div>
     </div>

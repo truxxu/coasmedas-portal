@@ -34,7 +34,7 @@ export default function InscribirServiciosPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos",
     });
     return () => clearWelcomeBar();
@@ -55,7 +55,11 @@ export default function InscribirServiciosPage() {
       convenioId: "",
       convenioName: "",
     }));
-    setErrors((prev) => ({ ...prev, cityId: undefined, convenioId: undefined }));
+    setErrors((prev) => ({
+      ...prev,
+      cityId: undefined,
+      convenioId: undefined,
+    }));
   }, []);
 
   // Handle convenio change
@@ -141,7 +145,9 @@ export default function InscribirServiciosPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
-      <Breadcrumbs items={["Inicio", "Pagos", "Inscribir Servicios Publicos"]} />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Inscribir Servicios Públicos"]}
+      />
 
       {/* Registration Form */}
       <UtilityRegistrationForm

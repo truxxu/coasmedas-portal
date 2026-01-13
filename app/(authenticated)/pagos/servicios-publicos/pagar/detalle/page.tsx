@@ -29,7 +29,8 @@ export default function PagarServiciosDetallePage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [formData, setFormData] = useState<UtilityPaymentDetails>(initialFormData);
+  const [formData, setFormData] =
+    useState<UtilityPaymentDetails>(initialFormData);
   const [errors, setErrors] = useState<{
     sourceAccount?: string;
     service?: string;
@@ -39,20 +40,25 @@ export default function PagarServiciosDetallePage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  const handleSourceAccountChange = (accountId: string, paymentMethod: UtilityPaymentMethod) => {
+  const handleSourceAccountChange = (
+    accountId: string,
+    paymentMethod: UtilityPaymentMethod
+  ) => {
     const isPSE = paymentMethod === "pse";
     const account = mockUtilitySourceAccounts.find((a) => a.id === accountId);
 
     setFormData((prev) => ({
       ...prev,
       sourceAccountId: accountId,
-      sourceAccountDisplay: isPSE ? "PSE (Pagos con otras entidades)" : (account?.displayName || ""),
+      sourceAccountDisplay: isPSE
+        ? "PSE (Pagos con otras entidades)"
+        : account?.displayName || "",
       paymentMethod,
     }));
     setErrors((prev) => ({ ...prev, sourceAccount: undefined }));
@@ -81,12 +87,17 @@ export default function PagarServiciosDetallePage() {
     }
 
     // Check if amount exceeds account balance (only for account payments, not PSE)
-    if (formData.sourceAccountId && formData.amount > 0 && formData.paymentMethod === "account") {
+    if (
+      formData.sourceAccountId &&
+      formData.amount > 0 &&
+      formData.paymentMethod === "account"
+    ) {
       const selectedAccount = mockUtilitySourceAccounts.find(
         (a) => a.id === formData.sourceAccountId
       );
       if (selectedAccount && formData.amount > selectedAccount.balance) {
-        newErrors.sourceAccount = "Saldo insuficiente en la cuenta seleccionada";
+        newErrors.sourceAccount =
+          "Saldo insuficiente en la cuenta seleccionada";
       }
     }
 

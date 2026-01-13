@@ -19,7 +19,7 @@ export default function PagarServiciosRespuestaPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/home",
     });
     return () => clearWelcomeBar();

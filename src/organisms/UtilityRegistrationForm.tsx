@@ -58,7 +58,7 @@ export function UtilityRegistrationForm({
     <Card className="p-6 md:p-8">
       {/* Section Title */}
       <h2 className="text-lg font-bold text-brand-navy mb-6">
-        Inscripcion de Servicios Publicos
+        Inscripción de Servicios Públicos
       </h2>
 
       <div className="space-y-5">
