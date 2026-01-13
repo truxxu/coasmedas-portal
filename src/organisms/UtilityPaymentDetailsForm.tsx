@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button } from "@/src/atoms";
+import { Card } from "@/src/atoms";
 import { SelectField } from "@/src/molecules";
 import { formatCurrency } from "@/src/utils";
 import type {
@@ -20,9 +20,6 @@ interface UtilityPaymentDetailsFormProps {
   };
   onSourceAccountChange: (accountId: string, paymentMethod: UtilityPaymentMethod) => void;
   onServiceChange: (serviceId: string) => void;
-  onSubmit: () => void;
-  onBack: () => void;
-  isLoading?: boolean;
 }
 
 export function UtilityPaymentDetailsForm({
@@ -32,9 +29,6 @@ export function UtilityPaymentDetailsForm({
   errors,
   onSourceAccountChange,
   onServiceChange,
-  onSubmit,
-  onBack,
-  isLoading = false,
 }: UtilityPaymentDetailsFormProps) {
   // Convert source accounts to select options, adding PSE at the end
   const accountOptions = [
@@ -61,11 +55,6 @@ export function UtilityPaymentDetailsForm({
     onServiceChange(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit();
-  };
-
   return (
     <Card className="p-6 md:p-8">
       {/* Section Title */}
@@ -73,7 +62,7 @@ export function UtilityPaymentDetailsForm({
         Pago de Servicios Publicos
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-5">
         {/* Cuenta Origen Select */}
         <div className="max-w-[500px] mx-auto">
           <SelectField
@@ -114,21 +103,7 @@ export function UtilityPaymentDetailsForm({
             className="w-full h-11 px-3 rounded-md border border-brand-border text-base text-black bg-gray-50 cursor-not-allowed"
           />
         </div>
-
-        {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="text-sm font-medium text-brand-teal-dark hover:underline"
-          >
-            Volver
-          </button>
-          <Button type="submit" variant="primary" disabled={isLoading}>
-            {isLoading ? "Procesando..." : "Continuar"}
-          </Button>
-        </div>
-      </form>
+      </div>
     </Card>
   );
 }

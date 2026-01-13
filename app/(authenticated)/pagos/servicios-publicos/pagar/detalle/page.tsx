@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { BackButton } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Button } from "@/src/atoms";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { UtilityPaymentDetailsForm } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -127,10 +127,21 @@ export default function PagarServiciosDetallePage() {
         errors={errors}
         onSourceAccountChange={handleSourceAccountChange}
         onServiceChange={handleServiceChange}
-        onSubmit={handleSubmit}
-        onBack={handleBack}
-        isLoading={isLoading}
       />
+
+      {/* Footer Actions */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "Procesando..." : "Continuar"}
+        </Button>
+      </div>
     </div>
   );
 }

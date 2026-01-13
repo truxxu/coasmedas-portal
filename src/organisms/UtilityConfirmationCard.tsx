@@ -1,21 +1,15 @@
 "use client";
 
-import { Card, Button } from "@/src/atoms";
+import { Card } from "@/src/atoms";
 import { ConfirmationRow } from "@/src/molecules";
 import type { UtilityConfirmationData } from "@/src/types";
 
 interface UtilityConfirmationCardProps {
   confirmationData: UtilityConfirmationData;
-  onConfirm: () => void;
-  onBack: () => void;
-  isLoading: boolean;
 }
 
 export function UtilityConfirmationCard({
   confirmationData,
-  onConfirm,
-  onBack,
-  isLoading,
 }: UtilityConfirmationCardProps) {
   return (
     <Card className="p-6 md:p-8">
@@ -38,26 +32,6 @@ export function UtilityConfirmationCard({
           value={confirmationData.billNumber}
         />
         <ConfirmationRow label="Alias:" value={confirmationData.alias} />
-      </div>
-
-      {/* Footer Actions */}
-      <div className="flex items-center justify-between pt-6">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button
-          type="button"
-          variant="primary"
-          onClick={onConfirm}
-          disabled={isLoading}
-        >
-          {isLoading ? "Confirmando..." : "Confirmar Inscripcion"}
-        </Button>
       </div>
     </Card>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button } from "@/src/atoms";
+import { Card } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
 import type {
   CityOption,
@@ -14,13 +14,10 @@ interface UtilityRegistrationFormProps {
   convenios: ConvenioOption[];
   formData: FormData;
   errors: UtilityRegistrationErrors;
-  isLoading: boolean;
   onCityChange: (cityId: string, cityName: string) => void;
   onConvenioChange: (convenioId: string, convenioName: string) => void;
   onBillNumberChange: (value: string) => void;
   onAliasChange: (value: string) => void;
-  onSubmit: () => void;
-  onBack: () => void;
 }
 
 export function UtilityRegistrationForm({
@@ -28,13 +25,10 @@ export function UtilityRegistrationForm({
   convenios,
   formData,
   errors,
-  isLoading,
   onCityChange,
   onConvenioChange,
   onBillNumberChange,
   onAliasChange,
-  onSubmit,
-  onBack,
 }: UtilityRegistrationFormProps) {
   // Convert cities to select options
   const cityOptions = cities.map((city) => ({
@@ -60,11 +54,6 @@ export function UtilityRegistrationForm({
     onConvenioChange(convenioId, convenio?.name || "");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit();
-  };
-
   return (
     <Card className="p-6 md:p-8">
       {/* Section Title */}
@@ -72,7 +61,7 @@ export function UtilityRegistrationForm({
         Inscripcion de Servicios Publicos
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-5">
         {/* Ciudad Select */}
         <SelectField
           label="Ciudad"
@@ -122,21 +111,7 @@ export function UtilityRegistrationForm({
           maxLength={50}
           required
         />
-
-        {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="text-sm font-medium text-brand-teal-dark hover:underline"
-          >
-            Volver
-          </button>
-          <Button type="submit" variant="primary" disabled={isLoading}>
-            {isLoading ? "Inscribiendo..." : "Inscribir"}
-          </Button>
-        </div>
-      </form>
+      </div>
     </Card>
   );
 }

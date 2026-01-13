@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { UtilityPaymentConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
@@ -108,10 +109,22 @@ export default function PagarServiciosConfirmacionPage() {
       <UtilityPaymentConfirmationCard
         confirmation={confirmation}
         hideBalances={hideBalances}
-        onConfirm={handleConfirm}
-        onBack={handleBack}
-        isLoading={isLoading}
       />
+
+      {/* Footer Actions */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={handleBack}
+          disabled={isLoading}
+          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
+          {isLoading ? "Procesando..." : "Confirmar Pago"}
+        </Button>
+      </div>
     </div>
   );
 }
