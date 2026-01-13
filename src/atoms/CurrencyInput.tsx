@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface CurrencyInputProps {
   value: number;
@@ -19,15 +19,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   disabled = false,
   className = "",
 }) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
-
-  const formatNumberForDisplay = (num: number): string => {
-    return num.toLocaleString("es-CO");
-  };
-
-  useEffect(() => {
-    setDisplayValue(formatNumberForDisplay(value));
-  }, [value]);
+  // Derive displayValue directly from props instead of syncing via useEffect
+  const displayValue = value.toLocaleString("es-CO");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
@@ -36,12 +29,6 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
     const numericValue = parseInt(cleaned, 10) || 0;
 
     onChange(numericValue);
-    setDisplayValue(formatNumberForDisplay(numericValue));
-  };
-
-  const handleBlur = () => {
-    // Ensure proper formatting on blur
-    setDisplayValue(formatNumberForDisplay(value));
   };
 
   // Check if full width is requested
@@ -61,7 +48,6 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
         inputMode="numeric"
         value={displayValue}
         onChange={handleChange}
-        onBlur={handleBlur}
         disabled={disabled}
         className={`
           ${

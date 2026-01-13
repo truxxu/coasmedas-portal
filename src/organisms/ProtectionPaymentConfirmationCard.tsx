@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { Card, Button, Divider } from "@/src/atoms";
+import { Card, Divider } from "@/src/atoms";
 import { ConfirmationRow } from "@/src/molecules";
 import type { ProtectionPaymentConfirmationData } from "@/src/types";
 import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface ProtectionPaymentConfirmationCardProps {
   confirmation: ProtectionPaymentConfirmationData;
-  onBack: () => void;
-  onConfirm: () => void;
-  isLoading?: boolean;
   hideBalances?: boolean;
 }
 
@@ -18,9 +15,6 @@ export const ProtectionPaymentConfirmationCard: React.FC<
   ProtectionPaymentConfirmationCardProps
 > = ({
   confirmation,
-  onBack,
-  onConfirm,
-  isLoading = false,
   hideBalances = false,
 }) => {
   return (
@@ -71,21 +65,6 @@ export const ProtectionPaymentConfirmationCard: React.FC<
             ? maskCurrency()
             : formatCurrency(confirmation.amountToPay)}
         </span>
-      </div>
-
-      {/* Footer Actions */}
-      <div className="flex justify-between items-center pt-4">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={onConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Confirmar Pago"}
-        </Button>
       </div>
     </Card>
   );

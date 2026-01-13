@@ -64,7 +64,6 @@ export default function ProteccionRespuestaPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
-        <HideBalancesToggle />
       </div>
 
       {/* Stepper - All steps completed */}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
 import { Breadcrumbs } from "@/src/molecules";
 import { UtilityRegistrationForm } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
@@ -33,7 +34,7 @@ export default function InscribirServiciosPage() {
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Servicios Publicos",
+      title: "Pago de Servicios Públicos",
       backHref: "/pagos/servicios-publicos",
     });
     return () => clearWelcomeBar();
@@ -54,7 +55,11 @@ export default function InscribirServiciosPage() {
       convenioId: "",
       convenioName: "",
     }));
-    setErrors((prev) => ({ ...prev, cityId: undefined, convenioId: undefined }));
+    setErrors((prev) => ({
+      ...prev,
+      cityId: undefined,
+      convenioId: undefined,
+    }));
   }, []);
 
   // Handle convenio change
@@ -140,7 +145,9 @@ export default function InscribirServiciosPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
-      <Breadcrumbs items={["Inicio", "Pagos", "Inscribir Servicios Publicos"]} />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Inscribir Servicios Públicos"]}
+      />
 
       {/* Registration Form */}
       <UtilityRegistrationForm
@@ -148,14 +155,25 @@ export default function InscribirServiciosPage() {
         convenios={filteredConvenios}
         formData={formData}
         errors={errors}
-        isLoading={isLoading}
         onCityChange={handleCityChange}
         onConvenioChange={handleConvenioChange}
         onBillNumberChange={handleBillNumberChange}
         onAliasChange={handleAliasChange}
-        onSubmit={handleSubmit}
-        onBack={handleBack}
       />
+
+      {/* Footer Actions */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "Inscribiendo..." : "Inscribir"}
+        </Button>
+      </div>
     </div>
   );
 }

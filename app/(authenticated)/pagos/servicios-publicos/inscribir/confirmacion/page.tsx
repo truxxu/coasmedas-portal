@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
 import { Breadcrumbs } from "@/src/molecules";
 import { UtilityConfirmationCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
@@ -21,7 +22,9 @@ export default function ConfirmacionPage() {
 
   const [confirmationData, setConfirmationData] =
     useState<UtilityConfirmationData | null>(null);
-  const [formData, setFormData] = useState<UtilityRegistrationForm | null>(null);
+  const [formData, setFormData] = useState<UtilityRegistrationForm | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
@@ -98,15 +101,27 @@ export default function ConfirmacionPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}
-      <Breadcrumbs items={["Inicio", "Pagos", "Inscribir Servicios Publicos"]} />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Inscribir Servicios Públicos"]}
+      />
 
       {/* Confirmation Card */}
-      <UtilityConfirmationCard
-        confirmationData={confirmationData}
-        onConfirm={handleConfirm}
-        onBack={handleBack}
-        isLoading={isLoading}
-      />
+      <UtilityConfirmationCard confirmationData={confirmationData} />
+
+      {/* Footer Actions */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={handleBack}
+          disabled={isLoading}
+          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
+          {isLoading ? "Confirmando..." : "Confirmar Inscripción"}
+        </Button>
+      </div>
     </div>
   );
 }

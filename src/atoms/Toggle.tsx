@@ -3,9 +3,10 @@ interface ToggleProps {
   onChange: () => void;
   label?: string;
   className?: string;
+  labelClassName?: string;
 }
 
-export function Toggle({ checked, onChange, label, className = '' }: ToggleProps) {
+export function Toggle({ checked, onChange, label, className = '', labelClassName = '' }: ToggleProps) {
   return (
     <button
       type="button"
@@ -42,7 +43,7 @@ export function Toggle({ checked, onChange, label, className = '' }: ToggleProps
           </>
         )}
       </svg>
-      {label && <span className="text-brand-text-black">{label}</span>}
+      {label && <span className={`text-brand-text-black ${labelClassName}`}>{label}</span>}
     </button>
   );
 }
