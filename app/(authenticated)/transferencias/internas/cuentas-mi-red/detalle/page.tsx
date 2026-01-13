@@ -126,7 +126,7 @@ export default function DetallePage() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-[#004266] hover:underline"
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
         >
           Volver
         </button>

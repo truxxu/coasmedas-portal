@@ -27,14 +27,14 @@ export function DestinationProductCard({
         w-full p-4 rounded-lg border text-left
         ${
           isSelected
-            ? "bg-white border-[#1D4E8F]"
-            : "bg-[#F5F5F5] border-[#E4E6EA] hover:bg-white hover:border-[#1D4E8F]"
+            ? "bg-white border-brand-navy"
+            : "bg-brand-gray-light border-brand-border hover:bg-white hover:border-brand-navy"
         }
         ${onClick ? "cursor-pointer transition-colors" : ""}
         ${className}
       `}
     >
-      <p className="text-lg font-bold text-[#1D4E8F]">
+      <p className="text-lg font-bold text-brand-navy">
         {productName} ({productType} {maskedNumber})
       </p>
     </Component>

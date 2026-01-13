@@ -25,12 +25,12 @@ export function NetworkTransferResultCard({
             w-[60px] h-[60px] rounded-full
             flex items-center justify-center
             border-2
-            ${isSuccess ? "border-[#00AFA9]" : "border-[#FF0D00]"}
+            ${isSuccess ? "border-brand-teal" : "border-brand-error"}
           `}
         >
           {isSuccess ? (
             <svg
-              className="w-8 h-8 text-[#00AFA9]"
+              className="w-8 h-8 text-brand-teal"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -45,7 +45,7 @@ export function NetworkTransferResultCard({
             </svg>
           ) : (
             <svg
-              className="w-8 h-8 text-[#FF0D00]"
+              className="w-8 h-8 text-brand-error"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -61,7 +61,7 @@ export function NetworkTransferResultCard({
           )}
         </div>
 
-        <h2 className="text-[22px] font-bold text-[#1D4E8F]">
+        <h2 className="text-[22px] font-bold text-brand-navy">
           {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
         </h2>
       </div>
@@ -69,34 +69,44 @@ export function NetworkTransferResultCard({
       {/* Transfer Details - Section 1 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Cuenta Origen:</span>
-          <span className="text-[15px] font-medium text-black text-right">
+          <span className="text-[15px] text-brand-text-black">
+            Cuenta Origen:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black text-right">
             {result.sourceAccount}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Destinatario:</span>
-          <span className="text-[15px] font-medium text-black text-right">
+          <span className="text-[15px] text-brand-text-black">
+            Destinatario:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black text-right">
             {result.recipientName}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Cuenta Destino:</span>
-          <span className="text-[15px] font-medium text-black text-right">
+          <span className="text-[15px] text-brand-text-black">
+            Cuenta Destino:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black text-right">
             {result.destinationAccount}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Valor Transferido:</span>
-          <span className="text-[15px] font-medium text-black">
+          <span className="text-[15px] text-brand-text-black">
+            Valor Transferido:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {hideBalances
               ? maskCurrency()
               : formatCurrency(result.amountTransferred)}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Costo Transacción:</span>
-          <span className="text-[15px] font-medium text-black">
+          <span className="text-[15px] text-brand-text-black">
+            Costo Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {formatCurrency(result.transactionCost)}
           </span>
         </div>
@@ -107,27 +117,33 @@ export function NetworkTransferResultCard({
       {/* Transaction Metadata - Section 2 */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Fecha de Transacción:</span>
-          <span className="text-[15px] font-medium text-black">
+          <span className="text-[15px] text-brand-text-black">
+            Fecha de Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.transactionDate}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Hora de Transacción:</span>
-          <span className="text-[15px] font-medium text-black">
+          <span className="text-[15px] text-brand-text-black">
+            Hora de Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.transactionTime}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Número de Aprobación:</span>
-          <span className="text-[15px] font-medium text-black">
+          <span className="text-[15px] text-brand-text-black">
+            Número de Aprobación:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
             {result.approvalNumber}
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-black">Descripción:</span>
+          <span className="text-[15px] text-brand-text-black">Descripción:</span>
           <span
-            className={`text-[15px] font-medium ${isSuccess ? "text-[#00A44C]" : "text-[#FF0D00]"}`}
+            className={`text-[15px] font-medium ${isSuccess ? "text-brand-success-icon" : "text-brand-error"}`}
           >
             {result.description}
           </span>

@@ -19,15 +19,15 @@ export function RegisteredAccountsList({
   return (
     <Card className={`p-6 space-y-6 ${className}`}>
       <div>
-        <h2 className="text-lg font-bold text-[#1D4E8F] mb-2">
+        <h2 className="text-lg font-bold text-brand-navy mb-2">
           Transferencias a cuentas de mi Red Coopcentral
         </h2>
-        <p className="text-[15px] text-black">
+        <p className="text-[15px] text-brand-text-black">
           Transfiere a cuentas de asociados previamente inscritos en tu red.
         </p>
       </div>
 
-      <div className="border border-[#E4E6EA] rounded-lg overflow-hidden">
+      <div className="border border-brand-border rounded-lg overflow-hidden">
         {accounts.length > 0 ? (
           accounts.map((account) => (
             <RegisteredAccountItem
@@ -38,7 +38,7 @@ export function RegisteredAccountsList({
             />
           ))
         ) : (
-          <div className="p-6 text-center text-[#808284]">
+          <div className="p-6 text-center text-brand-gray-medium">
             No tienes cuentas registradas en tu red.
           </div>
         )}

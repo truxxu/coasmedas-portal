@@ -34,8 +34,8 @@ export function RegisteredAccountItem({
       onClick={onClick}
       className={`
         w-full flex items-center justify-between p-4
-        border-b border-[#E4E6EA] last:border-b-0
-        hover:bg-[#F0F9FF] transition-colors
+        border-b border-brand-border last:border-b-0
+        hover:bg-brand-light-blue transition-colors
         ${className}
       `}
       aria-label={`Transferir a ${name}`}
@@ -43,14 +43,14 @@ export function RegisteredAccountItem({
       <div className="flex items-center gap-4">
         <Avatar initials={initials} size="md" />
         <div className="text-left">
-          <p className="text-lg font-medium text-[#1D4E8F] uppercase">{name}</p>
-          <p className="text-sm text-black">
+          <p className="text-lg font-medium text-brand-navy uppercase">{name}</p>
+          <p className="text-sm text-brand-text-black">
             {productCount} producto{productCount !== 1 ? "s" : ""} disponible
             {productCount !== 1 ? "s" : ""}
           </p>
         </div>
       </div>
-      <ChevronIcon direction="right" className="text-[#808284]" />
+      <ChevronIcon direction="right" className="text-brand-gray-medium" />
     </button>
   );
 }

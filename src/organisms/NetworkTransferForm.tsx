@@ -38,7 +38,7 @@ export function NetworkTransferForm({
 
   return (
     <Card className="p-6 space-y-6">
-      <h2 className="text-lg font-bold text-[#1D4E8F]">
+      <h2 className="text-lg font-bold text-brand-navy">
         Transferencias a {recipientName}
       </h2>
 
@@ -46,7 +46,7 @@ export function NetworkTransferForm({
       <div>
         <label
           htmlFor="source-account"
-          className="block text-[15px] text-black mb-2"
+          className="block text-[15px] text-brand-text-black mb-2"
         >
           ¿De cuál cuenta quieres transferir?
         </label>
@@ -56,9 +56,9 @@ export function NetworkTransferForm({
           onChange={(e) => onSourceChange(e.target.value)}
           className="
             w-full h-11 px-3 pr-10
-            rounded-md border border-[#B1B1B1]
-            text-base text-[#111827]
-            focus:border-[#007FFF] focus:ring-2 focus:ring-[#007FFF] focus:outline-none
+            rounded-md border border-brand-footer-text
+            text-base text-brand-text-black
+            focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none
             appearance-none bg-white
             bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M6%208L1%203h10z%22%2F%3E%3C%2Fsvg%3E')]
             bg-no-repeat bg-[right_12px_center]
@@ -75,7 +75,7 @@ export function NetworkTransferForm({
 
       {/* Destination Product */}
       <div>
-        <label className="block text-sm text-black mb-2">
+        <label className="block text-sm text-brand-text-black mb-2">
           Selecciona el producto de destino:
         </label>
         <DestinationProductCard
@@ -95,7 +95,9 @@ export function NetworkTransferForm({
         label="Valor a Transferir"
       />
 
-      {error && <p className="text-sm text-[#FF0D00] text-center">{error}</p>}
+      {error && (
+        <p className="text-sm text-brand-error text-center">{error}</p>
+      )}
     </Card>
   );
 }

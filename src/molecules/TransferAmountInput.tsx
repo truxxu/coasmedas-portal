@@ -28,9 +28,15 @@ export function TransferAmountInput({
 
   return (
     <div className={className}>
-      {label && <label className="block text-sm text-black mb-2">{label}</label>}
-      <div className="flex items-center border-b border-[#B1B1B1] pb-2">
-        <span className="text-[21px] font-bold text-black mr-2">$</span>
+      {label && (
+        <label className="block text-sm text-brand-text-black mb-2">
+          {label}
+        </label>
+      )}
+      <div className="flex items-center border-b border-brand-footer-text pb-2">
+        <span className="text-[21px] font-bold text-brand-text-black mr-2">
+          $
+        </span>
         <input
           type="text"
           inputMode="numeric"
@@ -38,7 +44,7 @@ export function TransferAmountInput({
           onChange={handleChange}
           disabled={disabled}
           className={`
-            flex-1 text-right text-[21px] font-bold text-black
+            flex-1 text-right text-[21px] font-bold text-brand-text-black
             bg-transparent border-none outline-none
             focus:ring-0
             ${disabled ? "opacity-50 cursor-not-allowed" : ""}
@@ -47,7 +53,7 @@ export function TransferAmountInput({
           aria-label={label}
         />
       </div>
-      {error && <p className="mt-1 text-sm text-[#FF0D00]">{error}</p>}
+      {error && <p className="mt-1 text-sm text-brand-error">{error}</p>}
     </div>
   );
 }
