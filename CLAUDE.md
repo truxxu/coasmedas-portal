@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Portal Transaccional Coasmedas** - A Next.js 16 portal application using App Router, TypeScript, Tailwind CSS v4, and Atomic Design component architecture. The project is in active development with authentication, home dashboard, and product features being implemented.
+**Portal Transaccional Coasmedas** - A Next.js 16 portal application using App Router, TypeScript, Tailwind CSS v4, and Atomic Design component architecture. The portal includes authentication, dashboard, product management (Aportes, Ahorros, Obligaciones, Inversiones, Protección), payments (own products, other associates, utility services), and internal transfers.
 
 **Backend API**: This portal consumes the Coasmedas Banking API (REST). See API documentation in `.claude/knowledge/api/`
 
@@ -90,13 +90,32 @@ app/
 └── (authenticated)/              # Route group for authenticated pages
     ├── layout.tsx                # Authenticated layout (Sidebar, TopBar)
     ├── home/page.tsx             # Dashboard home
-    └── productos/                # Products feature
-        ├── page.tsx              # Products index (redirects)
-        ├── aportes/page.tsx      # Aportes product page (implemented)
-        ├── ahorros/page.tsx      # Ahorros product page (04-ahorros feature)
-        ├── obligaciones/page.tsx # Obligaciones product page (05-obligaciones feature)
-        ├── inversiones/page.tsx  # Inversiones product page (06-inversiones feature)
-        └── proteccion/page.tsx   # Protección product page (07-proteccion feature)
+    ├── productos/                # Products feature
+    │   ├── page.tsx              # Products index (redirects)
+    │   ├── aportes/page.tsx      # Aportes product page
+    │   ├── ahorros/page.tsx      # Ahorros product page
+    │   ├── obligaciones/page.tsx # Obligaciones product page
+    │   ├── inversiones/page.tsx  # Inversiones product page
+    │   └── proteccion/page.tsx   # Protección product page
+    ├── pagos/                    # Payments feature (09-pagos)
+    │   ├── page.tsx              # Payments index
+    │   ├── pagar-mis-productos/  # Pay my products
+    │   │   ├── page.tsx          # Product selection
+    │   │   ├── aportes/          # Aportes payment flow
+    │   │   ├── obligaciones/     # Obligaciones payment flow
+    │   │   ├── proteccion/       # Protection payment flow
+    │   │   └── pago-unificado/   # Unified payment flow
+    │   ├── otros-asociados/      # Pay other associates
+    │   │   └── pago/             # Payment flow with beneficiary selection
+    │   └── servicios-publicos/   # Utility payments
+    │       ├── page.tsx          # Flow selection (register/pay)
+    │       ├── inscribir/        # Utility registration flow
+    │       └── pagar/            # Utility payment flow
+    └── transferencias/           # Transfers feature (10-transferencias)
+        └── internas/             # Internal transfers
+            ├── page.tsx          # Transfer type selection
+            ├── entre-mis-cuentas/# Between my accounts
+            └── cuentas-mi-red/   # Network accounts (Coopcentral)
 ```
 
 ## Tech Stack
@@ -220,26 +239,66 @@ const { hideBalances } = useUIContext();
 - `BackButton` - Back navigation arrow button
 - `AppStoreButton` - App Store download button
 - `GooglePlayButton` - Google Play download button
+- `CarouselArrow` - Navigation arrow button for carousels (left/right)
+- `CarouselDots` - Pagination dot indicators for carousels
+- `Checkbox` - Checkbox input with label support
+- `CodeInput` - Single digit input for SMS/OTP codes
+- `CurrencyInput` - Currency input with formatting
+- `ErrorIcon` - Error state icon (red X)
+- `SuccessIcon` - Success state icon (green checkmark)
+- `InfoBox` - Information box with icon and text
+- `StepperCircle` - Circular step indicator for stepper
+- `StepperConnector` - Connector line between stepper steps
 
 ### Molecules (src/molecules/)
 
+#### Navigation & Layout
 - `SidebarNavItem` - Sidebar navigation item (supports expandable with children)
 - `SidebarSubItem` - Sub-navigation item for sidebar accordion
+- `NavBar` - Top navigation bar
+- `Breadcrumbs` - Breadcrumb navigation trail
 - `HideBalancesToggle` - Toggle for hiding balances
-- `TransactionItem` - Single transaction display
+- `UserAvatar` - Avatar with user name
+- `UserDropdown` - User menu dropdown
+
+#### Form Components
 - `FormField` - Label + Input + Error combination
 - `SelectField` - Label + Select + Error combination
 - `PasswordField` - Password input with visibility toggle
-- `UserAvatar` - Avatar with user name
-- `UserDropdown` - User menu dropdown
-- `QuickAccessCard` - Quick action cards
-- `Breadcrumbs` - Breadcrumb navigation trail
 - `DateRangeFilter` - Start/end date filter with apply button
-- `SavingsProductCard` - Savings product card for carousel (04-ahorros)
-- `ObligacionProductCard` - Loan product card with extended fields (05-obligaciones)
-- `InversionProductCard` - Investment/CDAT product card with term details (06-inversiones)
-- `ProteccionProductCard` - Insurance/protection product card without main balance (07-proteccion)
-- `NavBar` - Top navigation bar
+- `CaptchaPlaceholder` - Captcha placeholder component
+- `CodeInputGroup` - Group of CodeInput fields for SMS/OTP verification
+- `TransferAmountInput` - Amount input with source account balance display
+
+#### Product Cards (for carousels)
+- `SavingsProductCard` - Savings product card for carousel
+- `ObligacionProductCard` - Loan product card with extended fields
+- `InversionProductCard` - Investment/CDAT product card with term details
+- `ProteccionProductCard` - Insurance/protection product card without main balance
+
+#### Payment Components
+- `PaymentOptionCard` - Selectable payment option card
+- `PaymentSummaryRow` - Row displaying payment detail (label + value)
+- `PaymentTypeButton` - Button for selecting payment type (PSE/cuenta)
+- `AportesPaymentDetailRow` - Detailed payment row for aportes
+- `ObligacionPaymentCard` - Loan payment selection card
+- `ProtectionPaymentCard` - Insurance payment selection card
+- `PayableProductCard` - Card for selecting products to pay
+- `ConfirmationRow` - Row for confirmation screens (label + value)
+
+#### Transfer Components
+- `DestinationProductCard` - Card for selecting destination account
+- `RegisteredAccountItem` - Item in registered accounts list
+- `InfoNoteBox` - Information note with icon
+
+#### Transaction & Display
+- `TransactionItem` - Single transaction display
+- `QuickAccessCard` - Quick action cards
+- `FlowOptionCard` - Option card for flow selection
+- `BeneficiaryListItem` - Beneficiary item in selection list
+- `Stepper` - Multi-step progress indicator
+
+#### Prehome/Landing
 - `HeroBanner` - Hero section for landing pages
 - `WelcomeSection` - Welcome message section
 - `ServiceCard` - Service feature card
@@ -247,26 +306,81 @@ const { hideBalances } = useUIContext();
 - `InfoCard` - Information card
 - `AppPromoSection` - App promotion section
 - `Footer` - Page footer
-- `CaptchaPlaceholder` - Captcha placeholder component
 
 ### Organisms (src/organisms/)
 
+#### Layout & Navigation
 - `Sidebar` - Main navigation sidebar with product accordion
 - `TopBar` - Top header bar
 - `WelcomeBar` - Welcome message bar
 - `SessionFooter` - Session info footer
+
+#### Authentication
 - `LoginForm` - Complete login form
 - `LoginCard` - Login card container
+
+#### Dashboard
 - `AccountSummaryCard` - Account balance card
 - `RecentTransactions` - Transaction list
 - `QuickAccessGrid` - Grid of quick actions
+
+#### Product Pages
 - `AportesInfoCard` - Aportes product information card
 - `TransactionHistoryCard` - Transaction list with date filter (reusable)
 - `DownloadReportsCard` - Monthly report download (reusable)
-- `ProductCarousel` - Reusable carousel for savings products (04-ahorros)
-- `ObligacionCarousel` - Carousel for loan/credit products (05-obligaciones)
-- `InversionCarousel` - Carousel for investment/CDAT products (06-inversiones)
-- `ProteccionCarousel` - Carousel for insurance/protection products (07-proteccion)
+- `ProductCarousel` - Reusable carousel for savings products
+- `ObligacionCarousel` - Carousel for loan/credit products
+- `InversionCarousel` - Carousel for investment/CDAT products
+- `ProteccionCarousel` - Carousel for insurance/protection products
+
+#### Payment Flow Components
+- `PaymentOptionsGrid` - Grid of payment options (pagar mis productos)
+- `PaymentDetailsCard` - Payment details form card
+- `PaymentConfirmationCard` - Payment confirmation display
+- `CodeInputCard` - SMS/OTP code input card
+- `TransactionResultCard` - Generic transaction result (success/error)
+- `PSELoadingCard` - PSE redirect loading state
+
+#### Aportes Payment
+- `AportesDetailsCard` - Aportes payment details
+- `AportesConfirmationCard` - Aportes payment confirmation
+- `AportesTransactionResultCard` - Aportes payment result
+
+#### Obligaciones Payment
+- `ObligacionDetailsCard` - Loan payment details
+- `ObligacionConfirmationCard` - Loan payment confirmation
+- `ObligacionResultCard` - Loan payment result
+
+#### Protection Payment
+- `ProtectionPaymentDetailsCard` - Insurance payment details
+- `ProtectionPaymentConfirmationCard` - Insurance payment confirmation
+- `ProtectionPaymentResultCard` - Insurance payment result
+
+#### Otros Asociados Payment
+- `BeneficiarySelectionCard` - Beneficiary selection for other associates
+- `OtrosAsociadosDetailsCard` - Other associates payment details
+- `OtrosAsociadosConfirmationCard` - Other associates confirmation
+- `OtrosAsociadosResultCard` - Other associates payment result
+
+#### Utility Services
+- `FlowSelectionCard` - Flow selection (register/pay utility)
+- `UtilityRegistrationForm` - Utility service registration form
+- `UtilityConfirmationCard` - Utility registration confirmation
+- `UtilityRegistrationResultCard` - Utility registration result
+- `UtilityPaymentDetailsForm` - Utility payment details form
+- `UtilityPaymentConfirmationCard` - Utility payment confirmation
+- `UtilityPaymentResultCard` - Utility payment result
+
+#### Transfers
+- `InternasFlowGrid` - Internal transfer type selection grid
+- `TransferDetailsCard` - Transfer details form
+- `TransferConfirmationCard` - Transfer confirmation display
+- `TransferResultCard` - Transfer result display
+- `NetworkTransferForm` - Network transfer (Coopcentral) form
+- `RegisteredAccountsList` - List of registered accounts
+- `NetworkTransferResultCard` - Network transfer result
+
+#### Prehome/Landing
 - `PrehomeHeader` - Prehome page header
 - `PrehomeHero` - Prehome hero section
 - `PrehomeWelcome` - Prehome welcome section
@@ -284,21 +398,61 @@ const { hideBalances } = useUIContext();
 
 ### Types (src/types/)
 
+#### Core Types
 - `User` - User information
 - `Account` - Account data
 - `Transaction` - Transaction data
-- `AportesProduct` - Aportes product data
+- `ProductType` - Union type for all product types
 - `ProductDetail` - Product detail (vigentes, enMora, fechaCubrimiento)
 - `MonthOption` - Month dropdown option
 - `DateRangeFilter` - Date range filter state
-- `SavingsProduct` - Savings product data (04-ahorros)
+
+#### Product Types
+- `AportesProduct` - Aportes product data
+- `SavingsProduct` - Savings product data
 - `SavingsStatus` - Savings status (activo/bloqueado/inactivo)
-- `ObligacionProduct` - Loan/credit product data (05-obligaciones)
+- `ObligacionProduct` - Loan/credit product data
 - `ObligacionStatus` - Loan status (al_dia/en_mora)
-- `InversionProduct` - Investment/CDAT product data (06-inversiones)
+- `InversionProduct` - Investment/CDAT product data
 - `InversionStatus` - Investment status (activo/vencido)
-- `ProteccionProduct` - Insurance/protection product data (07-proteccion)
+- `ProteccionProduct` - Insurance/protection product data
 - `ProteccionStatus` - Protection status (activo/inactivo/cancelado)
+
+#### Payment Types (src/types/payment.ts)
+- `PaymentOption` - Payment option configuration
+- `PaymentMethod` - Payment method (pse/cuenta)
+- `PaymentState` - Current payment flow state
+
+#### Stepper Types (src/types/stepper.ts)
+- `StepperStep` - Individual step configuration
+- `StepStatus` - Step status (pending/active/completed)
+
+#### Aportes Payment (src/types/aportes-payment.ts)
+- `AportesPaymentData` - Aportes payment form data
+- `AportesPaymentConfirmation` - Confirmation data
+
+#### Obligacion Payment (src/types/obligacion-payment.ts)
+- `ObligacionPaymentData` - Loan payment form data
+- `ObligacionPaymentState` - Loan payment flow state
+
+#### Otros Asociados Payment (src/types/otros-asociados-payment.ts)
+- `Beneficiary` - Beneficiary data
+- `OtrosAsociadosPaymentData` - Payment to other associates data
+
+#### Utility Types (src/types/utility-registration.ts, utility-payment.ts)
+- `UtilityService` - Utility service data
+- `UtilityRegistrationData` - Utility registration form data
+- `UtilityPaymentData` - Utility payment form data
+
+#### Protection Payment (src/types/protection-payment.ts)
+- `ProtectionPaymentData` - Insurance payment data
+- `ProtectionPaymentState` - Insurance payment flow state
+
+#### Transfer Types (src/types/transfer.ts, networkTransfer.ts)
+- `TransferData` - Internal transfer data
+- `TransferConfirmation` - Transfer confirmation data
+- `NetworkTransferData` - Network (Coopcentral) transfer data
+- `RegisteredAccount` - Registered external account
 
 ### Utils (src/utils/)
 
@@ -312,17 +466,33 @@ const { hideBalances } = useUIContext();
 
 ### Mocks (src/mocks/)
 
+#### Product Mocks
 - `mockAportesData` - Aportes product mock data
 - `mockTransactions` - Transaction list mock data
 - `mockAvailableMonths` - Available months for reports
-- `mockSavingsProducts` - Savings products for carousel (04-ahorros)
+- `mockSavingsProducts` - Savings products for carousel
 - `mockAhorrosTransactions` - Savings transactions
-- `mockObligacionProducts` - Loan products for carousel (05-obligaciones)
+- `mockObligacionProducts` - Loan products for carousel
 - `mockObligacionTransactions` - Loan transactions
-- `mockInversionProducts` - Investment products for carousel (06-inversiones)
+- `mockInversionProducts` - Investment products for carousel
 - `mockInversionesTransactions` - Investment transactions
-- `mockProteccionProducts` - Insurance/protection products for carousel (07-proteccion)
+- `mockProteccionProducts` - Insurance/protection products for carousel
 - `mockProteccionTransactions` - Protection transactions
+
+#### Payment Mocks
+- `mockPaymentOptions` - Payment options for pagar mis productos
+- `mockAportesPaymentData` - Aportes payment mock data
+- `mockObligacionPaymentData` - Loan payment mock data
+- `mockOtrosAsociadosPaymentData` - Other associates payment mock data
+- `mockProtectionPaymentData` - Insurance payment mock data
+
+#### Utility Mocks
+- `mockUtilityRegistrationData` - Utility registration mock data
+- `mockUtilityPaymentData` - Utility payment mock data
+
+#### Transfer Mocks
+- `mockTransferData` - Internal transfer mock data
+- `mockNetworkTransferData` - Network transfer mock data
 
 ---
 
@@ -367,159 +537,143 @@ Product pages follow a consistent structure with reusable components:
 
 ---
 
-## Feature 04-ahorros: New Components
+## Pagos (Payments) Feature Pattern
 
-The Ahorros feature introduces these new reusable components:
+The Pagos feature implements multiple payment flows with a consistent multi-step pattern.
 
-### New Atoms (to be created)
+### Payment Flow Structure
 
-- `CarouselArrow` - Navigation arrow button (left/right)
-- `CarouselDots` - Pagination dot indicators
+All payment flows follow a similar step pattern:
 
-### New Molecules (to be created)
+```
+1. Product/Beneficiary Selection → 2. Payment Details → 3. Confirmation → 4. Verification (SMS/PSE) → 5. Result
+```
 
-- `SavingsProductCard` - Product card for carousel display
+### Available Payment Flows
 
-### New Organisms (to be created)
+| Flow | Route | Description |
+|------|-------|-------------|
+| Pagar mis productos | `/pagos/pagar-mis-productos` | Pay own products (Aportes, Obligaciones, Protección) |
+| Pago Unificado | `/pagos/pagar-mis-productos/pago-unificado` | Pay multiple products at once |
+| Otros Asociados | `/pagos/otros-asociados` | Pay to other associates |
+| Servicios Públicos | `/pagos/servicios-publicos` | Register and pay utility services |
 
-- `ProductCarousel` - Reusable horizontal carousel
+### Payment Methods
 
-### New Types (to be created)
+- **PSE** - Redirect to external PSE payment gateway
+- **Cuenta** - Pay from savings account (requires SMS verification)
 
-- `SavingsProduct` - Savings product data structure
-- `SavingsStatus` - Product status (activo/bloqueado/inactivo)
-- `CarouselState` - Carousel scroll state
+### Page Structure Example
 
-### New Utils (to be created)
+```tsx
+// app/(authenticated)/pagos/pagar-mis-productos/aportes/page.tsx
+<div className="space-y-6">
+  {/* Header with back button and breadcrumbs */}
+  <div className="flex items-center justify-between">
+    <BackButton onClick={handleBack} />
+    <Breadcrumbs items={breadcrumbItems} />
+  </div>
 
-- `calculateTotalPages()` - Carousel pagination helper
-- `getVisibleItems()` - Responsive visible items calculator
+  {/* Stepper showing current step */}
+  <Stepper steps={steps} currentStep={currentStep} />
 
----
+  {/* Step-specific content card */}
+  <AportesDetailsCard onSubmit={handleSubmit} />
+</div>
+```
 
-## Feature 05-obligaciones: New Components
+### Verification Patterns
 
-The Obligaciones (Loans/Credits) feature introduces these new components:
+- **SMS Code**: 6-digit code input via `CodeInputCard`
+- **PSE Redirect**: Loading state via `PSELoadingCard`, then redirect
 
-### New Molecules (to be created)
+### Result States
 
-- `ObligacionProductCard` - Extended product card for loan display with:
-  - Title, product type, masked product number with prefix (e.g., "CR-\*\*\*1010")
-  - Disbursed amount ("Monto desembolsado")
-  - Total balance ("Saldo Total")
-  - Next payment date and amount section
-  - Status: "Al día" (green) or "En mora" (red)
-  - Gray background when unselected, white when selected
-
-### New Organisms (to be created)
-
-- `ObligacionCarousel` - Carousel specifically for loan products (similar to ProductCarousel but uses ObligacionProductCard)
-
-### New Types (to be created)
-
-- `ObligacionProduct` - Loan product data structure with extended fields:
-  - `id`, `title`, `productType`, `productNumber`, `productPrefix`
-  - `disbursedAmount`, `totalBalance`
-  - `nextPaymentDate`, `nextPaymentAmount`
-  - `status` (al_dia/en_mora)
-- `ObligacionStatus` - Loan status type ('al_dia' | 'en_mora')
-
-### Key Differences from Ahorros
-
-| Aspect          | Ahorros                                    | Obligaciones                                |
-| --------------- | ------------------------------------------ | ------------------------------------------- |
-| Card Background | White (unselected), Blue border (selected) | Gray #F5F5F5 (unselected), White (selected) |
-| Status Values   | activo/bloqueado/inactivo                  | al_dia/en_mora                              |
-| Card Fields     | Balance only                               | Disbursed amount + Balance + Next payment   |
-| Product Prefix  | None                                       | "CR-" prefix before masked number           |
+All result cards support:
+- Success state (green icon, success message)
+- Error state (red icon, error message, retry option)
+- Transaction details display
 
 ---
 
-## Feature 06-inversiones: New Components
+## Transferencias (Transfers) Feature Pattern
 
-The Inversiones (Investments/CDAT) feature introduces these new components:
+The Transferencias feature handles internal transfers between accounts.
 
-### New Molecules (to be created)
+### Transfer Types
 
-- `InversionProductCard` - Investment/CDAT product card for carousel with:
-  - Title: "CDAT" (Certificado de Depósito de Ahorro a Término)
-  - Masked product number with prefix (e.g., "DTA-\*\*\*1234")
-  - Investment amount ("Monto" in blue #004680)
-  - Interest rate percentage (e.g., "7.5%")
-  - Term in days (e.g., "360 días")
-  - Creation and maturity dates
-  - Status: "Activo" (green) or "Vencido" (red)
-  - Gray background #E4E6EA (unselected), white (selected)
+| Type | Route | Description |
+|------|-------|-------------|
+| Entre mis cuentas | `/transferencias/internas/entre-mis-cuentas` | Between own accounts |
+| Cuentas mi red | `/transferencias/internas/cuentas-mi-red` | To Coopcentral network accounts |
 
-### New Organisms (to be created)
+### Transfer Flow Structure
 
-- `InversionCarousel` - Carousel specifically for investment products (similar to ObligacionCarousel but uses InversionProductCard)
+```
+1. Type Selection → 2. Transfer Details → 3. Confirmation → 4. SMS Verification → 5. Result
+```
 
-### New Types (to be created)
+### Page Structure Example
 
-- `InversionProduct` - Investment product data structure with:
-  - `id`, `title`, `productNumber`, `productPrefix`
-  - `amount` (monto)
-  - `interestRate` (tasa de interés)
-  - `termDays` (plazo en días)
-  - `creationDate`, `maturityDate`
-  - `status` (activo/vencido)
-- `InversionStatus` - Investment status type ('activo' | 'vencido')
+```tsx
+// app/(authenticated)/transferencias/internas/entre-mis-cuentas/page.tsx
+<div className="space-y-6">
+  <div className="flex items-center justify-between">
+    <BackButton onClick={handleBack} />
+    <Breadcrumbs items={breadcrumbItems} />
+  </div>
 
-### Key Differences from Obligaciones
+  <Stepper steps={steps} currentStep={currentStep} />
 
-| Aspect                       | Obligaciones                         | Inversiones                  |
-| ---------------------------- | ------------------------------------ | ---------------------------- |
-| Card Background (unselected) | Gray #F3F4F6                         | Gray #E4E6EA                 |
-| Status Values                | al_dia/en_mora                       | activo/vencido               |
-| Card Fields                  | Balance + Disbursed + Next Payment   | Amount + Rate + Term + Dates |
-| Product Prefix               | "CR-"                                | "DTA-"                       |
-| Transaction Title Prefix     | Product title                        | "CDAT-" prefix               |
-| Monetary Values to Mask      | 3 (balance, disbursed, next payment) | 1 (amount only)              |
+  <TransferDetailsCard
+    sourceAccounts={sourceAccounts}
+    destinationAccounts={destinationAccounts}
+    onSubmit={handleSubmit}
+  />
+</div>
+```
+
+### Key Components
+
+- `InternasFlowGrid` - Grid for selecting transfer type
+- `TransferDetailsCard` - Source/destination account selection with amount
+- `TransferConfirmationCard` - Review transfer details
+- `TransferResultCard` - Success/error result display
 
 ---
 
-## Feature 07-proteccion: New Components
+## Reusable Flow Patterns
 
-The Protección (Insurance/Protection) feature introduces these new components:
+### Stepper Pattern
 
-### New Molecules (to be created)
+All multi-step flows use the `Stepper` component:
 
-- `ProteccionProductCard` - Insurance/protection product card for carousel with:
-  - Title: Policy/insurance name (e.g., "Seguro de Vida")
-  - Masked product number with "No" prefix (e.g., "No**\*\***65-9")
-  - **NO main balance field** (unique among all product cards)
-  - Status: "Activo" (green), "Inactivo" (gray), or "Cancelado" (red)
-  - Pago Mínimo (minimum payment) in navy blue #194E8D
-  - Fecha Límite de Pago (payment deadline)
-  - Pago Total Anual (total annual payment) in navy blue #194E8D
-  - Gray background #E4E6EA (unselected), white (selected)
+```tsx
+const steps: StepperStep[] = [
+  { id: 1, label: 'Detalle', status: 'completed' },
+  { id: 2, label: 'Confirmación', status: 'active' },
+  { id: 3, label: 'Verificación', status: 'pending' },
+  { id: 4, label: 'Resultado', status: 'pending' },
+];
 
-### New Organisms (to be created)
+<Stepper steps={steps} currentStep={2} />
+```
 
-- `ProteccionCarousel` - Carousel specifically for insurance products (similar to InversionCarousel but uses ProteccionProductCard)
+### Confirmation Card Pattern
 
-### New Types (to be created)
+All confirmation cards display:
+- Summary rows with label/value pairs
+- Payment method selection (when applicable)
+- Terms acceptance checkbox
+- Continue/Cancel buttons
 
-- `ProteccionProduct` - Insurance product data structure with:
-  - `id`, `title`, `productNumber`
-  - `status` (activo/inactivo/cancelado)
-  - `minimumPayment` (pago mínimo)
-  - `paymentDeadline` (fecha límite de pago)
-  - `annualPayment` (pago total anual)
-- `ProteccionStatus` - Protection status type ('activo' | 'inactivo' | 'cancelado')
+### Result Card Pattern
 
-### Key Differences from Other Product Cards
-
-| Aspect                       | Inversiones                  | Protección                                               |
-| ---------------------------- | ---------------------------- | -------------------------------------------------------- |
-| Card Background (unselected) | Gray #E4E6EA                 | Gray #E4E6EA                                             |
-| Status Values                | activo/vencido               | activo/inactivo/cancelado                                |
-| Card Fields                  | Amount + Rate + Term + Dates | **No balance** + Min Payment + Deadline + Annual Payment |
-| Product Prefix               | "DTA-"                       | "No" (followed by masked number)                         |
-| Transaction Title Prefix     | "CDAT-"                      | Product title                                            |
-| Monetary Values to Mask      | 1 (amount)                   | 2 (minimumPayment, annualPayment)                        |
-| Section Title                | "Resumen de Inversiones"     | "Resumen de Pólizas y Seguros"                           |
+All result cards display:
+- Success/Error icon
+- Transaction ID (on success)
+- Transaction details summary
+- Action buttons (download receipt, return to home)
 
 ---
 
