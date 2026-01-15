@@ -23,8 +23,6 @@ export { SavingsProductCard } from './SavingsProductCard';
 export { ObligacionProductCard } from './ObligacionProductCard';
 export { InversionProductCard } from './InversionProductCard';
 export { ProteccionProductCard } from './ProteccionProductCard';
-export { CoaspocketProductCard } from './CoaspocketProductCard';
-export { CreatePocketCard } from './CreatePocketCard';
 export { PaymentOptionCard } from './PaymentOptionCard';
 export { Stepper } from './Stepper';
 export { PaymentSummaryRow } from './PaymentSummaryRow';

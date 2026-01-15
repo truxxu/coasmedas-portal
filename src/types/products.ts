@@ -1,5 +1,5 @@
 // Product types
-export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion' | 'coaspocket';
+export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion';
 
 // Aportes-specific types
 export interface AportesProduct {

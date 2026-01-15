@@ -518,7 +518,6 @@ const productSubItems = [
   { label: 'Ahorros', href: '/productos/ahorros' },
   { label: 'Inversiones', href: '/productos/inversiones' },
   { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 ```
 
@@ -530,7 +529,6 @@ const productSubItems = [
   { label: 'Obligaciones', href: '/productos/obligaciones' },
   { label: 'Inversiones', href: '/productos/inversiones' },
   { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 ```
 

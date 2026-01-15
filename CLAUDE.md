@@ -382,7 +382,7 @@ The Ahorros feature introduces these new reusable components:
 
 ### New Organisms (to be created)
 
-- `ProductCarousel` - Reusable horizontal carousel (will be used by Inversiones, Coaspocket)
+- `ProductCarousel` - Reusable horizontal carousel
 
 ### New Types (to be created)
 

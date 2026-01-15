@@ -28,7 +28,7 @@ The **Products** feature provides authenticated users access to their financial 
 
 **Acceptance Criteria**:
 - [ ] Clicking "Productos" in sidebar expands accordion menu
-- [ ] Accordion shows: Aportes, Ahorros, Inversiones, Protección, Coaspocket
+- [ ] Accordion shows: Aportes, Ahorros, Inversiones, Protección
 - [ ] Clicking a sub-item navigates to `/productos/{product-name}`
 - [ ] Active product is visually highlighted
 - [ ] Accordion state persists during session
@@ -84,7 +84,6 @@ The **Products** feature provides authenticated users access to their financial 
 | `/productos/ahorros` | Ahorros page (future) |
 | `/productos/inversiones` | Inversiones page (future) |
 | `/productos/proteccion` | Protección page (future) |
-| `/productos/coaspocket` | Coaspocket page (future) |
 
 ### File Structure
 
@@ -429,7 +428,6 @@ const productSubItems = [
   { label: 'Ahorros', href: '/productos/ahorros' },
   { label: 'Inversiones', href: '/productos/inversiones' },
   { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 
 // In Sidebar component, update Productos item:
@@ -465,7 +463,7 @@ The existing `SidebarNavItem` component already supports `children` prop but doe
 
 ```typescript
 // Product types
-export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion' | 'coaspocket';
+export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion';
 
 // Aportes-specific types
 export interface AportesProduct {

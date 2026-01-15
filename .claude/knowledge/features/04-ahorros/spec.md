@@ -924,8 +924,7 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 The `ProductCarousel` component is designed to be **reusable** for:
 
 1. **Inversiones page** - Investment products carousel
-2. **Coaspocket page** - Digital wallet products carousel
-3. **Future product pages** - Any multi-product display
+2. **Future product pages** - Any multi-product display
 
 To use with different product types, the component accepts a generic product interface:
 

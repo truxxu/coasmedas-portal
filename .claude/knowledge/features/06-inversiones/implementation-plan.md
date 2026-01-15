@@ -824,7 +824,6 @@ const productSubItems = [
   { label: 'Obligaciones', href: '/productos/obligaciones' },
   { label: 'Inversiones', href: '/productos/inversiones' },  // Already exists!
   { label: 'Proteccion', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },
 ];
 ```
 
