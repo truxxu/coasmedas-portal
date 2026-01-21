@@ -1,25 +1,26 @@
-import { NewsCard } from '@/src/molecules';
-import { SectionTitle } from '@/src/atoms';
+import { NewsCard } from "@/src/molecules";
+import { SectionTitle } from "@/src/atoms";
 
 export function PrehomeNews() {
   const news = [
     {
-      title: 'Noticia 1',
-      headline: 'Nuevas Noticias para ti',
-      description: 'Conoce los beneficios que tenemos para ti este semestre.',
-      link: '#',
+      title: "Noticia 1",
+      headline: "Nuevas Noticias para ti",
+      description: "Conoce los beneficios que tenemos para ti este semestre.",
+      link: "#",
     },
     {
-      title: 'Noticia 1',
-      headline: 'Nuevas Noticias para ti',
-      description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh Lorem.',
-      link: '#',
+      title: "Noticia 1",
+      headline: "Nuevas Noticias para ti",
+      description:
+        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh Lorem.",
+      link: "#",
     },
     {
-      title: 'Noticia 1',
-      headline: 'Nuevas Noticias para ti',
-      description: 'Conoce los beneficios que tenemos para ti este semestre.',
-      link: '#',
+      title: "Noticia 1",
+      headline: "Nuevas Noticias para ti",
+      description: "Conoce los beneficios que tenemos para ti este semestre.",
+      link: "#",
     },
   ];
 

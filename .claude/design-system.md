@@ -9,12 +9,12 @@
 ## 🎨 Color Palette
 
 ### Interface Backgrounds
-- **Sidebar Background**: `#1D4E8F` (Navy Blue)
-- **Main Content Background**: `#F0F9FF` (Light Blue)
+- **Sidebar Background**: `#005066` (Navy Blue)
+- **Main Content Background**: `#FFFEF2` (Light Blue)
 - **White**: `#FFFFFF`
 
 ### Primary Colors
-- **Primary Navy**: `#1D4E8F` - Main brand color, buttons, headers
+- **Primary Navy**: `#005066` - Main brand color, buttons, headers
 - **Primary Yellow**: `#FFC627` - Accent color, highlights
 
 ### Secondary Colors (Grays)
@@ -77,7 +77,7 @@
 - **Primary**: `#111827` (Text Black)
 - **Secondary**: `#58585B` (Gray High)
 - **Tertiary**: `#808284` (Gray Medium)
-- **Link**: `#1D4E8F` (Navy) or `#007FFF` (Blue)
+- **Link**: `#005066` (Navy) or `#007FFF` (Blue)
 - **Link Hover**: Darker shade or underline
 - **Disabled**: `#D1D2D4` (Gray Low)
 
@@ -86,7 +86,7 @@
 ## 🔘 Buttons
 
 ### Primary Button
-- **Background**: `#007FFF` (Blue) or `#1D4E8F` (Navy)
+- **Background**: `#007FFF` (Blue) or `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border**: None
 - **Border Radius**: `8px` (rounded-lg)
@@ -98,15 +98,15 @@
 
 ### Secondary Button
 - **Background**: Transparent or `#FFFFFF`
-- **Text**: `#1D4E8F` (Navy)
-- **Border**: `1px solid #1D4E8F`
+- **Text**: `#005066` (Navy)
+- **Border**: `1px solid #005066`
 - **Border Radius**: `8px`
 - **Padding**: `12px 24px`
 - **Hover**: Light background fill
 
 ### Text Button
 - **Background**: Transparent
-- **Text**: `#1D4E8F` (Navy) or `#007FFF` (Blue)
+- **Text**: `#005066` (Navy) or `#007FFF` (Blue)
 - **Border**: None
 - **Underline**: On hover
 - **Font**: Ubuntu Medium, 16px
@@ -144,7 +144,7 @@
 - **Placeholder Color**: `#58585B` (Gray High)
 - **Focus**: `2px solid #007FFF` border
 - **Error**: `2px solid #FF0D00` border
-- **Disabled**: `#F0F9FF` background, `#D1D2D4` border
+- **Disabled**: `#FFFEF2` background, `#D1D2D4` border
 
 ### Select / Dropdown
 - **Height**: `44px`
@@ -209,7 +209,7 @@
 - **Hover**: Subtle shadow increase (optional)
 
 ### Featured Card (Dark)
-- **Background**: `#1D4E8F` (Navy)
+- **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border Radius**: `16px`
 - **Padding**: `24px`
@@ -260,7 +260,7 @@
 - **Border Radius**: `8px`
 - **Margin Bottom**: `12px`
 - **Chevron**: Right side
-- **Hover**: Background `#F0F9FF`
+- **Hover**: Background `#FFFEF2`
 
 ---
 
@@ -292,9 +292,9 @@
 - **Close Button**: Optional, right side
 
 #### Alert Types
-- **Success**: `#82BC00` background (light), `#82BC00` border, `#1D4E8F` text
-- **Info**: `#E3F2FD` background, `#2196F3` border, `#1D4E8F` text
-- **Warning**: `#FFF8E1` background, `#FFC627` border, `#1D4E8F` text
+- **Success**: `#82BC00` background (light), `#82BC00` border, `#005066` text
+- **Info**: `#E3F2FD` background, `#2196F3` border, `#005066` text
+- **Warning**: `#FFF8E1` background, `#FFC627` border, `#005066` text
 - **Error**: `#FFEBEE` background, `#FF0D00` border, `#FF0D00` text
 
 ---
@@ -358,7 +358,7 @@
 
 ### Sidebar
 - **Width**: `268px`
-- **Background**: `#1D4E8F` (Navy)
+- **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Padding**: `20px`
 
@@ -414,7 +414,7 @@
 - **XLarge**: `48px × 48px`
 
 ### Icon Colors
-- **Primary**: `#1D4E8F` (Navy)
+- **Primary**: `#005066` (Navy)
 - **Secondary**: `#58585B` (Gray)
 - **Accent**: `#007FFF` (Blue)
 - **On Dark**: `#FFFFFF` (White)
@@ -426,7 +426,7 @@
 ### Avatar
 - **Sizes**: `32px`, `40px`, `48px`, `64px`
 - **Border Radius**: `50%` (circle)
-- **Background**: `#1D4E8F` with white initials
+- **Background**: `#005066` with white initials
 - **Border**: Optional `2px solid #E4E6EA`
 
 ### Logo
