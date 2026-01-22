@@ -114,7 +114,9 @@ export default function PagarServiciosConfirmacionPage() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={2} steps={UTILITY_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={2} steps={UTILITY_PAYMENT_STEPS} />
+      </div>
 
       {/* Confirmation Card */}
       <UtilityPaymentConfirmationCard

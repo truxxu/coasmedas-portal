@@ -128,7 +128,9 @@ export default function PagarServiciosDetallePage() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={1} steps={UTILITY_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={1} steps={UTILITY_PAYMENT_STEPS} />
+      </div>
 
       {/* Form */}
       <UtilityPaymentDetailsForm

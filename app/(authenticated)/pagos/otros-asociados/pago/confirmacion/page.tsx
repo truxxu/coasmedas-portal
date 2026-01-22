@@ -121,7 +121,9 @@ export default function OtrosAsociadosConfirmacionPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={2} steps={paymentSteps} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={2} steps={paymentSteps} />
+      </div>
 
       <OtrosAsociadosConfirmationCard
         confirmationData={confirmationData}

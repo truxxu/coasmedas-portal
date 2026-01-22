@@ -96,7 +96,9 @@ export default function OtrosAsociadosResultadoPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={currentStep} steps={paymentSteps} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={currentStep} steps={paymentSteps} />
+      </div>
 
       <OtrosAsociadosResultCard result={result} hideBalances={hideBalances} />
 

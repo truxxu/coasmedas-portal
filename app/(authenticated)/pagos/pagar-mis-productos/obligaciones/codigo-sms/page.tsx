@@ -79,8 +79,9 @@ export default function ObligacionCodigoSmsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago de Obligaciones"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pago de Obligaciones"]} />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={OBLIGACION_PAYMENT_STEPS_ACCOUNT} />
       </div>
 
