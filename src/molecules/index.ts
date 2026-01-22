@@ -39,3 +39,4 @@ export { DestinationProductCard } from './DestinationProductCard';
 export { TransferAmountInput } from './TransferAmountInput';
 export { InfoNoteBox } from './InfoNoteBox';
 export { RegisteredAccountItem } from './RegisteredAccountItem';
+export { CupoRotativoCard } from './CupoRotativoCard';
