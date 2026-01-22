@@ -4,67 +4,60 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { CupoRotativoResultCard } from "@/src/organisms";
+import { PSERechargeResultCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
-import type { CupoRotativoTransferResult } from "@/src/types";
+import type { PSERechargeResult } from "@/src/types/pseRecharge";
 import { TRANSFER_STEPS } from "@/src/mocks";
 
 export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<CupoRotativoTransferResult | null>(null);
+  const [result, setResult] = useState<PSERechargeResult | null>(null);
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Desde Cupos Rotativos",
+      title: "Recargar con PSE",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get result from session storage
-    const resultData = sessionStorage.getItem("cupoRotativoTransferResult");
+    // Get transaction result from session storage
+    const resultData = sessionStorage.getItem("pseRechargeTransactionResult");
 
     if (!resultData) {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
+      router.push("/transferencias/internas/recargar-pse");
       return;
     }
 
     try {
-      const parsedResult = JSON.parse(resultData) as CupoRotativoTransferResult;
+      const parsedResult = JSON.parse(resultData) as PSERechargeResult;
       setResult(parsedResult);
     } catch {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
+      router.push("/transferencias/internas/recargar-pse");
     }
   }, [router]);
+
+  const clearSessionStorage = () => {
+    sessionStorage.removeItem("pseRechargeDestinationId");
+    sessionStorage.removeItem("pseRechargeAmount");
+    sessionStorage.removeItem("pseRechargeConfirmation");
+    sessionStorage.removeItem("pseRechargeTransactionResult");
+  };
 
   const handlePrintSave = () => {
     window.print();
   };
 
   const handleNewTransaction = () => {
-    // Clear session storage
-    sessionStorage.removeItem("cupoRotativoSelectedCupoId");
-    sessionStorage.removeItem("cupoRotativoDestinationId");
-    sessionStorage.removeItem("cupoRotativoAmount");
-    sessionStorage.removeItem("cupoRotativoConfirmation");
-    sessionStorage.removeItem("cupoRotativoTransferResult");
-
-    // Navigate to start of flow
-    router.push("/transferencias/internas/desde-cupos-rotativos");
+    clearSessionStorage();
+    router.push("/transferencias/internas/recargar-pse");
   };
 
   const handleFinish = () => {
-    // Clear session storage
-    sessionStorage.removeItem("cupoRotativoSelectedCupoId");
-    sessionStorage.removeItem("cupoRotativoDestinationId");
-    sessionStorage.removeItem("cupoRotativoAmount");
-    sessionStorage.removeItem("cupoRotativoConfirmation");
-    sessionStorage.removeItem("cupoRotativoTransferResult");
-
-    // Navigate to home
-    router.push("/transferencias/internas");
+    clearSessionStorage();
+    router.push("/transferencias/internas/");
   };
 
   if (!result) {
@@ -79,9 +72,7 @@ export default function ResultadoPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Desde Cupos Rotativos"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Recargar con PSE"]} />
       </div>
 
       {/* Stepper - All completed */}
@@ -90,7 +81,7 @@ export default function ResultadoPage() {
       </div>
 
       {/* Result Card */}
-      <CupoRotativoResultCard result={result} hideBalances={hideBalances} />
+      <PSERechargeResultCard result={result} hideBalances={hideBalances} />
 
       {/* Actions */}
       <div className="flex flex-wrap justify-end gap-3">
@@ -98,7 +89,7 @@ export default function ResultadoPage() {
           Imprimir/Guardar
         </Button>
         <Button variant="secondary" onClick={handleNewTransaction}>
-          Realizar otra transacción
+          Realizar otra transaccion
         </Button>
         <Button variant="primary" onClick={handleFinish}>
           Finalizar

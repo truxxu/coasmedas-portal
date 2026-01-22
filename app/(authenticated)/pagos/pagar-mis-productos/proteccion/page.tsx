@@ -140,7 +140,9 @@ export default function ProteccionDetallePage() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={1} steps={PROTECTION_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={1} steps={PROTECTION_PAYMENT_STEPS} />
+      </div>
 
       {/* Details Card */}
       <ProtectionPaymentDetailsCard

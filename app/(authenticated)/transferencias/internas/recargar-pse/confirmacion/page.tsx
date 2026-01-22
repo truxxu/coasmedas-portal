@@ -4,74 +4,67 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { CupoRotativoConfirmationCard } from "@/src/organisms";
+import { PSERechargeConfirmationCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
-import type { CupoRotativoConfirmationData } from "@/src/types";
-import {
-  mockCuposRotativos,
-  mockCupoRotativoDestinations,
-  mockCupoRotativoUserData,
-  TRANSFER_STEPS,
-} from "@/src/mocks";
+import type { PSERechargeConfirmationData } from "@/src/types/pseRecharge";
+import { mockPSERechargeAccounts, mockPSERechargeUserData, TRANSFER_STEPS } from "@/src/mocks";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [confirmationData, setConfirmationData] =
-    useState<CupoRotativoConfirmationData | null>(null);
+    useState<PSERechargeConfirmationData | null>(null);
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Desde Cupos Rotativos",
-      backHref: "/transferencias/internas/desde-cupos-rotativos",
+      title: "Recargar con PSE",
+      backHref: "/transferencias/internas/recargar-pse",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     // Get data from previous step
-    const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
-    const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
-    const amount = sessionStorage.getItem("cupoRotativoAmount");
+    const destinationId = sessionStorage.getItem("pseRechargeDestinationId");
+    const amount = sessionStorage.getItem("pseRechargeAmount");
 
-    if (!cupoId || !destinationId || !amount) {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
+    if (!destinationId || !amount) {
+      router.push("/transferencias/internas/recargar-pse");
       return;
     }
 
-    const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
-    const selectedDestination = mockCupoRotativoDestinations.find(
-      (d) => d.id === destinationId
+    const destination = mockPSERechargeAccounts.find(
+      (acc) => acc.id === destinationId
     );
 
-    if (!selectedCupo || !selectedDestination) {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
+    if (!destination) {
+      router.push("/transferencias/internas/recargar-pse");
       return;
     }
 
     setConfirmationData({
-      holderName: mockCupoRotativoUserData.holderName,
-      documentNumber: mockCupoRotativoUserData.documentNumber,
-      cupoOrigen: selectedCupo.name,
-      cuentaDestino: `${selectedDestination.name} (${selectedDestination.maskedNumber})`,
+      holderName: mockPSERechargeUserData.holderName,
+      documentNumber: mockPSERechargeUserData.documentNumber,
+      productToRecharge: `${destination.name} (${destination.maskedNumber})`,
       amount: Number(amount),
+      method: "PSE",
     });
   }, [router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {
       sessionStorage.setItem(
-        "cupoRotativoConfirmation",
+        "pseRechargeConfirmation",
         JSON.stringify(confirmationData)
       );
     }
 
-    router.push("/transferencias/internas/desde-cupos-rotativos/sms");
+    router.push("/transferencias/internas/recargar-pse/pse");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/internas/desde-cupos-rotativos");
+    router.push("/transferencias/internas/recargar-pse");
   };
 
   if (!confirmationData) {
@@ -87,7 +80,7 @@ export default function ConfirmacionPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs
-          items={["Inicio", "Transferencias", "Desde Cupos Rotativos"]}
+          items={["Inicio", "Transferencias", "Recargar con PSE"]}
         />
       </div>
 
@@ -97,7 +90,7 @@ export default function ConfirmacionPage() {
       </div>
 
       {/* Confirmation Card */}
-      <CupoRotativoConfirmationCard
+      <PSERechargeConfirmationCard
         confirmationData={confirmationData}
         hideBalances={hideBalances}
       />

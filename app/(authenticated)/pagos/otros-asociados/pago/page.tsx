@@ -145,7 +145,9 @@ export default function OtrosAsociadosPagoPage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
       </div>
 
-      <Stepper currentStep={1} steps={paymentSteps} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={1} steps={paymentSteps} />
+      </div>
 
       <OtrosAsociadosDetailsCard
         beneficiaryName={beneficiary.fullName}

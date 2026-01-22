@@ -67,7 +67,9 @@ export default function ProteccionRespuestaPage() {
       </div>
 
       {/* Stepper - All steps completed */}
-      <Stepper currentStep={4} steps={PROTECTION_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={4} steps={PROTECTION_PAYMENT_STEPS} />
+      </div>
 
       {/* Result Card */}
       <ProtectionPaymentResultCard

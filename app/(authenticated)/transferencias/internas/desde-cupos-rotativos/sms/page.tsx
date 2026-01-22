@@ -134,7 +134,7 @@ export default function SMSVerificationPage() {
       </div>
 
       {/* Stepper */}
-      <div className="bg-white rounded-2xl shadow-sm">
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={TRANSFER_STEPS} />
       </div>
 

@@ -3,28 +3,23 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, HideBalancesToggle, Stepper } from "@/src/molecules";
-import { TransferDetailsCard } from "@/src/organisms";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
+import { PSERechargeDetailsCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
-import {
-  mockTransferAccounts,
-  mockDestinationProducts,
-  TRANSFER_STEPS,
-} from "@/src/mocks";
+import { mockPSERechargeAccounts, TRANSFER_STEPS } from "@/src/mocks";
 
-export default function EntreMisCuentasPage() {
+export default function RecargarPSEPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [selectedSourceId, setSelectedSourceId] = useState("");
   const [selectedDestinationId, setSelectedDestinationId] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Entre mis Cuentas",
+      title: "Recargar con PSE",
       backHref: "/transferencias/internas",
     });
     return () => clearWelcomeBar();
@@ -33,46 +28,34 @@ export default function EntreMisCuentasPage() {
   const handleConfirm = () => {
     setError("");
 
-    if (!selectedSourceId) {
-      setError("Por favor selecciona una cuenta origen");
-      return;
-    }
     if (!selectedDestinationId) {
-      setError("Por favor selecciona un producto destino");
+      setError("Por favor selecciona una cuenta destino");
       return;
     }
     if (!amount || Number(amount) <= 0) {
-      setError("Por favor ingresa un valor a transferir");
-      return;
-    }
-
-    const sourceAccount = mockTransferAccounts.find(
-      (acc) => acc.id === selectedSourceId
-    );
-
-    if (sourceAccount && Number(amount) > sourceAccount.balance) {
-      setError("Saldo insuficiente en la cuenta seleccionada");
+      setError("Por favor ingresa un valor valido");
       return;
     }
 
     // Store data for next step
-    sessionStorage.setItem("transferSourceId", selectedSourceId);
-    sessionStorage.setItem("transferDestinationId", selectedDestinationId);
-    sessionStorage.setItem("transferAmount", amount);
+    sessionStorage.setItem("pseRechargeDestinationId", selectedDestinationId);
+    sessionStorage.setItem("pseRechargeAmount", amount);
 
-    router.push("/transferencias/internas/entre-mis-cuentas/confirmacion");
+    router.push("/transferencias/internas/recargar-pse/confirmacion");
   };
 
   const handleBack = () => {
     router.push("/transferencias/internas");
   };
 
+  const isFormValid = selectedDestinationId && amount && Number(amount) > 0;
+
   return (
     <div className="space-y-6">
-      {/* Header with Hide Balances Toggle */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs
-          items={["Inicio", "Transferencias", "Entre mis Cuentas"]}
+          items={["Inicio", "Transferencias", "Recargar con PSE"]}
         />
       </div>
 
@@ -82,13 +65,10 @@ export default function EntreMisCuentasPage() {
       </div>
 
       {/* Form Card */}
-      <TransferDetailsCard
-        accounts={mockTransferAccounts}
-        destinations={mockDestinationProducts}
-        selectedSourceId={selectedSourceId}
+      <PSERechargeDetailsCard
+        destinations={mockPSERechargeAccounts}
         selectedDestinationId={selectedDestinationId}
         amount={amount}
-        onSourceChange={setSelectedSourceId}
         onDestinationChange={setSelectedDestinationId}
         onAmountChange={setAmount}
         hideBalances={hideBalances}
@@ -106,7 +86,7 @@ export default function EntreMisCuentasPage() {
         <Button
           variant="primary"
           onClick={handleConfirm}
-          disabled={!selectedSourceId || !selectedDestinationId || !amount}
+          disabled={!isFormValid}
         >
           Confirmar
         </Button>

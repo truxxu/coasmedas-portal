@@ -112,7 +112,9 @@ export default function ProteccionConfirmacionPage() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={2} steps={PROTECTION_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={2} steps={PROTECTION_PAYMENT_STEPS} />
+      </div>
 
       {/* Confirmation Card */}
       <ProtectionPaymentConfirmationCard

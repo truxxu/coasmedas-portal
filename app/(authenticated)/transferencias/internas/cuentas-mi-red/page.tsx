@@ -52,7 +52,7 @@ export default function CuentasMiRedPage() {
       </div>
 
       {/* Stepper */}
-      <div className="bg-white rounded-2xl shadow-sm">
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={1} steps={NETWORK_TRANSFER_STEPS} />
       </div>
 

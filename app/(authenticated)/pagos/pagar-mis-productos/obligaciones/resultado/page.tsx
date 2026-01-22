@@ -83,7 +83,9 @@ export default function ResultadoPage() {
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <Stepper currentStep={4} steps={OBLIGACION_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={4} steps={OBLIGACION_PAYMENT_STEPS} />
+      </div>
 
       <ObligacionResultCard result={result} hideBalances={hideBalances} />
 

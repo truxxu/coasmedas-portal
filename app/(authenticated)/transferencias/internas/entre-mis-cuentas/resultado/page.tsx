@@ -79,7 +79,7 @@ export default function ResultadoPage() {
       </div>
 
       {/* Stepper - All completed */}
-      <div className="bg-white rounded-2xl shadow-sm">
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={5} steps={TRANSFER_STEPS} />
       </div>
 

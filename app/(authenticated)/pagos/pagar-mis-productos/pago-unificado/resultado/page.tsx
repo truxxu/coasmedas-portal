@@ -77,10 +77,11 @@ export default function ResultadoPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <Breadcrumbs
-          items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
-        />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
+      />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={4} steps={PAYMENT_STEPS} />
       </div>
 
