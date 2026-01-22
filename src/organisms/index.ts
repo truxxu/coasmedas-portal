@@ -55,3 +55,6 @@ export { TransferResultCard } from './TransferResultCard';
 export { NetworkTransferForm } from './NetworkTransferForm';
 export { RegisteredAccountsList } from './RegisteredAccountsList';
 export { NetworkTransferResultCard } from './NetworkTransferResultCard';
+export { CupoRotativoDetailsCard } from './CupoRotativoDetailsCard';
+export { CupoRotativoConfirmationCard } from './CupoRotativoConfirmationCard';
+export { CupoRotativoResultCard } from './CupoRotativoResultCard';

@@ -28,7 +28,7 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     title: "Desde cupos rotativos",
     description: "Utiliza tus cupos de crédito para transferir a tus cuentas.",
     href: "/transferencias/internas/desde-cupos-rotativos",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "recargar-pse",
