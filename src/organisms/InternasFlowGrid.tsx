@@ -35,7 +35,7 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     title: "Recargar con PSE",
     description: "Trae dinero desde otros bancos a tus cuentas Coasmedas.",
     href: "/transferencias/internas/recargar-pse",
-    enabled: false,
+    enabled: true,
   },
 ];
 

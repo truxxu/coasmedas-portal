@@ -58,3 +58,6 @@ export { NetworkTransferResultCard } from './NetworkTransferResultCard';
 export { CupoRotativoDetailsCard } from './CupoRotativoDetailsCard';
 export { CupoRotativoConfirmationCard } from './CupoRotativoConfirmationCard';
 export { CupoRotativoResultCard } from './CupoRotativoResultCard';
+export { PSERechargeDetailsCard } from './PSERechargeDetailsCard';
+export { PSERechargeConfirmationCard } from './PSERechargeConfirmationCard';
+export { PSERechargeResultCard } from './PSERechargeResultCard';
