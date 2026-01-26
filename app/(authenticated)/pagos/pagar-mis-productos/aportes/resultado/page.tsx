@@ -83,10 +83,11 @@ export default function ResultadoAportesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <Breadcrumbs
-          items={["Inicio", "Pagos", "Pagar mis productos", "Pago de Aportes"]}
-        />
+      <Breadcrumbs
+        items={["Inicio", "Pagos", "Pagar mis productos", "Pago de Aportes"]}
+      />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={4} steps={APORTES_PAYMENT_STEPS} />
       </div>
 

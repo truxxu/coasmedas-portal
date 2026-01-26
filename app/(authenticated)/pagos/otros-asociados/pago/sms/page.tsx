@@ -44,8 +44,9 @@ export default function OtrosAsociadosSmsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={OTROS_ASOCIADOS_PAYMENT_STEPS} />
       </div>
 

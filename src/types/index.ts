@@ -16,3 +16,5 @@ export * from './utility-payment';
 export * from './protection-payment';
 export * from './transfer';
 export * from './networkTransfer';
+export * from './cupoRotativoTransfer';
+export * from './pseRecharge';

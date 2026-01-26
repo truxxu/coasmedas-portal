@@ -34,7 +34,10 @@ export default function PSEPage() {
   return (
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
-      <Stepper currentStep={3} steps={OBLIGACION_PAYMENT_STEPS} />
+
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={3} steps={OBLIGACION_PAYMENT_STEPS} />
+      </div>
       <PSELoadingCard message={message} />
     </div>
   );

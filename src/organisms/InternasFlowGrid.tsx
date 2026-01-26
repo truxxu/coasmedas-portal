@@ -28,14 +28,14 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     title: "Desde cupos rotativos",
     description: "Utiliza tus cupos de crédito para transferir a tus cuentas.",
     href: "/transferencias/internas/desde-cupos-rotativos",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "recargar-pse",
     title: "Recargar con PSE",
     description: "Trae dinero desde otros bancos a tus cuentas Coasmedas.",
     href: "/transferencias/internas/recargar-pse",
-    enabled: false,
+    enabled: true,
   },
 ];
 

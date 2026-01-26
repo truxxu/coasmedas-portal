@@ -173,7 +173,9 @@ export default function PagoObligacionesPage() {
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <Stepper currentStep={1} steps={currentSteps} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={1} steps={currentSteps} />
+      </div>
 
       <ObligacionDetailsCard
         products={mockObligacionProducts}

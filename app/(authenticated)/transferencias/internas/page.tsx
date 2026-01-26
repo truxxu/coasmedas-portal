@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Breadcrumbs, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs } from "@/src/molecules";
 import { InternasFlowGrid } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 
@@ -23,6 +23,10 @@ export default function TransferenciasInternasPage() {
       router.push("/transferencias/internas/entre-mis-cuentas");
     } else if (flowId === "cuentas-mi-red") {
       router.push("/transferencias/internas/cuentas-mi-red");
+    } else if (flowId === "desde-cupos-rotativos") {
+      router.push("/transferencias/internas/desde-cupos-rotativos");
+    } else if (flowId === "recargar-pse") {
+      router.push("/transferencias/internas/recargar-pse");
     }
   };
 

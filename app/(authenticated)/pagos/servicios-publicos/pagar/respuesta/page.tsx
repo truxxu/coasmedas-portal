@@ -65,7 +65,9 @@ export default function PagarServiciosRespuestaPage() {
       </div>
 
       {/* Stepper */}
-      <Stepper currentStep={4} steps={UTILITY_PAYMENT_STEPS} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={4} steps={UTILITY_PAYMENT_STEPS} />
+      </div>
 
       {/* Result Card */}
       <UtilityPaymentResultCard

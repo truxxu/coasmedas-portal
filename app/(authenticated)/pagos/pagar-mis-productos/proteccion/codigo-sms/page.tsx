@@ -78,8 +78,9 @@ export default function ProteccionCodigoSmsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={PROTECTION_PAYMENT_STEPS} />
       </div>
 

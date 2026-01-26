@@ -123,7 +123,9 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <Stepper currentStep={2} steps={currentSteps} />
+      <div className="-mx-8 bg-white shadow-sm">
+        <Stepper currentStep={2} steps={currentSteps} />
+      </div>
 
       <ObligacionConfirmationCard
         confirmationData={confirmationData}

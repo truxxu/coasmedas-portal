@@ -78,8 +78,9 @@ export default function PagarServiciosCodigoSmsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="space-y-4">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago Servicio Público"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pago Servicio Público"]} />
+
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={UTILITY_PAYMENT_STEPS} />
       </div>
 

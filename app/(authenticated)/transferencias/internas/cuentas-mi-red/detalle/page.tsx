@@ -105,7 +105,7 @@ export default function DetallePage() {
       </div>
 
       {/* Stepper */}
-      <div className="bg-white rounded-2xl shadow-sm">
+      <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={2} steps={NETWORK_TRANSFER_STEPS} />
       </div>
 
