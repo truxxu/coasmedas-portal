@@ -40,3 +40,6 @@ export { TransferAmountInput } from './TransferAmountInput';
 export { InfoNoteBox } from './InfoNoteBox';
 export { RegisteredAccountItem } from './RegisteredAccountItem';
 export { CupoRotativoCard } from './CupoRotativoCard';
+export { AccountTypeRadioGroup } from './AccountTypeRadioGroup';
+export { HolderTypeRadioGroup } from './HolderTypeRadioGroup';
+export { BankBadge } from './BankBadge';
