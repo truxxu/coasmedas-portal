@@ -118,7 +118,7 @@ export function PSERechargeResultCard({
         </div>
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
-            Numero de Aprobacion
+            Número de Aprobacion
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {result.approvalNumber}

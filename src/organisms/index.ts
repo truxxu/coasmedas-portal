@@ -61,3 +61,8 @@ export { CupoRotativoResultCard } from './CupoRotativoResultCard';
 export { PSERechargeDetailsCard } from './PSERechargeDetailsCard';
 export { PSERechargeConfirmationCard } from './PSERechargeConfirmationCard';
 export { PSERechargeResultCard } from './PSERechargeResultCard';
+export { AccountRegistrationForm } from './AccountRegistrationForm';
+export { InscribedAccountCard } from './InscribedAccountCard';
+export { InscribedAccountsList } from './InscribedAccountsList';
+export { AccountSuccessModal } from './AccountSuccessModal';
+export { AccountDeleteConfirmModal } from './AccountDeleteConfirmModal';
