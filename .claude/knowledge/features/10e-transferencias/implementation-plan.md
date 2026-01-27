@@ -3,7 +3,7 @@
 ## Implementation Plan
 
 **Feature**: External Bank Transfers (A Otros Bancos)
-**Route**: `/transferencias/a-otros-bancos`
+**Route**: `/transferencias/otros-bancos`
 **Status**: Ready for Implementation
 
 ---
@@ -71,6 +71,7 @@ Export all new mocks from `mockExternalTransferData.ts`.
 Main form card for Step 1 with:
 
 **Props**:
+
 ```typescript
 interface ExternalTransferDetailsCardProps {
   sourceAccounts: ExternalTransferSourceAccount[];
@@ -89,6 +90,7 @@ interface ExternalTransferDetailsCardProps {
 ```
 
 **Sections**:
+
 1. Card header with title "Transferencias Externas" and description
 2. Source account dropdown (shows type + balance)
 3. Destination account dropdown (shows alias + bank name)
@@ -107,6 +109,7 @@ interface ExternalTransferDetailsCardProps {
 Confirmation summary for Step 2 with:
 
 **Props**:
+
 ```typescript
 interface ExternalTransferConfirmationCardProps {
   confirmationData: ExternalTransferConfirmationData;
@@ -115,6 +118,7 @@ interface ExternalTransferConfirmationCardProps {
 ```
 
 **Sections**:
+
 1. Card header with title "Confirmacion de Transferencia"
 2. Holder section (name, document masked, source product)
 3. Divider
@@ -130,6 +134,7 @@ interface ExternalTransferConfirmationCardProps {
 Transaction result for Step 4 with success and error states:
 
 **Props**:
+
 ```typescript
 interface ExternalTransferResultCardProps {
   result: ExternalTransferResult;
@@ -141,6 +146,7 @@ interface ExternalTransferResultCardProps {
 ```
 
 **Success State**:
+
 1. Green checkmark icon (60px circle)
 2. Title "Transaccion Exitosa"
 3. Transfer details rows
@@ -149,6 +155,7 @@ interface ExternalTransferResultCardProps {
 6. Action buttons: "Imprimir/Guardar", "Realizar otra transaccion", "Finalizar"
 
 **Error State**:
+
 1. Red X icon
 2. Title "Transaccion Fallida" (red)
 3. Error message
@@ -168,9 +175,10 @@ Add exports for all three new organisms.
 
 ### Task 3.1: Create Step 1 - Details Page
 
-**File**: `app/(authenticated)/transferencias/a-otros-bancos/page.tsx`
+**File**: `app/(authenticated)/transferencias/otros-bancos/page.tsx`
 
 **Layout**:
+
 ```tsx
 <div className="space-y-6">
   {/* Breadcrumbs */}
@@ -190,6 +198,7 @@ Add exports for all three new organisms.
 ```
 
 **Behavior**:
+
 1. Configure WelcomeBar with title "A Otros Bancos" and backHref "/transferencias/internas"
 2. Load source accounts and destination accounts from mocks
 3. Manage form state: sourceId, destinationId, amount, concept
@@ -199,13 +208,14 @@ Add exports for all three new organisms.
    - Amount > 0 and <= source balance
    - Concept required
 5. Store in sessionStorage: `externalTransferSourceId`, `externalTransferDestinationId`, `externalTransferAmount`, `externalTransferConcept`
-6. Navigate to `/transferencias/a-otros-bancos/confirmacion`
+6. Navigate to `/transferencias/otros-bancos/confirmacion`
 
 ### Task 3.2: Create Step 2 - Confirmation Page
 
-**File**: `app/(authenticated)/transferencias/a-otros-bancos/confirmacion/page.tsx`
+**File**: `app/(authenticated)/transferencias/otros-bancos/confirmacion/page.tsx`
 
 **Layout**:
+
 ```tsx
 <div className="space-y-6">
   {/* Breadcrumbs */}
@@ -216,17 +226,19 @@ Add exports for all three new organisms.
 ```
 
 **Behavior**:
+
 1. Read transfer data from sessionStorage
 2. If missing data, redirect to Step 1
 3. Build confirmation data from stored values + mock user data
 4. "Volver" returns to Step 1
-5. "Confirmar Pago" navigates to `/transferencias/a-otros-bancos/sms`
+5. "Confirmar Pago" navigates to `/transferencias/otros-bancos/sms`
 
 ### Task 3.3: Create Step 3 - SMS Verification Page
 
-**File**: `app/(authenticated)/transferencias/a-otros-bancos/sms/page.tsx`
+**File**: `app/(authenticated)/transferencias/otros-bancos/sms/page.tsx`
 
 **Layout**:
+
 ```tsx
 <div className="space-y-6">
   {/* Breadcrumbs */}
@@ -236,18 +248,20 @@ Add exports for all three new organisms.
 ```
 
 **Behavior**:
+
 1. Read transfer data from sessionStorage, redirect if missing
 2. Reuse `CodeInputCard` organism for 6-digit code input
 3. Validate code (mock: "123456")
 4. On success: Generate result, store in sessionStorage as `externalTransferResult`
-5. Navigate to `/transferencias/a-otros-bancos/resultado`
+5. Navigate to `/transferencias/otros-bancos/resultado`
 6. On error: Show error message, allow retry
 
 ### Task 3.4: Create Step 4 - Result Page
 
-**File**: `app/(authenticated)/transferencias/a-otros-bancos/resultado/page.tsx`
+**File**: `app/(authenticated)/transferencias/otros-bancos/resultado/page.tsx`
 
 **Layout**:
+
 ```tsx
 <div className="space-y-6">
   {/* Breadcrumbs */}
@@ -257,6 +271,7 @@ Add exports for all three new organisms.
 ```
 
 **Behavior**:
+
 1. Read result from sessionStorage, redirect if missing
 2. Display ExternalTransferResultCard
 3. Action handlers:
@@ -279,13 +294,13 @@ Add "A Otros Bancos" option to the transfer type selection grid if not already p
 
 ## Session Storage Keys
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `externalTransferSourceId` | string | Selected source account ID |
+| Key                             | Type   | Description                     |
+| ------------------------------- | ------ | ------------------------------- |
+| `externalTransferSourceId`      | string | Selected source account ID      |
 | `externalTransferDestinationId` | string | Selected destination account ID |
-| `externalTransferAmount` | string | Transfer amount |
-| `externalTransferConcept` | string | Transfer concept/description |
-| `externalTransferResult` | JSON | Transaction result object |
+| `externalTransferAmount`        | string | Transfer amount                 |
+| `externalTransferConcept`       | string | Transfer concept/description    |
+| `externalTransferResult`        | JSON   | Transaction result object       |
 
 ---
 
@@ -293,25 +308,25 @@ Add "A Otros Bancos" option to the transfer type selection grid if not already p
 
 ### New Files to Create
 
-| Phase | File | Type |
-|-------|------|------|
-| 1.1 | `src/types/externalTransfer.ts` | Types |
-| 1.3 | `src/mocks/mockExternalTransferData.ts` | Mocks |
-| 2.1 | `src/organisms/ExternalTransferDetailsCard.tsx` | Organism |
-| 2.2 | `src/organisms/ExternalTransferConfirmationCard.tsx` | Organism |
-| 2.3 | `src/organisms/ExternalTransferResultCard.tsx` | Organism |
-| 3.1 | `app/(authenticated)/transferencias/a-otros-bancos/page.tsx` | Page |
-| 3.2 | `app/(authenticated)/transferencias/a-otros-bancos/confirmacion/page.tsx` | Page |
-| 3.3 | `app/(authenticated)/transferencias/a-otros-bancos/sms/page.tsx` | Page |
-| 3.4 | `app/(authenticated)/transferencias/a-otros-bancos/resultado/page.tsx` | Page |
+| Phase | File                                                                    | Type     |
+| ----- | ----------------------------------------------------------------------- | -------- |
+| 1.1   | `src/types/externalTransfer.ts`                                         | Types    |
+| 1.3   | `src/mocks/mockExternalTransferData.ts`                                 | Mocks    |
+| 2.1   | `src/organisms/ExternalTransferDetailsCard.tsx`                         | Organism |
+| 2.2   | `src/organisms/ExternalTransferConfirmationCard.tsx`                    | Organism |
+| 2.3   | `src/organisms/ExternalTransferResultCard.tsx`                          | Organism |
+| 3.1   | `app/(authenticated)/transferencias/otros-bancos/page.tsx`              | Page     |
+| 3.2   | `app/(authenticated)/transferencias/otros-bancos/confirmacion/page.tsx` | Page     |
+| 3.3   | `app/(authenticated)/transferencias/otros-bancos/sms/page.tsx`          | Page     |
+| 3.4   | `app/(authenticated)/transferencias/otros-bancos/resultado/page.tsx`    | Page     |
 
 ### Files to Update
 
-| Phase | File | Change |
-|-------|------|--------|
-| 1.2 | `src/types/index.ts` | Add exports |
-| 1.4 | `src/mocks/index.ts` | Add exports |
-| 2.4 | `src/organisms/index.ts` | Add exports |
+| Phase | File                     | Change      |
+| ----- | ------------------------ | ----------- |
+| 1.2   | `src/types/index.ts`     | Add exports |
+| 1.4   | `src/mocks/index.ts`     | Add exports |
+| 2.4   | `src/organisms/index.ts` | Add exports |
 
 ---
 
@@ -328,28 +343,30 @@ Execute tasks in this order to ensure dependencies are met:
 
 ## Reusable Components
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `Card` | atoms | Card containers |
-| `Button` | atoms | Primary/secondary buttons |
-| `Breadcrumbs` | molecules | Navigation trail |
-| `Stepper` | molecules | 4-step progress indicator |
-| `HideBalancesToggle` | molecules | Balance visibility |
-| `CodeInputCard` | organisms | SMS verification (Step 3) |
-| `SuccessIcon` | atoms | Green checkmark |
-| `ErrorIcon` | atoms | Red X |
+| Component            | Location  | Usage                     |
+| -------------------- | --------- | ------------------------- |
+| `Card`               | atoms     | Card containers           |
+| `Button`             | atoms     | Primary/secondary buttons |
+| `Breadcrumbs`        | molecules | Navigation trail          |
+| `Stepper`            | molecules | 4-step progress indicator |
+| `HideBalancesToggle` | molecules | Balance visibility        |
+| `CodeInputCard`      | organisms | SMS verification (Step 3) |
+| `SuccessIcon`        | atoms     | Green checkmark           |
+| `ErrorIcon`          | atoms     | Red X                     |
 
 ---
 
 ## Validation Summary
 
 ### Step 1: Details Form
+
 - Source account: Required
 - Destination account: Required
 - Amount: Required, > 0, <= source balance
 - Concept: Required, max 100 chars
 
 ### Step 3: SMS Verification
+
 - Code: Required, 6 digits, valid code
 
 ---
@@ -357,7 +374,8 @@ Execute tasks in this order to ensure dependencies are met:
 ## Testing Checklist
 
 ### Happy Path
-- [ ] Navigate to `/transferencias/a-otros-bancos`
+
+- [ ] Navigate to `/transferencias/otros-bancos`
 - [ ] Select source account
 - [ ] Select registered external account
 - [ ] Enter valid amount within balance
@@ -368,6 +386,7 @@ Execute tasks in this order to ensure dependencies are met:
 - [ ] "Finalizar" returns to home
 
 ### Validation Errors
+
 - [ ] Empty source → Error
 - [ ] Empty destination → Error
 - [ ] Amount = 0 → Error
@@ -376,6 +395,7 @@ Execute tasks in this order to ensure dependencies are met:
 - [ ] Invalid SMS code → Error
 
 ### Edge Cases
+
 - [ ] No registered accounts → Empty state with link
 - [ ] Direct navigation to step 2/3/4 → Redirect to step 1
 - [ ] Hide balances mode → All amounts masked
@@ -385,12 +405,12 @@ Execute tasks in this order to ensure dependencies are met:
 
 ## Design Reference
 
-| Step | Figma Node | Description |
-|------|------------|-------------|
-| 1 | 842-2 | Details form |
-| 2 | 842-5 | Confirmation card |
-| 3 | (existing) | SMS verification |
-| 4 | 842-9 | Result card |
+| Step | Figma Node | Description       |
+| ---- | ---------- | ----------------- |
+| 1    | 842-2      | Details form      |
+| 2    | 842-5      | Confirmation card |
+| 3    | (existing) | SMS verification  |
+| 4    | 842-9      | Result card       |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`
 

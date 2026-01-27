@@ -122,7 +122,7 @@ const quickAccessItems = [
     description:
       "Mueve dinero entre tus cuentas, a otros bancos o prográmalas.",
     icon: <TransfersIcon />,
-    href: "/transferencias",
+    href: "/transferencias/internas",
     variant: "default" as const,
   },
   {

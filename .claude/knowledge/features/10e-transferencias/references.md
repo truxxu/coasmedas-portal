@@ -4,16 +4,16 @@
 
 The "A Otros Bancos" (To Other Banks) transfer flow allows users to transfer money from their Coasmedas savings account to external bank accounts registered in the system. This is a 4-step flow: Details, Confirmation, SMS Verification, and Result.
 
-**Route**: `/transferencias/a-otros-bancos`
+**Route**: `/transferencias/otros-bancos`
 
 ## Figma Design References
 
-| Screen | Node ID | URL |
-|--------|---------|-----|
-| Step 1: Details | 842-2 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-2) |
-| Step 2: Confirmation | 842-5 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-5) |
-| Step 3: SMS Verification | (existing) | Uses existing OTP verification page |
-| Step 4: Result | 842-9 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-9) |
+| Screen                   | Node ID    | URL                                                                                     |
+| ------------------------ | ---------- | --------------------------------------------------------------------------------------- |
+| Step 1: Details          | 842-2      | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-2) |
+| Step 2: Confirmation     | 842-5      | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-5) |
+| Step 3: SMS Verification | (existing) | Uses existing OTP verification page                                                     |
+| Step 4: Result           | 842-9      | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-9) |
 
 ---
 
@@ -22,6 +22,7 @@ The "A Otros Bancos" (To Other Banks) transfer flow allows users to transfer mon
 ### Stepper Configuration
 
 The flow uses a 4-step stepper with the following labels:
+
 1. **Detalle** (Details)
 2. **Confirmación** (Confirmation)
 3. **SMS** (Verification)
@@ -34,56 +35,65 @@ The flow uses a 4-step stepper with the following labels:
 ### Page Layout
 
 #### Header Section
+
 - **Back Button**: Arrow left, navigates to previous page (transfers landing)
 - **Page Title**: "A Otros Bancos" (20px, medium weight, black)
 - **Breadcrumbs**: `Inicio / Transferencias / A Otros Bancos`
 - **Hide Balances Toggle**: Top right corner
 
 #### Stepper
+
 - Position: Below header, full width
 - Step 1 (Detalle): Active state (blue `#00B8ED`)
 - Steps 2-4: Pending state (gray `#E4E6EA`)
 
 #### Main Content Card
+
 - **Card Title**: "Transferencias Externas" (18px, bold, navy `#005066`)
 - **Description**: "Transfiere dinero a cuentas en otros bancos o entidades financieras."
 
 ### Form Fields
 
-| Field | Type | Label | Placeholder/Default |
-|-------|------|-------|---------------------|
-| Cuenta Origen | Select/Dropdown | "¿De cuál cuenta quieres transferir?" | Shows account with balance (e.g., "Cuenta de Ahorros - Saldo: $ 8.730.500") |
-| Cuenta Destino | Select/Dropdown | "Cuenta destino" | "Selecciona una cuenta inscrita..." |
-| Monto | Currency Input | "¿Qué valor deseas transferir?" | "$ 0" |
-| Concepto | Text Input | "¿Cuál es el concepto de la transacción?" | "Descripción de la transferencia" |
+| Field          | Type            | Label                                     | Placeholder/Default                                                         |
+| -------------- | --------------- | ----------------------------------------- | --------------------------------------------------------------------------- |
+| Cuenta Origen  | Select/Dropdown | "¿De cuál cuenta quieres transferir?"     | Shows account with balance (e.g., "Cuenta de Ahorros - Saldo: $ 8.730.500") |
+| Cuenta Destino | Select/Dropdown | "Cuenta destino"                          | "Selecciona una cuenta inscrita..."                                         |
+| Monto          | Currency Input  | "¿Qué valor deseas transferir?"           | "$ 0"                                                                       |
+| Concepto       | Text Input      | "¿Cuál es el concepto de la transacción?" | "Descripción de la transferencia"                                           |
 
 ### Form Layout Details
 
 #### Source Account Select
+
 - Dropdown showing user's available accounts
 - Displays account type and current balance
 - Format: "Cuenta de Ahorros - Saldo: $ X.XXX.XXX"
 
 #### Destination Account Select
+
 - Dropdown with previously registered external accounts
 - Placeholder: "Selecciona una cuenta inscrita..."
 - Accounts come from the "Inscribir Cuentas" feature
 
 #### Amount Input
+
 - Currency input with peso sign prefix
 - Dollar sign on left: "$ "
 - Value aligned right
 - Numeric input with thousand separators
 
 #### Concept Input
+
 - Single line text input
 - Placeholder text in gray `#727272`: "Descripción de la transferencia"
 
 ### Form Actions
+
 - **Back Link**: "Volver" (navy `#004266`, bottom left)
 - **Primary Button**: "Confirmar" (blue `#00B8ED`, disabled state `#8FE6FF`, bottom right)
 
 ### Card Styling
+
 - Background: White `#FFFFFF`
 - Border radius: `16px`
 - Padding: `24px`
@@ -96,40 +106,45 @@ The flow uses a 4-step stepper with the following labels:
 ### Page Layout
 
 #### Header Section
+
 - Same as Step 1 (Back Button, Title, Breadcrumbs, Hide Balances Toggle)
 
 #### Stepper
+
 - Steps 1-2: Completed/Active state (blue `#00B8ED`)
 - Steps 3-4: Pending state (gray `#E4E6EA`)
 
 ### Main Content Card
 
 #### Card Title
+
 - **Title**: "Confirmación de Transferencia" (18px, bold, navy `#005066`)
 - **Description**: "Por favor, verifica que los datos de la transacción sean correctos antes de continuar."
 
 ### Transfer Details Summary
 
-| Label | Value Example | Alignment |
-|-------|---------------|-----------|
-| Nombre Titular: | CAMILO ANDRÉS CRUZ | Right |
-| Documento Titular: | CC 1.***.***. 231 | Right (masked) |
-| Producto a Debitar: | Cuenta de Ahorros | Right |
-| --- | --- (divider line) | --- |
-| Titular Destino: | MARÍA GONZALEZ | Right |
-| Banco Destino: | Bancolombia | Right |
-| Tipo de Cuenta: | Ahorros | Right |
-| Cuenta Destino: | 123.-456789-01 | Right |
-| Valor a Transferir: | $ 500.000 | Right (bold, 18px) |
-| Concepto: | Vacaciones | Right |
+| Label               | Value Example      | Alignment          |
+| ------------------- | ------------------ | ------------------ |
+| Nombre Titular:     | CAMILO ANDRÉS CRUZ | Right              |
+| Documento Titular:  | CC 1.**_._**. 231  | Right (masked)     |
+| Producto a Debitar: | Cuenta de Ahorros  | Right              |
+| ---                 | --- (divider line) | ---                |
+| Titular Destino:    | MARÍA GONZALEZ     | Right              |
+| Banco Destino:      | Bancolombia        | Right              |
+| Tipo de Cuenta:     | Ahorros            | Right              |
+| Cuenta Destino:     | 123.-456789-01     | Right              |
+| Valor a Transferir: | $ 500.000          | Right (bold, 18px) |
+| Concepto:           | Vacaciones         | Right              |
 
 ### Summary Row Styling
+
 - Label: Light weight (`Ubuntu Light`), gray `#232323`, left aligned
 - Value: Regular weight, black, right aligned
 - Amount value: Medium weight, larger font (18px)
 - Divider lines between sections: `1px solid #E4E6EA`
 
 ### Actions
+
 - **Back Link**: "Volver" (navy `#004266`, bottom left)
 - **Primary Button**: "Confirmar Pago" (blue `#00B8ED`, bottom right)
 
@@ -140,10 +155,12 @@ The flow uses a 4-step stepper with the following labels:
 Uses the existing OTP verification component (`CodeInputCard`).
 
 ### Stepper
+
 - Steps 1-3: Completed/Active state (blue `#00B8ED`)
 - Step 4: Pending state (gray `#E4E6EA`)
 
 ### Content
+
 - Reuse existing SMS verification flow from other transfer/payment features
 - 6-digit code input
 - Resend code functionality
@@ -156,14 +173,17 @@ Uses the existing OTP verification component (`CodeInputCard`).
 ### Page Layout
 
 #### Header Section
+
 - Same as previous steps
 
 #### Stepper
+
 - All 4 steps: Completed state (blue `#00B8ED`)
 
 ### Success State Content
 
 #### Success Icon and Title
+
 - **Icon**: Large green checkmark circle (success icon)
   - Circle: Green border `#00A44C` or similar
   - Checkmark: White on green background
@@ -173,21 +193,22 @@ Uses the existing OTP verification component (`CodeInputCard`).
 
 ### Transaction Details Summary
 
-| Label | Value Example | Alignment |
-|-------|---------------|-----------|
-| Cuenta Origen: | Cuenta de Ahorros | Right |
-| Banco Destino: | Bancolombia | Right |
-| Cuenta Destino: | 123-456789-01 | Right |
-| Valor Transferido: | $ 500.000 | Right (bold, 18px) |
-| Concepto: | Vacaciones | Right |
-| Costo Transacción: | $ 0 | Right |
-| --- | --- (divider line) | --- |
-| Fecha de Transacción: | 5 de Enero de 2025 | Right |
-| Hora de Transacción: | 03:02 p.m. | Right |
-| Número de Aprobación: | 256606 | Right |
-| Descripción: | Transferencia Exitosa | Right (green `#00A44C`) |
+| Label                 | Value Example         | Alignment               |
+| --------------------- | --------------------- | ----------------------- |
+| Cuenta Origen:        | Cuenta de Ahorros     | Right                   |
+| Banco Destino:        | Bancolombia           | Right                   |
+| Cuenta Destino:       | 123-456789-01         | Right                   |
+| Valor Transferido:    | $ 500.000             | Right (bold, 18px)      |
+| Concepto:             | Vacaciones            | Right                   |
+| Costo Transacción:    | $ 0                   | Right                   |
+| ---                   | --- (divider line)    | ---                     |
+| Fecha de Transacción: | 5 de Enero de 2025    | Right                   |
+| Hora de Transacción:  | 03:02 p.m.            | Right                   |
+| Número de Aprobación: | 256606                | Right                   |
+| Descripción:          | Transferencia Exitosa | Right (green `#00A44C`) |
 
 ### Summary Row Styling
+
 - Label: Light weight (`Ubuntu Light`), black, left aligned
 - Value: Regular weight, black, right aligned
 - Amount value: Medium weight, larger font (18px)
@@ -195,11 +216,13 @@ Uses the existing OTP verification component (`CodeInputCard`).
 - Divider line between transfer details and transaction metadata
 
 ### Action Buttons
+
 - **Secondary Button**: "Imprimir/Guardar" (outlined, navy border `#005066`, left)
 - **Secondary Button**: "Realizar otra transacción" (outlined, navy border `#005066`, center)
 - **Primary Button**: "Finalizar" (blue `#00B8ED`, right)
 
 ### Button Styling
+
 - Secondary buttons: White background, `1px solid #005066` border, navy text
 - Primary button: `#00B8ED` background, white text
 - All buttons: `6px` border radius, `shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]`
@@ -211,6 +234,7 @@ Uses the existing OTP verification component (`CodeInputCard`).
 ### New Components to Create
 
 #### Organisms
+
 - `ExternalTransferDetailsCard` - Transfer details form for external bank transfers
 - `ExternalTransferConfirmationCard` - Confirmation summary card
 - `ExternalTransferResultCard` - Result card with success/error states
@@ -218,6 +242,7 @@ Uses the existing OTP verification component (`CodeInputCard`).
 ### Existing Components to Reuse
 
 #### Layout & Navigation
+
 - `BackButton` - Back navigation arrow
 - `Breadcrumbs` - Navigation breadcrumbs
 - `HideBalancesToggle` - Balance visibility toggle
@@ -225,16 +250,19 @@ Uses the existing OTP verification component (`CodeInputCard`).
 - `Card` - Container card
 
 #### Form Components
+
 - `Select` / `SelectField` - Dropdown for account selection
 - `CurrencyInput` - Amount input with formatting
 - `Input` - Text input for concept
 - `Label` - Form labels
 
 #### Display Components
+
 - `ConfirmationRow` - Row for confirmation screens (label + value)
 - `SuccessIcon` - Green checkmark icon
 
 #### Actions
+
 - `Button` - Primary and secondary buttons
 - `Link` - Back link
 
@@ -243,6 +271,7 @@ Uses the existing OTP verification component (`CodeInputCard`).
 ## Types
 
 ### Transfer Data Type
+
 ```typescript
 interface ExternalTransferData {
   // Source
@@ -253,7 +282,7 @@ interface ExternalTransferData {
   // Destination (from registered accounts)
   destinationAccountId: string;
   destinationBankName: string;
-  destinationAccountType: 'ahorros' | 'corriente';
+  destinationAccountType: "ahorros" | "corriente";
   destinationAccountNumber: string;
   destinationHolderName: string;
 
@@ -264,6 +293,7 @@ interface ExternalTransferData {
 ```
 
 ### Transfer Confirmation Type
+
 ```typescript
 interface ExternalTransferConfirmation {
   // Holder info
@@ -284,6 +314,7 @@ interface ExternalTransferConfirmation {
 ```
 
 ### Transfer Result Type
+
 ```typescript
 interface ExternalTransferResult {
   success: boolean;
@@ -312,6 +343,7 @@ interface ExternalTransferResult {
 ## State Management
 
 ### Page State
+
 ```typescript
 interface ExternalTransferPageState {
   currentStep: 1 | 2 | 3 | 4;
@@ -328,6 +360,7 @@ interface ExternalTransferPageState {
 ## User Flows
 
 ### Happy Path
+
 1. User navigates to "A Otros Bancos" from transfers menu
 2. User selects source account (savings)
 3. User selects destination account (registered external account)
@@ -341,6 +374,7 @@ interface ExternalTransferPageState {
 11. User can print/save, make another transaction, or finalize
 
 ### Error Handling
+
 - Insufficient balance: Show validation error on amount field
 - Invalid destination: Show error message
 - SMS verification failed: Show error and allow retry
@@ -351,6 +385,7 @@ interface ExternalTransferPageState {
 ## Validation Rules
 
 ### Details Form
+
 - **Source Account**: Required
 - **Destination Account**: Required
 - **Amount**:
@@ -368,12 +403,14 @@ interface ExternalTransferPageState {
 ## Styling Notes
 
 ### Card Container
+
 - Background: White `#FFFFFF`
 - Border radius: `16px`
 - Padding: `24px`
 - Shadow: `0 2px 8px rgba(0,0,0,0.08)`
 
 ### Form Fields
+
 - Label: 14px, regular weight, black
 - Input height: `44px`
 - Input border: `1px solid #B1B1B1`
@@ -381,6 +418,7 @@ interface ExternalTransferPageState {
 - Focus border: `2px solid #00B8ED`
 
 ### Summary Rows
+
 - Label: Light weight, gray `#232323`
 - Value: Regular weight, black
 - Amount: Medium weight, 18px
@@ -388,12 +426,14 @@ interface ExternalTransferPageState {
 - Divider: `1px solid #E4E6EA`
 
 ### Success Icon
+
 - Size: ~60px diameter
 - Circle border: Green `#00A44C`
 - Checkmark: White on green circle
 - Margin bottom: `16px` before title
 
 ### Action Buttons
+
 - Primary: `#00B8ED` background, white text, `6px` radius
 - Secondary: White background, `#005066` border, navy text
 - Disabled: `#8FE6FF` background (light blue)
@@ -405,7 +445,7 @@ interface ExternalTransferPageState {
 
 ```
 app/(authenticated)/transferencias/
-└── a-otros-bancos/
+└── otros-bancos/
     ├── page.tsx                    # Details step
     ├── confirmacion/
     │   └── page.tsx                # Confirmation step
@@ -434,60 +474,60 @@ src/
 // Source accounts available for transfer
 const mockSourceAccounts = [
   {
-    id: 'savings-1',
-    type: 'Cuenta de Ahorros',
+    id: "savings-1",
+    type: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428',
+    number: "****4428",
   },
 ];
 
 // Registered external accounts (from Inscribir Cuentas feature)
 const mockDestinationAccounts = [
   {
-    id: 'dest-1',
-    alias: 'Cuenta Mamá',
-    bankName: 'Bancolombia',
-    accountType: 'ahorros',
-    accountNumber: '123-456789-01',
-    holderName: 'MARÍA GONZALEZ',
+    id: "dest-1",
+    alias: "Cuenta Mamá",
+    bankName: "Bancolombia",
+    accountType: "ahorros",
+    accountNumber: "123-456789-01",
+    holderName: "MARÍA GONZALEZ",
   },
   {
-    id: 'dest-2',
-    alias: 'Cuenta Arriendo',
-    bankName: 'Davivienda',
-    accountType: 'ahorros',
-    accountNumber: '987-654321-00',
-    holderName: 'INMOBILIARIA XYZ',
+    id: "dest-2",
+    alias: "Cuenta Arriendo",
+    bankName: "Davivienda",
+    accountType: "ahorros",
+    accountNumber: "987-654321-00",
+    holderName: "INMOBILIARIA XYZ",
   },
 ];
 
 // Mock transfer data for testing
 const mockExternalTransferData: ExternalTransferData = {
-  sourceAccountId: 'savings-1',
-  sourceAccountType: 'Cuenta de Ahorros',
+  sourceAccountId: "savings-1",
+  sourceAccountType: "Cuenta de Ahorros",
   sourceAccountBalance: 8730500,
-  destinationAccountId: 'dest-1',
-  destinationBankName: 'Bancolombia',
-  destinationAccountType: 'ahorros',
-  destinationAccountNumber: '123-456789-01',
-  destinationHolderName: 'MARÍA GONZALEZ',
+  destinationAccountId: "dest-1",
+  destinationBankName: "Bancolombia",
+  destinationAccountType: "ahorros",
+  destinationAccountNumber: "123-456789-01",
+  destinationHolderName: "MARÍA GONZALEZ",
   amount: 500000,
-  concept: 'Vacaciones',
+  concept: "Vacaciones",
 };
 
 // Mock result data
 const mockExternalTransferResult: ExternalTransferResult = {
   success: true,
-  sourceAccount: 'Cuenta de Ahorros',
-  destinationBank: 'Bancolombia',
-  destinationAccountNumber: '123-456789-01',
+  sourceAccount: "Cuenta de Ahorros",
+  destinationBank: "Bancolombia",
+  destinationAccountNumber: "123-456789-01",
   amountTransferred: 500000,
-  concept: 'Vacaciones',
+  concept: "Vacaciones",
   transactionCost: 0,
-  transactionDate: '5 de Enero de 2025',
-  transactionTime: '03:02 p.m.',
-  approvalNumber: '256606',
-  description: 'Transferencia Exitosa',
+  transactionDate: "5 de Enero de 2025",
+  transactionTime: "03:02 p.m.",
+  approvalNumber: "256606",
+  description: "Transferencia Exitosa",
 };
 ```
 

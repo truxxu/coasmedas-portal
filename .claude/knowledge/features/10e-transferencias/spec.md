@@ -32,16 +32,16 @@ This feature implements the "A Otros Bancos" (To Other Banks) transfer flow. Use
 ## 2. Route Structure
 
 ```
-/transferencias/a-otros-bancos              → Step 1: Details
-/transferencias/a-otros-bancos/confirmacion → Step 2: Confirmation
-/transferencias/a-otros-bancos/sms          → Step 3: SMS Verification
-/transferencias/a-otros-bancos/resultado    → Step 4: Result
+/transferencias/otros-bancos              → Step 1: Details
+/transferencias/otros-bancos/confirmacion → Step 2: Confirmation
+/transferencias/otros-bancos/sms          → Step 3: SMS Verification
+/transferencias/otros-bancos/resultado    → Step 4: Result
 ```
 
 ### Directory Structure
 
 ```
-app/(authenticated)/transferencias/a-otros-bancos/
+app/(authenticated)/transferencias/otros-bancos/
 ├── page.tsx                 # Step 1: Details form
 ├── confirmacion/
 │   └── page.tsx            # Step 2: Confirmation
@@ -63,9 +63,9 @@ Create new types in `src/types/externalTransfer.ts`:
  */
 export interface ExternalTransferSourceAccount {
   id: string;
-  type: string;              // e.g., "Cuenta de Ahorros"
-  balance: number;           // Available balance
-  maskedNumber: string;      // e.g., "****4428"
+  type: string; // e.g., "Cuenta de Ahorros"
+  balance: number; // Available balance
+  maskedNumber: string; // e.g., "****4428"
 }
 
 /**
@@ -73,11 +73,11 @@ export interface ExternalTransferSourceAccount {
  */
 export interface ExternalTransferDestinationAccount {
   id: string;
-  alias: string;             // User-defined alias e.g., "Cuenta Mama"
-  bankName: string;          // e.g., "Bancolombia"
+  alias: string; // User-defined alias e.g., "Cuenta Mama"
+  bankName: string; // e.g., "Bancolombia"
   accountType: "ahorros" | "corriente";
-  accountNumber: string;     // e.g., "123-456789-01"
-  holderName: string;        // e.g., "MARIA GONZALEZ"
+  accountNumber: string; // e.g., "123-456789-01"
+  holderName: string; // e.g., "MARIA GONZALEZ"
 }
 
 /**
@@ -96,12 +96,12 @@ export interface ExternalTransferFormData {
 export interface ExternalTransferConfirmationData {
   // Holder (user) info
   holderName: string;
-  holderDocument: string;     // Masked: "CC 1.***.***. 231"
-  sourceProduct: string;      // e.g., "Cuenta de Ahorros"
+  holderDocument: string; // Masked: "CC 1.***.***. 231"
+  sourceProduct: string; // e.g., "Cuenta de Ahorros"
 
   // Destination info
-  destinationHolder: string;  // e.g., "MARIA GONZALEZ"
-  destinationBank: string;    // e.g., "Bancolombia"
+  destinationHolder: string; // e.g., "MARIA GONZALEZ"
+  destinationBank: string; // e.g., "Bancolombia"
   destinationAccountType: string; // e.g., "Ahorros"
   destinationAccountNumber: string; // e.g., "123.-456789-01"
 
@@ -125,10 +125,10 @@ export interface ExternalTransferResult {
   transactionCost: number;
 
   // Transaction metadata
-  transactionDate: string;    // e.g., "5 de Enero de 2025"
-  transactionTime: string;    // e.g., "03:02 p.m."
-  approvalNumber: string;     // e.g., "256606"
-  description: string;        // e.g., "Transferencia Exitosa"
+  transactionDate: string; // e.g., "5 de Enero de 2025"
+  transactionTime: string; // e.g., "03:02 p.m."
+  approvalNumber: string; // e.g., "256606"
+  description: string; // e.g., "Transferencia Exitosa"
 
   // Error info (if failed)
   errorMessage?: string;
@@ -169,44 +169,46 @@ import type {
 /**
  * Mock source accounts (user's savings accounts)
  */
-export const mockExternalTransferSourceAccounts: ExternalTransferSourceAccount[] = [
-  {
-    id: "savings-1",
-    type: "Cuenta de Ahorros",
-    balance: 8730500,
-    maskedNumber: "****4428",
-  },
-];
+export const mockExternalTransferSourceAccounts: ExternalTransferSourceAccount[] =
+  [
+    {
+      id: "savings-1",
+      type: "Cuenta de Ahorros",
+      balance: 8730500,
+      maskedNumber: "****4428",
+    },
+  ];
 
 /**
  * Mock destination accounts (from Inscribir Cuentas feature)
  */
-export const mockExternalTransferDestinations: ExternalTransferDestinationAccount[] = [
-  {
-    id: "dest-1",
-    alias: "Cuenta Mama",
-    bankName: "Bancolombia",
-    accountType: "ahorros",
-    accountNumber: "123-456789-01",
-    holderName: "MARIA GONZALEZ",
-  },
-  {
-    id: "dest-2",
-    alias: "Cuenta Arriendo",
-    bankName: "Davivienda",
-    accountType: "ahorros",
-    accountNumber: "987-654321-00",
-    holderName: "INMOBILIARIA XYZ",
-  },
-  {
-    id: "dest-3",
-    alias: "Restaurante Almuerzos",
-    bankName: "BBVA",
-    accountType: "corriente",
-    accountNumber: "456-789012-34",
-    holderName: "DANIELA ALVARADO",
-  },
-];
+export const mockExternalTransferDestinations: ExternalTransferDestinationAccount[] =
+  [
+    {
+      id: "dest-1",
+      alias: "Cuenta Mama",
+      bankName: "Bancolombia",
+      accountType: "ahorros",
+      accountNumber: "123-456789-01",
+      holderName: "MARIA GONZALEZ",
+    },
+    {
+      id: "dest-2",
+      alias: "Cuenta Arriendo",
+      bankName: "Davivienda",
+      accountType: "ahorros",
+      accountNumber: "987-654321-00",
+      holderName: "INMOBILIARIA XYZ",
+    },
+    {
+      id: "dest-3",
+      alias: "Restaurante Almuerzos",
+      bankName: "BBVA",
+      accountType: "corriente",
+      accountNumber: "456-789012-34",
+      holderName: "DANIELA ALVARADO",
+    },
+  ];
 
 /**
  * Mock user data for confirmation
@@ -219,17 +221,18 @@ export const mockExternalTransferUserData = {
 /**
  * Mock confirmation data
  */
-export const mockExternalTransferConfirmation: ExternalTransferConfirmationData = {
-  holderName: "CAMILO ANDRES CRUZ",
-  holderDocument: "CC 1.***.***. 231",
-  sourceProduct: "Cuenta de Ahorros",
-  destinationHolder: "MARIA GONZALEZ",
-  destinationBank: "Bancolombia",
-  destinationAccountType: "Ahorros",
-  destinationAccountNumber: "123.-456789-01",
-  amount: 500000,
-  concept: "Vacaciones",
-};
+export const mockExternalTransferConfirmation: ExternalTransferConfirmationData =
+  {
+    holderName: "CAMILO ANDRES CRUZ",
+    holderDocument: "CC 1.***.***. 231",
+    sourceProduct: "Cuenta de Ahorros",
+    destinationHolder: "MARIA GONZALEZ",
+    destinationBank: "Bancolombia",
+    destinationAccountType: "Ahorros",
+    destinationAccountNumber: "123.-456789-01",
+    amount: 500000,
+    concept: "Vacaciones",
+  };
 
 /**
  * Mock successful transaction result
@@ -345,10 +348,12 @@ interface ExternalTransferDetailsCardProps {
 
 **Empty Destinations State:**
 When no external accounts are registered, show:
+
 - Message: "No tienes cuentas inscritas. Registra una cuenta para realizar transferencias."
 - Link: "Inscribir cuenta" (links to `/transferencias/inscribir-cuentas`)
 
 **Card Styling:**
+
 - Background: White `#FFFFFF`
 - Border radius: `16px`
 - Padding: `24px`
@@ -377,7 +382,7 @@ interface ExternalTransferConfirmationCardProps {
 
 2. **Holder Section** (rows with label/value)
    - Nombre Titular: → CAMILO ANDRES CRUZ
-   - Documento Titular: → CC 1.***.***. 231 (masked)
+   - Documento Titular: → CC 1.**_._**. 231 (masked)
    - Producto a Debitar: → Cuenta de Ahorros
    - ─────────────── (divider)
 
@@ -397,6 +402,7 @@ interface ExternalTransferConfirmationCardProps {
    - Primary Button: "Confirmar Pago" (blue `#00B8ED`, right)
 
 **Row Styling:**
+
 - Label: Light weight (`Ubuntu Light`), gray `#232323`, left aligned
 - Value: Regular weight, black `#111827`, right aligned
 - Amount value: Medium weight, 18px
@@ -464,6 +470,7 @@ interface ExternalTransferResultCardProps {
    - Primary: "Volver al inicio" (blue)
 
 **Button Styling:**
+
 - Secondary buttons: White background, `1px solid #005066` border, navy text
 - Primary button: `#00B8ED` background, white text
 - All buttons: `6px` border radius, `shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]`
@@ -475,7 +482,7 @@ interface ExternalTransferResultCardProps {
 
 ### 6.1 Step 1: Details Page
 
-Location: `app/(authenticated)/transferencias/a-otros-bancos/page.tsx`
+Location: `app/(authenticated)/transferencias/otros-bancos/page.tsx`
 
 **Layout:**
 
@@ -520,6 +527,7 @@ Location: `app/(authenticated)/transferencias/a-otros-bancos/page.tsx`
 ```
 
 **Breadcrumbs:**
+
 ```typescript
 const breadcrumbItems = [
   { label: "Inicio", href: "/home" },
@@ -529,6 +537,7 @@ const breadcrumbItems = [
 ```
 
 **Stepper Configuration:**
+
 ```typescript
 const EXTERNAL_TRANSFER_STEPS: StepperStep[] = [
   { id: 1, label: "Detalle" },
@@ -539,6 +548,7 @@ const EXTERNAL_TRANSFER_STEPS: StepperStep[] = [
 ```
 
 **WelcomeBar Configuration:**
+
 ```typescript
 useEffect(() => {
   setWelcomeBarConfig({
@@ -549,6 +559,7 @@ useEffect(() => {
 ```
 
 **Behavior:**
+
 1. Load source accounts (user's savings accounts)
 2. Load destination accounts (from registered external accounts)
 3. If no destination accounts, show empty state with link to register
@@ -556,6 +567,7 @@ useEffect(() => {
 5. On submit: Store data in sessionStorage, navigate to confirmation
 
 **Session Storage Keys:**
+
 - `externalTransferSourceId`
 - `externalTransferDestinationId`
 - `externalTransferAmount`
@@ -563,9 +575,10 @@ useEffect(() => {
 
 ### 6.2 Step 2: Confirmation Page
 
-Location: `app/(authenticated)/transferencias/a-otros-bancos/confirmacion/page.tsx`
+Location: `app/(authenticated)/transferencias/otros-bancos/confirmacion/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage
 2. If missing data, redirect back to step 1
 3. Build confirmation data from stored values
@@ -576,9 +589,10 @@ Location: `app/(authenticated)/transferencias/a-otros-bancos/confirmacion/page.t
 
 ### 6.3 Step 3: SMS Verification Page
 
-Location: `app/(authenticated)/transferencias/a-otros-bancos/sms/page.tsx`
+Location: `app/(authenticated)/transferencias/otros-bancos/sms/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 3
 3. Reuse existing `CodeInputCard` organism
@@ -590,9 +604,10 @@ Location: `app/(authenticated)/transferencias/a-otros-bancos/sms/page.tsx`
 
 ### 6.4 Step 4: Result Page
 
-Location: `app/(authenticated)/transferencias/a-otros-bancos/resultado/page.tsx`
+Location: `app/(authenticated)/transferencias/otros-bancos/resultado/page.tsx`
 
 **Behavior:**
+
 1. Read result data from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 4 (all complete)
 3. Render `ExternalTransferResultCard` with transaction result
@@ -608,22 +623,22 @@ Location: `app/(authenticated)/transferencias/a-otros-bancos/resultado/page.tsx`
 
 ### Step 1: Details Form
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Source Account | Required | "Por favor selecciona una cuenta origen." |
-| Destination Account | Required | "Por favor selecciona una cuenta destino." |
-| Amount | Required | "Por favor ingresa un valor." |
-| Amount | > 0 | "El valor debe ser mayor a cero." |
-| Amount | ≤ source balance | "El valor supera el saldo disponible." |
-| Concept | Required | "Por favor ingresa el concepto de la transferencia." |
-| Concept | Max 100 chars | "El concepto no puede exceder 100 caracteres." |
+| Field               | Rule             | Error Message                                        |
+| ------------------- | ---------------- | ---------------------------------------------------- |
+| Source Account      | Required         | "Por favor selecciona una cuenta origen."            |
+| Destination Account | Required         | "Por favor selecciona una cuenta destino."           |
+| Amount              | Required         | "Por favor ingresa un valor."                        |
+| Amount              | > 0              | "El valor debe ser mayor a cero."                    |
+| Amount              | ≤ source balance | "El valor supera el saldo disponible."               |
+| Concept             | Required         | "Por favor ingresa el concepto de la transferencia." |
+| Concept             | Max 100 chars    | "El concepto no puede exceder 100 caracteres."       |
 
 ### Step 3: SMS Verification
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Code | Required, 6 digits | "Por favor ingresa el codigo completo." |
-| Code | Valid code | "El codigo ingresado es incorrecto." |
+| Field | Rule               | Error Message                           |
+| ----- | ------------------ | --------------------------------------- |
+| Code  | Required, 6 digits | "Por favor ingresa el codigo completo." |
+| Code  | Valid code         | "El codigo ingresado es incorrecto."    |
 
 ### Yup Validation Schema
 
@@ -648,9 +663,11 @@ export const externalTransferSchema = yup.object({
       "max-balance",
       "El valor supera el saldo disponible.",
       function (value) {
-        const { sourceBalance } = this.options.context as { sourceBalance: number };
+        const { sourceBalance } = this.options.context as {
+          sourceBalance: number;
+        };
         return value <= sourceBalance;
-      }
+      },
     ),
 
   concept: yup
@@ -659,7 +676,9 @@ export const externalTransferSchema = yup.object({
     .max(100, "El concepto no puede exceder 100 caracteres."),
 });
 
-export type ExternalTransferFormData = yup.InferType<typeof externalTransferSchema>;
+export type ExternalTransferFormData = yup.InferType<
+  typeof externalTransferSchema
+>;
 ```
 
 ---
@@ -670,13 +689,13 @@ export type ExternalTransferFormData = yup.InferType<typeof externalTransferSche
 
 All prefixed with `externalTransfer` to avoid conflicts:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `externalTransferSourceId` | string | Selected source account ID |
-| `externalTransferDestinationId` | string | Selected destination account ID |
-| `externalTransferAmount` | string | Transfer amount (as string for preservation) |
-| `externalTransferConcept` | string | Transfer concept/description |
-| `externalTransferResult` | JSON | Transaction result object |
+| Key                             | Type   | Description                                  |
+| ------------------------------- | ------ | -------------------------------------------- |
+| `externalTransferSourceId`      | string | Selected source account ID                   |
+| `externalTransferDestinationId` | string | Selected destination account ID              |
+| `externalTransferAmount`        | string | Transfer amount (as string for preservation) |
+| `externalTransferConcept`       | string | Transfer concept/description                 |
+| `externalTransferResult`        | JSON   | Transaction result object                    |
 
 ### Flow Navigation
 
@@ -695,6 +714,7 @@ Step 4 → [Finalizar] → Clear sessionStorage → /home
 ### New Components to Export
 
 **Organisms** (`src/organisms/index.ts`):
+
 ```typescript
 export { ExternalTransferDetailsCard } from "./ExternalTransferDetailsCard";
 export { ExternalTransferConfirmationCard } from "./ExternalTransferConfirmationCard";
@@ -702,6 +722,7 @@ export { ExternalTransferResultCard } from "./ExternalTransferResultCard";
 ```
 
 **Types** (`src/types/index.ts`):
+
 ```typescript
 export type {
   ExternalTransferSourceAccount,
@@ -714,6 +735,7 @@ export type {
 ```
 
 **Mocks** (`src/mocks/index.ts`):
+
 ```typescript
 export {
   mockExternalTransferSourceAccounts,
@@ -732,24 +754,24 @@ export {
 
 The following existing components should be reused:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `BackButton` | atoms | Back navigation arrow |
-| `Breadcrumbs` | molecules | Page navigation trail |
-| `HideBalancesToggle` | molecules | Balance visibility toggle |
-| `Stepper` | molecules | 4-step progress indicator |
-| `CodeInputCard` | organisms | SMS verification (Step 3) |
-| `Card` | atoms | Container cards |
-| `Button` | atoms | Primary and secondary buttons |
-| `Select` / `SelectField` | atoms/molecules | Dropdown selects |
-| `CurrencyInput` | atoms | Amount input |
-| `Input` | atoms | Text input for concept |
-| `Label` | atoms | Form labels |
-| `ErrorMessage` | atoms | Form validation errors |
-| `SuccessIcon` | atoms | Green checkmark icon |
-| `ErrorIcon` | atoms | Red X icon |
-| `ConfirmationRow` | molecules | Label/value rows |
-| `Divider` | atoms | Horizontal separators |
+| Component                | Location        | Usage                         |
+| ------------------------ | --------------- | ----------------------------- |
+| `BackButton`             | atoms           | Back navigation arrow         |
+| `Breadcrumbs`            | molecules       | Page navigation trail         |
+| `HideBalancesToggle`     | molecules       | Balance visibility toggle     |
+| `Stepper`                | molecules       | 4-step progress indicator     |
+| `CodeInputCard`          | organisms       | SMS verification (Step 3)     |
+| `Card`                   | atoms           | Container cards               |
+| `Button`                 | atoms           | Primary and secondary buttons |
+| `Select` / `SelectField` | atoms/molecules | Dropdown selects              |
+| `CurrencyInput`          | atoms           | Amount input                  |
+| `Input`                  | atoms           | Text input for concept        |
+| `Label`                  | atoms           | Form labels                   |
+| `ErrorMessage`           | atoms           | Form validation errors        |
+| `SuccessIcon`            | atoms           | Green checkmark icon          |
+| `ErrorIcon`              | atoms           | Red X icon                    |
+| `ConfirmationRow`        | molecules       | Label/value rows              |
+| `Divider`                | atoms           | Horizontal separators         |
 
 ---
 
@@ -769,24 +791,28 @@ The following existing components should be reused:
 ## 12. Implementation Checklist
 
 ### Phase 1: Types and Mocks
+
 - [ ] Create `src/types/externalTransfer.ts`
 - [ ] Update `src/types/index.ts`
 - [ ] Create `src/mocks/mockExternalTransferData.ts`
 - [ ] Update `src/mocks/index.ts`
 
 ### Phase 2: Organisms
+
 - [ ] Create `ExternalTransferDetailsCard` organism
 - [ ] Create `ExternalTransferConfirmationCard` organism
 - [ ] Create `ExternalTransferResultCard` organism
 - [ ] Update `src/organisms/index.ts`
 
 ### Phase 3: Pages
-- [ ] Create Step 1 page: `a-otros-bancos/page.tsx`
-- [ ] Create Step 2 page: `a-otros-bancos/confirmacion/page.tsx`
-- [ ] Create Step 3 page: `a-otros-bancos/sms/page.tsx`
-- [ ] Create Step 4 page: `a-otros-bancos/resultado/page.tsx`
+
+- [ ] Create Step 1 page: `otros-bancos/page.tsx`
+- [ ] Create Step 2 page: `otros-bancos/confirmacion/page.tsx`
+- [ ] Create Step 3 page: `otros-bancos/sms/page.tsx`
+- [ ] Create Step 4 page: `otros-bancos/resultado/page.tsx`
 
 ### Phase 4: Navigation Integration
+
 - [ ] Add menu item to sidebar (if needed)
 - [ ] Add option to transfers landing page grid
 
@@ -795,7 +821,8 @@ The following existing components should be reused:
 ## 13. Testing Scenarios
 
 ### Happy Path
-1. Navigate to `/transferencias/a-otros-bancos`
+
+1. Navigate to `/transferencias/otros-bancos`
 2. Select source account (savings)
 3. Select destination account (registered external account)
 4. Enter valid amount within balance
@@ -808,6 +835,7 @@ The following existing components should be reused:
 11. Click "Finalizar" to return to home
 
 ### Validation Errors
+
 1. No source account selected → Error message
 2. No destination account selected → Error message
 3. Amount = 0 → "El valor debe ser mayor a cero."
@@ -816,6 +844,7 @@ The following existing components should be reused:
 6. Invalid SMS code → "El codigo ingresado es incorrecto."
 
 ### Edge Cases
+
 1. No registered accounts → Show empty state with link to register
 2. Navigate directly to step 2/3/4 without data → Redirect to step 1
 3. Session timeout during flow → Handle gracefully
@@ -824,6 +853,7 @@ The following existing components should be reused:
 6. "Realizar otra transaccion" → Resets form, returns to step 1
 
 ### Error States
+
 1. SMS verification fails multiple times → Allow retry
 2. Transfer fails → Show error result with retry option
 
@@ -831,12 +861,12 @@ The following existing components should be reused:
 
 ## 14. Design References
 
-| Step | Figma Node | Description |
-|------|------------|-------------|
-| 1 | `842-2` | Details form with source/destination selection |
-| 2 | `842-5` | Confirmation card with transfer summary |
-| 3 | (existing) | SMS verification (reuse existing) |
-| 4 | `842-9` | Success/error result card |
+| Step | Figma Node | Description                                    |
+| ---- | ---------- | ---------------------------------------------- |
+| 1    | `842-2`    | Details form with source/destination selection |
+| 2    | `842-5`    | Confirmation card with transfer summary        |
+| 3    | (existing) | SMS verification (reuse existing)              |
+| 4    | `842-9`    | Success/error result card                      |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`
 
@@ -844,21 +874,21 @@ Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?nod
 
 ## 15. Color Reference
 
-| Color Name | Hex Code | Usage |
-|------------|----------|-------|
-| Primary Navy | `#005066` | Card titles, section titles |
-| Dark Navy | `#004266` | "Volver" link text |
-| Primary Blue | `#00B8ED` | Primary buttons, active stepper |
-| Disabled Blue | `#8FE6FF` | Disabled button state |
-| Text Black | `#111827` | Primary text, values |
-| Gray High | `#58585B` | Secondary text, descriptions |
-| Gray Label | `#232323` | Confirmation row labels |
-| Gray Placeholder | `#727272` | Input placeholders |
-| Gray Border | `#B1B1B1` | Input borders |
-| Gray Divider | `#E4E6EA` | Divider lines, pending stepper |
-| Success Green | `#00A44C` | Success icon, description |
-| Error Red | `#FF0D00` | Error icon, error messages |
-| White | `#FFFFFF` | Backgrounds, button text |
+| Color Name       | Hex Code  | Usage                           |
+| ---------------- | --------- | ------------------------------- |
+| Primary Navy     | `#005066` | Card titles, section titles     |
+| Dark Navy        | `#004266` | "Volver" link text              |
+| Primary Blue     | `#00B8ED` | Primary buttons, active stepper |
+| Disabled Blue    | `#8FE6FF` | Disabled button state           |
+| Text Black       | `#111827` | Primary text, values            |
+| Gray High        | `#58585B` | Secondary text, descriptions    |
+| Gray Label       | `#232323` | Confirmation row labels         |
+| Gray Placeholder | `#727272` | Input placeholders              |
+| Gray Border      | `#B1B1B1` | Input borders                   |
+| Gray Divider     | `#E4E6EA` | Divider lines, pending stepper  |
+| Success Green    | `#00A44C` | Success icon, description       |
+| Error Red        | `#FF0D00` | Error icon, error messages      |
+| White            | `#FFFFFF` | Backgrounds, button text        |
 
 ---
 
@@ -882,6 +912,6 @@ The destination accounts for this feature come from the "Inscribir Cuentas" feat
 - **Print/Save**: Should generate a PDF receipt with transaction details
 - **"Realizar otra transaccion"**: Clears form and returns to step 1, ready for new transfer
 - **"Finalizar"**: Clears session data and navigates to home dashboard
-- **Balance Masking**: When hideBalances is true, all currency amounts should show "$ ****"
+- **Balance Masking**: When hideBalances is true, all currency amounts should show "$ \*\*\*\*"
 - **Responsive Design**: Cards should stack vertically on mobile screens
 - **Destination Dropdown**: Show both alias and bank name for clarity (e.g., "Cuenta Mama (Bancolombia)")

@@ -15,3 +15,4 @@ export * from './mockNetworkTransferData';
 export * from './mockCupoRotativoData';
 export * from './mockPSERechargeData';
 export * from './mockAccountRegistrationData';
+export * from './mockExternalTransferData';
