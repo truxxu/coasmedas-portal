@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Ubuntu } from "next/font/google";
+import { Cabin } from "next/font/google";
 import "./globals.css";
 
-const ubuntu = Ubuntu({
+const cabin = Cabin({
   weight: ['400', '500', '700'],
   subsets: ["latin"],
-  variable: "--font-ubuntu",
+  variable: "--font-cabin",
 });
 
-const geistSans = ubuntu;
-const geistMono = ubuntu;
+const geistSans = cabin;
+const geistMono = cabin;
 
 export const metadata: Metadata = {
   title: "Portal Transaccional Coasmedas",

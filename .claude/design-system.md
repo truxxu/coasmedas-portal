@@ -9,12 +9,12 @@
 ## 🎨 Color Palette
 
 ### Interface Backgrounds
-- **Sidebar Background**: `#1D4E8F` (Navy Blue)
-- **Main Content Background**: `#F0F9FF` (Light Blue)
+- **Sidebar Background**: `#005066` (Navy Blue)
+- **Main Content Background**: `#FFFEF2` (Light Blue)
 - **White**: `#FFFFFF`
 
 ### Primary Colors
-- **Primary Navy**: `#1D4E8F` - Main brand color, buttons, headers
+- **Primary Navy**: `#005066` - Main brand color, buttons, headers
 - **Primary Yellow**: `#FFC627` - Accent color, highlights
 
 ### Secondary Colors (Grays)
@@ -34,7 +34,7 @@
 - **Success**: `#00AFA9` (Teal) or `#0AE577` (Green)
 - **Warning**: `#FFC627` (Yellow) or `#FF3945` (Red-orange)
 - **Error**: `#FF0D00` (Bright Red)
-- **Info**: `#007FFF` (Blue)
+- **Info**: `#00B8ED` (Blue)
 - **Active**: `#82BC00` (Green)
 - **Pending**: `#FFC627` (Yellow)
 - **Blocked**: `#F6323E` (Pink/Red)
@@ -57,10 +57,10 @@
 ## 📝 Typography
 
 ### Font Family
-**Ubuntu** (Bold, Medium, Regular)
-- Headings: Ubuntu Bold
-- Subheadings: Ubuntu Medium
-- Body text: Ubuntu Regular
+**Cabin** (Bold, Medium, Regular)
+- Headings: Cabin Bold
+- Subheadings: Cabin Medium
+- Body text: Cabin Regular
 
 ### Type Scale
 - **H1**: 32px / 2rem (Bold) - Page titles
@@ -77,7 +77,7 @@
 - **Primary**: `#111827` (Text Black)
 - **Secondary**: `#58585B` (Gray High)
 - **Tertiary**: `#808284` (Gray Medium)
-- **Link**: `#1D4E8F` (Navy) or `#007FFF` (Blue)
+- **Link**: `#005066` (Navy) or `#00B8ED` (Blue)
 - **Link Hover**: Darker shade or underline
 - **Disabled**: `#D1D2D4` (Gray Low)
 
@@ -86,30 +86,30 @@
 ## 🔘 Buttons
 
 ### Primary Button
-- **Background**: `#007FFF` (Blue) or `#1D4E8F` (Navy)
+- **Background**: `#00B8ED` (Blue) or `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border**: None
 - **Border Radius**: `8px` (rounded-lg)
 - **Padding**: `12px 24px` (py-3 px-6)
-- **Font**: Ubuntu Medium, 16px
+- **Font**: Cabin Medium, 16px
 - **Hover**: Darker shade (opacity or color shift)
 - **Active**: Even darker
 - **Disabled**: `#D1D2D4` background, `#808284` text
 
 ### Secondary Button
 - **Background**: Transparent or `#FFFFFF`
-- **Text**: `#1D4E8F` (Navy)
-- **Border**: `1px solid #1D4E8F`
+- **Text**: `#005066` (Navy)
+- **Border**: `1px solid #005066`
 - **Border Radius**: `8px`
 - **Padding**: `12px 24px`
 - **Hover**: Light background fill
 
 ### Text Button
 - **Background**: Transparent
-- **Text**: `#1D4E8F` (Navy) or `#007FFF` (Blue)
+- **Text**: `#005066` (Navy) or `#00B8ED` (Blue)
 - **Border**: None
 - **Underline**: On hover
-- **Font**: Ubuntu Medium, 16px
+- **Font**: Cabin Medium, 16px
 
 ### Icon Button
 - **Size**: `40px × 40px` (square or circle)
@@ -142,9 +142,9 @@
 - **Font Size**: `16px`
 - **Text Color**: `#111827` (Black)
 - **Placeholder Color**: `#58585B` (Gray High)
-- **Focus**: `2px solid #007FFF` border
+- **Focus**: `2px solid #00B8ED` border
 - **Error**: `2px solid #FF0D00` border
-- **Disabled**: `#F0F9FF` background, `#D1D2D4` border
+- **Disabled**: `#FFFEF2` background, `#D1D2D4` border
 
 ### Select / Dropdown
 - **Height**: `44px`
@@ -154,7 +154,7 @@
 - **Caret**: Down arrow icon (chevron)
 - **Placeholder**: `#58585B` (Gray High)
 - **Selected**: `#111827` (Black)
-- **Focus**: `2px solid #007FFF` border
+- **Focus**: `2px solid #00B8ED` border
 
 ### Textarea
 - **Min Height**: `88px` (2 lines)
@@ -167,21 +167,21 @@
 - **Size**: `16px × 16px`
 - **Border**: `1px solid #B1B1B1`
 - **Border Radius**: `2px`
-- **Checked Background**: `#007FFF`
+- **Checked Background**: `#00B8ED`
 - **Checkmark**: White icon
 
 ### Radio Button
 - **Size**: `16px × 16px`
 - **Border**: `1px solid #B1B1B1`
 - **Border Radius**: `50%` (circle)
-- **Selected**: Inner circle `8px`, background `#007FFF`
+- **Selected**: Inner circle `8px`, background `#00B8ED`
 
 ### Toggle Switch
 - **Width**: `48px`
 - **Height**: `24px`
 - **Border Radius**: `12px` (fully rounded)
 - **Off**: `#D1D2D4` background
-- **On**: `#007FFF` background
+- **On**: `#00B8ED` background
 - **Knob**: `18px × 18px` white circle
 
 ### Label
@@ -209,7 +209,7 @@
 - **Hover**: Subtle shadow increase (optional)
 
 ### Featured Card (Dark)
-- **Background**: `#1D4E8F` (Navy)
+- **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border Radius**: `16px`
 - **Padding**: `24px`
@@ -260,7 +260,7 @@
 - **Border Radius**: `8px`
 - **Margin Bottom**: `12px`
 - **Chevron**: Right side
-- **Hover**: Background `#F0F9FF`
+- **Hover**: Background `#FFFEF2`
 
 ---
 
@@ -277,7 +277,7 @@
 - **Pending** (Pendiente): `#FFC627` background, black text
 - **Blocked** (Bloqueada): `#F6323E` background, white text
 - **Inactive** (Inactivo): `#808284` background, white text
-- **In Process** (En proceso): `#007FFF` background, white text
+- **In Process** (En proceso): `#00B8ED` background, white text
 - **Requested** (Solicitado): `#00AFA9` background, white text
 
 ---
@@ -292,9 +292,9 @@
 - **Close Button**: Optional, right side
 
 #### Alert Types
-- **Success**: `#82BC00` background (light), `#82BC00` border, `#1D4E8F` text
-- **Info**: `#E3F2FD` background, `#2196F3` border, `#1D4E8F` text
-- **Warning**: `#FFF8E1` background, `#FFC627` border, `#1D4E8F` text
+- **Success**: `#82BC00` background (light), `#82BC00` border, `#005066` text
+- **Info**: `#E3F2FD` background, `#2196F3` border, `#005066` text
+- **Warning**: `#FFF8E1` background, `#FFC627` border, `#005066` text
 - **Error**: `#FFEBEE` background, `#FF0D00` border, `#FF0D00` text
 
 ---
@@ -339,12 +339,12 @@
 - **Height**: `10px`
 - **Border Radius**: `5px` (fully rounded)
 - **Background**: `#E4E6EA` (track)
-- **Fill**: `#007FFF` or gradient (progress)
+- **Fill**: `#00B8ED` or gradient (progress)
 - **Labels**: Above or below, 14px
 
 ### Loading Spinner
 - **Size**: `48px × 48px` (medium)
-- **Color**: `#007FFF` (primary)
+- **Color**: `#00B8ED` (primary)
 - **Animation**: Rotate 360deg, 1s linear infinite
 
 ### Skeleton Loader
@@ -358,7 +358,7 @@
 
 ### Sidebar
 - **Width**: `268px`
-- **Background**: `#1D4E8F` (Navy)
+- **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Padding**: `20px`
 
@@ -369,7 +369,7 @@
 - **Icon**: `20px × 20px`, left side
 - **Text**: 16px, medium
 - **Hover**: `rgba(255,255,255,0.1)` background
-- **Active**: `#007FFF` background
+- **Active**: `#00B8ED` background
 - **Chevron**: Right side for expandable items
 
 ### Header Bar
@@ -387,15 +387,15 @@
 ### Stepper Container
 - **Horizontal Layout**: Flex row
 - **Connector Line**: `140px` wide, `1px` height
-- **Color**: `#E4E6EA` (inactive), `#007FFF` (active)
+- **Color**: `#E4E6EA` (inactive), `#00B8ED` (active)
 
 ### Step Item
 - **Circle**: `40px × 40px`
 - **Border**: `2px solid #E4E6EA` (inactive)
-- **Background**: `#007FFF` (active), `#FFFFFF` (inactive)
+- **Background**: `#00B8ED` (active), `#FFFFFF` (inactive)
 - **Icon/Number**: Centered, white (active), gray (inactive)
 - **Label**: Below, 14px, centered
-- **Completed**: Checkmark icon, `#007FFF` background
+- **Completed**: Checkmark icon, `#00B8ED` background
 
 ### Step States
 - **Pending**: Gray circle, gray text
@@ -414,9 +414,9 @@
 - **XLarge**: `48px × 48px`
 
 ### Icon Colors
-- **Primary**: `#1D4E8F` (Navy)
+- **Primary**: `#005066` (Navy)
 - **Secondary**: `#58585B` (Gray)
-- **Accent**: `#007FFF` (Blue)
+- **Accent**: `#00B8ED` (Blue)
 - **On Dark**: `#FFFFFF` (White)
 
 ---
@@ -426,7 +426,7 @@
 ### Avatar
 - **Sizes**: `32px`, `40px`, `48px`, `64px`
 - **Border Radius**: `50%` (circle)
-- **Background**: `#1D4E8F` with white initials
+- **Background**: `#005066` with white initials
 - **Border**: Optional `2px solid #E4E6EA`
 
 ### Logo
@@ -481,7 +481,7 @@
 - **UI Components**: Minimum 3:1
 
 ### Focus States
-- **Outline**: `2px solid #007FFF`
+- **Outline**: `2px solid #00B8ED`
 - **Offset**: `2px`
 - **Visible**: Always on keyboard navigation
 
@@ -510,7 +510,7 @@
 
 - **Figma UI Kit**: [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1198-106)
 - **Color Palette**: See Figma "Paleta de Colores"
-- **Typography**: Ubuntu font family
+- **Typography**: Cabin font family
 - **Components**: See individual component frames in Figma
 
 ---
