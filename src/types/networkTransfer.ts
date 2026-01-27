@@ -30,12 +30,33 @@ export interface SourceAccount {
 }
 
 /**
- * Step 2: Network transfer form data
+ * Step 1: Network transfer form data
  */
 export interface NetworkTransferFormData {
   sourceAccountId: string;
   destinationProductId: string;
   amount: number;
+  concept?: string; // Optional transfer concept
+}
+
+/**
+ * Step 2: Network transfer confirmation data
+ */
+export interface NetworkTransferConfirmationData {
+  // Holder (sender) info
+  holderName: string;
+  holderDocument: string; // Masked: "CC 1.***.***. 231"
+  sourceProduct: string; // e.g., "Cuenta de Ahorros"
+
+  // Destination info
+  destinationHolder: string; // e.g., "PEDRO PEREZ"
+  destinationBank: string; // "Coopcentral"
+  destinationAccountType: string; // e.g., "Ahorros"
+  destinationAccountNumber: string; // e.g., "123.-456789-01"
+
+  // Transfer details
+  amount: number;
+  concept?: string;
 }
 
 /**
@@ -44,14 +65,18 @@ export interface NetworkTransferFormData {
 export interface NetworkTransferResult {
   status: "success" | "error";
   sourceAccount: string; // "Cuenta de Ahorros"
+  destinationBank: string; // "Coopcentral"
+  destinationAccountNumber: string; // "123-456789-01"
   recipientName: string; // "MARIA FERNANDA GONZALEZ"
-  destinationAccount: string; // "Cuenta de Ahorros (Ahorros ****4522)"
+  destinationAccount: string; // Legacy field for display
   amountTransferred: number;
+  concept?: string; // Optional transfer concept
   transactionCost: number;
   transactionDate: string; // "1 de septiembre de 2025"
   transactionTime: string; // "7:21 pm"
   approvalNumber: string; // "450606"
   description: string; // "Transferencia Exitosa"
+  errorMessage?: string;
 }
 
 /**
@@ -63,7 +88,9 @@ export interface NetworkTransferFlowState {
   selectedDestinationProduct: NetworkProduct | null;
   selectedSourceAccount: SourceAccount | null;
   amount: number;
+  concept?: string;
   verificationCode: string;
+  confirmationData: NetworkTransferConfirmationData | null;
   transactionResult: NetworkTransferResult | null;
   isLoading: boolean;
   error: string | null;

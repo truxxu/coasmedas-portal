@@ -2,6 +2,7 @@ import {
   RegisteredNetworkAccount,
   SourceAccount,
   NetworkTransferResult,
+  NetworkTransferConfirmationData,
 } from "@/src/types/networkTransfer";
 import { Step } from "@/src/types/stepper";
 
@@ -84,14 +85,41 @@ export const mockSourceAccounts: SourceAccount[] = [
 ];
 
 /**
+ * Mock user data for confirmation display
+ */
+export const mockNetworkTransferUserData = {
+  holderName: "CAMILO ANDRES CRUZ",
+  holderDocument: "CC 1.***.***. 231",
+};
+
+/**
+ * Mock confirmation data
+ */
+export const mockNetworkTransferConfirmation: NetworkTransferConfirmationData =
+  {
+    holderName: "CAMILO ANDRES CRUZ",
+    holderDocument: "CC 1.***.***. 231",
+    sourceProduct: "Cuenta de Ahorros",
+    destinationHolder: "PEDRO PEREZ",
+    destinationBank: "Coopcentral",
+    destinationAccountType: "Ahorros",
+    destinationAccountNumber: "123.-456789-01",
+    amount: 200000,
+    concept: "Clases mensuales",
+  };
+
+/**
  * Mock transaction result (success)
  */
 export const mockNetworkTransferResult: NetworkTransferResult = {
   status: "success",
   sourceAccount: "Cuenta de Ahorros",
+  destinationBank: "Coopcentral",
+  destinationAccountNumber: "123-456789-01",
   recipientName: "MARIA FERNANDA GONZALEZ",
   destinationAccount: "Cuenta de Ahorros (Ahorros ****4522)",
   amountTransferred: 350000,
+  concept: "Clases mensuales",
   transactionCost: 0,
   transactionDate: "1 de septiembre de 2025",
   transactionTime: "7:21 pm",
@@ -105,6 +133,8 @@ export const mockNetworkTransferResult: NetworkTransferResult = {
 export const mockNetworkTransferResultError: NetworkTransferResult = {
   status: "error",
   sourceAccount: "Cuenta de Ahorros",
+  destinationBank: "Coopcentral",
+  destinationAccountNumber: "123-456789-01",
   recipientName: "MARIA FERNANDA GONZALEZ",
   destinationAccount: "Cuenta de Ahorros (Ahorros ****4522)",
   amountTransferred: 0,
@@ -113,6 +143,7 @@ export const mockNetworkTransferResultError: NetworkTransferResult = {
   transactionTime: "7:21 pm",
   approvalNumber: "-",
   description: "Fondos insuficientes",
+  errorMessage: "Fondos insuficientes para completar la transferencia",
 };
 
 /**

@@ -24,7 +24,7 @@ export default function VerificacionPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "A Cuentas de mi Red",
-      backHref: "/transferencias/internas/cuentas-mi-red/detalle",
+      backHref: "/transferencias/cuentas-mi-red/confirmacion",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -36,7 +36,7 @@ export default function VerificacionPage() {
     const amount = sessionStorage.getItem("networkTransferAmount");
 
     if (!recipientData || !sourceId || !amount) {
-      router.push("/transferencias/internas/cuentas-mi-red");
+      router.push("/transferencias/cuentas-mi-red");
     }
   }, [router]);
 
@@ -77,7 +77,7 @@ export default function VerificacionPage() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (code === MOCK_VALID_CODE) {
-        router.push("/transferencias/internas/cuentas-mi-red/resultado");
+        router.push("/transferencias/cuentas-mi-red/resultado");
       } else {
         setError("Código incorrecto. Por favor intenta nuevamente.");
       }
@@ -91,7 +91,7 @@ export default function VerificacionPage() {
   };
 
   const handleBack = () => {
-    router.push("/transferencias/internas/cuentas-mi-red/detalle");
+    router.push("/transferencias/cuentas-mi-red/confirmacion");
   };
 
   return (
@@ -134,7 +134,7 @@ export default function VerificacionPage() {
           onClick={handlePay}
           disabled={isLoading || code.length !== 6}
         >
-          {isLoading ? "Procesando..." : "Pagar"}
+          {isLoading ? "Procesando..." : "Confirmar"}
         </Button>
       </div>
     </div>

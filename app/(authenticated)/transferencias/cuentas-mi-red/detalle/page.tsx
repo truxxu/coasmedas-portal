@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, HideBalancesToggle, Stepper } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { NetworkTransferForm } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import {
   mockSourceAccounts,
+  mockRegisteredAccounts,
   NETWORK_TRANSFER_STEPS,
 } from "@/src/mocks/mockNetworkTransferData";
 import {
@@ -20,38 +21,35 @@ export default function DetallePage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [recipient, setRecipient] = useState<RegisteredNetworkAccount | null>(
-    null
-  );
-  const [destinationProduct, setDestinationProduct] =
-    useState<NetworkProduct | null>(null);
   const [selectedSourceId, setSelectedSourceId] = useState("");
+  const [selectedDestinationId, setSelectedDestinationId] = useState("");
   const [amount, setAmount] = useState("");
+  const [concept, setConcept] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setWelcomeBar({
       title: "A Cuentas de mi Red",
-      backHref: "/transferencias/internas/cuentas-mi-red",
+      backHref: "/transferencias",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  useEffect(() => {
-    // Get data from previous step
-    const recipientData = sessionStorage.getItem("networkTransferRecipient");
-    const destinationData = sessionStorage.getItem(
-      "networkTransferDestination"
-    );
-
-    if (!recipientData || !destinationData) {
-      router.push("/transferencias/internas/cuentas-mi-red");
-      return;
+  // Parse the destination ID to get recipient and product
+  const getDestinationData = (): {
+    recipient: RegisteredNetworkAccount | null;
+    product: NetworkProduct | null;
+  } => {
+    if (!selectedDestinationId) {
+      return { recipient: null, product: null };
     }
 
-    setRecipient(JSON.parse(recipientData));
-    setDestinationProduct(JSON.parse(destinationData));
-  }, [router]);
+    const [accountId, productId] = selectedDestinationId.split("-");
+    const recipient = mockRegisteredAccounts.find((acc) => acc.id === accountId);
+    const product = recipient?.products.find((p) => p.id === productId);
+
+    return { recipient: recipient || null, product: product || null };
+  };
 
   const handleConfirm = () => {
     setError("");
@@ -61,13 +59,17 @@ export default function DetallePage() {
       setError("Por favor selecciona una cuenta origen");
       return;
     }
+    if (!selectedDestinationId) {
+      setError("Por favor selecciona una cuenta destino");
+      return;
+    }
     if (!amount || Number(amount) <= 0) {
       setError("Por favor ingresa un valor a transferir");
       return;
     }
 
     const sourceAccount = mockSourceAccounts.find(
-      (acc) => acc.id === selectedSourceId
+      (acc) => acc.id === selectedSourceId,
     );
 
     if (sourceAccount && Number(amount) > sourceAccount.balance) {
@@ -75,29 +77,31 @@ export default function DetallePage() {
       return;
     }
 
+    const { recipient, product } = getDestinationData();
+
+    if (!recipient || !product) {
+      setError("Error al obtener datos de la cuenta destino");
+      return;
+    }
+
     // Store data for next step
+    sessionStorage.setItem("networkTransferRecipient", JSON.stringify(recipient));
+    sessionStorage.setItem("networkTransferDestination", JSON.stringify(product));
     sessionStorage.setItem("networkTransferSourceId", selectedSourceId);
     sessionStorage.setItem("networkTransferAmount", amount);
+    sessionStorage.setItem("networkTransferConcept", concept);
 
-    // Navigate to SMS verification
-    router.push("/transferencias/internas/cuentas-mi-red/verificacion");
+    // Navigate to confirmation
+    router.push("/transferencias/cuentas-mi-red/confirmacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/internas/cuentas-mi-red");
+    router.push("/transferencias");
   };
-
-  if (!recipient || !destinationProduct) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-gray-500">Cargando...</span>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
-      {/* Header with Hide Balances Toggle */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs
           items={["Inicio", "Transferencias", "A Cuentas de mi Red"]}
@@ -106,18 +110,21 @@ export default function DetallePage() {
 
       {/* Stepper */}
       <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={NETWORK_TRANSFER_STEPS} />
+        <Stepper currentStep={1} steps={NETWORK_TRANSFER_STEPS} />
       </div>
 
       {/* Transfer Form */}
       <NetworkTransferForm
-        recipientName={recipient.name}
         sourceAccounts={mockSourceAccounts}
-        destinationProduct={destinationProduct}
+        registeredAccounts={mockRegisteredAccounts}
         selectedSourceId={selectedSourceId}
+        selectedDestinationId={selectedDestinationId}
         amount={amount}
+        concept={concept}
         onSourceChange={setSelectedSourceId}
+        onDestinationChange={setSelectedDestinationId}
         onAmountChange={setAmount}
+        onConceptChange={setConcept}
         hideBalances={hideBalances}
         error={error}
       />
@@ -133,7 +140,7 @@ export default function DetallePage() {
         <Button
           variant="primary"
           onClick={handleConfirm}
-          disabled={!selectedSourceId || !amount}
+          disabled={!selectedSourceId || !selectedDestinationId || !amount}
         >
           Confirmar
         </Button>
