@@ -62,16 +62,16 @@ export function AccountTypeRadioGroup({
               transition-colors duration-150
               ${
                 value === option.value
-                  ? "border-[#00B8ED]"
-                  : "border-[#B1B1B1]"
+                  ? "border-brand-primary"
+                  : "border-brand-footer-text"
               }
             `}
           >
             {value === option.value && (
-              <span className="w-2 h-2 rounded-full bg-[#00B8ED]" />
+              <span className="w-2 h-2 rounded-full bg-brand-primary" />
             )}
           </span>
-          <span className="text-sm text-[#111827]">{option.label}</span>
+          <span className="text-sm text-brand-text-black">{option.label}</span>
         </label>
       ))}
     </div>

@@ -68,7 +68,7 @@ export function NetworkTransferForm({
         <h2 className="text-lg font-bold text-brand-navy">
           Transferencias a Cuentas de mi Red Coopcentral
         </h2>
-        <p className="text-[15px] text-[#58585B] mt-1">
+        <p className="text-[15px] text-brand-gray-high mt-1">
           Envia dinero a otras cooperativas de la Red Coopcentral
         </p>
       </div>
@@ -161,7 +161,7 @@ export function NetworkTransferForm({
             w-full h-11 px-3
             rounded-md border border-brand-footer-text
             text-base text-brand-text-black
-            placeholder:text-[#B1B1B1]
+            placeholder:text-brand-footer-text
             focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none
           "
         />

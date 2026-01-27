@@ -16,7 +16,7 @@ export function InscribedAccountsList({
 }: InscribedAccountsListProps) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-bold text-[#005066]">Cuentas Inscritas</h2>
+      <h2 className="text-lg font-bold text-brand-navy">Cuentas Inscritas</h2>
 
       {accounts.length > 0 ? (
         <div className="space-y-3">
@@ -30,7 +30,7 @@ export function InscribedAccountsList({
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-[#808284]">
+        <div className="text-center py-8 text-brand-gray-medium">
           No tienes cuentas inscritas.
         </div>
       )}

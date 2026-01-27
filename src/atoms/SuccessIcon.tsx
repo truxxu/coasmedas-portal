@@ -28,14 +28,14 @@ export function SuccessIcon({ size = "md", className = "" }: SuccessIconProps) {
         cx="30"
         cy="30"
         r="28"
-        stroke="#009900"
+        stroke="var(--brand-success)"
         strokeWidth="3"
         fill="none"
       />
       {/* Checkmark */}
       <path
         d="M18 30L26 38L42 22"
-        stroke="#009900"
+        stroke="var(--brand-success)"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"

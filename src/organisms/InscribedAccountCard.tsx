@@ -18,15 +18,15 @@ export function InscribedAccountCard({
     account.accountType === "ahorros" ? "Ahorros" : "Corriente";
 
   return (
-    <div className="flex items-center justify-between bg-white border border-[#E4E6EA] rounded-lg p-4">
+    <div className="flex items-center justify-between bg-white border border-brand-border rounded-lg p-4">
       {/* Left side: Account info */}
       <div className="flex flex-col gap-1">
-        <h3 className="text-lg font-bold text-[#005066]">{account.alias}</h3>
+        <h3 className="text-lg font-bold text-brand-navy">{account.alias}</h3>
         <BankBadge bankName={account.bankName} />
-        <p className="text-sm text-[#58585B]">
+        <p className="text-sm text-brand-gray-high">
           {accountTypeLabel} - {account.accountNumberMasked}
         </p>
-        <p className="text-sm text-[#111827] uppercase">{account.holderName}</p>
+        <p className="text-sm text-brand-text-black uppercase">{account.holderName}</p>
       </div>
 
       {/* Right side: Action buttons */}
@@ -35,7 +35,7 @@ export function InscribedAccountCard({
         <button
           type="button"
           onClick={() => onEdit(account.id)}
-          className="p-2 text-[#58585B] hover:text-[#1D4E8F] transition-colors"
+          className="p-2 text-brand-gray-high hover:text-brand-navy-blue transition-colors"
           aria-label={`Editar cuenta ${account.alias}`}
         >
           <svg
@@ -59,7 +59,7 @@ export function InscribedAccountCard({
         <button
           type="button"
           onClick={() => onDelete(account.id)}
-          className="p-2 text-[#FF0D00] hover:text-[#CC0000] transition-colors"
+          className="p-2 text-brand-error hover:text-brand-error-dark transition-colors"
           aria-label={`Eliminar cuenta ${account.alias}`}
         >
           <svg

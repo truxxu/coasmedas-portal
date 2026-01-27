@@ -28,14 +28,14 @@ export function ErrorIcon({ size = "md", className = "" }: ErrorIconProps) {
         cx="30"
         cy="30"
         r="28"
-        stroke="#FF0D00"
+        stroke="var(--brand-error)"
         strokeWidth="3"
         fill="none"
       />
       {/* X mark */}
       <path
         d="M20 20L40 40M40 20L20 40"
-        stroke="#FF0D00"
+        stroke="var(--brand-error)"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"

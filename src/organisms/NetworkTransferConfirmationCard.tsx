@@ -25,7 +25,7 @@ export function NetworkTransferConfirmationCard({
         <h2 className="text-lg font-bold text-brand-navy">
           Confirmacion de Pago
         </h2>
-        <p className="text-[15px] text-[#58585B] mt-1">
+        <p className="text-[15px] text-brand-gray-high mt-1">
           Por favor, verifica que los datos de la transaccion sean correctos
           antes de continuar.
         </p>
@@ -34,7 +34,7 @@ export function NetworkTransferConfirmationCard({
       {/* Holder Section */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Nombre Titular:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -42,7 +42,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Documento Titular:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -50,7 +50,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Producto a Debitar:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -64,7 +64,7 @@ export function NetworkTransferConfirmationCard({
       {/* Destination Section */}
       <div className="space-y-3">
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Titular Destino:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -72,7 +72,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Banco Destino:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -80,7 +80,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Tipo de Cuenta:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -88,7 +88,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Cuenta Destino:
           </span>
           <span className="text-sm text-brand-text-black text-right">
@@ -96,7 +96,7 @@ export function NetworkTransferConfirmationCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-sm font-light text-[#232323]">
+          <span className="text-sm font-light text-brand-text-black">
             Valor a Transferir:
           </span>
           <span className="text-lg font-medium text-brand-text-black">
@@ -112,7 +112,7 @@ export function NetworkTransferConfirmationCard({
         <>
           <Divider />
           <div className="flex justify-between items-center py-2">
-            <span className="text-sm font-light text-[#232323]">Concepto:</span>
+            <span className="text-sm font-light text-brand-text-black">Concepto:</span>
             <span className="text-sm text-brand-text-black text-right">
               {confirmationData.concept}
             </span>
@@ -124,7 +124,7 @@ export function NetworkTransferConfirmationCard({
       <div className="flex justify-between items-center pt-4">
         <button
           onClick={onBack}
-          className="text-sm font-medium text-[#004266] hover:underline"
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
         >
           Volver
         </button>
