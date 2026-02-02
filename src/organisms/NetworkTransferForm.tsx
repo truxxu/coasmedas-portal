@@ -4,13 +4,13 @@ import React from "react";
 import { Card } from "@/src/atoms";
 import { TransferAmountInput } from "@/src/molecules";
 import {
-  SourceAccount,
+  NetworkSourceAccount,
   RegisteredNetworkAccount,
 } from "@/src/types/networkTransfer";
 import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface NetworkTransferFormProps {
-  sourceAccounts: SourceAccount[];
+  sourceAccounts: NetworkSourceAccount[];
   registeredAccounts: RegisteredNetworkAccount[];
   selectedSourceId: string;
   selectedDestinationId: string;
@@ -38,7 +38,7 @@ export function NetworkTransferForm({
   hideBalances,
   error,
 }: NetworkTransferFormProps) {
-  const formatAccountOption = (account: SourceAccount) => {
+  const formatAccountOption = (account: NetworkSourceAccount) => {
     const balance = hideBalances
       ? maskCurrency()
       : formatCurrency(account.balance);

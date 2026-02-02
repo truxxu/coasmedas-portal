@@ -2,7 +2,7 @@ import { Step } from "@/src/types/stepper";
 import {
   RegisteredBeneficiary,
   PayableProduct,
-  SourceAccount,
+  OtrosAsociadosSourceAccount,
   OtrosAsociadosTransactionResult,
 } from "@/src/types/otros-asociados-payment";
 
@@ -35,7 +35,7 @@ export const mockRegisteredBeneficiaries: RegisteredBeneficiary[] = [
  * Note: 'cuenta' sourceType requires SMS validation after confirmation
  *       'pse' sourceType redirects to PSE payment gateway
  */
-export const mockSourceAccounts: SourceAccount[] = [
+export const mockOtrosAsociadosSourceAccounts: OtrosAsociadosSourceAccount[] = [
   {
     id: "1",
     type: "Cuenta de Ahorros",
@@ -95,7 +95,7 @@ export const mockPayableProducts: PayableProduct[] = [
 /**
  * Mock user data (payer)
  */
-export const mockUserData = {
+export const mockOtrosAsociadosUserData = {
   name: "CAMILO ANDRÉS CRUZ",
   document: "CC 1.***.***. 234",
 };
@@ -155,4 +155,4 @@ export const OTROS_ASOCIADOS_PAYMENT_STEPS_PSE: Step[] = [
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = "123456";
+export const OTROS_ASOCIADOS_MOCK_VALID_CODE = "123456";

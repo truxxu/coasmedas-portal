@@ -3,7 +3,7 @@ import type {
   BankOption,
   CooperativaOption,
   DocumentTypeOption,
-  AccountTypeOption,
+  RegistrationAccountTypeOption,
 } from "@/src/types/accountRegistration";
 
 /**
@@ -137,7 +137,7 @@ export const mockDocumentTypes: DocumentTypeOption[] = [
 /**
  * Mock account type options
  */
-export const mockAccountTypes: AccountTypeOption[] = [
+export const mockAccountTypes: RegistrationAccountTypeOption[] = [
   { value: "ahorros", label: "Ahorros" },
   { value: "corriente", label: "Corriente" },
 ];

@@ -1,6 +1,6 @@
 import {
   RegisteredNetworkAccount,
-  SourceAccount,
+  NetworkSourceAccount,
   NetworkTransferResult,
   NetworkTransferConfirmationData,
 } from "@/src/types/networkTransfer";
@@ -9,7 +9,7 @@ import { Step } from "@/src/types/stepper";
 /**
  * Mock registered network accounts (recipients)
  */
-export const mockRegisteredAccounts: RegisteredNetworkAccount[] = [
+export const mockRegisteredNetworkAccounts: RegisteredNetworkAccount[] = [
   {
     id: "1",
     name: "MARÍA FERNANDA GONZALEZ",
@@ -60,7 +60,7 @@ export const mockRegisteredAccounts: RegisteredNetworkAccount[] = [
 /**
  * Mock source accounts (user's own accounts)
  */
-export const mockSourceAccounts: SourceAccount[] = [
+export const mockNetworkSourceAccounts: NetworkSourceAccount[] = [
   {
     id: "1",
     name: "Cuenta de Ahorros",
@@ -159,4 +159,4 @@ export const NETWORK_TRANSFER_STEPS: Step[] = [
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = "123456";
+export const NETWORK_TRANSFER_MOCK_VALID_CODE = "123456";

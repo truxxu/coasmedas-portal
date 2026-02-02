@@ -33,7 +33,7 @@ export type FundingSourceType = 'cuenta' | 'pse';
 /**
  * Source account for payment
  */
-export interface SourceAccount {
+export interface OtrosAsociadosSourceAccount {
   id: string;
   type: string;              // "Cuenta de Ahorros", "Aportes"
   balance: number;           // 8730500
@@ -46,7 +46,7 @@ export interface SourceAccount {
  */
 export interface OtrosAsociadosDetailsData {
   sourceAccountId: string;
-  sourceAccount: SourceAccount;
+  sourceAccount: OtrosAsociadosSourceAccount;
   beneficiary: RegisteredBeneficiary;
   selectedProducts: PayableProduct[];
   totalAmount: number;
@@ -90,7 +90,7 @@ export interface OtrosAsociadosPaymentFlowState {
   selectedBeneficiary: RegisteredBeneficiary | null;
 
   // Step 1: Details
-  sourceAccount: SourceAccount | null;
+  sourceAccount: OtrosAsociadosSourceAccount | null;
   products: PayableProduct[];
   totalAmount: number;
 

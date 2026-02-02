@@ -7,8 +7,8 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { NetworkTransferForm } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import {
-  mockSourceAccounts,
-  mockRegisteredAccounts,
+  mockNetworkSourceAccounts,
+  mockRegisteredNetworkAccounts,
   NETWORK_TRANSFER_STEPS,
 } from "@/src/mocks/mockNetworkTransferData";
 import {
@@ -45,7 +45,7 @@ export default function DetallePage() {
     }
 
     const [accountId, productId] = selectedDestinationId.split("-");
-    const recipient = mockRegisteredAccounts.find((acc) => acc.id === accountId);
+    const recipient = mockRegisteredNetworkAccounts.find((acc) => acc.id === accountId);
     const product = recipient?.products.find((p) => p.id === productId);
 
     return { recipient: recipient || null, product: product || null };
@@ -68,7 +68,7 @@ export default function DetallePage() {
       return;
     }
 
-    const sourceAccount = mockSourceAccounts.find(
+    const sourceAccount = mockNetworkSourceAccounts.find(
       (acc) => acc.id === selectedSourceId,
     );
 
@@ -115,8 +115,8 @@ export default function DetallePage() {
 
       {/* Transfer Form */}
       <NetworkTransferForm
-        sourceAccounts={mockSourceAccounts}
-        registeredAccounts={mockRegisteredAccounts}
+        sourceAccounts={mockNetworkSourceAccounts}
+        registeredAccounts={mockRegisteredNetworkAccounts}
         selectedSourceId={selectedSourceId}
         selectedDestinationId={selectedDestinationId}
         amount={amount}

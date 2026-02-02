@@ -12,7 +12,7 @@ import {
 } from "@/src/types/networkTransfer";
 import {
   NETWORK_TRANSFER_STEPS,
-  mockSourceAccounts,
+  mockNetworkSourceAccounts,
   mockNetworkTransferUserData,
 } from "@/src/mocks/mockNetworkTransferData";
 
@@ -47,7 +47,7 @@ export default function ConfirmacionPage() {
 
     const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
     const destination: NetworkProduct = JSON.parse(destinationData);
-    const sourceAccount = mockSourceAccounts.find((acc) => acc.id === sourceId);
+    const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
 
     // Build confirmation data
     const data: NetworkTransferConfirmationData = {

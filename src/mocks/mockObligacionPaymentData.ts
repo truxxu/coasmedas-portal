@@ -30,7 +30,7 @@ export const mockObligacionSourceAccounts: ObligacionSourceAccount[] = [
 /**
  * Mock obligacion products for payment
  */
-export const mockObligacionProducts: ObligacionPaymentProduct[] = [
+export const mockObligacionPaymentProducts: ObligacionPaymentProduct[] = [
   {
     id: '1',
     name: 'Crédito de Inversión',

@@ -4,14 +4,14 @@ import { Card } from "@/src/atoms";
 import { SelectField } from "@/src/molecules";
 import { formatCurrency } from "@/src/utils";
 import type {
-  SourceAccount,
+  UtilitySourceAccount,
   RegisteredService,
   UtilityPaymentDetails,
   UtilityPaymentMethod,
 } from "@/src/types";
 
 interface UtilityPaymentDetailsFormProps {
-  sourceAccounts: SourceAccount[];
+  sourceAccounts: UtilitySourceAccount[];
   registeredServices: RegisteredService[];
   formData: UtilityPaymentDetails;
   errors: {

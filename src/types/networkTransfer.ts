@@ -21,7 +21,7 @@ export interface NetworkProduct {
 /**
  * User's own account for transfer source
  */
-export interface SourceAccount {
+export interface NetworkSourceAccount {
   id: string;
   name: string; // "Cuenta de Ahorros"
   accountType: string; // "Ahorros"
@@ -86,7 +86,7 @@ export interface NetworkTransferFlowState {
   currentStep: 1 | 2 | 3 | 4;
   selectedRecipient: RegisteredNetworkAccount | null;
   selectedDestinationProduct: NetworkProduct | null;
-  selectedSourceAccount: SourceAccount | null;
+  selectedNetworkSourceAccount: NetworkSourceAccount | null;
   amount: number;
   concept?: string;
   verificationCode: string;

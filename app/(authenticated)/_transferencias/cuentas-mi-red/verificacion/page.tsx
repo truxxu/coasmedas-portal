@@ -8,7 +8,7 @@ import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 import {
   NETWORK_TRANSFER_STEPS,
-  MOCK_VALID_CODE,
+  NETWORK_TRANSFER_MOCK_VALID_CODE,
 } from "@/src/mocks/mockNetworkTransferData";
 
 export default function VerificacionPage() {
@@ -76,7 +76,7 @@ export default function VerificacionPage() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      if (code === MOCK_VALID_CODE) {
+      if (code === NETWORK_TRANSFER_MOCK_VALID_CODE) {
         router.push("/transferencias/cuentas-mi-red/resultado");
       } else {
         setError("Código incorrecto. Por favor intenta nuevamente.");

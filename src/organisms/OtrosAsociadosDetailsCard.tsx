@@ -3,12 +3,12 @@
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
 import { PayableProductCard } from '@/src/molecules';
-import { SourceAccount, PayableProduct } from '@/src/types';
+import { OtrosAsociadosSourceAccount, PayableProduct } from '@/src/types';
 import { formatCurrency, maskCurrency } from '@/src/utils';
 
 interface OtrosAsociadosDetailsCardProps {
   beneficiaryName: string;
-  accounts: SourceAccount[];
+  accounts: OtrosAsociadosSourceAccount[];
   selectedAccountId: string;
   products: PayableProduct[];
   totalAmount: number;

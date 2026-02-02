@@ -90,7 +90,7 @@ export default function ResultadoPage() {
       <ObligacionResultCard result={result} hideBalances={hideBalances} />
 
       <div className="flex justify-end gap-4">
-        <Button variant="outline" onClick={handlePrintSave}>
+        <Button variant="secondary" onClick={handlePrintSave}>
           Imprimir/Guardar
         </Button>
         <Button variant="primary" onClick={handleFinish}>

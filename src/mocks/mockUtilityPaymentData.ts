@@ -1,20 +1,20 @@
 import type {
-  SourceAccount,
+  UtilitySourceAccount,
   RegisteredService,
   UtilityPaymentResult,
+  Step,
 } from '@/src/types';
-import type { StepperStep } from '@/src/types';
 
-export const UTILITY_PAYMENT_STEPS: StepperStep[] = [
+export const UTILITY_PAYMENT_STEPS: Step[] = [
   { number: 1, label: 'Detalle' },
   { number: 2, label: 'Confirmacion' },
   { number: 3, label: 'SMS' },
   { number: 4, label: 'Finalizacion' },
 ];
 
-export const MOCK_VALID_CODE = '123456';
+export const UTILITY_MOCK_VALID_CODE = '123456';
 
-export const mockUtilitySourceAccounts: SourceAccount[] = [
+export const mockUtilitySourceAccounts: UtilitySourceAccount[] = [
   {
     id: '1',
     type: 'ahorros',

@@ -8,7 +8,7 @@ import { OtrosAsociadosDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
 import {
-  mockSourceAccounts,
+  mockOtrosAsociadosSourceAccounts,
   mockPayableProducts,
   OTROS_ASOCIADOS_PAYMENT_STEPS,
   OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
@@ -53,7 +53,7 @@ export default function OtrosAsociadosPagoPage() {
     .reduce((sum, p) => sum + p.amountToPay, 0);
 
   // Determine which stepper to show based on selected funding source
-  const selectedAccount = mockSourceAccounts.find((a) => a.id === selectedAccountId);
+  const selectedAccount = mockOtrosAsociadosSourceAccounts.find((a) => a.id === selectedAccountId);
   const paymentSteps = selectedAccount?.sourceType === "pse"
     ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
     : OTROS_ASOCIADOS_PAYMENT_STEPS;
@@ -103,7 +103,7 @@ export default function OtrosAsociadosPagoPage() {
       return;
     }
 
-    const account = mockSourceAccounts.find((a) => a.id === selectedAccountId);
+    const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === selectedAccountId);
     // Skip balance validation for PSE (paid from external bank)
     if (account && account.sourceType !== "pse" && totalAmount > account.balance) {
       setError("Saldo insuficiente en el origen de fondos seleccionado");
@@ -151,7 +151,7 @@ export default function OtrosAsociadosPagoPage() {
 
       <OtrosAsociadosDetailsCard
         beneficiaryName={beneficiary.fullName}
-        accounts={mockSourceAccounts}
+        accounts={mockOtrosAsociadosSourceAccounts}
         selectedAccountId={selectedAccountId}
         products={products}
         totalAmount={totalAmount}
