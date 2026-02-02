@@ -76,7 +76,7 @@ const transferenciasSubItems = [
   { label: "A otros bancos", href: "/transferencias/otros-bancos" },
   {
     label: "Cuentas de mi red Coopcentral",
-    href: "/transferencias/cuentas-coopcentral",
+    href: "/transferencias/cuentas-mi-red",
   },
   {
     label: "Programar transferencias",

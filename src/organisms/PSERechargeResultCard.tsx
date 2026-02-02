@@ -128,7 +128,7 @@ export function PSERechargeResultCard({
           <span className="text-[15px] text-brand-text-black">Descripcion</span>
           <span
             className={`text-[15px] font-medium ${
-              isSuccess ? "text-[#00A44C]" : "text-brand-error"
+              isSuccess ? "text-brand-success-icon" : "text-brand-error"
             }`}
           >
             {result.description}

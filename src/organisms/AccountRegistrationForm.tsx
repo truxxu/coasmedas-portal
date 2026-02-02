@@ -107,12 +107,12 @@ export function AccountRegistrationForm({
     <Card className="p-6 md:p-8">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-[#005066] mb-2">
+        <h2 className="text-xl font-bold text-brand-navy mb-2">
           {mode === "register"
             ? "Inscripcion de Cuentas Externas"
             : "Editar Cuentas Externas"}
         </h2>
-        <p className="text-sm text-[#58585B]">
+        <p className="text-sm text-brand-gray-high">
           {mode === "register"
             ? "Inscribe las cuentas de destino para tus transferencias a otros bancos y a la red Coopcentral."
             : "Edita la cuenta destino para tus transferencias a otros bancos y a la red Coopcentral."}
@@ -122,7 +122,7 @@ export function AccountRegistrationForm({
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
         {/* Account Type Selection */}
         <div>
-          <label className="block text-sm font-medium text-[#111827] mb-2">
+          <label className="block text-sm font-medium text-brand-text-black mb-2">
             Tipo de Cuenta a Inscribir
           </label>
           <AccountTypeRadioGroup
@@ -174,7 +174,7 @@ export function AccountRegistrationForm({
 
         {/* Holder Type Selection */}
         <div>
-          <label className="block text-sm font-medium text-[#111827] mb-2">
+          <label className="block text-sm font-medium text-brand-text-black mb-2">
             Tipo de Titular
           </label>
           <HolderTypeRadioGroup
@@ -249,7 +249,7 @@ export function AccountRegistrationForm({
         <Button
           type="submit"
           variant="primary"
-          className="w-full h-10 bg-[#00B8ED] hover:bg-[#00A5D8] text-white"
+          className="w-full h-10 bg-brand-primary hover:bg-brand-primary-dark text-white"
         >
           {mode === "register" ? "Inscribir Cuenta" : "Editar Cuenta"}
         </Button>

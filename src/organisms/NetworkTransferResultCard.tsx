@@ -76,35 +76,49 @@ export function NetworkTransferResultCard({
             {result.sourceAccount}
           </span>
         </div>
-        <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-brand-text-black">
-            Destinatario:
-          </span>
-          <span className="text-[15px] font-medium text-brand-text-black text-right">
-            {result.recipientName}
-          </span>
-        </div>
-        <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-brand-text-black">
-            Cuenta Destino:
-          </span>
-          <span className="text-[15px] font-medium text-brand-text-black text-right">
-            {result.destinationAccount}
-          </span>
-        </div>
+        {result.destinationBank && (
+          <div className="flex justify-between items-center py-2">
+            <span className="text-[15px] text-brand-text-black">
+              Banco Destino:
+            </span>
+            <span className="text-[15px] font-medium text-brand-text-black text-right">
+              {result.destinationBank}
+            </span>
+          </div>
+        )}
+        {result.destinationAccountNumber && (
+          <div className="flex justify-between items-center py-2">
+            <span className="text-[15px] text-brand-text-black">
+              Cuenta Destino:
+            </span>
+            <span className="text-[15px] font-medium text-brand-text-black text-right">
+              {result.destinationAccountNumber}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
             Valor Transferido:
           </span>
-          <span className="text-[15px] font-medium text-brand-text-black">
+          <span className="text-lg font-medium text-brand-text-black">
             {hideBalances
               ? maskCurrency()
               : formatCurrency(result.amountTransferred)}
           </span>
         </div>
+        {result.concept && (
+          <div className="flex justify-between items-center py-2">
+            <span className="text-[15px] text-brand-text-black">
+              Concepto:
+            </span>
+            <span className="text-[15px] font-medium text-brand-text-black text-right">
+              {result.concept}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between items-center py-2">
           <span className="text-[15px] text-brand-text-black">
-            Costo Transacción:
+            Costo Transaccion:
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {formatCurrency(result.transactionCost)}

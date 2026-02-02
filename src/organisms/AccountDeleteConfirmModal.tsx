@@ -89,13 +89,13 @@ export function AccountDeleteConfirmModal({
         {/* Title */}
         <h2
           id="delete-modal-title"
-          className="text-xl font-bold text-[#1D4E8F] mb-3"
+          className="text-xl font-bold text-brand-navy-blue mb-3"
         >
           Borrar cuenta inscrita
         </h2>
 
         {/* Message */}
-        <p className="text-sm text-[#58585B] mb-6">
+        <p className="text-sm text-brand-gray-high mb-6">
           Esta seguro que desea borrar esta cuenta?
         </p>
 
@@ -106,7 +106,7 @@ export function AccountDeleteConfirmModal({
             type="button"
             variant="secondary"
             onClick={onCancel}
-            className="flex-1 h-10 bg-[#E4E6EA] hover:bg-[#D1D2D4] text-[#111827]"
+            className="flex-1 h-10 bg-brand-border hover:bg-brand-gray-low text-brand-text-black"
           >
             Cancelar
           </Button>
@@ -114,7 +114,7 @@ export function AccountDeleteConfirmModal({
             type="button"
             variant="primary"
             onClick={onConfirm}
-            className="flex-1 h-10 bg-[#00B8ED] hover:bg-[#00A5D8] text-white"
+            className="flex-1 h-10 bg-brand-primary hover:bg-brand-primary-dark text-white"
           >
             Aceptar
           </Button>

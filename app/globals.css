@@ -38,6 +38,9 @@
   /* Additional UI colors */
   --brand-primary-disabled: #a6c4ff;
   --brand-gray-light: #f3f4f6;
+  --brand-primary-dark: #00a5d8;
+  --brand-error-dark: #cc0000;
+  --brand-navy-blue: #1d4e8f;
 }
 
 @theme inline {
@@ -70,6 +73,9 @@
   --color-brand-pink-red: var(--brand-pink-red);
   --color-brand-primary-disabled: var(--brand-primary-disabled);
   --color-brand-gray-light: var(--brand-gray-light);
+  --color-brand-primary-dark: var(--brand-primary-dark);
+  --color-brand-error-dark: var(--brand-error-dark);
+  --color-brand-navy-blue: var(--brand-navy-blue);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

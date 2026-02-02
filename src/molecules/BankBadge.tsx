@@ -9,7 +9,7 @@ const bankColorMap: Record<string, { bg: string; text: string }> = {
   bancolombia: { bg: "bg-[#FDDA24]", text: "text-black" },
   davivienda: { bg: "bg-[#ED1C24]", text: "text-white" },
   bbva: { bg: "bg-[#004481]", text: "text-white" },
-  coopcentral: { bg: "bg-[#1D4E8F]", text: "text-white" },
+  coopcentral: { bg: "bg-brand-navy-blue", text: "text-white" },
 };
 
 function getBankKey(bankName: string): string {
@@ -19,7 +19,7 @@ function getBankKey(bankName: string): string {
 export function BankBadge({ bankName, className = "" }: BankBadgeProps) {
   const bankKey = getBankKey(bankName);
   const colors = bankColorMap[bankKey] || {
-    bg: "bg-[#1D4E8F]",
+    bg: "bg-brand-navy-blue",
     text: "text-white",
   };
 

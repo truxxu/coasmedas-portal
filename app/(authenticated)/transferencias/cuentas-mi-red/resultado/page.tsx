@@ -25,7 +25,7 @@ export default function ResultadoPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "A Cuentas de mi Red",
-      backHref: "/transferencias/internas",
+      backHref: "/transferencias",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -38,9 +38,10 @@ export default function ResultadoPage() {
     );
     const sourceId = sessionStorage.getItem("networkTransferSourceId");
     const amount = sessionStorage.getItem("networkTransferAmount");
+    const concept = sessionStorage.getItem("networkTransferConcept") || "";
 
     if (!recipientData || !destinationData || !sourceId || !amount) {
-      router.push("/transferencias/internas/cuentas-mi-red");
+      router.push("/transferencias/cuentas-mi-red");
       return;
     }
 
@@ -52,9 +53,12 @@ export default function ResultadoPage() {
     const transferResult: NetworkTransferResult = {
       status: "success",
       sourceAccount: sourceAccount?.name || "Cuenta de Ahorros",
+      destinationBank: "Coopcentral",
+      destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
       recipientName: recipient.name,
       destinationAccount: `${destination.name} (${destination.type === "ahorros" ? "Ahorros" : "Corriente"} ${destination.maskedNumber})`,
       amountTransferred: Number(amount),
+      concept: concept || undefined,
       transactionCost: 0,
       transactionDate: new Date().toLocaleDateString("es-CO", {
         day: "numeric",
@@ -78,6 +82,7 @@ export default function ResultadoPage() {
     sessionStorage.removeItem("networkTransferDestination");
     sessionStorage.removeItem("networkTransferSourceId");
     sessionStorage.removeItem("networkTransferAmount");
+    sessionStorage.removeItem("networkTransferConcept");
   };
 
   const handlePrintSave = () => {
@@ -86,7 +91,7 @@ export default function ResultadoPage() {
 
   const handleNewTransaction = () => {
     clearNetworkTransferData();
-    router.push("/transferencias/internas/cuentas-mi-red");
+    router.push("/transferencias/cuentas-mi-red");
   };
 
   const handleFinish = () => {
