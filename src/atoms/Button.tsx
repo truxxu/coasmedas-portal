@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { forwardRef, ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-export function Button({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   children,
   variant = 'primary',
   size = 'md',
@@ -17,7 +17,7 @@ export function Button({
   className = '',
   onClick,
   ...props
-}: ButtonProps) {
+}, ref) {
   const baseStyles = 'inline-flex items-center justify-center font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
 
   const variants = {
@@ -45,8 +45,8 @@ export function Button({
   }
 
   return (
-    <button className={classes} onClick={onClick} {...props}>
+    <button ref={ref} className={classes} onClick={onClick} {...props}>
       {children}
     </button>
   );
-}
+});

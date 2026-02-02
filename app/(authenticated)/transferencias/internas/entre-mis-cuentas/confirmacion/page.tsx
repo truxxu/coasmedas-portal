@@ -10,7 +10,7 @@ import type { TransferConfirmationData } from "@/src/types/transfer";
 import {
   mockTransferAccounts,
   mockDestinationProducts,
-  mockUserData,
+  mockTransferUserData,
   TRANSFER_STEPS,
 } from "@/src/mocks";
 import { maskNumber } from "@/src/utils";
@@ -54,8 +54,8 @@ export default function ConfirmacionPage() {
     }
 
     setConfirmationData({
-      holderName: mockUserData.name,
-      documentNumber: mockUserData.document,
+      holderName: mockTransferUserData.name,
+      documentNumber: mockTransferUserData.document,
       sourceAccount: `${sourceAccount.name} (${maskNumber(sourceAccount.productNumber)})`,
       destinationProduct: `${destination.name} (${maskNumber(destination.productNumber)})`,
       amount: Number(amount),

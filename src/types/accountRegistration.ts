@@ -11,7 +11,7 @@ export type HolderType = "persona_natural" | "persona_juridica";
 /**
  * Account type (savings/checking)
  */
-export type AccountType = "ahorros" | "corriente";
+export type RegistrationAccountType = "ahorros" | "corriente";
 
 /**
  * Document type options
@@ -45,8 +45,8 @@ export interface DocumentTypeOption {
 /**
  * Account type option for dropdown
  */
-export interface AccountTypeOption {
-  value: AccountType;
+export interface RegistrationAccountTypeOption {
+  value: RegistrationAccountType;
   label: string;
 }
 
@@ -61,7 +61,7 @@ export interface AccountRegistrationFormData {
   // For Red Coopcentral
   cooperativa?: string;
   // Common fields
-  tipoCuenta: AccountType;
+  tipoCuenta: RegistrationAccountType;
   numeroCuenta: string;
   // Holder type selection
   tipoTitular: HolderType;
@@ -84,7 +84,7 @@ export interface RegisteredAccount {
   alias: string;
   bankName: string;
   bankType: AccountBankType;
-  accountType: AccountType;
+  accountType: RegistrationAccountType;
   accountNumberMasked: string;
   holderName: string;
   holderType: HolderType;

@@ -65,7 +65,7 @@ export const mockDestinationProducts: DestinationProduct[] = [
 /**
  * Mock user data
  */
-export const mockUserData = {
+export const mockTransferUserData = {
   name: "CAMILO ANDRES CRUZ",
   document: "CC 1.***.***234",
 };

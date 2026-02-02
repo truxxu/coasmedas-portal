@@ -13,7 +13,7 @@ import {
 } from "@/src/types/networkTransfer";
 import {
   NETWORK_TRANSFER_STEPS,
-  mockSourceAccounts,
+  mockNetworkSourceAccounts,
 } from "@/src/mocks/mockNetworkTransferData";
 
 export default function ResultadoPage() {
@@ -47,7 +47,7 @@ export default function ResultadoPage() {
 
     const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
     const destination: NetworkProduct = JSON.parse(destinationData);
-    const sourceAccount = mockSourceAccounts.find((acc) => acc.id === sourceId);
+    const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
 
     // Construct result
     const transferResult: NetworkTransferResult = {
@@ -126,10 +126,10 @@ export default function ResultadoPage() {
 
       {/* Footer Actions */}
       <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="outline" onClick={handlePrintSave}>
+        <Button variant="secondary" onClick={handlePrintSave}>
           Imprimir/Guardar
         </Button>
-        <Button variant="outline" onClick={handleNewTransaction}>
+        <Button variant="secondary" onClick={handleNewTransaction}>
           Realizar otra transacción
         </Button>
         <Button variant="primary" onClick={handleFinish}>

@@ -16,7 +16,7 @@ import type {
   BankOption,
   CooperativaOption,
   DocumentTypeOption,
-  AccountTypeOption,
+  RegistrationAccountTypeOption,
 } from "@/src/types";
 
 interface AccountRegistrationFormProps {
@@ -25,7 +25,7 @@ interface AccountRegistrationFormProps {
   banks: BankOption[];
   cooperativas: CooperativaOption[];
   documentTypes: DocumentTypeOption[];
-  accountTypes: AccountTypeOption[];
+  accountTypes: RegistrationAccountTypeOption[];
   onSubmit: (data: AccountRegistrationFormData) => void;
   onCancel?: () => void;
 }

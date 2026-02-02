@@ -9,7 +9,7 @@ import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
 import { PaymentType, ObligacionPaymentMethod } from "@/src/types/obligacion-payment";
 import {
-  mockObligacionProducts,
+  mockObligacionPaymentProducts,
   mockObligacionSourceAccounts,
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
@@ -48,7 +48,7 @@ export default function PagoObligacionesPage() {
     setSelectedProductId(productId);
     setError("");
     // Reset payment amount when product changes
-    const product = mockObligacionProducts.find((p) => p.id === productId);
+    const product = mockObligacionPaymentProducts.find((p) => p.id === productId);
     if (product) {
       setValorAPagar(product.minimumPayment);
       setActivePaymentType("minimum");
@@ -62,7 +62,7 @@ export default function PagoObligacionesPage() {
   };
 
   const handlePaymentTypeSelect = (type: PaymentType) => {
-    const product = mockObligacionProducts.find(
+    const product = mockObligacionPaymentProducts.find(
       (p) => p.id === selectedProductId
     );
     if (!product) return;
@@ -93,7 +93,7 @@ export default function PagoObligacionesPage() {
       return;
     }
 
-    const selectedProduct = mockObligacionProducts.find(
+    const selectedProduct = mockObligacionPaymentProducts.find(
       (p) => p.id === selectedProductId
     );
 
@@ -178,7 +178,7 @@ export default function PagoObligacionesPage() {
       </div>
 
       <ObligacionDetailsCard
-        products={mockObligacionProducts}
+        products={mockObligacionPaymentProducts}
         sourceAccounts={mockObligacionSourceAccounts}
         selectedProductId={selectedProductId}
         selectedAccountId={selectedAccountId}

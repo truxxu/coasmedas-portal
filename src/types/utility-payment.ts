@@ -1,7 +1,7 @@
 /**
  * Source account for utility payment
  */
-export interface SourceAccount {
+export interface UtilitySourceAccount {
   id: string;
   type: 'ahorros' | 'corriente';
   accountNumber: string;

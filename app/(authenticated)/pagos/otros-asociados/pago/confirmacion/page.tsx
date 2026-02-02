@@ -8,8 +8,8 @@ import { OtrosAsociadosConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
 import {
-  mockUserData,
-  mockSourceAccounts,
+  mockOtrosAsociadosUserData,
+  mockOtrosAsociadosSourceAccounts,
   OTROS_ASOCIADOS_PAYMENT_STEPS,
   OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
 } from "@/src/mocks";
@@ -57,7 +57,7 @@ export default function OtrosAsociadosConfirmacionPage() {
 
     const beneficiary: RegisteredBeneficiary = JSON.parse(beneficiaryStr);
     const products: PayableProduct[] = JSON.parse(productsStr);
-    const account = mockSourceAccounts.find((a) => a.id === accountId);
+    const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === accountId);
 
     if (!account) {
       router.push("/pagos/otros-asociados/pago");
@@ -70,8 +70,8 @@ export default function OtrosAsociadosConfirmacionPage() {
     }
 
     setConfirmationData({
-      titular: mockUserData.name,
-      documento: mockUserData.document,
+      titular: mockOtrosAsociadosUserData.name,
+      documento: mockOtrosAsociadosUserData.document,
       productoADebitar: account.type,
       beneficiaryName: beneficiary.fullName,
       products: products.map((p) => ({
