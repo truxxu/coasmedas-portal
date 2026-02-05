@@ -20,3 +20,12 @@ export const loginSchema = yup.object({
 });
 
 export type LoginFormData = yup.InferType<typeof loginSchema>;
+
+export const otpSchema = yup.object({
+  otp: yup
+    .string()
+    .required('Código OTP es requerido')
+    .matches(/^[0-9]{6}$/, 'El código debe ser de 6 dígitos'),
+});
+
+export type OtpFormData = yup.InferType<typeof otpSchema>;

@@ -71,16 +71,16 @@ export async function sendOtpAction(
  */
 export async function loginAction(
   params: LoginRequest,
-): Promise<ActionResult<Omit<LoginResponse, 'token'>>> {
+): Promise<ActionResult<{ userData: Omit<LoginResponse, 'token'>; token: string }>> {
   try {
     const data = await serverApiPost<LoginResponse>('/login', params);
 
     // Store JWT in HttpOnly secure cookie
     await setAuthCookie(data.token);
 
-    // Return user data without the token (token is in cookie)
-    const { token: _token, ...userData } = data;
-    return { success: true, data: userData };
+    // Return user data and token (token also needed client-side for Axios interceptor)
+    const { token, ...userData } = data;
+    return { success: true, data: { userData, token } };
   } catch (error) {
     return {
       success: false,

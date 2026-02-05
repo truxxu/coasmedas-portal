@@ -90,8 +90,8 @@ export function Sidebar() {
   const { mobileSidebarOpen, setMobileSidebarOpen } = useMobileSidebar();
   const { logout } = useUserContext();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     window.location.href = "/login";
   };
 

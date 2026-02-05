@@ -70,3 +70,4 @@ export { AccountDeleteConfirmModal } from './AccountDeleteConfirmModal';
 export { ExternalTransferDetailsCard } from './ExternalTransferDetailsCard';
 export { ExternalTransferConfirmationCard } from './ExternalTransferConfirmationCard';
 export { ExternalTransferResultCard } from './ExternalTransferResultCard';
+export { AuthHydrator } from './AuthHydrator';

@@ -7,3 +7,5 @@ export {
   registerAction,
   updatePasswordAction,
 } from './auth';
+
+export { getSessionAction } from './session';
