@@ -14,14 +14,11 @@ interface AuthHydratorProps {
 export function AuthHydrator({ children }: AuthHydratorProps) {
   const router = useRouter();
   const { user, setUser, setSession } = useUserContext();
-  const [isHydrating, setIsHydrating] = useState(!user);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     // If user is already in context, no need to hydrate
-    if (user) {
-      setIsHydrating(false);
-      return;
-    }
+    if (user) return;
 
     let cancelled = false;
 
@@ -54,7 +51,7 @@ export function AuthHydrator({ children }: AuthHydratorProps) {
         ipAddress: "",
       });
 
-      setIsHydrating(false);
+      setHydrated(true);
     }
 
     hydrateSession();
@@ -64,7 +61,8 @@ export function AuthHydrator({ children }: AuthHydratorProps) {
     };
   }, [user, router, setUser, setSession]);
 
-  if (isHydrating) {
+  // Show loading spinner until user is available (either from login or hydration)
+  if (!user && !hydrated) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-brand-light-blue">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-navy" />
