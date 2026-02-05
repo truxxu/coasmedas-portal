@@ -9,11 +9,11 @@
 
 | Metric | Count |
 |--------|-------|
-| Total endpoints available (backend) | 49 |
-| Currently used by mobile app | 48 |
-| Available but unused by mobile | 1 (`/register-device`) |
-| Endpoints with Postman examples | 19 |
-| Endpoints without Postman examples | 30 |
+| Total endpoints available (backend) | 46 |
+| Currently used by mobile app | 46 |
+| Endpoints with Postman examples | 18 |
+| Endpoints without Postman examples | 28 |
+| Excluded (not implementing) | 3 (TransfiYa x2, `/register-device`) |
 
 ### Protocol
 
@@ -57,12 +57,6 @@ All responses follow this structure:
 - **Format:** 6-digit numeric code (0-999999)
 - **Storage:** BCrypt hash in `Cerp_Coasmedas_OTP` table
 - **Used for:** Registration, login, password update, transaction confirmation
-
-### Trusted Device Flow
-
-- The `/send-otp` endpoint accepts an optional `deviceId` field
-- Returns `isTrustedDevice: true/false` in the response
-- Trusted devices may skip OTP for login (implementation detail)
 
 ---
 
@@ -115,7 +109,7 @@ All responses follow this structure:
 - **Description:** Retrieve BCrypt salt for password hashing before login/password-change
 - **Mobile usage:** Login screen, Change Password screen
 
-> :warning: **Auth discrepancy:** Mobile report says no auth required. Backend config says JWT required. Postman sends without auth header. **Likely no auth required for initial login flow.**
+> **Auth resolved:** No auth required. Used pre-login (salt needed to hash password before authenticating). Confirmed by mobile app + Postman behavior. Backend config marking as JWT is incorrect.
 
 **Request:**
 ```json
@@ -149,11 +143,9 @@ All responses follow this structure:
 ```json
 {
   "documentType": "CC",
-  "documentNumber": "79138052",
-  "deviceId": "23234"
+  "documentNumber": "79138052"
 }
 ```
-> `deviceId` enables trusted device detection. Not documented in mobile or backend but present in Postman. `indPag` is documented in backend but not used in Postman.
 
 **Response:**
 ```json
@@ -162,15 +154,13 @@ All responses follow this structure:
   "statusDesc": "Transaccion exitosa",
   "payload": {
     "mobile": "********73",
-    "email": "****r@yahoo.com",
-    "isTrustedDevice": false
+    "email": "****r@yahoo.com"
   }
 }
 ```
 
 **Notes:**
 - Contact info is masked for privacy
-- `isTrustedDevice` field only present in Postman responses (not documented in backend/mobile)
 - `email` field present in backend + Postman but missing from mobile report
 
 ---
@@ -190,7 +180,7 @@ All responses follow this structure:
   "otp": "745765"
 }
 ```
-> Backend docs include `deviceId` field. Mobile and Postman omit it. May be optional.
+> Backend docs include an optional `deviceId` field. Not used by mobile or web.
 
 **Response (Postman actual):**
 ```json
@@ -225,7 +215,7 @@ All responses follow this structure:
 - **Description:** Send OTP for transaction confirmation (payments/transfers)
 - **Mobile usage:** All payment and transfer verification screens
 
-> :warning: **Auth discrepancy:** Mobile report says no auth. Backend says JWT required. **Backend likely correct - JWT needed since this is post-login.**
+> **Auth resolved:** No auth required. Mobile report is correct. Backend config marking as JWT is not enforced.
 
 **Request:**
 ```json
@@ -241,7 +231,6 @@ All responses follow this structure:
 - `TransferInternal`
 - `TransferExternalBanks`
 - `TransferExternalEntities`
-- `TransferExternalTransfiYa`
 
 **Response:**
 ```json
@@ -265,7 +254,7 @@ All responses follow this structure:
 - **Description:** Validate that a user exists in the core banking system before registration
 - **Mobile usage:** Registration screen
 
-> :warning: **Auth discrepancy:** Mobile says no auth. Backend says JWT. **Likely no auth - used pre-registration.**
+> **Auth resolved:** No auth required. Pre-registration endpoint - user has no account yet. Mobile report is correct.
 
 **Request:**
 ```json
@@ -325,39 +314,6 @@ All responses follow this structure:
 ```
 
 > `token` is a literal `"string"` placeholder -- no JWT is generated during registration. User must log in separately.
-
----
-
-#### `POST /register-device`
-
-- **Status:** :new: Available, not yet used in mobile app report
-- **Description:** Register a new trusted device for the user
-- **Mobile usage:** Not currently documented in mobile audit
-- **Postman:** Has request/response examples
-
-**Request (Postman):**
-```json
-{
-  "documentType": "CC",
-  "documentNumber": "79138052",
-  "deviceId": "23234",
-  "deviceDescription": "user agent",
-  "otp": 506433
-}
-```
-
-**Response (Postman actual):**
-```json
-{
-  "statusCode": 0,
-  "statusDesc": "Dispositivo registrado exitosamente"
-}
-```
-> No payload on success.
-
-**Notes:**
-- This endpoint pairs with the `isTrustedDevice` field in `/send-otp` response
-- Relevant for web portal if implementing trusted browser/device features
 
 ---
 
@@ -1238,97 +1194,7 @@ All responses follow this structure:
 
 ---
 
-### 9. External Transfers (TransfiYa)
-
-#### `POST /transfer/external/transfiya/getTransactionCost`
-
-- **Status:** :white_check_mark: Used in mobile | Auth: JWT
-- **Description:** Get the commission for a TransfiYa transfer
-
-**Request:**
-```json
-{
-  "documentType": "CC",
-  "documentNumber": "1234567890",
-  "valorTransferencia": 50000,
-  "origen": {
-    "codigoProductoCobis": "01",
-    "tipoCartera": "0",
-    "idCuenta": "1234567890"
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "statusCode": 0,
-  "statusDesc": "Transaccion exitosa",
-  "payload": {
-    "numAprobacion": "123456",
-    "comision": 0
-  }
-}
-```
-
----
-
-#### `POST /transfer/external/transfiya/createTransaction`
-
-- **Status:** :white_check_mark: Used in mobile | Auth: JWT + OTP
-- **Description:** Execute a TransfiYa real-time transfer
-- **Mobile usage:** TransfiYa transfer verification screen
-
-**Request:**
-```json
-{
-  "documentType": "CC",
-  "documentNumber": "1234567890",
-  "otp": "123456",
-  "valorTransferencia": 50000,
-  "description": "Payment description",
-  "origen": {
-    "codigoProductoCobis": "01",
-    "tipoCartera": "0",
-    "idCuenta": "1234567890",
-    "numeroCuenta": "12345678901234567890"
-  },
-  "destino": {
-    "mobile": "3001234567"
-  },
-  "deviceFingerPrint": {
-    "hash": "<string>",
-    "ipAddress": "<string>",
-    "geolocation": "<string>",
-    "country": "CO",
-    "city": "Bogota",
-    "mobileDevice": "iPhone",
-    "SIMCardId": "<string>",
-    "model": "iPhone17,3",
-    "operator": "Claro"
-  }
-}
-```
-
-> :warning: **Discrepancy:** Mobile sends fewer `deviceFingerPrint` fields (`hash, ipAddress, country, city, mobileDevice, operator`). Backend includes additional: `geolocation`, `SIMCardId`, `model`. Web portal should send all fields per backend spec.
-
-**Response:**
-```json
-{
-  "statusCode": 0,
-  "statusDesc": "Transaccion exitosa",
-  "payload": {
-    "numAprobacion": "TFY123456",
-    "fechaTrn": "20240115",
-    "horaTrn": "143052",
-    "valorTransferencia": 50000
-  }
-}
-```
-
----
-
-### 10. BRE-B (Key-Based Instant Transfers)
+### 9. BRE-B (Key-Based Instant Transfers)
 
 > All BRE-B endpoints proxy to Visionamos BRE-B API. They authenticate with Visionamos using a separate OAuth token before each API call.
 
@@ -1754,7 +1620,6 @@ All responses follow this structure:
 | 112 | Visionamos transaction WS error | Show error |
 | 113 | Visionamos transaction rejected | Show rejection message |
 | 114 | Visionamos no response | Show timeout error |
-| 115 | TransfiYa error | Show error |
 | 116 | Inalambria (SMS) error | Show SMS error |
 | 500 | BRE-B Visionamos error | Show error with upstream details |
 

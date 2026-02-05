@@ -61,33 +61,25 @@ Documented but lack real request/response examples. Medium confidence.
 | 21 | `/transfer/external/banks/createTransaction` | External Transfers |
 | 22 | `/transfer/external/entities/targets/queryProduct` | External Transfers |
 | 23 | `/transfer/external/entities/createTransaction` | External Transfers |
-| 24 | `/transfer/external/transfiya/getTransactionCost` | TransfiYa |
-| 25 | `/transfer/external/transfiya/createTransaction` | TransfiYa |
-| 26 | `/products/savings` | Products |
-| 27 | `/products/credits` | Products |
-| 28 | `/products/investments` | Products |
-| 29 | `/products/contributions` | Products |
-| 30 | `/products/protection` | Products |
-
-### Endpoints in Backend + Postman but NOT in Mobile audit (1 endpoint)
-
-| # | Endpoint | Domain | Notes |
-|---|----------|--------|-------|
-| 1 | `/register-device` | Registration | New feature for trusted device management |
+| 24 | `/products/savings` | Products |
+| 25 | `/products/credits` | Products |
+| 26 | `/products/investments` | Products |
+| 27 | `/products/contributions` | Products |
+| 28 | `/products/protection` | Products |
 
 ---
 
-## 2. Authentication Discrepancies
+## 2. Authentication Discrepancies (RESOLVED)
 
-These endpoints have conflicting auth requirements between sources. **Must verify with backend team.**
+These endpoints had conflicting auth requirements between sources. Resolved on 2026-02-05.
 
-| Endpoint | Mobile Says | Backend Says | Likely Correct |
-|----------|-------------|--------------|----------------|
-| `/get-salt` | No auth | JWT | **No auth** (used pre-login, Postman confirms) |
-| `/send-otp/transaction` | No auth | JWT | **JWT** (used post-login for transactions) |
-| `/userValidation` | No auth | JWT | **No auth** (used pre-registration) |
+| Endpoint | Mobile Says | Backend Says | Resolution |
+|----------|-------------|--------------|------------|
+| `/get-salt` | No auth | JWT | **No auth** - Pre-login endpoint. Confirmed by mobile + Postman. |
+| `/send-otp/transaction` | No auth | JWT | **No auth** - Mobile report is correct. Backend does not enforce JWT. |
+| `/userValidation` | No auth | JWT | **No auth** - Pre-registration endpoint. User has no account yet. |
 
-**Action:** Confirm with backend team. The mobile app may be making calls without auth that the backend doesn't enforce strictly (e.g., JWT validation only checks if header is present, not if the endpoint truly requires it).
+**Conclusion:** The backend config file marks these as JWT, but the actual runtime behavior does not enforce it. All three endpoints work without authentication.
 
 ---
 
@@ -107,45 +99,12 @@ These endpoints have conflicting auth requirements between sources. **Must verif
 
 **Action:** Test whether `indPag` is truly required or silently ignored. The mobile app works without it for most endpoints. **For web: omit unless pagination is needed.**
 
-### 3.2 `/send-otp` - `deviceId` field
-
-- **Mobile report:** Not documented
-- **Backend docs:** Not documented
-- **Postman:** Sends `deviceId: "23234"`
-- **Impact:** Enables `isTrustedDevice` response field
-
-**Action:** Implement `deviceId` for web portal to support trusted device flow. Generate/persist a device identifier (e.g., localStorage UUID).
-
-### 3.3 `/login` - `deviceId` field
-
-- **Mobile report:** Not sent
-- **Backend docs:** Includes `deviceId`
-- **Postman:** Not sent
-
-**Action:** Test whether login works without `deviceId`. If trusted device flow is implemented, send it.
-
-### 3.4 `/payment/internal/createTransaction` - `cuentas` array
+### 3.2 `/payment/internal/createTransaction` - `cuentas` array
 
 - **Mobile:** Sends `cuentas` array (supports multi-product unified payment)
 - **Backend:** Does not document `cuentas` field
 
 **Action:** The `cuentas` array is needed for unified payment. Include it. Verify field structure matches mobile implementation.
-
-### 3.5 TransfiYa `deviceFingerPrint` field mismatch
-
-| Field | Mobile | Backend |
-|-------|--------|---------|
-| `hash` | :white_check_mark: | :white_check_mark: |
-| `ipAddress` | :white_check_mark: | :white_check_mark: |
-| `country` | :white_check_mark: | :white_check_mark: |
-| `city` | :white_check_mark: | :white_check_mark: |
-| `mobileDevice` | :white_check_mark: | :white_check_mark: |
-| `operator` | :white_check_mark: | :white_check_mark: |
-| `geolocation` | :x: | :white_check_mark: |
-| `SIMCardId` | :x: | :white_check_mark: |
-| `model` | :x: | :white_check_mark: |
-
-**Action:** Send all fields per backend spec. For web: `SIMCardId` and `operator` won't be available. Set to `"unknown"` or `"web"`. `geolocation` can use browser Geolocation API.
 
 ---
 

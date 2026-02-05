@@ -46,7 +46,6 @@ These endpoints support features already built in the web portal:
 |----------|-------------|-------|
 | `/userValidation` | User registration | Not yet built in portal |
 | `/register` | User registration | Not yet built in portal |
-| `/register-device` | Trusted device | New feature, web-specific value |
 | `/update-password` | Password change | Not yet built in portal |
 
 ### Phase 3: External Transfers & BRE-B
@@ -57,7 +56,6 @@ These endpoints support features already built in the web portal:
 | `/transfer/external/sources/*` | Bank transfer source | Not in current portal scope |
 | `/transfer/external/getTransactionCost` | Transfer cost | Not in current portal scope |
 | `/transfer/external/banks/createTransaction` | Execute bank transfer | Not in current portal scope |
-| `/transfer/external/transfiya/*` | TransfiYa | Not in current portal scope |
 | `/bre-b/*` (12 endpoints) | BRE-B keys & transfers | Not in current portal scope |
 
 ---
@@ -89,11 +87,9 @@ Flow:
 - Handle 107 (unauthorized) by redirecting to login
 - No token refresh mechanism exists - session ends on expiry
 
-### 2.3 Device Identification
+### 2.3 Device Identification (BRE-B only)
 
-**Mobile:** Device UUID, model, platform info available natively
-**Web:**
-- `deviceId`: Generate a UUID and store in localStorage
+BRE-B endpoints require device info. For web:
 - `platform`: Use `"web"`
 - `userAgentString`: Use `navigator.userAgent`
 - `trademark`/`model`: Not available, use `"web"` or `"unknown"`
@@ -106,27 +102,8 @@ Flow:
 - Same 6-digit code input
 - Already implemented via `CodeInputCard` + `CodeInputGroup` components
 - `/send-otp` response includes `email` field - consider showing both channels
-- `isTrustedDevice` flag could be used to skip OTP for trusted browsers
 
-### 2.5 TransfiYa Device Fingerprint
-
-For web implementation of TransfiYa (if needed):
-
-```json
-{
-  "hash": "<generate browser fingerprint hash>",
-  "ipAddress": "<from IP lookup or server-side>",
-  "geolocation": "<from navigator.geolocation>",
-  "country": "CO",
-  "city": "<from IP geolocation>",
-  "mobileDevice": "web",
-  "SIMCardId": "N/A",
-  "model": "<navigator.userAgent parsed>",
-  "operator": "N/A"
-}
-```
-
-### 2.6 Payzen/PSE Payment Redirect
+### 2.5 Payzen/PSE Payment Redirect
 
 **Mobile:** Opens WebView to Payzen URL
 **Web:**
@@ -219,15 +196,7 @@ Mobile opens WebView. Web needs:
 - Return URL handling (polling or callback)
 - Consider using `window.open()` for the payment and polling `/bre-b/txs/status` or similar
 
-### 4.3 `/register-device` - Trusted device feature
-
-This endpoint is **web-specific value**:
-- Register the user's browser as a trusted device
-- On subsequent logins, `isTrustedDevice: true` could skip OTP
-- Generate persistent device ID (localStorage UUID)
-- Prompt user: "Trust this browser?"
-
-### 4.4 BRE-B - Device info
+### 4.3 BRE-B - Device info
 
 BRE-B endpoints require device info that's naturally available on mobile but not web:
 - `platform`: Send `"web"` instead of `"ios"/"android"`
@@ -241,10 +210,8 @@ BRE-B endpoints require device info that's naturally available on mobile but not
 
 | Endpoint | Potential Web Use |
 |----------|------------------|
-| `/register-device` | Trusted browser feature (skip OTP on known devices) |
 | `/transfer/external/listBanks` | External bank transfers (future feature) |
 | `/transfer/external/banks/createTransaction` | External bank transfers (future feature) |
-| `/transfer/external/transfiya/*` | Real-time TransfiYa transfers (future feature) |
 | `/bre-b/*` | BRE-B instant transfers (future feature, complex) |
 
 ---
