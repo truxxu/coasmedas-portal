@@ -16,7 +16,6 @@ import { DOCUMENT_TYPES } from "@/src/constants/documentTypes";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/src/contexts";
 import { getSaltAction, sendOtpAction, loginAction } from "@/app/actions/auth";
-import bcrypt from "bcryptjs";
 
 type LoginStep = "credentials" | "otp";
 
@@ -54,37 +53,37 @@ export function LoginForm() {
     return () => clearTimeout(timer);
   }, [otpCooldown]);
 
-  // Handle credentials submit → get salt, hash password, send OTP
+  // Handle credentials submit → get salt + send OTP in parallel, then hash password
   const onCredentialsSubmit = async (data: LoginFormData) => {
     setError("");
     setIsLoading(true);
 
     try {
-      // 1. Get BCrypt salt
-      const saltResult = await getSaltAction({
+      const identification = {
         documentType: data.documentType,
         documentNumber: data.documentNumber,
-      });
+      };
+
+      // Run salt and OTP requests in parallel (async-parallel: independent operations)
+      const [saltResult, otpResult] = await Promise.all([
+        getSaltAction(identification),
+        sendOtpAction(identification),
+      ]);
 
       if (!saltResult.success || !saltResult.data) {
         setError(saltResult.error || "Error al obtener información de seguridad");
         return;
       }
 
-      // 2. Hash password client-side
-      const hashed = await bcrypt.hash(data.password, saltResult.data.salt);
-      setHashedPassword(hashed);
-
-      // 3. Send OTP
-      const otpResult = await sendOtpAction({
-        documentType: data.documentType,
-        documentNumber: data.documentNumber,
-      });
-
       if (!otpResult.success || !otpResult.data) {
         setError(otpResult.error || "Error al enviar el código de verificación");
         return;
       }
+
+      // Dynamic import bcryptjs only when needed (bundle-dynamic-imports)
+      const bcrypt = await import("bcryptjs");
+      const hashed = await bcrypt.hash(data.password, saltResult.data.salt);
+      setHashedPassword(hashed);
 
       setMaskedMobile(otpResult.data.mobile);
       setOtpCooldown(OTP_COOLDOWN_SECONDS);
