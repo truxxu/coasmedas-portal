@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { OtrosAsociadosConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -24,9 +24,44 @@ export default function OtrosAsociadosConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData, setConfirmationData] =
-    useState<OtrosAsociadosConfirmationData | null>(null);
-  const [sourceType, setSourceType] = useState<FundingSourceType>("cuenta");
+  const [sourceType] = useState<FundingSourceType>(() => {
+    if (typeof window === 'undefined') return "cuenta";
+    const stored = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
+    return stored || "cuenta";
+  });
+
+  const [confirmationData] =
+    useState<OtrosAsociadosConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+      const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
+      const accountId = sessionStorage.getItem("otrosAsociadosAccountId");
+      const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
+      const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
+
+      if (!beneficiaryStr || !accountId || !productsStr || !totalAmount) {
+        return null;
+      }
+
+      const beneficiary: RegisteredBeneficiary = JSON.parse(beneficiaryStr);
+      const products: PayableProduct[] = JSON.parse(productsStr);
+      const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === accountId);
+
+      if (!account) {
+        return null;
+      }
+
+      return {
+        titular: mockOtrosAsociadosUserData.name,
+        documento: mockOtrosAsociadosUserData.document,
+        productoADebitar: account.type,
+        beneficiaryName: beneficiary.fullName,
+        products: products.map((p) => ({
+          name: p.name,
+          amount: p.amountToPay,
+        })),
+        totalAmount: parseInt(totalAmount, 10),
+      };
+    });
 
   // Determine which stepper to use based on funding source
   const paymentSteps = sourceType === "pse"
@@ -42,45 +77,12 @@ export default function OtrosAsociadosConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Redirect if data is missing
   useEffect(() => {
-    // Get data from sessionStorage
-    const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
-    const accountId = sessionStorage.getItem("otrosAsociadosAccountId");
-    const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
-    const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
-    const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
-
-    if (!beneficiaryStr || !accountId || !productsStr || !totalAmount) {
+    if (!confirmationData) {
       router.push("/pagos/otros-asociados/pago");
-      return;
     }
-
-    const beneficiary: RegisteredBeneficiary = JSON.parse(beneficiaryStr);
-    const products: PayableProduct[] = JSON.parse(productsStr);
-    const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === accountId);
-
-    if (!account) {
-      router.push("/pagos/otros-asociados/pago");
-      return;
-    }
-
-    // Set the source type for stepper display
-    if (storedSourceType) {
-      setSourceType(storedSourceType);
-    }
-
-    setConfirmationData({
-      titular: mockOtrosAsociadosUserData.name,
-      documento: mockOtrosAsociadosUserData.document,
-      productoADebitar: account.type,
-      beneficiaryName: beneficiary.fullName,
-      products: products.map((p) => ({
-        name: p.name,
-        amount: p.amountToPay,
-      })),
-      totalAmount: parseInt(totalAmount, 10),
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirm = () => {
     if (confirmationData) {

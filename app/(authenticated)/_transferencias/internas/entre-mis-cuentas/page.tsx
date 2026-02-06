@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, HideBalancesToggle, Stepper } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { TransferDetailsCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import {

@@ -18,8 +18,35 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData, setConfirmationData] =
-    useState<CupoRotativoConfirmationData | null>(null);
+  const [confirmationData] =
+    useState<CupoRotativoConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
+      const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
+      const amount = sessionStorage.getItem("cupoRotativoAmount");
+
+      if (!cupoId || !destinationId || !amount) {
+        return null;
+      }
+
+      const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
+      const selectedDestination = mockCupoRotativoDestinations.find(
+        (d) => d.id === destinationId
+      );
+
+      if (!selectedCupo || !selectedDestination) {
+        return null;
+      }
+
+      return {
+        holderName: mockCupoRotativoUserData.holderName,
+        documentNumber: mockCupoRotativoUserData.documentNumber,
+        cupoOrigen: selectedCupo.name,
+        cuentaDestino: `${selectedDestination.name} (${selectedDestination.maskedNumber})`,
+        amount: Number(amount),
+      };
+    });
 
   useEffect(() => {
     setWelcomeBar({
@@ -30,34 +57,10 @@ export default function ConfirmacionPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get data from previous step
-    const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
-    const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
-    const amount = sessionStorage.getItem("cupoRotativoAmount");
-
-    if (!cupoId || !destinationId || !amount) {
+    if (!confirmationData) {
       router.push("/transferencias/internas/desde-cupos-rotativos");
-      return;
     }
-
-    const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
-    const selectedDestination = mockCupoRotativoDestinations.find(
-      (d) => d.id === destinationId
-    );
-
-    if (!selectedCupo || !selectedDestination) {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
-      return;
-    }
-
-    setConfirmationData({
-      holderName: mockCupoRotativoUserData.holderName,
-      documentNumber: mockCupoRotativoUserData.documentNumber,
-      cupoOrigen: selectedCupo.name,
-      cuentaDestino: `${selectedDestination.name} (${selectedDestination.maskedNumber})`,
-      amount: Number(amount),
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {

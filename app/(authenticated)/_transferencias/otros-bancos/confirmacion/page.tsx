@@ -18,8 +18,45 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData, setConfirmationData] =
-    useState<ExternalTransferConfirmationData | null>(null);
+  const [confirmationData] =
+    useState<ExternalTransferConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const sourceId = sessionStorage.getItem("externalTransferSourceId");
+      const destinationId = sessionStorage.getItem(
+        "externalTransferDestinationId",
+      );
+      const amount = sessionStorage.getItem("externalTransferAmount");
+      const concept = sessionStorage.getItem("externalTransferConcept");
+
+      if (!sourceId || !destinationId || !amount) {
+        return null;
+      }
+
+      const sourceAccount = mockExternalTransferSourceAccounts.find(
+        (acc) => acc.id === sourceId,
+      );
+      const destination = mockExternalTransferDestinations.find(
+        (acc) => acc.id === destinationId,
+      );
+
+      if (!sourceAccount || !destination) {
+        return null;
+      }
+
+      return {
+        holderName: mockExternalTransferUserData.holderName,
+        holderDocument: mockExternalTransferUserData.holderDocument,
+        sourceProduct: sourceAccount.type,
+        destinationHolder: destination.holderName,
+        destinationBank: destination.bankName,
+        destinationAccountType:
+          destination.accountType === "ahorros" ? "Ahorros" : "Corriente",
+        destinationAccountNumber: destination.accountNumber,
+        amount: Number(amount),
+        concept: concept || "",
+      };
+    });
 
   useEffect(() => {
     setWelcomeBar({
@@ -30,45 +67,10 @@ export default function ConfirmacionPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get data from previous step
-    const sourceId = sessionStorage.getItem("externalTransferSourceId");
-    const destinationId = sessionStorage.getItem(
-      "externalTransferDestinationId",
-    );
-    const amount = sessionStorage.getItem("externalTransferAmount");
-    const concept = sessionStorage.getItem("externalTransferConcept");
-
-    if (!sourceId || !destinationId || !amount) {
+    if (!confirmationData) {
       router.push("/transferencias/otros-bancos");
-      return;
     }
-
-    const sourceAccount = mockExternalTransferSourceAccounts.find(
-      (acc) => acc.id === sourceId,
-    );
-    const destination = mockExternalTransferDestinations.find(
-      (acc) => acc.id === destinationId,
-    );
-
-    if (!sourceAccount || !destination) {
-      router.push("/transferencias/otros-bancos");
-      return;
-    }
-
-    // Build confirmation data
-    setConfirmationData({
-      holderName: mockExternalTransferUserData.holderName,
-      holderDocument: mockExternalTransferUserData.holderDocument,
-      sourceProduct: sourceAccount.type,
-      destinationHolder: destination.holderName,
-      destinationBank: destination.bankName,
-      destinationAccountType:
-        destination.accountType === "ahorros" ? "Ahorros" : "Corriente",
-      destinationAccountNumber: destination.accountNumber,
-      amount: Number(amount),
-      concept: concept || "",
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {

@@ -16,24 +16,15 @@ interface UIContextType {
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: ReactNode }) {
-  const [hideBalances, setHideBalances] = useState(false);
+  const [hideBalances, setHideBalances] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const stored = localStorage.getItem('hideBalances');
+    return stored ? JSON.parse(stored) : false;
+  });
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({});
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   // Use ref instead of state for hydration tracking to avoid cascading renders
-  const isHydrated = useRef(false);
-
-  // Load hideBalances from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('hideBalances');
-    if (stored) {
-      const parsedValue = JSON.parse(stored);
-      // Only update state if different from default to avoid unnecessary render
-      if (parsedValue !== false) {
-        setHideBalances(parsedValue);
-      }
-    }
-    isHydrated.current = true;
-  }, []);
+  const isHydrated = useRef(typeof window !== 'undefined');
 
   // Persist hideBalances to localStorage when it changes
   useEffect(() => {

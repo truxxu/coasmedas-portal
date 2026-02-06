@@ -18,7 +18,10 @@ export default function VerificacionPage() {
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isCheckingData, setIsCheckingData] = useState(true);
+  const [hasRequiredData] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !!sessionStorage.getItem("paymentConfirmationData");
+  });
   const [resendDisabled, setResendDisabled] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
 
@@ -31,30 +34,28 @@ export default function VerificacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Check for required data from previous steps
+  // Redirect if required data is missing
   useEffect(() => {
-    const confirmationData = sessionStorage.getItem("paymentConfirmationData");
-
-    if (!confirmationData) {
-      // No data from previous steps, redirect to start
+    if (!hasRequiredData) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
-      return;
     }
-
-    setIsCheckingData(false);
-  }, [router]);
+  }, [hasRequiredData, router]);
 
   // Resend countdown timer
   useEffect(() => {
     if (resendCountdown > 0) {
       const timer = setTimeout(() => {
-        setResendCountdown((prev) => prev - 1);
+        setResendCountdown((prev) => {
+          const next = prev - 1;
+          if (next === 0) {
+            setResendDisabled(false);
+          }
+          return next;
+        });
       }, 1000);
       return () => clearTimeout(timer);
-    } else if (resendCountdown === 0 && resendDisabled) {
-      setResendDisabled(false);
     }
-  }, [resendCountdown, resendDisabled]);
+  }, [resendCountdown]);
 
   const handleCodeChange = useCallback((newCode: string) => {
     setCode(newCode);
@@ -114,7 +115,7 @@ export default function VerificacionPage() {
     router.push("/pagos/pagar-mis-productos/pago-unificado/confirmacion");
   };
 
-  if (isCheckingData) {
+  if (!hasRequiredData) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-brand-gray-high">Cargando...</div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Card } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
 import type {
@@ -30,17 +31,15 @@ export function UtilityRegistrationForm({
   onBillNumberChange,
   onAliasChange,
 }: UtilityRegistrationFormProps) {
-  // Convert cities to select options
-  const cityOptions = cities.map((city) => ({
+  const cityOptions = useMemo(() => cities.map((city) => ({
     value: city.id,
     label: city.name,
-  }));
+  })), [cities]);
 
-  // Convert convenios to select options
-  const convenioOptions = convenios.map((convenio) => ({
+  const convenioOptions = useMemo(() => convenios.map((convenio) => ({
     value: convenio.id,
     label: convenio.name,
-  }));
+  })), [convenios]);
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = e.target.value;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, Divider, CurrencyInput } from "@/src/atoms";
 import { AportesPaymentDetailRow } from "@/src/molecules";
 import { PaymentAccount } from "@/src/types/payment";
@@ -9,7 +9,6 @@ import { formatCurrency, maskCurrency } from "@/src/utils";
 import {
   PSE_PAYMENT_ID,
   PSE_PAYMENT_NAME,
-  isPSEPayment,
 } from "@/src/mocks/mockAportesPaymentData";
 
 interface AportesDetailsCardProps {
@@ -33,17 +32,15 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   onValorChange,
   onNeedMoreBalance,
   hideBalances,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showPSEOption = true,
 }) => {
-  const accountOptions = accounts.map((account) => ({
+  const accountOptions = useMemo(() => accounts.map((account) => ({
     value: account.id,
     label: `${account.name} - Saldo: ${
       hideBalances ? maskCurrency() : formatCurrency(account.balance)
     }`,
-  }));
-
-  // Check if PSE is currently selected
-  const isPSESelected = isPSEPayment(selectedAccountId);
+  })), [accounts, hideBalances]);
 
   return (
     <Card className="space-y-6 p-6 md:p-8">

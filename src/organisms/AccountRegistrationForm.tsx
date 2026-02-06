@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Card, Button } from "@/src/atoms";
@@ -53,6 +53,7 @@ export function AccountRegistrationForm({
   documentTypes,
   accountTypes,
   onSubmit,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onCancel,
 }: AccountRegistrationFormProps) {
   const {
@@ -67,6 +68,7 @@ export function AccountRegistrationForm({
     defaultValues: initialData || defaultValues,
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const accountBankType = watch("accountBankType");
   const tipoTitular = watch("tipoTitular");
 
@@ -83,25 +85,25 @@ export function AccountRegistrationForm({
     onSubmit(data);
   };
 
-  const bankOptions = banks.map((bank) => ({
+  const bankOptions = useMemo(() => banks.map((bank) => ({
     value: bank.value,
     label: bank.label,
-  }));
+  })), [banks]);
 
-  const cooperativaOptions = cooperativas.map((coop) => ({
+  const cooperativaOptions = useMemo(() => cooperativas.map((coop) => ({
     value: coop.value,
     label: coop.label,
-  }));
+  })), [cooperativas]);
 
-  const documentTypeOptions = documentTypes.map((doc) => ({
+  const documentTypeOptions = useMemo(() => documentTypes.map((doc) => ({
     value: doc.value,
     label: doc.label,
-  }));
+  })), [documentTypes]);
 
-  const accountTypeOptions = accountTypes.map((acc) => ({
+  const accountTypeOptions = useMemo(() => accountTypes.map((acc) => ({
     value: acc.value,
     label: acc.label,
-  }));
+  })), [accountTypes]);
 
   return (
     <Card className="p-6 md:p-8">

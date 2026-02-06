@@ -21,8 +21,37 @@ export default function ConfirmacionPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmationData, setConfirmationData] =
-    useState<NetworkTransferConfirmationData | null>(null);
+  const [confirmationData] =
+    useState<NetworkTransferConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const recipientData = sessionStorage.getItem("networkTransferRecipient");
+      const destinationData = sessionStorage.getItem("networkTransferDestination");
+      const sourceId = sessionStorage.getItem("networkTransferSourceId");
+      const amount = sessionStorage.getItem("networkTransferAmount");
+      const concept = sessionStorage.getItem("networkTransferConcept") || "";
+
+      if (!recipientData || !destinationData || !sourceId || !amount) {
+        return null;
+      }
+
+      const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
+      const destination: NetworkProduct = JSON.parse(destinationData);
+      const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
+
+      return {
+        holderName: mockNetworkTransferUserData.holderName,
+        holderDocument: mockNetworkTransferUserData.holderDocument,
+        sourceProduct: sourceAccount?.name || "Cuenta de Ahorros",
+        destinationHolder: recipient.name,
+        destinationBank: "Coopcentral",
+        destinationAccountType:
+          destination.type === "ahorros" ? "Ahorros" : "Corriente",
+        destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
+        amount: Number(amount),
+        concept: concept || undefined,
+      };
+    });
 
   useEffect(() => {
     setWelcomeBar({
@@ -33,38 +62,10 @@ export default function ConfirmacionPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get data from session storage
-    const recipientData = sessionStorage.getItem("networkTransferRecipient");
-    const destinationData = sessionStorage.getItem("networkTransferDestination");
-    const sourceId = sessionStorage.getItem("networkTransferSourceId");
-    const amount = sessionStorage.getItem("networkTransferAmount");
-    const concept = sessionStorage.getItem("networkTransferConcept") || "";
-
-    if (!recipientData || !destinationData || !sourceId || !amount) {
+    if (!confirmationData) {
       router.push("/transferencias/cuentas-mi-red");
-      return;
     }
-
-    const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
-    const destination: NetworkProduct = JSON.parse(destinationData);
-    const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
-
-    // Build confirmation data
-    const data: NetworkTransferConfirmationData = {
-      holderName: mockNetworkTransferUserData.holderName,
-      holderDocument: mockNetworkTransferUserData.holderDocument,
-      sourceProduct: sourceAccount?.name || "Cuenta de Ahorros",
-      destinationHolder: recipient.name,
-      destinationBank: "Coopcentral",
-      destinationAccountType:
-        destination.type === "ahorros" ? "Ahorros" : "Corriente",
-      destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
-      amount: Number(amount),
-      concept: concept || undefined,
-    };
-
-    setConfirmationData(data);
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirm = () => {
     router.push("/transferencias/cuentas-mi-red/verificacion");

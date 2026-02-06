@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ProtectionPaymentConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -19,10 +19,39 @@ export default function ProteccionConfirmacionPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmation, setConfirmation] =
-    useState<ProtectionPaymentConfirmationData | null>(null);
-  const [paymentMethod, setPaymentMethod] =
-    useState<ProtectionPaymentMethod>("account");
+  const [paymentMethod] =
+    useState<ProtectionPaymentMethod>(() => {
+      if (typeof window === 'undefined') return "account";
+      const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
+      if (!detailsStr) return "account";
+      const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
+      return details.paymentMethod;
+    });
+
+  const [confirmation] =
+    useState<ProtectionPaymentConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
+      if (!detailsStr) return null;
+
+      const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
+
+      const isPSE = details.paymentMethod === "pse";
+      const productToDebit = isPSE
+        ? "PSE (Pagos con otras entidades)"
+        : details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros";
+
+      return {
+        holderName: "CAMILO ANDRES CRUZ",
+        holderDocument: "CC 1.***.***234",
+        productToPay: details.selectedProduct?.title || "",
+        policyNumber: details.selectedProduct?.productNumber || "",
+        productToDebit,
+        amountToPay: details.selectedProduct?.nextPaymentAmount || 0,
+      };
+    });
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
@@ -34,37 +63,12 @@ export default function ProteccionConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load details from sessionStorage and build confirmation data
+  // Redirect if data is missing
   useEffect(() => {
-    const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
-    if (!detailsStr) {
+    if (!confirmation) {
       router.push("/pagos/pagar-mis-productos/proteccion");
-      return;
     }
-
-    const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
-
-    // Store payment method for routing decision
-    setPaymentMethod(details.paymentMethod);
-
-    // Determine product to debit display
-    const isPSE = details.paymentMethod === "pse";
-    const productToDebit = isPSE
-      ? "PSE (Pagos con otras entidades)"
-      : details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros";
-
-    // Build confirmation data from details + mock user data
-    const confirmationData: ProtectionPaymentConfirmationData = {
-      holderName: "CAMILO ANDRES CRUZ",
-      holderDocument: "CC 1.***.***234",
-      productToPay: details.selectedProduct?.title || "",
-      policyNumber: details.selectedProduct?.productNumber || "",
-      productToDebit,
-      amountToPay: details.selectedProduct?.nextPaymentAmount || 0,
-    };
-
-    setConfirmation(confirmationData);
-  }, [router]);
+  }, [confirmation, router]);
 
   const handleConfirm = async () => {
     if (!confirmation) return;

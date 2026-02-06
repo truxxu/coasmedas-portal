@@ -10,7 +10,17 @@ import { mockUtilityPaymentResult } from "@/src/mocks";
 export default function UtilityPaymentPSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
-  const [isPSEMethodValid, setIsPSEMethodValid] = useState(false);
+  const [isPSEMethodValid] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const detailsData = sessionStorage.getItem("utilityPaymentDetails");
+    if (detailsData) {
+      const details = JSON.parse(detailsData);
+      if (details.paymentMethod === "pse") {
+        return true;
+      }
+    }
+    return false;
+  });
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -21,18 +31,12 @@ export default function UtilityPaymentPSEPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Verify PSE payment method was selected
+  // Redirect if PSE method was not selected
   useEffect(() => {
-    const detailsData = sessionStorage.getItem("utilityPaymentDetails");
-    if (detailsData) {
-      const details = JSON.parse(detailsData);
-      if (details.paymentMethod === "pse") {
-        setIsPSEMethodValid(true);
-        return;
-      }
+    if (!isPSEMethodValid) {
+      router.push("/pagos/servicios-publicos/pagar/detalle");
     }
-    router.push("/pagos/servicios-publicos/pagar/detalle");
-  }, [router]);
+  }, [isPSEMethodValid, router]);
 
   const handleBeforeRedirect = () => {
     const confirmationStr = sessionStorage.getItem(

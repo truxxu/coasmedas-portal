@@ -19,8 +19,37 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData, setConfirmationData] =
-    useState<TransferConfirmationData | null>(null);
+  const [confirmationData] =
+    useState<TransferConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const sourceId = sessionStorage.getItem("transferSourceId");
+      const destinationId = sessionStorage.getItem("transferDestinationId");
+      const amount = sessionStorage.getItem("transferAmount");
+
+      if (!sourceId || !destinationId || !amount) {
+        return null;
+      }
+
+      const sourceAccount = mockTransferAccounts.find(
+        (acc) => acc.id === sourceId
+      );
+      const destination = mockDestinationProducts.find(
+        (p) => p.id === destinationId
+      );
+
+      if (!sourceAccount || !destination) {
+        return null;
+      }
+
+      return {
+        holderName: mockTransferUserData.name,
+        documentNumber: mockTransferUserData.document,
+        sourceAccount: `${sourceAccount.name} (${maskNumber(sourceAccount.productNumber)})`,
+        destinationProduct: `${destination.name} (${maskNumber(destination.productNumber)})`,
+        amount: Number(amount),
+      };
+    });
 
   useEffect(() => {
     setWelcomeBar({
@@ -31,36 +60,10 @@ export default function ConfirmacionPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get data from previous step
-    const sourceId = sessionStorage.getItem("transferSourceId");
-    const destinationId = sessionStorage.getItem("transferDestinationId");
-    const amount = sessionStorage.getItem("transferAmount");
-
-    if (!sourceId || !destinationId || !amount) {
+    if (!confirmationData) {
       router.push("/transferencias/internas/entre-mis-cuentas");
-      return;
     }
-
-    const sourceAccount = mockTransferAccounts.find(
-      (acc) => acc.id === sourceId
-    );
-    const destination = mockDestinationProducts.find(
-      (p) => p.id === destinationId
-    );
-
-    if (!sourceAccount || !destination) {
-      router.push("/transferencias/internas/entre-mis-cuentas");
-      return;
-    }
-
-    setConfirmationData({
-      holderName: mockTransferUserData.name,
-      documentNumber: mockTransferUserData.document,
-      sourceAccount: `${sourceAccount.name} (${maskNumber(sourceAccount.productNumber)})`,
-      destinationProduct: `${destination.name} (${maskNumber(destination.productNumber)})`,
-      amount: Number(amount),
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {

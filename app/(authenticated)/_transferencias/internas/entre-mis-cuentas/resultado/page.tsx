@@ -13,7 +13,15 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<TransferResult | null>(null);
+  const [result] = useState<TransferResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+
+    const confirmationData = sessionStorage.getItem("transferConfirmation");
+    if (!confirmationData) return null;
+
+    // Use mock result - in production this would come from API
+    return mockTransferResult;
+  });
 
   useEffect(() => {
     setWelcomeBar({
@@ -23,17 +31,10 @@ export default function ResultadoPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Check if previous steps were completed
-    const confirmationData = sessionStorage.getItem("transferConfirmation");
-
-    if (!confirmationData) {
+    if (!result) {
       router.push("/transferencias/internas/entre-mis-cuentas");
-      return;
     }
-
-    // Use mock result - in production this would come from API
-    setResult(mockTransferResult);
-  }, [router]);
+  }, [result, router]);
 
   const handlePrintSave = () => {
     window.print();

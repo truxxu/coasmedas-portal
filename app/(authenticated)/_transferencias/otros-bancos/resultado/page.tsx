@@ -13,7 +13,18 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<ExternalTransferResult | null>(null);
+  const [result] = useState<ExternalTransferResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+
+    const resultData = sessionStorage.getItem("externalTransferResult");
+    if (!resultData) return null;
+
+    try {
+      return JSON.parse(resultData) as ExternalTransferResult;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     setWelcomeBar({
@@ -23,21 +34,10 @@ export default function ResultadoPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get result from session storage
-    const resultData = sessionStorage.getItem("externalTransferResult");
-
-    if (!resultData) {
-      router.push("/transferencias/otros-bancos");
-      return;
-    }
-
-    try {
-      const parsedResult = JSON.parse(resultData) as ExternalTransferResult;
-      setResult(parsedResult);
-    } catch {
+    if (!result) {
       router.push("/transferencias/otros-bancos");
     }
-  }, [router]);
+  }, [result, router]);
 
   const clearSessionStorage = () => {
     sessionStorage.removeItem("externalTransferSourceId");

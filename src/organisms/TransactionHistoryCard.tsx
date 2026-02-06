@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, Divider } from "@/src/atoms";
+import { Card } from "@/src/atoms";
 import { DateRangeFilter } from "@/src/molecules";
 import { TransactionItem } from "@/src/molecules";
 import { Transaction } from "@/src/types/transaction";
@@ -77,7 +77,7 @@ export function TransactionHistoryCard({
       )}
 
       {/* Optional info box (e.g., for suggestions) */}
-      {infoBox && <div className="mt-6">{infoBox}</div>}
+      {infoBox ? <div className="mt-6">{infoBox}</div> : null}
     </Card>
   );
 }

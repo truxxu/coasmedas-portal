@@ -1,46 +1,52 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { User, Session } from "@/src/types";
+import type { LoginResponse } from "@/types/api/auth";
+import { mapLoginResponseToUser, createSession } from "@/lib/mappers/auth.mapper";
+import { setToken, clearToken, getToken } from "@/lib/auth/tokens";
+import { setTokenGetter } from "@/lib/api/client";
+import { logoutAction } from "@/app/actions/auth";
 
 interface UserContextType {
   user: User | null;
   session: Session | null;
+  isAuthenticated: boolean;
   setUser: (user: User | null) => void;
   setSession: (session: Session | null) => void;
-  logout: () => void;
+  login: (userData: Omit<LoginResponse, "token">, token: string) => void;
+  logout: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Mock data for development
-const mockUser: User = {
-  firstName: "Camilo",
-  lastName: "Castellanos",
-  documentType: "CC",
-  documentNumber: "1234567890",
-  email: "camilo@example.com",
-};
-
-const mockSession: Session = {
-  lastLogin: new Date("2026-08-25T08:34:00"),
-  currentLogin: new Date("2026-10-25T08:34:00"),
-  ipAddress: "192.168.0.1",
-};
-
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(mockUser);
-  const [session, setSession] = useState<Session | null>(mockSession);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
-  const logout = () => {
+  const login = useCallback(
+    (userData: Omit<LoginResponse, "token">, token: string) => {
+      const mappedUser = mapLoginResponseToUser(userData);
+      setToken(token);
+      setTokenGetter(getToken);
+      setUser(mappedUser);
+      setSession(createSession());
+    },
+    [],
+  );
+
+  const logout = useCallback(async () => {
+    await logoutAction();
+    clearToken();
     setUser(null);
     setSession(null);
-    // TODO: Clear JWT, redirect to login
-  };
+  }, []);
+
+  const isAuthenticated = !!user;
 
   return (
     <UserContext.Provider
-      value={{ user, session, setUser, setSession, logout }}
+      value={{ user, session, isAuthenticated, setUser, setSession, login, logout }}
     >
       {children}
     </UserContext.Provider>

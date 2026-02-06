@@ -32,10 +32,6 @@ export default function OtrosAsociadosPage() {
     router.push("/pagos/otros-asociados/pago");
   };
 
-  const handleBack = () => {
-    router.push("/pagos");
-  };
-
   return (
     <div className="space-y-6">
       <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />

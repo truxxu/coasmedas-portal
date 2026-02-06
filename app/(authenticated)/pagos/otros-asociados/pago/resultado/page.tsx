@@ -18,10 +18,31 @@ export default function OtrosAsociadosResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<OtrosAsociadosTransactionResult | null>(
-    null
-  );
-  const [sourceType, setSourceType] = useState<FundingSourceType>("cuenta");
+  const [sourceType] = useState<FundingSourceType>(() => {
+    if (typeof window === 'undefined') return "cuenta";
+    const stored = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
+    return stored || "cuenta";
+  });
+
+  const [result] = useState<OtrosAsociadosTransactionResult>(() => {
+    if (typeof window === 'undefined') return mockOtrosAsociadosTransactionResult;
+    const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
+    const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
+
+    if (totalAmount && productsStr) {
+      const products: PayableProduct[] = JSON.parse(productsStr);
+      const firstProduct = products[0];
+
+      return {
+        ...mockOtrosAsociadosTransactionResult,
+        amountPaid: parseInt(totalAmount, 10),
+        creditLine: firstProduct?.name || "Pago a Asociado",
+        productNumber: firstProduct?.productNumber || "***0000",
+      };
+    }
+
+    return mockOtrosAsociadosTransactionResult;
+  });
 
   // Determine which stepper to use based on funding source
   const paymentSteps = sourceType === "pse"
@@ -38,32 +59,6 @@ export default function OtrosAsociadosResultadoPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Get data from session and build result
-    const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
-    const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
-    const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
-
-    // Set the source type for stepper display
-    if (storedSourceType) {
-      setSourceType(storedSourceType);
-    }
-
-    if (totalAmount && productsStr) {
-      const products: PayableProduct[] = JSON.parse(productsStr);
-      const firstProduct = products[0];
-
-      setResult({
-        ...mockOtrosAsociadosTransactionResult,
-        amountPaid: parseInt(totalAmount, 10),
-        creditLine: firstProduct?.name || "Pago a Asociado",
-        productNumber: firstProduct?.productNumber || "***0000",
-      });
-    } else {
-      setResult(mockOtrosAsociadosTransactionResult);
-    }
-  }, []);
 
   const handlePrintSave = () => {
     window.print();

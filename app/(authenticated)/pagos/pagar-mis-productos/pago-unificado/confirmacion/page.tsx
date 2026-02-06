@@ -19,9 +19,52 @@ export default function ConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [confirmationData, setConfirmationData] =
-    useState<PaymentConfirmationData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [confirmationData] =
+    useState<PaymentConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const accountId = sessionStorage.getItem("paymentAccountId");
+      const paymentMethod = sessionStorage.getItem("paymentMethod");
+
+      if (!accountId) {
+        return null;
+      }
+
+      // Handle PSE payment method
+      if (paymentMethod === "pse") {
+        return {
+          titular: mockUserData.name,
+          documento: mockUserData.document,
+          aportes: mockPendingPayments.aportes,
+          obligaciones: mockPendingPayments.obligaciones,
+          proteccion: mockPendingPayments.proteccion,
+          debitAccount: "PSE (Pagos con otras entidades)",
+          debitAccountNumber: "",
+          totalAmount: mockPendingPayments.total,
+        };
+      }
+
+      // Find the selected account
+      const selectedAccount = mockPaymentAccounts.find(
+        (acc) => acc.id === accountId
+      );
+
+      if (!selectedAccount) {
+        return null;
+      }
+
+      // Build confirmation data
+      return {
+        titular: mockUserData.name,
+        documento: mockUserData.document,
+        aportes: mockPendingPayments.aportes,
+        obligaciones: mockPendingPayments.obligaciones,
+        proteccion: mockPendingPayments.proteccion,
+        debitAccount: selectedAccount.name,
+        debitAccountNumber: selectedAccount.number,
+        totalAmount: mockPendingPayments.total,
+      };
+    });
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -32,59 +75,12 @@ export default function ConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load data from sessionStorage
+  // Redirect if data is missing
   useEffect(() => {
-    const accountId = sessionStorage.getItem("paymentAccountId");
-    const paymentMethod = sessionStorage.getItem("paymentMethod");
-
-    if (!accountId) {
-      // No data from step 1, redirect back
+    if (!confirmationData) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
-      return;
     }
-
-    // Handle PSE payment method
-    if (paymentMethod === "pse") {
-      const data: PaymentConfirmationData = {
-        titular: mockUserData.name,
-        documento: mockUserData.document,
-        aportes: mockPendingPayments.aportes,
-        obligaciones: mockPendingPayments.obligaciones,
-        proteccion: mockPendingPayments.proteccion,
-        debitAccount: "PSE (Pagos con otras entidades)",
-        debitAccountNumber: "",
-        totalAmount: mockPendingPayments.total,
-      };
-      setConfirmationData(data);
-      setIsLoading(false);
-      return;
-    }
-
-    // Find the selected account
-    const selectedAccount = mockPaymentAccounts.find(
-      (acc) => acc.id === accountId
-    );
-
-    if (!selectedAccount) {
-      router.push("/pagos/pagar-mis-productos/pago-unificado");
-      return;
-    }
-
-    // Build confirmation data
-    const data: PaymentConfirmationData = {
-      titular: mockUserData.name,
-      documento: mockUserData.document,
-      aportes: mockPendingPayments.aportes,
-      obligaciones: mockPendingPayments.obligaciones,
-      proteccion: mockPendingPayments.proteccion,
-      debitAccount: selectedAccount.name,
-      debitAccountNumber: selectedAccount.number,
-      totalAmount: mockPendingPayments.total,
-    };
-
-    setConfirmationData(data);
-    setIsLoading(false);
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirm = () => {
     // Store confirmation data for next step
@@ -109,14 +105,6 @@ export default function ConfirmacionPage() {
   const handleBack = () => {
     router.push("/pagos/pagar-mis-productos/pago-unificado");
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-gray-high">Cargando...</div>
-      </div>
-    );
-  }
 
   if (!confirmationData) {
     return null;

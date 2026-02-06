@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ProtectionPaymentDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -38,7 +38,7 @@ export default function ProteccionDetallePage() {
     sourceAccount?: string;
     product?: string;
   }>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {

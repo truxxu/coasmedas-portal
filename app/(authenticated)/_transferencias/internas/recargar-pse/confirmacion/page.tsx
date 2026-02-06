@@ -13,8 +13,33 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData, setConfirmationData] =
-    useState<PSERechargeConfirmationData | null>(null);
+  const [confirmationData] =
+    useState<PSERechargeConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const destinationId = sessionStorage.getItem("pseRechargeDestinationId");
+      const amount = sessionStorage.getItem("pseRechargeAmount");
+
+      if (!destinationId || !amount) {
+        return null;
+      }
+
+      const destination = mockPSERechargeAccounts.find(
+        (acc) => acc.id === destinationId
+      );
+
+      if (!destination) {
+        return null;
+      }
+
+      return {
+        holderName: mockPSERechargeUserData.holderName,
+        documentNumber: mockPSERechargeUserData.documentNumber,
+        productToRecharge: `${destination.name} (${destination.maskedNumber})`,
+        amount: Number(amount),
+        method: "PSE" as const,
+      };
+    });
 
   useEffect(() => {
     setWelcomeBar({
@@ -25,32 +50,10 @@ export default function ConfirmacionPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get data from previous step
-    const destinationId = sessionStorage.getItem("pseRechargeDestinationId");
-    const amount = sessionStorage.getItem("pseRechargeAmount");
-
-    if (!destinationId || !amount) {
+    if (!confirmationData) {
       router.push("/transferencias/internas/recargar-pse");
-      return;
     }
-
-    const destination = mockPSERechargeAccounts.find(
-      (acc) => acc.id === destinationId
-    );
-
-    if (!destination) {
-      router.push("/transferencias/internas/recargar-pse");
-      return;
-    }
-
-    setConfirmationData({
-      holderName: mockPSERechargeUserData.holderName,
-      documentNumber: mockPSERechargeUserData.documentNumber,
-      productToRecharge: `${destination.name} (${destination.maskedNumber})`,
-      amount: Number(amount),
-      method: "PSE",
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {

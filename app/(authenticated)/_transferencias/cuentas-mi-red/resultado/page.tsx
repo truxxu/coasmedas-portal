@@ -20,18 +20,9 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<NetworkTransferResult | null>(null);
+  const [result] = useState<NetworkTransferResult | null>(() => {
+    if (typeof window === 'undefined') return null;
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "A Cuentas de mi Red",
-      backHref: "/transferencias",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Get data from session storage to construct result
     const recipientData = sessionStorage.getItem("networkTransferRecipient");
     const destinationData = sessionStorage.getItem(
       "networkTransferDestination"
@@ -41,17 +32,15 @@ export default function ResultadoPage() {
     const concept = sessionStorage.getItem("networkTransferConcept") || "";
 
     if (!recipientData || !destinationData || !sourceId || !amount) {
-      router.push("/transferencias/cuentas-mi-red");
-      return;
+      return null;
     }
 
     const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
     const destination: NetworkProduct = JSON.parse(destinationData);
     const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
 
-    // Construct result
-    const transferResult: NetworkTransferResult = {
-      status: "success",
+    return {
+      status: "success" as const,
       sourceAccount: sourceAccount?.name || "Cuenta de Ahorros",
       destinationBank: "Coopcentral",
       destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
@@ -73,9 +62,21 @@ export default function ResultadoPage() {
       approvalNumber: Math.floor(100000 + Math.random() * 900000).toString(),
       description: "Transferencia Exitosa",
     };
+  });
 
-    setResult(transferResult);
-  }, [router]);
+  useEffect(() => {
+    setWelcomeBar({
+      title: "A Cuentas de mi Red",
+      backHref: "/transferencias",
+    });
+    return () => clearWelcomeBar();
+  }, [setWelcomeBar, clearWelcomeBar]);
+
+  useEffect(() => {
+    if (!result) {
+      router.push("/transferencias/cuentas-mi-red");
+    }
+  }, [result, router]);
 
   const clearNetworkTransferData = () => {
     sessionStorage.removeItem("networkTransferRecipient");

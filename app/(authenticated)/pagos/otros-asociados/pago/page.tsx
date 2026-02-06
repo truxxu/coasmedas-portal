@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { OtrosAsociadosDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -20,9 +20,11 @@ export default function OtrosAsociadosPagoPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [beneficiary, setBeneficiary] = useState<RegisteredBeneficiary | null>(
-    null
-  );
+  const [beneficiary] = useState<RegisteredBeneficiary | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
+    return beneficiaryStr ? JSON.parse(beneficiaryStr) as RegisteredBeneficiary : null;
+  });
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
   const [products, setProducts] = useState<PayableProduct[]>(
     mockPayableProducts.map((p) => ({ ...p }))
@@ -38,15 +40,12 @@ export default function OtrosAsociadosPagoPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Redirect if beneficiary is missing
   useEffect(() => {
-    // Get beneficiary from sessionStorage
-    const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
-    if (!beneficiaryStr) {
+    if (!beneficiary) {
       router.push("/pagos/otros-asociados");
-      return;
     }
-    setBeneficiary(JSON.parse(beneficiaryStr));
-  }, [router]);
+  }, [beneficiary, router]);
 
   const totalAmount = products
     .filter((p) => p.isSelected)

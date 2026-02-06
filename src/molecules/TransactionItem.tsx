@@ -28,7 +28,7 @@ export function TransactionItem({ transaction, showDivider = true }: Transaction
           {displayAmount}
         </p>
       </div>
-      {showDivider && <hr className="border-brand-border" />}
+      {showDivider ? <hr className="border-brand-border" /> : null}
     </div>
   );
 }

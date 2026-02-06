@@ -20,9 +20,24 @@ export default function ResultadoPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [result, setResult] = useState<ObligacionTransactionResult | null>(
-    null
-  );
+  const [result] = useState<ObligacionTransactionResult>(() => {
+    if (typeof window === 'undefined') return mockObligacionTransactionResult;
+
+    const valor = sessionStorage.getItem("obligacionPaymentValor");
+    const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+
+    if (valor && productStr) {
+      const product: ObligacionPaymentProduct = JSON.parse(productStr);
+      return {
+        ...mockObligacionTransactionResult,
+        valorPagado: parseInt(valor, 10),
+        lineaCredito: product.name,
+        numeroProducto: product.productNumber,
+      };
+    }
+
+    return mockObligacionTransactionResult;
+  });
 
   const breadcrumbItems = [
     "Inicio",
@@ -38,24 +53,6 @@ export default function ResultadoPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Get data from session and build result
-    const valor = sessionStorage.getItem("obligacionPaymentValor");
-    const productStr = sessionStorage.getItem("obligacionPaymentProduct");
-
-    if (valor && productStr) {
-      const product: ObligacionPaymentProduct = JSON.parse(productStr);
-      setResult({
-        ...mockObligacionTransactionResult,
-        valorPagado: parseInt(valor, 10),
-        lineaCredito: product.name,
-        numeroProducto: product.productNumber,
-      });
-    } else {
-      setResult(mockObligacionTransactionResult);
-    }
-  }, []);
 
   const handlePrintSave = () => {
     window.print();
