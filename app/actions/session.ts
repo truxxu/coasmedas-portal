@@ -1,12 +1,13 @@
 'use server';
 
-import { getAuthCookie } from '@/lib/auth/tokens';
+import { getAuthCookie, getUserProfileCookie } from '@/lib/auth/tokens';
 import { parseTokenClaims, isTokenExpired } from '@/lib/auth/session';
+import type { LoginResponse } from '@/types/api/auth';
 
 interface SessionData {
-  documentNumber: string;
   token: string;
   exp: number;
+  userProfile: Omit<LoginResponse, 'token'> | null;
 }
 
 interface SessionResult {
@@ -16,7 +17,7 @@ interface SessionResult {
 
 /**
  * Server Action: Get the current session from the auth cookie.
- * Returns the JWT token and parsed claims for client-side hydration.
+ * Returns the JWT token, parsed claims, and stored user profile for hydration.
  */
 export async function getSessionAction(): Promise<SessionResult> {
   const token = await getAuthCookie();
@@ -34,12 +35,14 @@ export async function getSessionAction(): Promise<SessionResult> {
     return { success: false };
   }
 
+  const profileData = await getUserProfileCookie();
+
   return {
     success: true,
     data: {
-      documentNumber: claims.sub || '',
       token,
       exp: claims.exp || 0,
+      userProfile: profileData as Omit<LoginResponse, 'token'> | null,
     },
   };
 }

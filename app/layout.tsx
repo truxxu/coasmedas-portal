@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cabin } from "next/font/google";
 import "./globals.css";
+import { UserProvider } from "@/src/contexts";
 
 const cabin = Cabin({
   weight: ['400', '500', '700'],
@@ -26,7 +27,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

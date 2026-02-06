@@ -1,4 +1,4 @@
-import type { AxiosError } from 'axios';
+import type { AxiosError } from "axios";
 
 /**
  * API error codes from the Coasmedas backend.
@@ -26,27 +26,38 @@ export const API_ERROR_CODES = {
   BREB_VISIONAMOS_ERROR: 500,
 } as const;
 
-export type ApiErrorCode = (typeof API_ERROR_CODES)[keyof typeof API_ERROR_CODES];
+export type ApiErrorCode =
+  (typeof API_ERROR_CODES)[keyof typeof API_ERROR_CODES];
 
 const ERROR_MESSAGES: Record<number, string> = {
-  [API_ERROR_CODES.LOGIN_ERROR]: 'Error en el inicio de sesión',
-  [API_ERROR_CODES.VALIDATION_ERROR]: 'Los datos ingresados no son válidos',
-  [API_ERROR_CODES.USER_ALREADY_REGISTERED]: 'El usuario ya se encuentra registrado',
-  [API_ERROR_CODES.USER_NOT_FOUND]: 'Usuario no encontrado',
-  [API_ERROR_CODES.MOBILE_FORMAT_ERROR]: 'Error en el formato del número móvil. Contacte soporte',
-  [API_ERROR_CODES.EMAIL_FORMAT_ERROR]: 'Error en el formato del correo electrónico. Contacte soporte',
-  [API_ERROR_CODES.CORE_BANKING_ERROR]: 'Error de comunicación con el sistema bancario. Intente nuevamente',
-  [API_ERROR_CODES.INVALID_OTP]: 'Código OTP inválido. Por favor verifique e intente nuevamente',
-  [API_ERROR_CODES.UNAUTHORIZED]: 'Sesión expirada. Por favor inicie sesión nuevamente',
-  [API_ERROR_CODES.VISIONAMOS_WS_ERROR]: 'Error en el servicio de transferencias externas',
-  [API_ERROR_CODES.PAYZEN_WS_ERROR]: 'Error en el servicio de pago PSE',
-  [API_ERROR_CODES.PAYZEN_REJECTION]: 'El pago PSE fue rechazado',
-  [API_ERROR_CODES.PAYZEN_NO_RESPONSE]: 'El servicio de pago PSE no respondió. Intente nuevamente',
-  [API_ERROR_CODES.VISIONAMOS_TXN_WS_ERROR]: 'Error en la transacción externa',
-  [API_ERROR_CODES.VISIONAMOS_TXN_REJECTED]: 'La transacción fue rechazada',
-  [API_ERROR_CODES.VISIONAMOS_NO_RESPONSE]: 'El servicio externo no respondió. Intente nuevamente',
-  [API_ERROR_CODES.INALAMBRIA_ERROR]: 'Error al enviar el código SMS. Intente nuevamente',
-  [API_ERROR_CODES.BREB_VISIONAMOS_ERROR]: 'Error en el servicio BRE-B',
+  [API_ERROR_CODES.LOGIN_ERROR]: "Error en el inicio de sesión",
+  [API_ERROR_CODES.VALIDATION_ERROR]: "Los datos ingresados no son válidos",
+  [API_ERROR_CODES.USER_ALREADY_REGISTERED]:
+    "El usuario ya se encuentra registrado",
+  [API_ERROR_CODES.USER_NOT_FOUND]: "Usuario no encontrado",
+  [API_ERROR_CODES.MOBILE_FORMAT_ERROR]:
+    "Error en el formato del número móvil. Contacte soporte",
+  [API_ERROR_CODES.EMAIL_FORMAT_ERROR]:
+    "Error en el formato del correo electrónico. Contacte soporte",
+  [API_ERROR_CODES.CORE_BANKING_ERROR]:
+    "Error de comunicación con el sistema bancario. Intente nuevamente",
+  [API_ERROR_CODES.INVALID_OTP]:
+    "Código OTP inválido. Por favor verifique e intente nuevamente",
+  [API_ERROR_CODES.UNAUTHORIZED]:
+    "Sesión expirada. Por favor inicie sesión nuevamente",
+  [API_ERROR_CODES.VISIONAMOS_WS_ERROR]:
+    "Error en el servicio de transferencias externas",
+  [API_ERROR_CODES.PAYZEN_WS_ERROR]: "Error en el servicio de pago PSE",
+  [API_ERROR_CODES.PAYZEN_REJECTION]: "El pago PSE fue rechazado",
+  [API_ERROR_CODES.PAYZEN_NO_RESPONSE]:
+    "El servicio de pago PSE no respondió. Intente nuevamente",
+  [API_ERROR_CODES.VISIONAMOS_TXN_WS_ERROR]: "Error en la transacción externa",
+  [API_ERROR_CODES.VISIONAMOS_TXN_REJECTED]: "La transacción fue rechazada",
+  [API_ERROR_CODES.VISIONAMOS_NO_RESPONSE]:
+    "El servicio externo no respondió. Intente nuevamente",
+  [API_ERROR_CODES.INALAMBRIA_ERROR]:
+    "Error al enviar el código SMS. Intente nuevamente",
+  [API_ERROR_CODES.BREB_VISIONAMOS_ERROR]: "Error en el servicio BRE-B",
 };
 
 export class ApiError extends Error {
@@ -56,7 +67,7 @@ export class ApiError extends Error {
 
   constructor(statusCode: number, statusDesc: string, httpStatus?: number) {
     super(statusDesc);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.statusCode = statusCode;
     this.statusDesc = statusDesc;
     this.httpStatus = httpStatus;
@@ -64,23 +75,29 @@ export class ApiError extends Error {
 }
 
 export class AuthError extends ApiError {
-  constructor(statusDesc: string = ERROR_MESSAGES[API_ERROR_CODES.UNAUTHORIZED]) {
+  constructor(
+    statusDesc: string = ERROR_MESSAGES[API_ERROR_CODES.UNAUTHORIZED],
+  ) {
     super(API_ERROR_CODES.UNAUTHORIZED, statusDesc, 401);
-    this.name = 'AuthError';
+    this.name = "AuthError";
   }
 }
 
 export class ValidationError extends ApiError {
-  constructor(statusDesc: string = ERROR_MESSAGES[API_ERROR_CODES.VALIDATION_ERROR]) {
+  constructor(
+    statusDesc: string = ERROR_MESSAGES[API_ERROR_CODES.VALIDATION_ERROR],
+  ) {
     super(API_ERROR_CODES.VALIDATION_ERROR, statusDesc, 400);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
 export class NetworkError extends ApiError {
-  constructor(message: string = 'Error de conexión. Verifique su conexión a internet') {
+  constructor(
+    message: string = "Error de conexión. Verifique su conexión a internet",
+  ) {
     super(-1, message);
-    this.name = 'NetworkError';
+    this.name = "NetworkError";
   }
 }
 
@@ -92,15 +109,21 @@ export class NetworkError extends ApiError {
  * 2. statusDesc from response envelope
  * 3. Axios error message
  */
-export function parseApiError(error: AxiosError<{ statusCode?: number; statusDesc?: string; payload?: Record<string, unknown> }>): ApiError {
+export function parseApiError(
+  error: AxiosError<{
+    statusCode?: number;
+    statusDesc?: string;
+    payload?: Record<string, unknown>;
+  }>,
+): ApiError {
   if (!error.response) {
     return new NetworkError();
   }
 
   const { data, status } = error.response;
 
-  if (!data || typeof data.statusCode === 'undefined') {
-    return new ApiError(-1, error.message || 'Error desconocido', status);
+  if (!data || typeof data.statusCode === "undefined") {
+    return new ApiError(-1, error.message || "Error desconocido", status);
   }
 
   const statusCode = data.statusCode;
@@ -111,7 +134,7 @@ export function parseApiError(error: AxiosError<{ statusCode?: number; statusDes
     (upstreamError?.stateDescriptionCustomer as string) ||
     data.statusDesc ||
     error.message ||
-    'Error desconocido';
+    "Error desconocido";
 
   if (statusCode === API_ERROR_CODES.UNAUTHORIZED) {
     return new AuthError(statusDesc);
@@ -128,7 +151,11 @@ export function parseApiError(error: AxiosError<{ statusCode?: number; statusDes
  * Get a user-friendly Spanish error message for an API error.
  */
 export function getErrorMessage(error: ApiError): string {
-  return ERROR_MESSAGES[error.statusCode] || error.statusDesc || 'Ha ocurrido un error inesperado';
+  return (
+    ERROR_MESSAGES[error.statusCode] ||
+    error.statusDesc ||
+    "Ha ocurrido un error inesperado"
+  );
 }
 
 /**

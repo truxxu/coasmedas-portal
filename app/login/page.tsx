@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { LoginCard } from '@/src/organisms';
-import { UserProvider } from '@/src/contexts';
 
 export const metadata: Metadata = {
   title: 'Iniciar Sesión - Coasmedas',
@@ -9,10 +8,8 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <UserProvider>
-      <main className="min-h-screen bg-brand-navy flex items-center justify-center p-5">
-        <LoginCard />
-      </main>
-    </UserProvider>
+    <main className="min-h-screen bg-brand-navy flex items-center justify-center p-5">
+      <LoginCard />
+    </main>
   );
 }

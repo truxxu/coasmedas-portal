@@ -1,7 +1,11 @@
-'use server';
+"use server";
 
-import { serverApiPost } from '@/lib/api/server-client';
-import { setAuthCookie, clearAuthCookie } from '@/lib/auth/tokens';
+import { serverApiPost } from "@/lib/api/server-client";
+import {
+  setAuthCookie,
+  clearAuthCookie,
+  setUserProfileCookie,
+} from "@/lib/auth/tokens";
 import type {
   GetSaltRequest,
   GetSaltResponse,
@@ -14,8 +18,8 @@ import type {
   RegisterResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
-} from '@/types/api/auth';
-import { isApiError, getErrorMessage } from '@/lib/api/errors';
+} from "@/types/api/auth";
+import { isApiError, getErrorMessage } from "@/lib/api/errors";
 
 interface ActionResult<T = void> {
   success: boolean;
@@ -33,12 +37,14 @@ export async function getSaltAction(
   params: GetSaltRequest,
 ): Promise<ActionResult<GetSaltResponse>> {
   try {
-    const data = await serverApiPost<GetSaltResponse>('/get-salt', params);
+    const data = await serverApiPost<GetSaltResponse>("/get-salt", params);
     return { success: true, data };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error al obtener el salt',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error al obtener el salt",
     };
   }
 }
@@ -53,12 +59,15 @@ export async function sendOtpAction(
   params: SendOtpRequest,
 ): Promise<ActionResult<SendOtpResponse>> {
   try {
-    const data = await serverApiPost<SendOtpResponse>('/send-otp', params);
+    const data = await serverApiPost<SendOtpResponse>("/send-otp", params);
+    console.log("sendOtpAction", data);
     return { success: true, data };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error al enviar el código OTP',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error al enviar el código OTP",
     };
   }
 }
@@ -71,20 +80,27 @@ export async function sendOtpAction(
  */
 export async function loginAction(
   params: LoginRequest,
-): Promise<ActionResult<{ userData: Omit<LoginResponse, 'token'>; token: string }>> {
+): Promise<
+  ActionResult<{ userData: Omit<LoginResponse, "token">; token: string }>
+> {
   try {
-    const data = await serverApiPost<LoginResponse>('/login', params);
+    const data = await serverApiPost<LoginResponse>("/login", params);
 
     // Store JWT in HttpOnly secure cookie
     await setAuthCookie(data.token);
 
-    // Return user data and token (token also needed client-side for Axios interceptor)
+    // Store user profile data for session hydration on hard refresh
     const { token, ...userData } = data;
+    await setUserProfileCookie(userData as unknown as Record<string, unknown>);
+
+    // Return user data and token (token also needed client-side for Axios interceptor)
     return { success: true, data: { userData, token } };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error en el inicio de sesión',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error en el inicio de sesión",
     };
   }
 }
@@ -97,7 +113,7 @@ export async function logoutAction(): Promise<ActionResult> {
     await clearAuthCookie();
     return { success: true };
   } catch {
-    return { success: false, error: 'Error al cerrar sesión' };
+    return { success: false, error: "Error al cerrar sesión" };
   }
 }
 
@@ -111,12 +127,14 @@ export async function validateUserAction(
   params: UserValidationRequest,
 ): Promise<ActionResult> {
   try {
-    await serverApiPost<void>('/userValidation', params);
+    await serverApiPost<void>("/userValidation", params);
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error al validar el usuario',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error al validar el usuario",
     };
   }
 }
@@ -131,12 +149,14 @@ export async function registerAction(
   params: RegisterRequest,
 ): Promise<ActionResult<RegisterResponse>> {
   try {
-    const data = await serverApiPost<RegisterResponse>('/register', params);
+    const data = await serverApiPost<RegisterResponse>("/register", params);
     return { success: true, data };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error en el registro',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error en el registro",
     };
   }
 }
@@ -151,12 +171,17 @@ export async function updatePasswordAction(
   params: UpdatePasswordRequest,
 ): Promise<ActionResult<UpdatePasswordResponse>> {
   try {
-    const data = await serverApiPost<UpdatePasswordResponse>('/update-password', params);
+    const data = await serverApiPost<UpdatePasswordResponse>(
+      "/update-password",
+      params,
+    );
     return { success: true, data };
   } catch (error) {
     return {
       success: false,
-      error: isApiError(error) ? getErrorMessage(error) : 'Error al actualizar la contraseña',
+      error: isApiError(error)
+        ? getErrorMessage(error)
+        : "Error al actualizar la contraseña",
     };
   }
 }

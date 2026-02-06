@@ -4,6 +4,7 @@ import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/src/contexts";
 import { getSessionAction } from "@/app/actions/session";
+import { mapLoginResponseToUser, createSession } from "@/lib/mappers/auth.mapper";
 import { setToken, getToken } from "@/lib/auth/tokens";
 import { setTokenGetter } from "@/lib/api/client";
 
@@ -14,10 +15,10 @@ interface AuthHydratorProps {
 export function AuthHydrator({ children }: AuthHydratorProps) {
   const router = useRouter();
   const { user, setUser, setSession } = useUserContext();
-  const [hydrated, setHydrated] = useState(false);
+  const [hydrated, setHydrated] = useState(() => !!user);
 
   useEffect(() => {
-    // If user is already in context, no need to hydrate
+    // If user is already in context (e.g. just logged in), no need to hydrate
     if (user) return;
 
     let cancelled = false;
@@ -36,20 +37,22 @@ export function AuthHydrator({ children }: AuthHydratorProps) {
       setToken(result.data.token);
       setTokenGetter(getToken);
 
-      // Set minimal user data from token claims
-      setUser({
-        firstName: "",
-        lastName: "",
-        documentType: "CC",
-        documentNumber: result.data.documentNumber,
-        email: "",
-      });
-
-      setSession({
-        lastLogin: new Date(),
-        currentLogin: new Date(),
-        ipAddress: "",
-      });
+      // Restore full user profile if available from cookie
+      if (result.data.userProfile) {
+        const mappedUser = mapLoginResponseToUser(result.data.userProfile);
+        setUser(mappedUser);
+        setSession(createSession());
+      } else {
+        // Fallback: minimal user from token claims
+        setUser({
+          firstName: "",
+          lastName: "",
+          documentType: "CC",
+          documentNumber: "",
+          email: "",
+        });
+        setSession(createSession());
+      }
 
       setHydrated(true);
     }

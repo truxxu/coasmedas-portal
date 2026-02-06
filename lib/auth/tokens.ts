@@ -46,6 +46,39 @@ export async function clearAuthCookie(): Promise<void> {
   const { cookies } = await import('next/headers');
   const cookieStore = await cookies();
   cookieStore.delete(AUTH_TOKEN_KEY);
+  cookieStore.delete(USER_PROFILE_KEY);
+}
+
+/**
+ * Store user profile data in a cookie for session hydration.
+ * This is NOT HttpOnly since it's not sensitive auth data — it's display info
+ * like name, email, etc. Stored as base64-encoded JSON.
+ */
+const USER_PROFILE_KEY = 'user-profile';
+
+export async function setUserProfileCookie(profile: Record<string, unknown>): Promise<void> {
+  const { cookies } = await import('next/headers');
+  const cookieStore = await cookies();
+  const encoded = Buffer.from(JSON.stringify(profile)).toString('base64');
+  cookieStore.set(USER_PROFILE_KEY, encoded, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: AUTH_TOKEN_MAX_AGE,
+    path: '/',
+  });
+}
+
+export async function getUserProfileCookie(): Promise<Record<string, unknown> | null> {
+  const { cookies } = await import('next/headers');
+  const cookieStore = await cookies();
+  const value = cookieStore.get(USER_PROFILE_KEY)?.value;
+  if (!value) return null;
+  try {
+    return JSON.parse(Buffer.from(value, 'base64').toString('utf-8'));
+  } catch {
+    return null;
+  }
 }
 
 export { AUTH_TOKEN_KEY, AUTH_TOKEN_MAX_AGE };

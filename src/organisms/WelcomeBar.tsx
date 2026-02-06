@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { BackButton } from '@/src/atoms';
-import { HideBalancesToggle } from '@/src/molecules';
-import { useWelcomeBarConfig } from '@/src/contexts';
-import { useUser } from '@/src/hooks';
+import { BackButton } from "@/src/atoms";
+import { HideBalancesToggle } from "@/src/molecules";
+import { useWelcomeBarConfig } from "@/src/contexts";
+import { useUser } from "@/src/hooks";
 
 export function WelcomeBar() {
   const user = useUser();
@@ -11,7 +11,8 @@ export function WelcomeBar() {
 
   const displayTitle = title || (
     <>
-      Bienvenido, <span className="text-brand-navy font-bold">{user?.firstName}</span>
+      Bienvenido,{" "}
+      <span className="text-brand-navy font-bold">{user?.fullName}</span>
     </>
   );
 

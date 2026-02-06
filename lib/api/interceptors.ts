@@ -1,5 +1,9 @@
-import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { ApiError, API_ERROR_CODES, AuthError, parseApiError } from './errors';
+import type {
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
+import { ApiError, API_ERROR_CODES, AuthError, parseApiError } from "./errors";
 
 /**
  * Inject Authorization header from a token getter function.
@@ -9,7 +13,7 @@ export function createAuthRequestInterceptor(getToken: () => string | null) {
   return (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     const token = getToken();
     if (token) {
-      config.headers.set('Authorization', `Bearer ${token}`);
+      config.headers.set("Authorization", `Bearer ${token}`);
     }
     return config;
   };
@@ -21,11 +25,13 @@ export function createAuthRequestInterceptor(getToken: () => string | null) {
  * The backend always returns HTTP 200 with `{ statusCode, statusDesc, payload }`.
  * This interceptor checks `statusCode` and throws typed errors for non-zero codes.
  */
-export function responseEnvelopeInterceptor(response: AxiosResponse): AxiosResponse {
+export function responseEnvelopeInterceptor(
+  response: AxiosResponse,
+): AxiosResponse {
   const data = response.data;
 
   // If the response doesn't follow the envelope pattern, pass through
-  if (!data || typeof data.statusCode === 'undefined') {
+  if (!data || typeof data.statusCode === "undefined") {
     return response;
   }
 
@@ -40,7 +46,7 @@ export function responseEnvelopeInterceptor(response: AxiosResponse): AxiosRespo
     const statusDesc =
       (upstreamError?.stateDescriptionCustomer as string) ||
       data.statusDesc ||
-      'Error desconocido';
+      "Error desconocido";
 
     throw new ApiError(data.statusCode, statusDesc, response.status);
   }
@@ -51,15 +57,23 @@ export function responseEnvelopeInterceptor(response: AxiosResponse): AxiosRespo
 /**
  * Error response interceptor that transforms Axios errors into typed ApiErrors.
  */
-export function errorResponseInterceptor(error: AxiosError<{ statusCode?: number; statusDesc?: string; payload?: Record<string, unknown> }>): never {
+export function errorResponseInterceptor(
+  error: AxiosError<{
+    statusCode?: number;
+    statusDesc?: string;
+    payload?: Record<string, unknown>;
+  }>,
+): never {
   throw parseApiError(error);
 }
 
 /**
  * Development-only logging interceptor for requests.
  */
-export function loggingRequestInterceptor(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
-  if (process.env.NODE_ENV === 'development') {
+export function loggingRequestInterceptor(
+  config: InternalAxiosRequestConfig,
+): InternalAxiosRequestConfig {
+  if (process.env.NODE_ENV === "development") {
     console.log(`[API Request] POST ${config.url}`, config.data);
   }
   return config;
@@ -68,10 +82,14 @@ export function loggingRequestInterceptor(config: InternalAxiosRequestConfig): I
 /**
  * Development-only logging interceptor for responses.
  */
-export function loggingResponseInterceptor(response: AxiosResponse): AxiosResponse {
-  if (process.env.NODE_ENV === 'development') {
+export function loggingResponseInterceptor(
+  response: AxiosResponse,
+): AxiosResponse {
+  if (process.env.NODE_ENV === "development") {
     const { statusCode, statusDesc } = response.data || {};
-    console.log(`[API Response] ${response.config.url} → statusCode: ${statusCode}, statusDesc: ${statusDesc}`);
+    console.log(
+      `[API Response] ${response.config.url} → statusCode: ${statusCode}, statusDesc: ${statusDesc}`,
+    );
   }
   return response;
 }

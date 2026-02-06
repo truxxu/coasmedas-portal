@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AxiosError } from 'axios';
+import https from 'https';
 import type { ApiResponse } from '@/types/api';
 import {
   responseEnvelopeInterceptor,
@@ -22,6 +23,9 @@ const serverApiClient = axios.create({
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
+  ...(process.env.API_ALLOW_SELF_SIGNED === 'true' && {
+    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+  }),
 });
 
 // Request interceptors
