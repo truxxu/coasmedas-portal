@@ -17,8 +17,28 @@ export default function ResultadoAportesPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [result, setResult] = useState<AportesTransactionResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [result] = useState<AportesTransactionResult>(() => {
+    if (typeof window === 'undefined') return mockAportesTransactionResult;
+
+    const valor = sessionStorage.getItem("aportesPaymentValor");
+    const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
+
+    if (valor && breakdownStr) {
+      try {
+        const breakdown = JSON.parse(breakdownStr);
+        return {
+          ...mockAportesTransactionResult,
+          valorPagado: parseInt(valor, 10),
+          lineaCredito: breakdown.planName,
+          numeroProducto: breakdown.productNumber,
+        };
+      } catch {
+        return mockAportesTransactionResult;
+      }
+    }
+
+    return mockAportesTransactionResult;
+  });
 
   // Set welcome bar on mount
   useEffect(() => {
@@ -28,31 +48,6 @@ export default function ResultadoAportesPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Get data from session and build result
-    const valor = sessionStorage.getItem("aportesPaymentValor");
-    const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
-
-    if (valor && breakdownStr) {
-      try {
-        const breakdown = JSON.parse(breakdownStr);
-        setResult({
-          ...mockAportesTransactionResult,
-          valorPagado: parseInt(valor, 10),
-          lineaCredito: breakdown.planName,
-          numeroProducto: breakdown.productNumber,
-        });
-      } catch {
-        // If parsing fails, use default mock result
-        setResult(mockAportesTransactionResult);
-      }
-    } else {
-      // No session data, use default mock result
-      setResult(mockAportesTransactionResult);
-    }
-    setIsLoading(false);
-  }, []);
 
   const handlePrintSave = () => {
     window.print();
@@ -68,14 +63,6 @@ export default function ResultadoAportesPage() {
 
     router.push("/pagos/pagar-mis-productos");
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-navy">Cargando resultado...</div>
-      </div>
-    );
-  }
 
   if (!result) {
     return null;

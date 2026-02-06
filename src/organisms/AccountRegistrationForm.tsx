@@ -53,6 +53,7 @@ export function AccountRegistrationForm({
   documentTypes,
   accountTypes,
   onSubmit,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onCancel,
 }: AccountRegistrationFormProps) {
   const {
@@ -67,6 +68,7 @@ export function AccountRegistrationForm({
     defaultValues: initialData || defaultValues,
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const accountBankType = watch("accountBankType");
   const tipoTitular = watch("tipoTitular");
 

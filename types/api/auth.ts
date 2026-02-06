@@ -2,7 +2,7 @@ import type { DocumentType, UserIdentification } from './common';
 
 // ─── /get-salt ───
 
-export interface GetSaltRequest extends UserIdentification {}
+export type GetSaltRequest = UserIdentification;
 
 export interface GetSaltResponse {
   salt: string;
@@ -10,7 +10,7 @@ export interface GetSaltResponse {
 
 // ─── /send-otp ───
 
-export interface SendOtpRequest extends UserIdentification {}
+export type SendOtpRequest = UserIdentification;
 
 export interface SendOtpResponse {
   mobile: string;
@@ -50,7 +50,7 @@ export interface SendTransactionOtpResponse {
 
 // ─── /userValidation ───
 
-export interface UserValidationRequest extends UserIdentification {}
+export type UserValidationRequest = UserIdentification;
 
 // No payload in response - confirmation only
 

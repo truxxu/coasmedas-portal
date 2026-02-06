@@ -9,7 +9,6 @@ import { formatCurrency, maskCurrency } from "@/src/utils";
 import {
   PSE_PAYMENT_ID,
   PSE_PAYMENT_NAME,
-  isPSEPayment,
 } from "@/src/mocks/mockAportesPaymentData";
 
 interface AportesDetailsCardProps {
@@ -33,6 +32,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   onValorChange,
   onNeedMoreBalance,
   hideBalances,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showPSEOption = true,
 }) => {
   const accountOptions = accounts.map((account) => ({
@@ -41,9 +41,6 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
       hideBalances ? maskCurrency() : formatCurrency(account.balance)
     }`,
   }));
-
-  // Check if PSE is currently selected
-  const isPSESelected = isPSEPayment(selectedAccountId);
 
   return (
     <Card className="space-y-6 p-6 md:p-8">

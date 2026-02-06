@@ -17,8 +17,12 @@ export default function ResultadoPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
 
-  const [result, setResult] = useState<TransactionResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [result] = useState<TransactionResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const paymentStatus = sessionStorage.getItem("paymentStatus");
+    if (!paymentStatus) return null;
+    return paymentStatus === "success" ? mockTransactionResult : mockTransactionResultError;
+  });
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -29,25 +33,12 @@ export default function ResultadoPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load result from sessionStorage
+  // Redirect if no payment status data
   useEffect(() => {
-    const paymentStatus = sessionStorage.getItem("paymentStatus");
-
-    if (!paymentStatus) {
-      // No data, redirect to start
+    if (!result) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
-      return;
     }
-
-    // Set result based on status
-    if (paymentStatus === "success") {
-      setResult(mockTransactionResult);
-    } else {
-      setResult(mockTransactionResultError);
-    }
-
-    setIsLoading(false);
-  }, [router]);
+  }, [result, router]);
 
   const handlePrint = () => {
     window.print();
@@ -62,14 +53,6 @@ export default function ResultadoPage() {
     // Navigate back to payments menu
     router.push("/pagos/pagar-mis-productos");
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-gray-high">Cargando...</div>
-      </div>
-    );
-  }
 
   if (!result) {
     return null;

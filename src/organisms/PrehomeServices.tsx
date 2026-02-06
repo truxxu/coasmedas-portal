@@ -1,4 +1,3 @@
-import { SectionTitle } from '@/src/atoms';
 import { ServiceCard } from '@/src/molecules';
 
 export function PrehomeServices() {

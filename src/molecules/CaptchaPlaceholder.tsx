@@ -8,7 +8,7 @@ export function CaptchaPlaceholder({ className = '' }: CaptchaPlaceholderProps) 
       className={`bg-brand-border rounded-[6px] px-6 py-8 text-center ${className}`}
     >
       <p className="text-brand-gray-high font-medium text-base">
-        "Espacio para validación Captcha"
+        &quot;Espacio para validación Captcha&quot;
       </p>
     </div>
   );

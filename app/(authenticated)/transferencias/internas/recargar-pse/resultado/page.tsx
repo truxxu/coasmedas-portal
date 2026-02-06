@@ -13,7 +13,18 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<PSERechargeResult | null>(null);
+  const [result] = useState<PSERechargeResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+
+    const resultData = sessionStorage.getItem("pseRechargeTransactionResult");
+    if (!resultData) return null;
+
+    try {
+      return JSON.parse(resultData) as PSERechargeResult;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     setWelcomeBar({
@@ -23,21 +34,10 @@ export default function ResultadoPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get transaction result from session storage
-    const resultData = sessionStorage.getItem("pseRechargeTransactionResult");
-
-    if (!resultData) {
-      router.push("/transferencias/internas/recargar-pse");
-      return;
-    }
-
-    try {
-      const parsedResult = JSON.parse(resultData) as PSERechargeResult;
-      setResult(parsedResult);
-    } catch {
+    if (!result) {
       router.push("/transferencias/internas/recargar-pse");
     }
-  }, [router]);
+  }, [result, router]);
 
   const clearSessionStorage = () => {
     sessionStorage.removeItem("pseRechargeDestinationId");

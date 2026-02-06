@@ -23,9 +23,53 @@ export default function ConfirmacionAportesPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [confirmationData, setConfirmationData] =
-    useState<AportesConfirmationData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [confirmationData] =
+    useState<AportesConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const accountId = sessionStorage.getItem('aportesPaymentAccountId');
+      const valor = sessionStorage.getItem('aportesPaymentValor');
+      const breakdownStr = sessionStorage.getItem('aportesPaymentBreakdown');
+      const paymentMethod = sessionStorage.getItem('aportesPaymentMethod') as AportesPaymentMethod || 'account';
+
+      if (!accountId || !valor || !breakdownStr) {
+        return null;
+      }
+
+      const breakdown: AportesPaymentBreakdown = JSON.parse(breakdownStr);
+
+      // For PSE, we don't need to find an account
+      if (paymentMethod === 'pse') {
+        return {
+          titular: mockAportesUserData.name,
+          documento: mockAportesUserData.document,
+          productoAPagar: breakdown.planName,
+          numeroProducto: breakdown.productNumber,
+          productoADebitar: PSE_PAYMENT_NAME,
+          valorAPagar: parseInt(valor, 10),
+          paymentMethod: 'pse',
+        };
+      }
+
+      // For account payment, find the account
+      const account = mockAportesPaymentAccounts.find(
+        (acc) => acc.id === accountId
+      );
+
+      if (!account) {
+        return null;
+      }
+
+      return {
+        titular: mockAportesUserData.name,
+        documento: mockAportesUserData.document,
+        productoAPagar: breakdown.planName,
+        numeroProducto: breakdown.productNumber,
+        productoADebitar: account.name,
+        valorAPagar: parseInt(valor, 10),
+        paymentMethod: 'account',
+      };
+    });
 
   // Set welcome bar on mount
   useEffect(() => {
@@ -36,56 +80,12 @@ export default function ConfirmacionAportesPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Redirect if data is missing
   useEffect(() => {
-    // Get data from previous step
-    const accountId = sessionStorage.getItem('aportesPaymentAccountId');
-    const valor = sessionStorage.getItem('aportesPaymentValor');
-    const breakdownStr = sessionStorage.getItem('aportesPaymentBreakdown');
-    const paymentMethod = sessionStorage.getItem('aportesPaymentMethod') as AportesPaymentMethod || 'account';
-
-    if (!accountId || !valor || !breakdownStr) {
+    if (!confirmationData) {
       router.push('/pagos/pagar-mis-productos/aportes');
-      return;
     }
-
-    const breakdown: AportesPaymentBreakdown = JSON.parse(breakdownStr);
-
-    // For PSE, we don't need to find an account
-    if (paymentMethod === 'pse') {
-      setConfirmationData({
-        titular: mockAportesUserData.name,
-        documento: mockAportesUserData.document,
-        productoAPagar: breakdown.planName,
-        numeroProducto: breakdown.productNumber,
-        productoADebitar: PSE_PAYMENT_NAME,
-        valorAPagar: parseInt(valor, 10),
-        paymentMethod: 'pse',
-      });
-      setIsLoading(false);
-      return;
-    }
-
-    // For account payment, find the account
-    const account = mockAportesPaymentAccounts.find(
-      (acc) => acc.id === accountId
-    );
-
-    if (!account) {
-      router.push('/pagos/pagar-mis-productos/aportes');
-      return;
-    }
-
-    setConfirmationData({
-      titular: mockAportesUserData.name,
-      documento: mockAportesUserData.document,
-      productoAPagar: breakdown.planName,
-      numeroProducto: breakdown.productNumber,
-      productoADebitar: account.name,
-      valorAPagar: parseInt(valor, 10),
-      paymentMethod: 'account',
-    });
-    setIsLoading(false);
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirm = () => {
     if (confirmationData) {
@@ -108,14 +108,6 @@ export default function ConfirmacionAportesPage() {
   const handleBack = () => {
     router.push('/pagos/pagar-mis-productos/aportes');
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-navy">Cargando...</div>
-      </div>
-    );
-  }
 
   if (!confirmationData) {
     return null;

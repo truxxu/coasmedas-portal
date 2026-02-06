@@ -22,9 +22,41 @@ export default function ConfirmacionPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [confirmationData, setConfirmationData] =
-    useState<ObligacionConfirmationData | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<ObligacionPaymentMethod>("pse");
+  const [paymentMethod] = useState<ObligacionPaymentMethod>(() => {
+    if (typeof window === 'undefined') return "pse";
+    const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
+    return method || "pse";
+  });
+
+  const [confirmationData] =
+    useState<ObligacionConfirmationData | null>(() => {
+      if (typeof window === 'undefined') return null;
+
+      const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+      const valor = sessionStorage.getItem("obligacionPaymentValor");
+      const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
+      const sourceAccountDisplay = sessionStorage.getItem("obligacionSourceAccountDisplay");
+
+      if (!productStr || !valor) {
+        return null;
+      }
+
+      const product: ObligacionPaymentProduct = JSON.parse(productStr);
+
+      const productoADebitar = method === 'pse'
+        ? "PSE (Pagos con otras entidades)"
+        : (sourceAccountDisplay?.split(' - ')[0] || 'Cuenta de Ahorros');
+
+      return {
+        titular: mockObligacionUserData.name,
+        documento: mockObligacionUserData.document,
+        productoAPagar: product.name,
+        numeroProducto: product.productNumber,
+        productoADebitar,
+        valorAPagar: parseInt(valor, 10),
+      };
+    });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const breadcrumbItems = [
@@ -42,39 +74,12 @@ export default function ConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Redirect if data is missing
   useEffect(() => {
-    // Get data from previous step
-    const productStr = sessionStorage.getItem("obligacionPaymentProduct");
-    const valor = sessionStorage.getItem("obligacionPaymentValor");
-    const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
-    const sourceAccountDisplay = sessionStorage.getItem("obligacionSourceAccountDisplay");
-
-    if (!productStr || !valor) {
+    if (!confirmationData) {
       router.push("/pagos/pagar-mis-productos/obligaciones");
-      return;
     }
-
-    const product: ObligacionPaymentProduct = JSON.parse(productStr);
-
-    // Store payment method for routing decision
-    if (method) {
-      setPaymentMethod(method);
-    }
-
-    // Determine product to debit display
-    const productoADebitar = method === 'pse'
-      ? "PSE (Pagos con otras entidades)"
-      : (sourceAccountDisplay?.split(' - ')[0] || 'Cuenta de Ahorros');
-
-    setConfirmationData({
-      titular: mockObligacionUserData.name,
-      documento: mockObligacionUserData.document,
-      productoAPagar: product.name,
-      numeroProducto: product.productNumber,
-      productoADebitar,
-      valorAPagar: parseInt(valor, 10),
-    });
-  }, [router]);
+  }, [confirmationData, router]);
 
   const handleConfirm = async () => {
     if (!confirmationData) return;

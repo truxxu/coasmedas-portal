@@ -14,7 +14,16 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [result, setResult] = useState<UtilityRegistrationResult | null>(null);
+  const [result] = useState<UtilityRegistrationResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const storedResult = sessionStorage.getItem(RESULT_STORAGE_KEY);
+    if (!storedResult) return null;
+    try {
+      return JSON.parse(storedResult) as UtilityRegistrationResult;
+    } catch {
+      return null;
+    }
+  });
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -25,24 +34,12 @@ export default function ResultadoPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load result from sessionStorage
+  // Redirect if result data is missing
   useEffect(() => {
-    const storedResult = sessionStorage.getItem(RESULT_STORAGE_KEY);
-
-    if (!storedResult) {
-      // Redirect to form if no result data
-      router.replace("/pagos/servicios-publicos/inscribir");
-      return;
-    }
-
-    try {
-      const parsed: UtilityRegistrationResult = JSON.parse(storedResult);
-      setResult(parsed);
-    } catch {
-      // Invalid data, redirect to form
+    if (!result) {
       router.replace("/pagos/servicios-publicos/inscribir");
     }
-  }, [router]);
+  }, [result, router]);
 
   // Cleanup sessionStorage on unmount
   useEffect(() => {

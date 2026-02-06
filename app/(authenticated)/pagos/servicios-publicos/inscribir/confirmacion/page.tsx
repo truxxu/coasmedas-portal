@@ -20,11 +20,28 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmationData, setConfirmationData] =
-    useState<UtilityConfirmationData | null>(null);
-  const [formData, setFormData] = useState<UtilityRegistrationForm | null>(
-    null
-  );
+  const [formData] = useState<UtilityRegistrationForm | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const storedData = sessionStorage.getItem(FORM_STORAGE_KEY);
+    if (!storedData) return null;
+    try {
+      return JSON.parse(storedData) as UtilityRegistrationForm;
+    } catch {
+      return null;
+    }
+  });
+
+  const [confirmationData] =
+    useState<UtilityConfirmationData | null>(() => {
+      if (!formData) return null;
+      return {
+        city: formData.cityName,
+        convenio: formData.convenioName,
+        billNumber: formData.billNumber,
+        alias: formData.alias,
+      };
+    });
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
@@ -36,32 +53,12 @@ export default function ConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load form data from sessionStorage
+  // Redirect if data is missing
   useEffect(() => {
-    const storedData = sessionStorage.getItem(FORM_STORAGE_KEY);
-
-    if (!storedData) {
-      // Redirect to form if no data
-      router.replace("/pagos/servicios-publicos/inscribir");
-      return;
-    }
-
-    try {
-      const parsed: UtilityRegistrationForm = JSON.parse(storedData);
-      setFormData(parsed);
-
-      // Transform to confirmation data
-      setConfirmationData({
-        city: parsed.cityName,
-        convenio: parsed.convenioName,
-        billNumber: parsed.billNumber,
-        alias: parsed.alias,
-      });
-    } catch {
-      // Invalid data, redirect to form
+    if (!confirmationData) {
       router.replace("/pagos/servicios-publicos/inscribir");
     }
-  }, [router]);
+  }, [confirmationData, router]);
 
   // Handle confirmation
   const handleConfirm = async () => {

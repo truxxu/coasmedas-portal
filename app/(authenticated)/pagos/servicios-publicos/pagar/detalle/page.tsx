@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { UtilityPaymentDetailsForm } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
+
 import { useWelcomeBar } from "@/src/contexts";
 import {
   mockUtilitySourceAccounts,
@@ -26,7 +26,7 @@ const initialFormData: UtilityPaymentDetails = {
 
 export default function PagarServiciosDetallePage() {
   const router = useRouter();
-  const { hideBalances } = useUIContext();
+
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [formData, setFormData] =
@@ -35,7 +35,7 @@ export default function PagarServiciosDetallePage() {
     sourceAccount?: string;
     service?: string;
   }>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {

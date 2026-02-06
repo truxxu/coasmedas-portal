@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, Divider } from "@/src/atoms";
+import { Card } from "@/src/atoms";
 import { DateRangeFilter } from "@/src/molecules";
 import { TransactionItem } from "@/src/molecules";
 import { Transaction } from "@/src/types/transaction";

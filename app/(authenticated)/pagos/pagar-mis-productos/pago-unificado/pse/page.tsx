@@ -9,7 +9,10 @@ import { usePSERedirect } from "@/src/hooks";
 export default function PSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
-  const [isPSEMethodValid, setIsPSEMethodValid] = useState(false);
+  const [isPSEMethodValid] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem("paymentMethod") === "pse";
+  });
 
   // Configure WelcomeBar on mount
   useEffect(() => {
@@ -20,15 +23,12 @@ export default function PSEPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Check if PSE payment method was selected
+  // Redirect if PSE method was not selected
   useEffect(() => {
-    const paymentMethod = sessionStorage.getItem("paymentMethod");
-    if (paymentMethod === "pse") {
-      setIsPSEMethodValid(true);
-    } else {
+    if (!isPSEMethodValid) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
     }
-  }, [router]);
+  }, [isPSEMethodValid, router]);
 
   const handleBeforeRedirect = () => {
     sessionStorage.setItem("paymentStatus", "success");

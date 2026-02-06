@@ -14,7 +14,11 @@ export default function PagarServiciosRespuestaPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [result, setResult] = useState<UtilityPaymentResult | null>(null);
+  const [result] = useState<UtilityPaymentResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const resultStr = sessionStorage.getItem("utilityPaymentResult");
+    return resultStr ? JSON.parse(resultStr) as UtilityPaymentResult : null;
+  });
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -25,16 +29,12 @@ export default function PagarServiciosRespuestaPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load result from sessionStorage
+  // Redirect if result data is missing
   useEffect(() => {
-    const resultStr = sessionStorage.getItem("utilityPaymentResult");
-    if (!resultStr) {
+    if (!result) {
       router.push("/pagos/servicios-publicos/pagar/detalle");
-      return;
     }
-
-    setResult(JSON.parse(resultStr));
-  }, [router]);
+  }, [result, router]);
 
   const handlePrint = () => {
     window.print();

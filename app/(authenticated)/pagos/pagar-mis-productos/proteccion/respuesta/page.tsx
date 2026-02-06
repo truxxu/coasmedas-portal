@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Breadcrumbs, Stepper, HideBalancesToggle } from "@/src/molecules";
+import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ProtectionPaymentResultCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
@@ -14,9 +14,11 @@ export default function ProteccionRespuestaPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [result, setResult] = useState<ProtectionPaymentResultData | null>(
-    null
-  );
+  const [result] = useState<ProtectionPaymentResultData | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const resultStr = sessionStorage.getItem("protectionPaymentResult");
+    return resultStr ? JSON.parse(resultStr) as ProtectionPaymentResultData : null;
+  });
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -27,16 +29,12 @@ export default function ProteccionRespuestaPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Load result from sessionStorage
+  // Redirect if result data is missing
   useEffect(() => {
-    const resultStr = sessionStorage.getItem("protectionPaymentResult");
-    if (!resultStr) {
+    if (!result) {
       router.push("/pagos/pagar-mis-productos/proteccion");
-      return;
     }
-
-    setResult(JSON.parse(resultStr));
-  }, [router]);
+  }, [result, router]);
 
   const handlePrint = () => {
     window.print();

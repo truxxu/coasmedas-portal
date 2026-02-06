@@ -13,7 +13,18 @@ export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [result, setResult] = useState<CupoRotativoTransferResult | null>(null);
+  const [result] = useState<CupoRotativoTransferResult | null>(() => {
+    if (typeof window === 'undefined') return null;
+
+    const resultData = sessionStorage.getItem("cupoRotativoTransferResult");
+    if (!resultData) return null;
+
+    try {
+      return JSON.parse(resultData) as CupoRotativoTransferResult;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     setWelcomeBar({
@@ -23,21 +34,10 @@ export default function ResultadoPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
-    // Get result from session storage
-    const resultData = sessionStorage.getItem("cupoRotativoTransferResult");
-
-    if (!resultData) {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
-      return;
-    }
-
-    try {
-      const parsedResult = JSON.parse(resultData) as CupoRotativoTransferResult;
-      setResult(parsedResult);
-    } catch {
+    if (!result) {
       router.push("/transferencias/internas/desde-cupos-rotativos");
     }
-  }, [router]);
+  }, [result, router]);
 
   const handlePrintSave = () => {
     window.print();

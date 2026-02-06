@@ -7,7 +7,7 @@
  * @see /docs/CONSOLIDATED_API_REFERENCE.md#[domain]
  */
 
-import { apiPost } from '@/lib/api/client';
+// import { apiPost } from '@/lib/api/client';
 // import type { ... } from '@/types/api/[domain]';
 
 // const BASE_PATH = '/[resource]';
