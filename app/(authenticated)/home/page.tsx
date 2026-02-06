@@ -24,6 +24,7 @@ import { isAuthError } from "@/lib/api/errors";
 
 export default function HomePage() {
   const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
   const [account, setAccount] = useState<Account | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -31,16 +32,13 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
-    if (!user) return;
+    if (!documentType || !documentNumber) return;
 
     try {
       setLoading(true);
       setError(null);
 
-      const params = {
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
-      };
+      const params = { documentType, documentNumber };
 
       // Fetch balances and savings in parallel
       const [balances, savings] = await Promise.all([
@@ -91,7 +89,7 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  }, [user, router]);
+  }, [documentType, documentNumber, router]);
 
   useEffect(() => {
     fetchData();

@@ -22,6 +22,7 @@ interface AportesMeta {
 
 export default function AportesPage() {
   const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [aportesData, setAportesData] = useState<AportesProduct | null>(null);
@@ -39,16 +40,13 @@ export default function AportesPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   const fetchData = useCallback(async () => {
-    if (!user) return;
+    if (!documentType || !documentNumber) return;
 
     try {
       setLoading(true);
       setError(null);
 
-      const params = {
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
-      };
+      const params = { documentType, documentNumber };
 
       const contributions = await getProductsContributions(params);
       const mapped = mapContributionsResponse(contributions);
@@ -82,21 +80,21 @@ export default function AportesPage() {
       setLoading(false);
       setTransactionsLoading(false);
     }
-  }, [user, router]);
+  }, [documentType, documentNumber, router]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const handleFilter = useCallback(async (startDate: string, endDate: string) => {
-    if (!user || !aportesMeta) return;
+    if (!documentType || !documentNumber || !aportesMeta) return;
 
     const version = ++fetchVersionRef.current;
     try {
       setTransactionsLoading(true);
       const movements = await getMovements({
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
+        documentType,
+        documentNumber,
         codigoProductoCobis: aportesMeta.codigoProductoCobis,
         idCuenta: aportesMeta.idCuenta,
         fechaConsulta: formatApiDate(startDate),
@@ -115,7 +113,7 @@ export default function AportesPage() {
         setTransactionsLoading(false);
       }
     }
-  }, [user, aportesMeta, router]);
+  }, [documentType, documentNumber, aportesMeta, router]);
 
   const handleDownload = () => {
     console.log('Downloading report for:', selectedMonth);

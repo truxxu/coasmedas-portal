@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Breadcrumbs } from '@/src/molecules';
 import {
@@ -41,15 +41,17 @@ export default function InversionesPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  const { documentType, documentNumber } = user ?? {};
+
   const fetchMovements = useCallback(async (meta: ProductMeta) => {
-    if (!user) return;
+    if (!documentType || !documentNumber) return;
 
     const version = ++fetchVersionRef.current;
     try {
       setTransactionsLoading(true);
       const movements = await getMovements({
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
+        documentType,
+        documentNumber,
         codigoProductoCobis: meta.codigoProductoCobis,
         idCuenta: meta.idCuenta,
         fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
@@ -67,19 +69,16 @@ export default function InversionesPage() {
         setTransactionsLoading(false);
       }
     }
-  }, [user, router]);
+  }, [documentType, documentNumber, router]);
 
   const fetchData = useCallback(async () => {
-    if (!user) return;
+    if (!documentType || !documentNumber) return;
 
     try {
       setLoading(true);
       setError(null);
 
-      const params = {
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
-      };
+      const params = { documentType, documentNumber };
 
       const apiProducts = await getProductsInvestments(params);
       const mapped = mapInvestmentProducts(apiProducts);
@@ -107,18 +106,15 @@ export default function InversionesPage() {
     } finally {
       setLoading(false);
     }
-  }, [user, router, fetchMovements]);
+  }, [documentType, documentNumber, router, fetchMovements]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const transactionTitle = useMemo(() => {
-    if (!selectedProduct) return 'Consulta de Movimientos';
-    const prefix = selectedProduct.productPrefix || 'CDAT-';
-    const maskedNumber = `${prefix}${maskNumber(selectedProduct.productNumber)}`;
-    return `Consulta de Movimientos - ${selectedProduct.title} (${maskedNumber})`;
-  }, [selectedProduct]);
+  const transactionTitle = selectedProduct
+    ? `Consulta de Movimientos - ${selectedProduct.title} (${(selectedProduct.productPrefix || 'CDAT-')}${maskNumber(selectedProduct.productNumber)})`
+    : 'Consulta de Movimientos';
 
   const handleProductSelect = useCallback((product: InversionProduct) => {
     setSelectedProduct(product);
@@ -129,7 +125,7 @@ export default function InversionesPage() {
   }, [productMetaMap, fetchMovements]);
 
   const handleFilter = useCallback(async (startDate: string, endDate: string) => {
-    if (!user || !selectedProduct) return;
+    if (!documentType || !documentNumber || !selectedProduct) return;
     const meta = productMetaMap[selectedProduct.id];
     if (!meta) return;
 
@@ -137,8 +133,8 @@ export default function InversionesPage() {
     try {
       setTransactionsLoading(true);
       const movements = await getMovements({
-        documentType: user.documentType,
-        documentNumber: user.documentNumber,
+        documentType,
+        documentNumber,
         codigoProductoCobis: meta.codigoProductoCobis,
         idCuenta: meta.idCuenta,
         fechaConsulta: formatApiDate(startDate),
@@ -157,7 +153,7 @@ export default function InversionesPage() {
         setTransactionsLoading(false);
       }
     }
-  }, [user, selectedProduct, productMetaMap, router]);
+  }, [documentType, documentNumber, selectedProduct, productMetaMap, router]);
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
