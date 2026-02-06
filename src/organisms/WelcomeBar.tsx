@@ -20,7 +20,7 @@ export function WelcomeBar() {
     <div className="bg-white border-b border-brand-border px-4 lg:px-8 py-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {backHref && <BackButton href={backHref} />}
+          {backHref ? <BackButton href={backHref} /> : null}
           <h1 className="text-xl font-medium text-brand-text-black">
             {displayTitle}
           </h1>

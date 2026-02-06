@@ -6,6 +6,11 @@ import { InversionProductCard } from '@/src/molecules';
 import { InversionProduct } from '@/src/types';
 import { calculateTotalPages, getVisibleItems } from '@/src/utils';
 
+const SCROLLBAR_HIDE_STYLE: React.CSSProperties = {
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+};
+
 interface InversionCarouselProps {
   title: string;
   products: InversionProduct[];
@@ -39,7 +44,7 @@ export function InversionCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener('resize', updateVisibleItems);
+    window.addEventListener('resize', updateVisibleItems, { passive: true });
     return () => window.removeEventListener('resize', updateVisibleItems);
   }, []);
 
@@ -61,7 +66,7 @@ export function InversionCarousel({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('scroll', updateScrollState);
+    container.addEventListener('scroll', updateScrollState, { passive: true });
     updateScrollState();
 
     return () => container.removeEventListener('scroll', updateScrollState);
@@ -118,10 +123,7 @@ export function InversionCarousel({
             snap-x snap-mandatory scrollbar-hide
             px-1 py-1
           "
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
+          style={SCROLLBAR_HIDE_STYLE}
         >
           {products.map((product) => (
             <div

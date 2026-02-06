@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Card } from '@/src/atoms';
 import { Select } from '@/src/atoms';
 import { MonthOption } from '@/src/types/products';
@@ -24,10 +25,10 @@ export function DownloadReportsCard({
   loading = false,
   className = '',
 }: DownloadReportsCardProps) {
-  const selectOptions = availableMonths.map((month) => ({
+  const selectOptions = useMemo(() => availableMonths.map((month) => ({
     value: month.value,
     label: month.label,
-  }));
+  })), [availableMonths]);
 
   return (
     <Card className={`p-6 rounded-2xl ${className}`}>

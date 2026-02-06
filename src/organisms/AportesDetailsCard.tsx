@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, Divider, CurrencyInput } from "@/src/atoms";
 import { AportesPaymentDetailRow } from "@/src/molecules";
 import { PaymentAccount } from "@/src/types/payment";
@@ -35,12 +35,12 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showPSEOption = true,
 }) => {
-  const accountOptions = accounts.map((account) => ({
+  const accountOptions = useMemo(() => accounts.map((account) => ({
     value: account.id,
     label: `${account.name} - Saldo: ${
       hideBalances ? maskCurrency() : formatCurrency(account.balance)
     }`,
-  }));
+  })), [accounts, hideBalances]);
 
   return (
     <Card className="space-y-6 p-6 md:p-8">

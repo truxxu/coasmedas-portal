@@ -6,6 +6,11 @@ import { ObligacionProductCard } from '@/src/molecules';
 import { ObligacionProduct } from '@/src/types';
 import { calculateTotalPages, getVisibleItems } from '@/src/utils';
 
+const SCROLLBAR_HIDE_STYLE: React.CSSProperties = {
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+};
+
 interface ObligacionCarouselProps {
   title: string;
   products: ObligacionProduct[];
@@ -39,7 +44,7 @@ export function ObligacionCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener('resize', updateVisibleItems);
+    window.addEventListener('resize', updateVisibleItems, { passive: true });
     return () => window.removeEventListener('resize', updateVisibleItems);
   }, []);
 
@@ -61,7 +66,7 @@ export function ObligacionCarousel({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('scroll', updateScrollState);
+    container.addEventListener('scroll', updateScrollState, { passive: true });
     updateScrollState();
 
     return () => container.removeEventListener('scroll', updateScrollState);
@@ -118,10 +123,7 @@ export function ObligacionCarousel({
             snap-x snap-mandatory scrollbar-hide
             px-1 py-1
           "
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
+          style={SCROLLBAR_HIDE_STYLE}
         >
           {products.map((product) => (
             <div

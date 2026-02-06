@@ -77,7 +77,7 @@ export function TransactionHistoryCard({
       )}
 
       {/* Optional info box (e.g., for suggestions) */}
-      {infoBox && <div className="mt-6">{infoBox}</div>}
+      {infoBox ? <div className="mt-6">{infoBox}</div> : null}
     </Card>
   );
 }

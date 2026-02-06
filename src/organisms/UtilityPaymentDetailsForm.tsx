@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Card } from "@/src/atoms";
 import { SelectField } from "@/src/molecules";
 import { formatCurrency } from "@/src/utils";
@@ -33,20 +34,18 @@ export function UtilityPaymentDetailsForm({
   onSourceAccountChange,
   onServiceChange,
 }: UtilityPaymentDetailsFormProps) {
-  // Convert source accounts to select options, adding PSE at the end
-  const accountOptions = [
+  const accountOptions = useMemo(() => [
     ...sourceAccounts.map((account) => ({
       value: account.id,
       label: account.displayName,
     })),
     { value: "pse", label: "PSE (Pagos con otras entidades)" },
-  ];
+  ], [sourceAccounts]);
 
-  // Convert registered services to select options
-  const serviceOptions = registeredServices.map((service) => ({
+  const serviceOptions = useMemo(() => registeredServices.map((service) => ({
     value: service.id,
     label: service.displayName,
-  }));
+  })), [registeredServices]);
 
   const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;

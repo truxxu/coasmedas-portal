@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card } from "@/src/atoms";
 import { PaymentSummaryRow } from "@/src/molecules";
 import { PaymentAccount, PendingPayments } from "@/src/types/payment";
@@ -21,10 +21,10 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
   onNeedMoreBalance,
   hideBalances,
 }) => {
-  const accountOptions = accounts.map((account) => ({
+  const accountOptions = useMemo(() => accounts.map((account) => ({
     value: account.id,
     label: `${account.name} - Saldo: ${formatCurrency(account.balance)}`,
-  }));
+  })), [accounts]);
 
   return (
     <Card className="space-y-6 p-8">
