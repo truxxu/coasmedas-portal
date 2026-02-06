@@ -78,3 +78,20 @@ export function getDateMonthsAgo(months: number): string {
 export function getTodayDate(): string {
   return new Date().toISOString().split('T')[0];
 }
+
+/**
+ * Convert API date format (YYYYMMDD) to ISO format (YYYY-MM-DD)
+ * @example parseApiDate("20251115") => "2025-11-15"
+ */
+export function parseApiDate(yyyymmdd: string): string {
+  if (!yyyymmdd || yyyymmdd.length < 8) return '';
+  return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
+}
+
+/**
+ * Convert ISO date format (YYYY-MM-DD) to API date format (YYYYMMDD)
+ * @example formatApiDate("2025-11-15") => "20251115"
+ */
+export function formatApiDate(isoDate: string): string {
+  return isoDate.replace(/-/g, '');
+}

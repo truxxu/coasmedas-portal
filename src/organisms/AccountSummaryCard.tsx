@@ -5,19 +5,32 @@ import { Account } from '@/src/types';
 import { formatCurrency, maskCurrency } from '@/src/utils';
 import { useHideBalances } from '@/src/hooks';
 
-// Mock data for development
-const mockAccount: Account = {
-  accountNumber: '1234567890',
-  accountType: 'AHORROS',
-  productCode: '001',
-  availableBalance: 8730500,
-  totalBalance: 9150000,
-  maskedNumber: '****4428',
-};
+interface AccountSummaryCardProps {
+  account?: Account;
+  loading?: boolean;
+}
 
-export function AccountSummaryCard() {
+export function AccountSummaryCard({ account, loading }: AccountSummaryCardProps) {
   const { hideBalances } = useHideBalances();
-  const account = mockAccount;
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-[5px] p-6 mb-6 animate-pulse">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <div className="h-6 w-40 bg-gray-200 rounded mb-2" />
+            <div className="h-4 w-28 bg-gray-200 rounded" />
+          </div>
+          <div className="text-right">
+            <div className="h-4 w-24 bg-gray-200 rounded mb-2" />
+            <div className="h-8 w-36 bg-gray-200 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!account) return null;
 
   const displayAvailable = hideBalances ? maskCurrency() : formatCurrency(account.availableBalance);
   const displayTotal = hideBalances ? maskCurrency() : formatCurrency(account.totalBalance);
