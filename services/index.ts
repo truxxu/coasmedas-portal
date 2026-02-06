@@ -13,3 +13,13 @@ export {
   register,
   updatePassword,
 } from './auth.service';
+
+export {
+  getBalances,
+  getMovements,
+  getProductsSavings,
+  getProductsCredits,
+  getProductsInvestments,
+  getProductsContributions,
+  getProductsProtection,
+} from './products.service';

@@ -28,13 +28,13 @@
 
 ## 4. Account & Products
 
-- [ ] POST `/balances` ✅ Auth: JWT
-- [ ] POST `/movements` ✅ Auth: JWT
-- [ ] POST `/products/savings` ✅ Auth: JWT
-- [ ] POST `/products/credits` ✅ Auth: JWT
-- [ ] POST `/products/investments` ✅ Auth: JWT
-- [ ] POST `/products/contributions` ✅ Auth: JWT
-- [ ] POST `/products/protection` ✅ Auth: JWT
+- [x] POST `/balances` ✅ Auth: JWT
+- [x] POST `/movements` ✅ Auth: JWT
+- [x] POST `/products/savings` ✅ Auth: JWT
+- [x] POST `/products/credits` ✅ Auth: JWT
+- [x] POST `/products/investments` ✅ Auth: JWT
+- [x] POST `/products/contributions` ✅ Auth: JWT
+- [x] POST `/products/protection` ✅ Auth: JWT
 
 ## 5. Payments
 
@@ -92,10 +92,10 @@
 | Authentication | 4 | 4 | 0 |
 | Registration | 2 | 2 | 0 |
 | Password | 1 | 1 | 0 |
-| Products | 7 | 0 | 7 |
+| Products | 7 | 7 | 0 |
 | Payments | 5 | 0 | 5 |
 | Internal Transfers | 7 | 0 | 7 |
 | External Transfers (Banks) | 5 | 0 | 5 |
 | External Transfers (Entities) | 3 | 0 | 3 |
 | BRE-B | 12 | 0 | 12 |
-| **Total** | **46** | **7** | **39** |
+| **Total** | **46** | **14** | **32** |
