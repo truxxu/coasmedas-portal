@@ -1,0 +1,2586 @@
+{
+	"info": {
+		"_postman_id": "61a08f02-92f2-46ac-8d0c-0add178346fa",
+		"name": "CoasmedasApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6493796"
+	},
+	"item": [
+		{
+			"name": "BreB",
+			"item": [
+				{
+					"name": "Keys",
+					"item": [
+						{
+							"name": "accounts list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"documentType\": \"{{documentType}}\",\n    \"documentNumber\": \"{{documentNumber}}\",\n    \"indPag\": \"0\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/accounts/list",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"accounts",
+										"list"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "accounts list",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTMzNjM0NDkiLCJleHAiOjE3NTU2OTIyNDR9.F1p749TUJsQjAEeQlJiE6Pku6L7KfPAMVKgVUGXvse5Ae_Q-rWscmLdTFFg2pQnt3L4y6MXxcYPYeJL1SQFS-mdRAzbIEDkLYbOnSiWeA5U8OHRpkNAW3Xp2WuUtub51Hk9fdzGqeWpmivMaXyQ3I9BXEk-XhpNs8nndwMQu5uPUOhxEn6Dg6d2xes1MHAuhfoXvoGQf8d4pQtvOLaqoBs7qILEow8TjrVlLphc3O8L8Hw7b2zAB93ZLaCzMsh2gtgscOqtGnYqwh3P_de2Acic7zBGrGbxbyZbkTkb0jlwjLOlSF4ustUQycyxL2EzS_2HDZx1zU0fUZa1G7uy7XQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"93363449\",\n    \"indPag\": \"0\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/accounts/list",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"accounts",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "666"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 20 Aug 2025 11:54:11 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": [\n        {\n            \"numeroCuenta\": \"054040001314\",\n            \"aliasCuenta\": \"1314\",\n            \"nombreProducto\": \"NOMINA\",\n            \"tipoCuenta\": \"AH\",\n            \"subtipoCuenta\": \"AV\",\n            \"codigoProductoCobis\": 4,\n            \"idCuentaAhorroPermanente\": \"16264\"\n        },\n        {\n            \"numeroCuenta\": \"0542001017497\",\n            \"aliasCuenta\": \"CUPO_R\",\n            \"nombreProducto\": \"CUPO_R\",\n            \"tipoCuenta\": \"CR\",\n            \"subtipoCuenta\": \"CR\",\n            \"codigoProductoCobis\": 7,\n            \"idCuentaAhorroPermanente\": \"33685\"\n        },\n        {\n            \"numeroCuenta\": \"0542013005125\",\n            \"aliasCuenta\": \"CREDIHOGAR\",\n            \"nombreProducto\": \"CREDIHOGAR\",\n            \"tipoCuenta\": \"CR\",\n            \"subtipoCuenta\": \"CR\",\n            \"codigoProductoCobis\": 7,\n            \"idCuentaAhorroPermanente\": \"218863\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "keys create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user\": \"{{fullName}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"typeKeyCustomer\": \"M\",\r\n    \"valueKeyCustomer\": \"3134800014\",\r\n    \"sourceNumberAccount\": \"054020017365\",\r\n    \"sourceTypeAccount\": \"AH\",\r\n    \"sourceSubTypeAccount\": \"AV\",\r\n    \"sourceTypeAccountDescription\": \"DIARIO\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/create",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"create"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys create",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"user\": \"{{full_name}}\", // new\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    \"typeKeyCustomer\": \"M\",\r\n    \"valueKeyCustomer\": \"3134836579\",\r\n    \"sourceNumberAccount\": \"054020017365\",\r\n    \"sourceTypeAccount\": \"AH\",\r\n    \"sourceSubTypeAccount\": \"AV\",\r\n    \"sourceTypeAccountDescription\": \"DIARIO\",\r\n    \"firstName\": \"{{full_name}}\",\r\n    \"surName\": \"{{full_name}}\",\r\n    \"ip\": \"192.12.34.35\", // new\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    // \"simOperator\": \"unknown\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/create",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "956"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 25 Sep 2025 16:29:22 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"idKeyCustomer\": \"24d25130-be71-45c6-bdbb-d445dbba47e6\",\n        \"stateKeyCustomer\": \"ACTV\",\n        \"creationDateTime\": \"2025-09-25T11:29:20.313\",\n        \"statusUpdateDateTime\": \"2025-09-25T11:29:20.313\",\n        \"sourceTypeAccount\": \"AH\",\n        \"sourceSubTypeAccount\": \"AH\",\n        \"sourceNumberAccount\": \"054020017365\",\n        \"businessName\": null,\n        \"firstName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondName\": null,\n        \"surName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondSurName\": null,\n        \"sourceIdentification\": \"79883274\",\n        \"sourceTypeIdentification\": \"CC\",\n        \"sourceTypePerson\": \"N\",\n        \"endToEndIdentification\": \"20250925860014040VIS202509254671613\",\n        \"valueKeyCustomer\": \"3134836579\",\n        \"typeKeyCustomer\": \"M\",\n        \"sourceEntityIdentification\": \"860014040\",\n        \"sourceEntityName\": \"Coasmedas\",\n        \"links\": \"https://bre-b-sandbox.api.visionamos.passportfintech.com/v1/keys/24d25130-be71-45c6-bdbb-d445dbba47e6\",\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": null,\n        \"stateDescriptionSystem\": \"Success\",\n        \"stateDescriptionCustomer\": null\n    }\n}"
+								},
+								{
+									"name": "keys create - error payload",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTMzNjM0NDkiLCJleHAiOjE3NTYyMzc4MTJ9.HMZYxIVmZc7PBDg9KcJ3lkxtS4apuk4wMYiCsyRkHqvK4Jz1i9_D_nP9fVcrDe7IQTzdFgO7j8B9wnwkUg4fUS3yFEs-nZTSjlNeYhma61INB3w6nbqEkd6pOa8oHgLMFmQgo5PmQBv-dy_m1AeQ_AgKa-tOCPqHVf0unxfbnBtpN8qCnS0U7-3jXlT7bUDCwTvDMEdNOqvGT0GtvscnfVnQYvKecPjPuNOVi4mRatvhhjSaHuQ6Tq2M2yFS1fg00UHNUKwS5iI3gLAzbgRWA-aSGdqEkqCHkaBluoQjjB9OCyLWd4m-0_-nfLzDqxuCTJXlP5h0sA4KD5272Cv5CQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"93363449\",\r\n    \"typeKeyCustomer\": \"M\",\r\n    \"valueKeyCustomer\": \"3005443232\",\r\n    \"sourceNumberAccount\": \"103498\",\r\n    \"sourceTypeAccount\": \"AH\",\r\n    \"sourceSubTypeAccount\": \"AV\",\r\n    \"sourceTypeAccountDescription\": \"CTA AHORROS A LA VISTA\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/create",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "264"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 26 Aug 2025 19:25:22 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 400,\n        \"error\": {\n            \"stateCode\": \"UNKNOWN\",\n            \"stateCodeVIS\": \"UNKNOWN\",\n            \"stateDescriptionSystem\": \"The Date field is required.\",\n            \"stateDescriptionCustomer\": \"Error desconocido en la validación.\"\n        }\n    }\n}"
+								},
+								{
+									"name": "keys create - error auth",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTMzNjM0NDkiLCJleHAiOjE3NTYyMzc4MTJ9.HMZYxIVmZc7PBDg9KcJ3lkxtS4apuk4wMYiCsyRkHqvK4Jz1i9_D_nP9fVcrDe7IQTzdFgO7j8B9wnwkUg4fUS3yFEs-nZTSjlNeYhma61INB3w6nbqEkd6pOa8oHgLMFmQgo5PmQBv-dy_m1AeQ_AgKa-tOCPqHVf0unxfbnBtpN8qCnS0U7-3jXlT7bUDCwTvDMEdNOqvGT0GtvscnfVnQYvKecPjPuNOVi4mRatvhhjSaHuQ6Tq2M2yFS1fg00UHNUKwS5iI3gLAzbgRWA-aSGdqEkqCHkaBluoQjjB9OCyLWd4m-0_-nfLzDqxuCTJXlP5h0sA4KD5272Cv5CQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"93363449\",\r\n    \"typeKeyCustomer\": \"M\",\r\n    \"valueKeyCustomer\": \"3005443232\",\r\n    \"sourceNumberAccount\": \"103498\",\r\n    \"sourceTypeAccount\": \"AH\",\r\n    \"sourceSubTypeAccount\": \"AV\",\r\n    \"sourceTypeAccountDescription\": \"CTA AHORROS A LA VISTA\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/create",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "118"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 26 Aug 2025 19:29:24 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Auth Error\",\n    \"payload\": {\n        \"errorCode\": 400,\n        \"error\": {\n            \"error\": \"invalid_client\"\n        }\n    }\n}"
+								},
+								{
+									"name": "keys create - error 500",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTMzNjM0NDkiLCJleHAiOjE3NTY0MDM4NzB9.TEZh3ydj3ZE6zydaqAOSoyclfQTvU7B4skQCLSqpokwHFScM_zxXCWjdblVEgYPrqC06hmOiGgBdHSOHugzGaN1sDQZ-4ii0QvXk0uCYxfF53A1MpZEHaS6iKF3D1THcBe7CrfzM3SSlGZtxZZN8iYmmk8dEK_exlhi4W1lMgAXSWzuS2JP_zWfjtHzTdiS5gY9aqy5_-tPQns67SKFmHNtWfs27Opmw9POl7bjMUcOb32SPxG8WKrsVIKz5dyfYbbLkTw9UlvmG9OPqVGR9MqTKwXy57kY0ynHZHUf2eFkpC1W2iaUOGPh_NTvs9opSOuOR3dbqDZfjzCDgL8G2-g",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"typeKeyCustomer\": \"O\",\r\n    \"valueKeyCustomer\": \"@COASMPER0\",\r\n    \"sourceNumberAccount\": \"0542013005125\",\r\n    \"sourceTypeAccount\": \"CR\",\r\n    \"sourceSubTypeAccount\": \"CR\",\r\n    \"sourceTypeAccountDescription\": \"CREDIHOGAR\",\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"93363449\",\r\n    \"firstName\": \"Pedro Perez43\",\r\n    \"surName\": \"NOEL PERDOMO\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"simOperator\": \"unknown\",\r\n    \"versionPlatform\": \"18.5\"\r\n}\r\n// {\r\n//     \"typeKeyCustomer\": \"M\",\r\n//     \"valueKeyCustomer\": \"3005443666\",\r\n//     \"sourceNumberAccount\": \"103498\",\r\n//     \"sourceTypeAccount\": \"AH\",\r\n//     \"sourceSubTypeAccount\": \"AV\",\r\n//     \"sourceTypeAccountDescription\": \"CTA AHORROS A LA VISTA\",\r\n//     \"documentType\": \"CC\",\r\n//     \"documentNumber\": 93363449,\r\n//     \"firstName\": \"Jennifer\",\r\n//     \"surName\": \"Cano\",\r\n//     \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n//     \"trademark\": \"Apple\",\r\n//     \"model\": \"iPhone 15\",\r\n//     \"platform\": \"iOS 23\",\r\n//     \"simOperator\": \"Movistar\",\r\n//     \"versionPlatform\": \"13\"\r\n// }",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/create",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "178"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 28 Aug 2025 17:28:12 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 500,\n        \"error\": {\n            \"code\": \"500\",\n            \"message\": \"Se ha producido un error, vuelva a intentarlo más tarde\"\n        }\n    }\n}"
+								},
+								{
+									"name": "keys create - already used key",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiNzk4ODMyNzQiLCJleHAiOjE3NTczNzA3NjV9.h2htR1NT0UBV8k-EnbYTc9vMmhM8yZWSUh7Xqr2huXZ6723cGVOd5-Jfaxl4UbESMS7p2wKkwR1CNyVdNbc35pcOSx7328z_YDIOAMDuVwkI8XmvM9WuaNmhRw9JkEy9opGipyKjjKXlbcNtm-6EEXTjADVjhbgHhZiA-B9-4FcpltqJrfELL0AOXBBBT78NFsNUDa2w25hZyIRGSrdMOXPgubmZ9ZUeH0tR6c1CJaobrIp5RenjSg9FJULypjEfktGloz_G5K2liw_QJxQ5KkIXXYkQyStsGwAaoWCuzrzYUkOfkyJTNHg7L5_gMIdWSnGmSNH7excR8Zs6z5s4mw",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"typeKeyCustomer\": \"O\",\r\n    \"valueKeyCustomer\": \"@COASMPER4\",\r\n    \"sourceNumberAccount\": \"054040001314\",\r\n    \"sourceTypeAccount\": \"AH\",\r\n    \"sourceSubTypeAccount\": \"AV\",\r\n    \"sourceTypeAccountDescription\": \"NOMINA\",\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"93363449\",\r\n    \"firstName\": \"Pedro Perez43\",\r\n    \"surName\": \"NOEL PERDOMO\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"simOperator\": \"unknown\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/create",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "83"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 08 Sep 2025 22:13:47 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"stateCode\": \"U119\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "keys delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/delete",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"delete"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys delete",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{full_name}}\",\r\n    \"firstName\": \"{{full_name}}\",\r\n    \"surName\": \"{{full_name}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/delete",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"delete"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "65"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 01 Oct 2025 17:51:25 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {}\n}"
+								},
+								{
+									"name": "keys delete error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}444\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{full_name}}\",\r\n    \"firstName\": \"{{full_name}}\",\r\n    \"surName\": \"{{full_name}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/delete",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"delete"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "117"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 30 Sep 2025 16:40:35 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 405,\n        \"error\": \"Metodo no disponible\"\n    }\n}"
+								},
+								{
+									"name": "keys delete error not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}444\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{full_name}}\",\r\n    \"firstName\": \"{{full_name}}\",\r\n    \"surName\": \"{{full_name}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/delete",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"delete"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "251"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 01 Oct 2025 17:44:23 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 400,\n        \"error\": {\n            \"stateCode\": \"U119\",\n            \"stateCodeVIS\": \"0045\",\n            \"stateDescriptionSystem\": \"GetKeyCustomerDelete\",\n            \"stateDescriptionCustomer\": \"La llave no se encuentra registrada \"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "keys update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    // \"valueKeyCustomer\": \"3134800016\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/update",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"update"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": []
+						},
+						{
+							"name": "keys block",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/block",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"block"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys block",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/block",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"block"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "950"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 14 Oct 2025 16:08:55 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"idKeyCustomer\": \"fb6ccbf2-4333-4b40-bf62-01785e2b5f87\",\n        \"stateKeyCustomer\": \"SUSP\",\n        \"creationDateTime\": \"2025-10-08T10:26:33.783\",\n        \"statusUpdateDateTime\": \"2025-10-14T11:08:53.385\",\n        \"sourceTypeAccount\": \"AH\",\n        \"sourceSubTypeAccount\": \"AH\",\n        \"sourceNumberAccount\": \"054020017365\",\n        \"businessName\": null,\n        \"firstName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondName\": null,\n        \"surName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondSurName\": null,\n        \"sourceIdentification\": null,\n        \"sourceTypeIdentification\": null,\n        \"sourceTypePerson\": \"N\",\n        \"endToEndIdentification\": \"20251014860014040VIS202510146447843\",\n        \"valueKeyCustomer\": \"3134836579\",\n        \"typeKeyCustomer\": \"M\",\n        \"sourceEntityIdentification\": \"860014040\",\n        \"sourceEntityName\": \"Coasmedas\",\n        \"links\": \"https://bre-b-sandbox.api.visionamos.passportfintech.com/v1/keys/fb6ccbf2-4333-4b40-bf62-01785e2b5f87\",\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": null,\n        \"stateDescriptionSystem\": \"Success\",\n        \"stateDescriptionCustomer\": null\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "keys list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"",
+											"var idKeyCustomer = jsonData.payload.keysCustomers[0].idKeyCustomer;",
+											"pm.collectionVariables.set(\"idKeyCustomer\", idKeyCustomer);",
+											"",
+											"var typeKeyCustomer = jsonData.payload.keysCustomers[0].typeKeyCustomer;",
+											"pm.collectionVariables.set(\"typeKeyCustomer\", typeKeyCustomer);",
+											"pm.collectionVariables.set(\"sourceTypeKeyCustomer\", typeKeyCustomer);",
+											"",
+											"var valueKeyCustomer = jsonData.payload.keysCustomers[0].valueKeyCustomer;",
+											"pm.collectionVariables.set(\"valueKeyCustomer\", valueKeyCustomer);",
+											"pm.collectionVariables.set(\"sourceValueKeyCustomer\", valueKeyCustomer);",
+											"",
+											"var sourceNumberAccount = jsonData.payload.keysCustomers[0].numberAccount;",
+											"pm.collectionVariables.set(\"sourceNumberAccount\", sourceNumberAccount);",
+											"",
+											"var sourceTypeAccount = jsonData.payload.keysCustomers[0].typeAccount;",
+											"pm.collectionVariables.set(\"sourceTypeAccount\", sourceTypeAccount);",
+											"",
+											"var sourceSubTypeAccount = jsonData.payload.keysCustomers[0].subTypeAccount;",
+											"pm.collectionVariables.set(\"sourceSubTypeAccount\", sourceSubTypeAccount);",
+											"",
+											"var sourceTypeAccountDescription = jsonData.payload.keysCustomers[0].accountDescription;",
+											"pm.collectionVariables.set(\"sourceTypeAccountDescription\", sourceTypeAccountDescription);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\",\r\n    \"ip\": \"192.23.45.66\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/list",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"list"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys list",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    \"user\": \"{{full_name}}\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\",\r\n    \"ip\": \"192.23.45.66\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/list",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "1073"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 25 Sep 2025 15:09:29 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"date\": \"20250925\",\n        \"hour\": \"100927\",\n        \"identification\": \"79883274\",\n        \"typeIdentification\": \"CC\",\n        \"typePerson\": \"N\",\n        \"businessName\": null,\n        \"firstName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondName\": null,\n        \"surname\": \"ANDERSON SOLANO BERNAL\",\n        \"secondSurname\": null,\n        \"keysCustomers\": [\n            {\n                \"creationDateTime\": \"24/09/2025 1:58:53 p. m.\",\n                \"statusUpdateDateTime\": \"24/09/2025 1:58:53 p. m.\",\n                \"entity\": \"00000027\",\n                \"entityIdentification\": \"0012345678\",\n                \"entityName\": \"visionamos\",\n                \"numberAccount\": \"054020017365\",\n                \"typeAccount\": \"AH\",\n                \"subTypeAccount\": \"AV\",\n                \"accountDescription\": \"Cuenta de ahorros \",\n                \"valueKeyCustomer\": \"3134836574\",\n                \"typeKeyCustomer\": \"M\",\n                \"resolutionId\": null,\n                \"typeKeyCustomerDescription\": \"Número celular\",\n                \"idKeyCustomer\": \"618f6b41-41cc-40d5-b01a-d7fe93390e3a\",\n                \"stateKeyCustomer\": \"ACTV\",\n                \"stateKeyCustomerDescription\": \"Activa\",\n                \"endToEndIdentification\": \"202509258003616\",\n                \"storage\": \"VISL\",\n                \"receptorNode\": \"VIS\"\n            }\n        ],\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": \"0000\",\n        \"stateDescriptionSystem\": \"Operation successful\",\n        \"stateDescriptionCustomer\": \"Operación exitosa\"\n    }\n}"
+								},
+								{
+									"name": "keys list - no keys",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTk5OTk5OTkiLCJleHAiOjE3NTczNjk2NDZ9.jRZihLcIm0QPWbMI9oOJfnYo8rLNaUvkUex1jvXA2A7of32HF5o1AXj4xAYjtA8PTf9CBI5nDgeD6hKgxI9fGPwejvE0OUekQPt2qBWBviEebpdel61ZsdPSAnmv4DRdJXy7WgPY-6O-eH3a-PcZN1WanoXMWaSPM8PGefS95jBytI0iX1GDbiY16vnOBZj_FU4vwGjQByVhYTB_drunvRQwWNOVN97j7wCyjOnqFBEcOnMQJnoKmAqimGfiIgIq7AnT0VJPNHjjw9DaT-xY9ZBjXnNui82Db7oJ7PONj_TNysGrRCuhKCD3Tv75cjFOXs80mHke0ARlBf2phSHwbg",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"79883274\",\r\n    \"user\": \"Pedro Perez43 NOEL PERDOMO\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"simOperator\": \"Movistar\",\r\n    \"versionPlatform\": \"13\",\r\n    \"uuid\": \"google/walleye/walleye:8.1.0/OPM2.171026.006.G1/4820017:user/release-keys\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/list",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "83"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 08 Sep 2025 21:48:40 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"keysCustomers\": []\n    }\n}"
+								},
+								{
+									"name": "keys list - error 503",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiOTMzNjM0NDkiLCJleHAiOjE3NTY0MDE2MDZ9.wAFhPyIL_ZVJf65ssSKbl2iHKvNJDWT-pUlGvwp_X5KZSOev5GVsjE_vblp78_xUuMHG7W90PC36qBlZSuI5FQemTIemyK0rIsTzo8rpcIS9AEPM-xTVqkvjXS8YzNOMOC1BtxUD6xUIZeVRst-yAa0S9KRsorwWZQ9BaNRSwpnSLGG9r03kCjlX0U8LH3wgnqS-F-lrgSX-SDz2p1G4NznXPdk6Qzg9i_BA92gIpB58LKbiRUMJDLRp0-mZh9njCl19M6rMX5BIeONbI9UUeZrf8Gf8nz9VBT27QHJzXRSyHS4eFCiZ4wlzaPolm4FdGHJew8W74X1bczfeW9yDHQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"CC\",\r\n    \"documentNumber\": \"93363449\",\r\n    \"user\": \"Pedro Perez43 NOEL PERDOMO\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"simOperator\": \"Movistar\",\r\n    \"versionPlatform\": \"13\",\r\n    \"uuid\": \"google/walleye/walleye:8.1.0/OPM2.171026.006.G1/4820017:user/release-keys\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/list",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "119"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 28 Aug 2025 16:50:19 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 503,\n        \"error\": \"Servicio no disponible\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "keys resolve",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json().payload;",
+											"",
+											"var targetResolutionId = jsonData.keysCustomers[0].resolutionId;",
+											"pm.collectionVariables.set(\"targetResolutionId\", targetResolutionId);",
+											"",
+											"var targetValueKeyCustomer = jsonData.keysCustomers[0].valueKeyCustomer;",
+											"pm.collectionVariables.set(\"targetValueKeyCustomer\", targetValueKeyCustomer);",
+											"",
+											"var targetTypeKeyCustomer = jsonData.keysCustomers[0].typeKeyCustomer;",
+											"pm.collectionVariables.set(\"targetTypeKeyCustomer\", targetTypeKeyCustomer);",
+											"",
+											"var targetTypeAccountDescription = jsonData.keysCustomers[0].accountDescription;",
+											"pm.collectionVariables.set(\"targetTypeAccountDescription\", targetTypeAccountDescription);",
+											"",
+											"var targetEntity = jsonData.keysCustomers[0].entityIdentification;",
+											"pm.collectionVariables.set(\"targetEntity\", targetEntity);",
+											"",
+											"var targetNumberAccount = jsonData.keysCustomers[0].numberAccount;",
+											"pm.collectionVariables.set(\"targetNumberAccount\", targetNumberAccount);",
+											"",
+											"var targetTypeAccount = jsonData.keysCustomers[0].typeAccount;",
+											"pm.collectionVariables.set(\"targetTypeAccount\", targetTypeAccount);",
+											"",
+											"var targetSubTypeAccount = jsonData.keysCustomers[0].subTypeAccount;",
+											"pm.collectionVariables.set(\"targetSubTypeAccount\", targetSubTypeAccount);",
+											"",
+											"var targetIdentification = jsonData.identification;",
+											"pm.collectionVariables.set(\"targetIdentification\", targetIdentification);",
+											"",
+											"var targetTypeIdentification = jsonData.typeIdentification;",
+											"pm.collectionVariables.set(\"targetTypeIdentification\", targetTypeIdentification);",
+											"",
+											"var targetFirstName = jsonData.firstName;",
+											"pm.collectionVariables.set(\"targetFirstName\", targetFirstName);",
+											"",
+											"var targetSurName = jsonData.surname;",
+											"pm.collectionVariables.set(\"targetSurName\", targetSurName);",
+											"",
+											"var receptorNode = jsonData.keysCustomers[0].receptorNode;",
+											"pm.collectionVariables.set(\"receptorNode\", receptorNode);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valueKeyCustomer\": \"@NEQUI202000\",\r\n    // User\r\n    \"user\": \"{{fullName}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/resolve",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"resolve"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys resolve",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"valueKeyCustomer\": \"3012354356\",\r\n    // User\r\n    \"user\": \"{{full_name}}\",\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/resolve",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"resolve"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "1050"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 25 Sep 2025 17:14:27 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"date\": \"20250925\",\n        \"hour\": \"121425\",\n        \"identification\": \"1020354267\",\n        \"typeIdentification\": \"CC\",\n        \"typePerson\": \"N\",\n        \"businessName\": null,\n        \"firstName\": \"LAURA\",\n        \"secondName\": null,\n        \"surname\": \"GONZALEZ\",\n        \"secondSurname\": \"RESTREPO\",\n        \"keysCustomers\": [\n            {\n                \"creationDateTime\": \"1/01/0001 12:00:00 a. m.\",\n                \"statusUpdateDateTime\": \"1/01/0001 12:00:00 a. m.\",\n                \"entity\": \"00000021\",\n                \"entityIdentification\": \"890981912\",\n                \"entityName\": \"Coogranada\",\n                \"numberAccount\": \"1002723212335\",\n                \"typeAccount\": \"AH\",\n                \"subTypeAccount\": \"AV\",\n                \"accountDescription\": \"Cuenta de ahorros \",\n                \"valueKeyCustomer\": \"3012354356\",\n                \"typeKeyCustomer\": \"M\",\n                \"resolutionId\": \"210429d3-6395-46bc-9494-45c90856bbc9\",\n                \"typeKeyCustomerDescription\": \"Número celular\",\n                \"idKeyCustomer\": null,\n                \"stateKeyCustomer\": \"ACTV\",\n                \"stateKeyCustomerDescription\": \"Activa\",\n                \"endToEndIdentification\": \"202509253896270\",\n                \"storage\": \"DICE\",\n                \"receptorNode\": \"VIS\"\n            }\n        ],\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": \"0000\",\n        \"stateDescriptionSystem\": \"Operation successful\",\n        \"stateDescriptionCustomer\": \"Operación exitosa\"\n    }\n}"
+								},
+								{
+									"name": "keys resolve - not found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"valueKeyCustomer\": \"3012354356-\",\r\n    // User\r\n    \"user\": \"{{full_name}}\",\r\n    \"documentType\": \"{{document_type}}\",\r\n    \"documentNumber\": \"{{document_number}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/resolve",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"resolve"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "231"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 25 Sep 2025 17:14:03 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 500,\n    \"statusDesc\": \"Visionamos Request Error\",\n    \"payload\": {\n        \"errorCode\": 400,\n        \"error\": {\n            \"stateCode\": \"U119\",\n            \"stateCodeVIS\": \"0045\",\n            \"stateDescriptionSystem\": \"\",\n            \"stateDescriptionCustomer\": \"La llave no se encuentra registrada \"\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "keys unblock",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/keys/unblock",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"keys",
+										"unblock"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "keys unblock",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"idKeyCustomer\": \"{{idKeyCustomer}}\",\r\n    \"typeKeyCustomer\": \"{{typeKeyCustomer}}\",\r\n    \"valueKeyCustomer\": \"{{valueKeyCustomer}}\",\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"firstName\": \"{{fullName}}\",\r\n    \"surName\": \"{{fullName}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"ip\": \"192.12.34.35\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone17,3\",\r\n    \"platform\": \"ios\",\r\n    \"versionPlatform\": \"18.5\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/keys/unblock",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"keys",
+												"unblock"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "950"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 14 Oct 2025 16:34:10 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"idKeyCustomer\": \"fb6ccbf2-4333-4b40-bf62-01785e2b5f87\",\n        \"stateKeyCustomer\": \"ACTV\",\n        \"creationDateTime\": \"2025-10-08T10:26:33.783\",\n        \"statusUpdateDateTime\": \"2025-10-14T11:34:08.223\",\n        \"sourceTypeAccount\": \"AH\",\n        \"sourceSubTypeAccount\": \"AH\",\n        \"sourceNumberAccount\": \"054020017365\",\n        \"businessName\": null,\n        \"firstName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondName\": null,\n        \"surName\": \"ANDERSON SOLANO BERNAL\",\n        \"secondSurName\": null,\n        \"sourceIdentification\": null,\n        \"sourceTypeIdentification\": null,\n        \"sourceTypePerson\": \"N\",\n        \"endToEndIdentification\": \"20251014860014040VIS202510145222158\",\n        \"valueKeyCustomer\": \"3134836579\",\n        \"typeKeyCustomer\": \"M\",\n        \"sourceEntityIdentification\": \"860014040\",\n        \"sourceEntityName\": \"Coasmedas\",\n        \"links\": \"https://bre-b-sandbox.api.visionamos.passportfintech.com/v1/keys/fb6ccbf2-4333-4b40-bf62-01785e2b5f87\",\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": null,\n        \"stateDescriptionSystem\": \"Success\",\n        \"stateDescriptionCustomer\": null\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "tx init",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"",
+											"var paymentId = jsonData.payload.paymentId;",
+											"pm.collectionVariables.set(\"paymentId\", paymentId);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// Resolve fields:\r\n// 1. login\r\n// 2. BreB/Keys/list\r\n// 2. BreB/Keys/resolve\r\n//\r\n\r\n{\r\n    // Source Key\r\n    // \"sourceTypeKeyCustomer\": \"{{sourceTypeKeyCustomer}}\",\r\n    // \"sourceValueKeyCustomer\": \"{{sourceValueKeyCustomer}}\",\r\n    // Source Account\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    // Source User\r\n    \"user\": \"{{fullName}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"sourceFirstName\": \"{{firstName}}\",\r\n    \"sourceSurName\": \"{{lastName}}\",\r\n    // Target Key\r\n    \"targetNode\": \"{{receptorNode}}\",\r\n    \"targetResolutionId\": \"{{targetResolutionId}}\",    \r\n    \"targetValueKeyCustomer\": \"{{targetValueKeyCustomer}}\",\r\n    \"targetTypeKeyCustomer\": \"{{targetTypeKeyCustomer}}\",\r\n    \"targetEntity\": \"{{targetEntity}}\",\r\n    // Target Account\r\n    \"targetNumberAccount\": \"{{targetNumberAccount}}\",\r\n    \"targetTypeAccount\": \"{{targetTypeAccount}}\",\r\n    // \"targetSubTypeAccount\": \"{{targetSubTypeAccount}}\",\r\n    // \"targetSubTypeAccount\": null,\r\n    \"targetTypeAccountDescription\": \"{{targetTypeAccountDescription}}\",\r\n    // Target User\r\n    \"targetIdentification\": \"{{targetIdentification}}\",\r\n    \"targetTypeIdentification\": \"{{targetTypeIdentification}}\",\r\n    \"targetFirstName\": \"{{targetFirstName}}\",\r\n    // \"targetSecondName\": \"\",\r\n    \"targetSurName\": \"{{targetSurName}}\",\r\n    // \"targetSecondSurName\": \"\",\r\n    \"amount\": \"2345000\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/txs/init",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"txs",
+										"init"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "tx init",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "// Resolve fields:\r\n// 1. login\r\n// 2. BreB/Keys/list\r\n// 2. BreB/Keys/resolve\r\n//\r\n\r\n{\r\n    // Source Key\r\n    \"sourceTypeKeyCustomer\": \"{{sourceTypeKeyCustomer}}\",\r\n    \"sourceValueKeyCustomer\": \"{{sourceValueKeyCustomer}}\",\r\n    // Source Account\r\n    \"sourceNumberAccount\": \"{{sourceNumberAccount}}\",\r\n    \"sourceTypeAccount\": \"{{sourceTypeAccount}}\",\r\n    \"sourceSubTypeAccount\": \"{{sourceSubTypeAccount}}\",\r\n    \"sourceTypeAccountDescription\": \"{{sourceTypeAccountDescription}}\",\r\n    // Source User\r\n    \"user\": \"{{fullName}}\",\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"sourceFirstName\": \"{{firstName}}\",\r\n    \"sourceSurName\": \"{{lastName}}\",\r\n    // Target Key\r\n    \"targetResolutionId\": \"{{targetResolutionId}}\",    \r\n    \"targetValueKeyCustomer\": \"{{targetValueKeyCustomer}}\",\r\n    \"targetTypeKeyCustomer\": \"{{targetTypeKeyCustomer}}\",\r\n    \"targetEntity\": \"{{targetEntity}}\",\r\n    // Target Account\r\n    \"targetNumberAccount\": \"{{targetNumberAccount}}\",\r\n    \"targetTypeAccount\": \"{{targetTypeAccount}}\",\r\n    \"targetSubTypeAccount\": \"{{targetSubTypeAccount}}\",\r\n    \"targetTypeAccountDescription\": \"{{targetTypeAccountDescription}}\",\r\n    // Target User\r\n    \"targetIdentification\": \"{{targetIdentification}}\",\r\n    \"targetTypeIdentification\": \"{{targetTypeIdentification}}\",\r\n    \"targetFirstName\": \"{{targetFirstName}}\",\r\n    // \"targetSecondName\": \"\",\r\n    \"targetSurName\": \"{{targetSurName}}\",\r\n    // \"targetSecondSurName\": \"\",\r\n    \"amount\": \"10000\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/txs/init",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"txs",
+												"init"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "1398"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 29 Sep 2025 17:43:23 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"stateProcessTransactionNode\": \"En procesamiento\",\n        \"paymentId\": \"9161a352-53e4-48d8-a5a5-313668c443ed\",\n        \"paymentStatusNodeVis\": \"PROC\",\n        \"amount\": \"10000\",\n        \"availableBalance\": \"499959980\",\n        \"totalBalance\": \"499959980\",\n        \"approvalNumber\": \"66718875\",\n        \"commissionDebit\": \"0\",\n        \"sequence\": \"202509295475412\",\n        \"typeKeyCustomer\": \"O\",\n        \"sourceKeyCustomer\": \"@COASM3334\",\n        \"sourceEntity\": \"00000097\",\n        \"sourceNumberAccount\": \"054110000429\",\n        \"sourceTypeAccount\": \"AH\",\n        \"sourceSubTypeAccount\": \"AV\",\n        \"sourceTypeAccountDescription\": \"Cuenta de ahorros \",\n        \"sourceIdentification\": \"79883274\",\n        \"sourceTypeIdentification\": \"CC\",\n        \"sourceFirstName\": \"ANDERSON\",\n        \"sourceSecondName\": null,\n        \"sourceSurName\": \"NDERSON SOLANO BERNAL\",\n        \"sourceSecondSurName\": null,\n        \"targetKeyCustomer\": \"3012354356\",\n        \"targetEntity\": \"890981912\",\n        \"targetNumberAccount\": \"1002723212335\",\n        \"targetTypeAccount\": \"AH\",\n        \"targetSubTypeAccount\": \"AV\",\n        \"targetTypeAccountDescription\": \"Cuenta de ahorros \",\n        \"targetIdentification\": \"1020354267\",\n        \"targetTypeIdentification\": \"CC\",\n        \"targetFirstName\": \"LAURA\",\n        \"targetSecondName\": null,\n        \"targetSurName\": \"GONZALEZ\",\n        \"targetSecondSurName\": null,\n        \"timeStamps\": {\n            \"customerInitiation\": \"2025-09-29T12:43:21.718\",\n            \"institutionProcessingOutbound\": null,\n            \"settlementNotification\": null\n        },\n        \"stateCode\": \"U000\",\n        \"stateCodeVIS\": \"0000\",\n        \"stateDescriptionSystem\": \"Operation successful\",\n        \"stateDescriptionCustomer\": \"Operación exitosa\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "tx status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"paymentId\": \"{{paymentId}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/txs/status",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"txs",
+										"status"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "tx status",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    \"paymentId\": \"{{paymentId}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\",\r\n    \"userAgentString\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1\",\r\n    \"trademark\": \"Apple\",\r\n    \"model\": \"iPhone 15\",\r\n    \"platform\": \"iOS\",\r\n    \"versionPlatform\": \"13\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/txs/status",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"txs",
+												"status"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "378"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 29 Sep 2025 18:07:14 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"paymentId\": \"89e14d2f-7818-4ca3-b3f6-7e104cb39f5c\",\n        \"entity\": \"00000097\",\n        \"stateCodePayment\": \"RTRN\",\n        \"statePaymentDescription\": \"Devuelto\",\n        \"stateCode\": \"B105\",\n        \"stateCodeVIS\": \"0067\",\n        \"stateDescriptionSystem\": \"Payment rejected by the MOL with code B105.\",\n        \"stateDescriptionCustomer\": \"Cuenta del cliente receptor no existe.\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "tx list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"initialDate\":\"20251001\",\r\n    \"finalDate\":\"20251015\",\r\n    \"initialHour\": \"120000\",\r\n    \"finalHour\": \"180000\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/txs/list",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"txs",
+										"list"
+									]
+								},
+								"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+							},
+							"response": [
+								{
+									"name": "tx list",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"initialDate\":\"20251001\",\r\n    \"finalDate\":\"20251015\",\r\n    \"initialHour\": \"120000\",\r\n    \"finalHour\": \"180000\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/bre-b/txs/list",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"bre-b",
+												"txs",
+												"list"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Content-Length",
+											"value": "65"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=UTF-8"
+										},
+										{
+											"key": "Server",
+											"value": "Microsoft-HTTPAPI/2.0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 16 Oct 2025 17:26:22 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {}\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "accept terms",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    // Tracking info\r\n    \"ip\": \"192.168.0.1\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bre-b/terms/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bre-b",
+								"terms",
+								"accept"
+							]
+						},
+						"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+					},
+					"response": [
+						{
+							"name": "accept terms",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"documentType\": \"{{documentType}}\",\r\n    \"documentNumber\": \"{{documentNumber}}\",\r\n    \"user\": \"{{fullName}}\",\r\n    // Tracking\r\n    \"ip\": \"192.168.0.1\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/bre-b/terms/accept",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"bre-b",
+										"terms",
+										"accept"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "142"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-HTTPAPI/2.0"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 08 Oct 2025 19:11:29 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"code\": 200,\n        \"message\": \"Registrado correctamente.\",\n        \"response\": {\n            \"approved\": true\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Transferencias Externas",
+			"item": [
+				{
+					"name": "Otras Cooperativas",
+					"item": [
+						{
+							"name": "list entities",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auth_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\n//     \"documentType\": \"CC\",\n//     \"documentNumber\": \"165819\" \n// }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/transfer/external/listEntities",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"transfer",
+										"external",
+										"listEntities"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Balances",
+			"item": [
+				{
+					"name": "balances",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"165819\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/balances",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"balances"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get-salt",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"79138052\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/get-salt",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"get-salt"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get-salt",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"79138052\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/get-salt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-salt"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "103"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-HTTPAPI/2.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 Jan 2026 21:26:04 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"salt\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"var accessToken = jsonData.payload.token;",
+							"pm.collectionVariables.set(\"auth_token\", accessToken);",
+							"",
+							"var documentType = jsonData.payload.documentType;",
+							"pm.collectionVariables.set(\"documentType\", documentType);",
+							"",
+							"var documentNumber = jsonData.payload.documentNumber;",
+							"pm.collectionVariables.set(\"documentNumber\", documentNumber);",
+							"",
+							"var fullName = jsonData.payload.fullName;",
+							"pm.collectionVariables.set(\"fullName\", fullName);",
+							"",
+							"var firstName = fullName.split(\" \")[0];",
+							"pm.collectionVariables.set(\"firstName\", firstName);",
+							"",
+							"var lastName = fullName.slice(1).trim();",
+							"pm.collectionVariables.set(\"lastName\", lastName);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"93370888\", //  no otp\n    // \"documentNumber\": \"79138052\", // orlando\n    // \"documentNumber\": \"79883274\", // para breb\n    // \"documentNumber\": \"25876284\", // no es de coasmedas\n    \"password\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.s7VsVmkHbfRogDnlfRo4MFyWDCSF2ey\", // Pruebas12#\n    // $2a$10$BqHqjGjGB6ywrAHZ.i5A/.Yzk4o3MYNhpN374JFq2MQtLDPLvoaTu --- 9999999\n    \"otp\": \"745765\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    // \"documentNumber\": \"93363449\", // \n    \"documentNumber\": \"79138052\", // orlando\n    // \"documentNumber\": \"79883274\", // para breb\n    // \"documentNumber\": \"25876284\", // no es de coasmedas\n    \"password\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.s7VsVmkHbfRogDnlfRo4MFyWDCSF2ey\", // Pruebas12#\n    // $2a$10$BqHqjGjGB6ywrAHZ.i5A/.Yzk4o3MYNhpN374JFq2MQtLDPLvoaTu --- 9999999\n    \"otp\": \"745765\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "749"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-HTTPAPI/2.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 Jan 2026 21:33:55 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"address\": \"CR 62 165 A 69 TO 4 AP 516\",\n        \"city\": \"BOGOTA D.C.\",\n        \"documentType\": \"CC\",\n        \"documentNumber\": 79138052,\n        \"email\": \"orlanbarr@yahoo.com\",\n        \"mobile\": 3006747173,\n        \"fullName\": \"EDGAR ORLANDO BARRERO GONZALEZ\",\n        \"phone\": 3006747173,\n        \"state\": \"DISTRITO CAPITAL\",\n        \"token\": \"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJDRVJQIiwic3ViIjoiNzkxMzgwNTIiLCJleHAiOjE3NjkwMzMwMzR9.XvZBHCm0VZoMN8WU66PmBSfv05oDr_xYWWh_QeV8X9XjbDdBW56cZnxp8U3H_p7vdKuoxIQxos6xkmvjKKmbZEbZ80urer96yHNzQeCKuSXNfJJv_oD6DbTJgRGeo2ZZic0yUY6oHt5sfg_AAp5T-2CDDQFrSNzsH2Fh0WmDBBFA-qKHFoaQbB3XZ-5HrX46Bk3qE-QDAu3rOoNpZK3Dle5Hv78455cUAjzmi_IEuB4GROxkfx1__Zg3jnegegQ0Y9xzRu8DQ5bCCVzM6dHu4AcL41AzVQZm9i8kL3uwPL1OfTKB18cEjdpnBIXtw53fVpwelNSQzq_ui8O3R7oWeg\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "send-otp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentType\": \"CC\",\n    // \"documentNumber\": \"93363449\", // \n    \"documentNumber\": \"79138052\", // numero Daniel\n    // \"documentNumber\": \"165819\" // \n    // \"documentNumber\": \"79883274\", // para breb\n    // \"documentNumber\": \"25876284\", // no es de coasmedas\n    // \"password\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.eYXkNcrEyNWd5hR37nWdON.8namqij.\",\n    // \"otp\": \"000000\"\n    \"deviceId\": \"23234\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/send-otp",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"send-otp"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "send-otp - untrusted",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    // \"documentNumber\": \"93363449\", // \n    \"documentNumber\": \"79138052\", // numero Daniel\n    // \"documentNumber\": \"165819\" // \n    // \"documentNumber\": \"79883274\", // para breb\n    // \"documentNumber\": \"25876284\", // no es de coasmedas\n    // \"password\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.eYXkNcrEyNWd5hR37nWdON.8namqij.\",\n    // \"otp\": \"000000\"\n    \"deviceId\": \"23234\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/send-otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"send-otp"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "136"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-HTTPAPI/2.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 23 Jan 2026 21:53:18 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"mobile\": \"********73\",\n        \"email\": \"****r@yahoo.com\",\n        \"isTrustedDevice\": false\n    }\n}"
+				},
+				{
+					"name": "send-otp - trusted",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    // \"documentNumber\": \"93363449\", // \n    \"documentNumber\": \"79138052\", // numero Daniel\n    // \"documentNumber\": \"165819\" // \n    // \"documentNumber\": \"79883274\", // para breb\n    // \"documentNumber\": \"25876284\", // no es de coasmedas\n    // \"password\": \"$2a$10$BqHqjGjGB6ywrAHZ.i5A/.eYXkNcrEyNWd5hR37nWdON.8namqij.\",\n    // \"otp\": \"000000\"\n    \"deviceId\": \"23234\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/send-otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"send-otp"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "135"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-HTTPAPI/2.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 23 Jan 2026 21:57:09 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Transacción exitosa\",\n    \"payload\": {\n        \"mobile\": \"********73\",\n        \"email\": \"****r@yahoo.com\",\n        \"isTrustedDevice\": true\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "movements",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentType\": \"{{documentType}}\",\n    \"documentNumber\": \"{{documentNumber}}\",\n    \"codigoProductoCobis\": 2,\n    \"idCuenta\": 0,\n    \"fechaConsulta\": 0,\n    // \"tipoCartera\": \"\",\n    \"indPag\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/movements",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"movements"
+					]
+				},
+				"description": "| Clave | Descripción | Opciones / Ejemplo |\n| --- | --- | --- |\n| `typeKeyCustomer` | Tipo de clave del cliente | `E`: Email`M`: Número celular`B`: Código del establecimiento`O`: Alfanumérico`NRIC`: Documento de identificación |\n| `valueKeyCustomer` | Valor de la clave del cliente | `example@example.com.co` |\n| `sourceNumberAccount` | Número de cuenta de origen. Del servicio `CuentasAhorros.numerotarjeta` | `00000027001` |\n| `sourceTypeAccount` | Tipo de cuenta de origen. Del servicio `CuentasAhorros.sourceTypeAccount` | `AH`: Cuenta de ahorros`CR`: Cupo de crédito rotativo |\n| `sourceSubTypeAccount` | Subtipo de cuenta. Del servicio `CuentasAhorros.sourceSubTypeAccount` | `AV`: Ahorro a la vista`DE`: Depósito electrónico de bajo monto |\n| `sourceTypeAccountDescription` | Descripción del tipo de cuenta. Del servicio `sourceTypeAccountDescription` | `CTA AHORROS A LA VISTA` |\n| `codasociado` | Código del asociado | `00000` |\n| `channel` | Canal de transacción según dispositivo | `WEB`, `MOVIL`, `OFICINA` |\n| `processKeyCustomer` | Tipo de proceso (CRUD de llaves) | `NEWR`: Registrar`AMND`: Actualizar`SUSP`: Bloquear`ACTV`: Activar`DEAC`: Eliminar |\n| `acceptPolicy` | Aceptación de políticas de tratamiento de datos | `true` / `false` |\n| `acceptTerms` | Aceptación de términos y condiciones | `true` / `false` |\n| `totalKeys` | Total de llaves registradas. De `result[0].cuentas.length` | `0` |\n| `platform` | Plataforma del dispositivo del usuario | `web`, `ios`, `android` |\n| `geoLocation` | Ubicación geográfica del usuario | `6.2529 -75.5646` |\n| `userAgentString` | Cadena User-Agent del navegador o app | `Mozilla/5.0 (...) Chrome/136.0.0.0 Safari/537.36` |\n| `ip` | Dirección IP del usuario | `000.000.000.000` |"
+			},
+			"response": []
+		},
+		{
+			"name": "register device",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"79138052\",\n    \"deviceId\": \"23234\",\n    \"deviceDescription\": \"user agent\",\n    \"otp\": 506433\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/register-device",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register-device"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register device",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"documentType\": \"CC\",\n    \"documentNumber\": \"79138052\",\n    \"deviceId\": \"23234\",\n    \"deviceDescription\": \"user agent\",\n    \"otp\": 506433\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/register-device",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register-device"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "67"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-HTTPAPI/2.0"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "POST, GET"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 23 Jan 2026 21:54:32 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 0,\n    \"statusDesc\": \"Dispositivo registrado exitosamente\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://intepruapp.coasmedas.coop",
+			"disabled": true
+		},
+		{
+			"key": "base_url",
+			"value": "https://192.168.20.24"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		},
+		{
+			"key": "document_type",
+			"value": ""
+		},
+		{
+			"key": "document_number",
+			"value": ""
+		},
+		{
+			"key": "full_name",
+			"value": ""
+		},
+		{
+			"key": "first_name",
+			"value": ""
+		},
+		{
+			"key": "lastt_name",
+			"value": ""
+		},
+		{
+			"key": "idKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "typeKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "valueKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "sourceNumberAccount",
+			"value": ""
+		},
+		{
+			"key": "sourceTypeAccount",
+			"value": ""
+		},
+		{
+			"key": "sourceSubTypeAccount",
+			"value": ""
+		},
+		{
+			"key": "sourceTypeAccountDescription",
+			"value": ""
+		},
+		{
+			"key": "targetResolutionId",
+			"value": ""
+		},
+		{
+			"key": "targetValueKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "targetTypeKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "targetTypeAccountDescription",
+			"value": ""
+		},
+		{
+			"key": "targetEntity",
+			"value": ""
+		},
+		{
+			"key": "targetNumberAccount",
+			"value": ""
+		},
+		{
+			"key": "targetTypeAccount",
+			"value": ""
+		},
+		{
+			"key": "targetSubTypeAccount",
+			"value": ""
+		},
+		{
+			"key": "targetIdentification",
+			"value": ""
+		},
+		{
+			"key": "targetTypeIdentification",
+			"value": ""
+		},
+		{
+			"key": "targetFirstName",
+			"value": ""
+		},
+		{
+			"key": "targetSurName",
+			"value": ""
+		},
+		{
+			"key": "fullName",
+			"value": ""
+		},
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "documentType",
+			"value": ""
+		},
+		{
+			"key": "documentNumber",
+			"value": ""
+		},
+		{
+			"key": "sourceTypeKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "sourceValueKeyCustomer",
+			"value": ""
+		},
+		{
+			"key": "paymentId",
+			"value": ""
+		},
+		{
+			"key": "base_url_prod",
+			"value": ""
+		},
+		{
+			"key": "receptorNode",
+			"value": ""
+		}
+	]
+}

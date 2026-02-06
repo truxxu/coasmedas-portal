@@ -1,5 +1,5 @@
-import { UserProvider, UIProvider, WelcomeBarProvider } from '@/src/contexts';
-import { Sidebar, TopBar, WelcomeBar, SessionFooter } from '@/src/organisms';
+import { UIProvider, WelcomeBarProvider } from '@/src/contexts';
+import { Sidebar, TopBar, WelcomeBar, SessionFooter, AuthHydrator } from '@/src/organisms';
 
 export default function AuthenticatedLayout({
   children,
@@ -7,9 +7,9 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <UserProvider>
-      <UIProvider>
-        <WelcomeBarProvider>
+    <UIProvider>
+      <WelcomeBarProvider>
+        <AuthHydrator>
           <div className="min-h-screen">
             <Sidebar />
             <div className="flex flex-col lg:ml-[268px] min-h-screen">
@@ -21,8 +21,8 @@ export default function AuthenticatedLayout({
               <SessionFooter />
             </div>
           </div>
-        </WelcomeBarProvider>
-      </UIProvider>
-    </UserProvider>
+        </AuthHydrator>
+      </WelcomeBarProvider>
+    </UIProvider>
   );
 }

@@ -29,10 +29,11 @@ export function UserDropdown({ isOpen, onClose }: UserDropdownProps) {
 
   if (!isOpen) return null;
 
-  const handleOptionClick = (option: DropdownOption) => {
+  const handleOptionClick = async (option: DropdownOption) => {
     if (option.action === 'logout') {
-      logout();
-      window.location.href = '/login';
+      await logout();
+      window.location.replace('/login');
+      return;
     }
     onClose();
   };
