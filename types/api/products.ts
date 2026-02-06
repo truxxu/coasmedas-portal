@@ -33,9 +33,17 @@ export interface ProductsRequest extends UserIdentification {
 
 // ─── /balances Response ───
 
-export interface BalanceItem {
-  producto: string;
-  saldo: string | number;
+/**
+ * Consolidated balance summary returned by POST /balances.
+ * The response is an array with a single object containing string balances
+ * keyed by product category.
+ */
+export interface BalanceSummary {
+  aportes: string;
+  ahorro: string;
+  inversion: string;
+  credito: string;
+  proteccion: string;
 }
 
 // ─── /movements Response ───

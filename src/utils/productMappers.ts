@@ -1,6 +1,6 @@
 import { normalizeMoney, normalizeString } from '@/types/api/common';
 import type {
-  BalanceItem,
+  BalanceSummary,
   MovementItem,
   SavingsAccountResponse,
   CreditAccountResponse,
@@ -8,7 +8,7 @@ import type {
   ContributionsResponse,
   ProtectionAccountResponse,
 } from '@/types/api/products';
-import type { Account, AccountType } from '@/src/types/account';
+import type { Account } from '@/src/types/account';
 import type { Transaction, TransactionType } from '@/src/types/transaction';
 import type { SavingsProduct } from '@/src/types/savings';
 import type { ObligacionProduct, ObligacionStatus } from '@/src/types/obligaciones';
@@ -17,37 +17,27 @@ import type { AportesProduct } from '@/src/types/products';
 import type { ProteccionProduct, ProteccionStatus } from '@/src/types/proteccion';
 import { parseApiDate, getTodayDate } from './dates';
 
-// ─── Balance → Account ───
+// ─── Balance Summary ───
 
-const PRODUCT_TYPE_MAP: Record<string, AccountType> = {
-  AHORROS: 'AHORROS',
-  CORRIENTE: 'CORRIENTE',
-  CREDITO: 'CREDITO',
-  INVERSION: 'INVERSION',
-};
-
-function resolveAccountType(producto: string): AccountType {
-  const upper = producto.toUpperCase();
-  for (const key of Object.keys(PRODUCT_TYPE_MAP)) {
-    if (upper.includes(key)) return PRODUCT_TYPE_MAP[key];
-  }
-  return 'AHORROS';
-}
-
-export function mapBalanceToAccount(item: BalanceItem, index: number): Account {
-  const balance = normalizeMoney(item.saldo);
+/**
+ * Extract the consolidated BalanceSummary from the API response array.
+ * Returns parsed numeric balances per product category.
+ */
+export function parseBalanceSummary(items: BalanceSummary[]): {
+  aportes: number;
+  ahorro: number;
+  inversion: number;
+  credito: number;
+  proteccion: number;
+} {
+  const raw = items[0] ?? { aportes: '0', ahorro: '0', inversion: '0', credito: '0', proteccion: '0' };
   return {
-    accountNumber: String(index + 1),
-    accountType: resolveAccountType(item.producto),
-    productCode: item.producto,
-    availableBalance: balance,
-    totalBalance: balance,
-    maskedNumber: `****${String(index + 1).padStart(4, '0')}`,
+    aportes: normalizeMoney(raw.aportes),
+    ahorro: normalizeMoney(raw.ahorro),
+    inversion: normalizeMoney(raw.inversion),
+    credito: normalizeMoney(raw.credito),
+    proteccion: normalizeMoney(raw.proteccion),
   };
-}
-
-export function mapBalances(items: BalanceItem[]): Account[] {
-  return items.map(mapBalanceToAccount);
 }
 
 // ─── Movement → Transaction ───

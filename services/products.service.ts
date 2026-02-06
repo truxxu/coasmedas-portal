@@ -10,7 +10,7 @@
 import { apiPost } from '@/lib/api/client';
 import type {
   BalancesRequest,
-  BalanceItem,
+  BalanceSummary,
   MovementsRequest,
   MovementItem,
   ProductsRequest,
@@ -30,8 +30,8 @@ import type {
  * @auth JWT
  * @status ✅ Used in mobile (dashboard)
  */
-export async function getBalances(params: BalancesRequest): Promise<BalanceItem[]> {
-  return apiPost<BalanceItem[]>('/balances', params);
+export async function getBalances(params: BalancesRequest): Promise<BalanceSummary[]> {
+  return apiPost<BalanceSummary[]>('/balances', params);
 }
 
 // ─── Movements ───

@@ -7,10 +7,11 @@ import {
   QuickAccessGrid,
   RecentTransactions,
 } from "@/src/organisms";
+import type { ProductBalances } from "@/src/organisms/AccountSummaryCard";
 import { useUserContext } from "@/src/contexts";
 import { Account, Transaction } from "@/src/types";
 import {
-  mapBalances,
+  parseBalanceSummary,
   mapMovements,
   getDateMonthsAgo,
   formatApiDate,
@@ -21,12 +22,14 @@ import {
   getMovements,
 } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
+import { normalizeMoney } from "@/types/api/common";
 
 export default function HomePage() {
   const { user } = useUserContext();
   const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
   const [account, setAccount] = useState<Account | null>(null);
+  const [balances, setBalances] = useState<ProductBalances | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,37 +44,31 @@ export default function HomePage() {
       const params = { documentType, documentNumber };
 
       // Fetch balances and savings in parallel
-      const [balances, savings] = await Promise.all([
+      const [balancesRaw, savings] = await Promise.all([
         getBalances(params),
         getProductsSavings(params),
       ]);
 
-      console.log(balances, savings);
+      // Parse consolidated balance summary
+      const summary = parseBalanceSummary(balancesRaw);
+      setBalances(summary);
 
-      // Map balances to accounts and pick the first one
-      const accounts = mapBalances(balances);
-      if (accounts.length > 0) {
-        const firstAccount = accounts[0];
-        // Enrich with savings data if available
-        if (savings.length > 0) {
-          const s = savings[0];
-          firstAccount.accountNumber = s.numeroCuenta;
-          firstAccount.maskedNumber = `****${s.numeroCuenta.slice(-4)}`;
-          firstAccount.availableBalance =
-            typeof s.saldoDisponible === "number"
-              ? s.saldoDisponible
-              : parseFloat(String(s.saldoDisponible)) || 0;
-          firstAccount.totalBalance =
-            typeof s.saldoTotal === "number"
-              ? s.saldoTotal
-              : parseFloat(String(s.saldoTotal)) || 0;
-        }
-        setAccount(firstAccount);
-      }
-
-      // Fetch movements for the first savings account
+      // Build savings account from savings endpoint data
       if (savings.length > 0) {
         const s = savings[0];
+        const available = normalizeMoney(s.saldoDisponible);
+        const total = normalizeMoney(s.saldoTotal);
+
+        setAccount({
+          accountNumber: s.numeroCuenta,
+          accountType: "AHORROS",
+          productCode: s.codigoProductoCobis,
+          availableBalance: available,
+          totalBalance: total,
+          maskedNumber: `****${s.numeroCuenta.slice(-4)}`,
+        });
+
+        // Fetch movements for the first savings account
         const movements = await getMovements({
           ...params,
           codigoProductoCobis: s.codigoProductoCobis,
@@ -114,7 +111,11 @@ export default function HomePage() {
 
   return (
     <>
-      <AccountSummaryCard account={account ?? undefined} loading={loading} />
+      <AccountSummaryCard
+        account={account ?? undefined}
+        balances={balances ?? undefined}
+        loading={loading}
+      />
       <QuickAccessGrid />
       <RecentTransactions transactions={transactions} loading={loading} />
     </>
