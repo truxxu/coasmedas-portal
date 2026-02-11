@@ -35,7 +35,7 @@ export default function PagarServiciosDetallePage() {
     sourceAccount?: string;
     service?: string;
   }>({});
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
