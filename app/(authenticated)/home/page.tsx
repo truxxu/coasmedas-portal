@@ -7,9 +7,8 @@ import {
   QuickAccessGrid,
   RecentTransactions,
 } from "@/src/organisms";
-import type { ProductBalances } from "@/src/organisms/AccountSummaryCard";
 import { useUserContext } from "@/src/contexts";
-import { Account, Transaction } from "@/src/types";
+import { Transaction } from "@/src/types";
 import {
   parseBalanceSummary,
   mapMovements,
@@ -22,14 +21,12 @@ import {
   getMovements,
 } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
-import { normalizeMoney } from "@/types/api/common";
 
 export default function HomePage() {
   const { user } = useUserContext();
   const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
-  const [account, setAccount] = useState<Account | null>(null);
-  const [balances, setBalances] = useState<ProductBalances | null>(null);
+  const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,26 +46,13 @@ export default function HomePage() {
         getProductsSavings(params),
       ]);
 
-      // Parse consolidated balance summary
+      // Parse consolidated balance summary and extract savings total
       const summary = parseBalanceSummary(balancesRaw);
-      setBalances(summary);
+      setConsolidatedSavings(summary.ahorro);
 
-      // Build savings account from savings endpoint data
+      // Fetch movements for the first savings account
       if (savings.length > 0) {
         const s = savings[0];
-        const available = normalizeMoney(s.saldoDisponible);
-        const total = normalizeMoney(s.saldoTotal);
-
-        setAccount({
-          accountNumber: s.numeroCuenta,
-          accountType: "AHORROS",
-          productCode: s.codigoProductoCobis,
-          availableBalance: available,
-          totalBalance: total,
-          maskedNumber: `****${s.numeroCuenta.slice(-4)}`,
-        });
-
-        // Fetch movements for the first savings account
         const movements = await getMovements({
           ...params,
           codigoProductoCobis: s.codigoProductoCobis,
@@ -112,8 +96,7 @@ export default function HomePage() {
   return (
     <>
       <AccountSummaryCard
-        account={account ?? undefined}
-        balances={balances ?? undefined}
+        consolidatedSavings={consolidatedSavings ?? undefined}
         loading={loading}
       />
       <QuickAccessGrid />
