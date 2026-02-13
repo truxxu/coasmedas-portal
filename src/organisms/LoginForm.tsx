@@ -16,6 +16,7 @@ import { DOCUMENT_TYPES } from "@/src/constants/documentTypes";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/src/contexts";
 import { getSaltAction, sendOtpAction, loginAction } from "@/app/actions/auth";
+import type { UserIdentification } from "@/types/api/common";
 
 type LoginStep = "credentials" | "otp";
 
@@ -59,8 +60,8 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const identification = {
-        documentType: data.documentType,
+      const identification: UserIdentification = {
+        documentType: data.documentType as UserIdentification["documentType"],
         documentNumber: data.documentNumber,
       };
 
@@ -106,7 +107,7 @@ export function LoginForm() {
       const { documentType, documentNumber } = getValues();
 
       const result = await loginAction({
-        documentType,
+        documentType: documentType as UserIdentification["documentType"],
         documentNumber,
         password: hashedPassword,
         otp: otpValue,
@@ -138,7 +139,7 @@ export function LoginForm() {
       const { documentType, documentNumber } = getValues();
 
       const otpResult = await sendOtpAction({
-        documentType,
+        documentType: documentType as UserIdentification["documentType"],
         documentNumber,
       });
 
