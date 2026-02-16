@@ -68,7 +68,7 @@ export function mapMovementToTransaction(
 
   return {
     id: item.referencia || String(index + 1),
-    description: item.descripcion,
+    description: item.descripcion.replace(/_+$/, '').trim(),
     date: parseApiDate(item.fechaTransaccion),
     amount: signedAmount,
     type,
