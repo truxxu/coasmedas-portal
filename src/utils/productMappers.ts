@@ -184,7 +184,7 @@ export function mapContributionsResponse(
       enMora: normalizeMoney(a.fondosSolidariosMora),
       fechaCubrimiento: parseApiDate(a.fechaCubrimientoFondosSolidarios),
     },
-    totalPermanente: normalizeMoney(b?.saldoTotalAhorroPermanente),
+    totalPermanente: normalizeMoney(b?.saldoTotalAhorroPermanente ?? 0),
   };
 }
 
