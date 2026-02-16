@@ -80,6 +80,21 @@ export function getTodayDate(): string {
 }
 
 /**
+ * Parse API time format (HHMMSS) to HH:MM display string.
+ * The field is unstable — may omit the leading zero (e.g. "94523" for 09:45:23).
+ * @example parseApiTime("94523")  => "09:45"
+ * @example parseApiTime("142345") => "14:23"
+ */
+export function parseApiTime(hhmmss: string | undefined | null): string {
+  if (!hhmmss) return '';
+  const padded = String(hhmmss).padStart(6, '0');
+  const hh = padded.slice(0, 2);
+  const mm = padded.slice(2, 4);
+  if (isNaN(Number(hh)) || isNaN(Number(mm))) return '';
+  return `${hh}:${mm}`;
+}
+
+/**
  * Convert API date format (YYYYMMDD) to ISO format (YYYY-MM-DD)
  * @example parseApiDate("20251115") => "2025-11-15"
  */

@@ -24,7 +24,7 @@ import type {
   ProteccionProduct,
   ProteccionStatus,
 } from "@/src/types/proteccion";
-import { parseApiDate, getTodayDate } from "./dates";
+import { parseApiDate, parseApiTime, getTodayDate } from "./dates";
 
 // ─── Balance Summary ───
 
@@ -66,10 +66,13 @@ export function mapMovementToTransaction(
   const type: TransactionType = tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
   const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
 
+  const date = parseApiDate(item.fechaTransaccion);
+  const time = parseApiTime(item.horaTransaccion);
+
   return {
     id: item.referencia || String(index + 1),
     description: item.descripcion.replace(/_+$/, '').trim(),
-    date: parseApiDate(item.fechaTransaccion),
+    date: time ? `${date} ${time}` : date,
     amount: signedAmount,
     type,
   };
