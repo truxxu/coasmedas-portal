@@ -79,7 +79,7 @@ export function mapMovementToTransaction(
 }
 
 export function mapMovements(items: MovementItem[]): Transaction[] {
-  return items.map(mapMovementToTransaction);
+  return items.map(mapMovementToTransaction).sort((a, b) => b.date.localeCompare(a.date));
 }
 
 // ─── Savings ───
