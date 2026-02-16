@@ -63,7 +63,7 @@ export function mapMovementToTransaction(
 ): Transaction {
   const amount = normalizeMoney(item.valorTransaccion);
   const tipo = item.tipoTransaccion.toUpperCase();
-  const type: TransactionType = tipo === "CR" ? "CREDITO" : "DEBITO";
+  const type: TransactionType = tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
   const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
 
   return {
