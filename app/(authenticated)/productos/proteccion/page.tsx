@@ -1,96 +1,220 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { Breadcrumbs } from '@/src/molecules';
 import {
   ProteccionCarousel,
   TransactionHistoryCard,
   DownloadReportsCard,
 } from '@/src/organisms';
-import { useWelcomeBar } from '@/src/contexts';
-import { ProteccionProduct } from '@/src/types';
-import {
-  mockProteccionProducts,
-  mockProteccionTransactions,
-  mockProteccionAvailableMonths,
-} from '@/src/mocks';
+import { useWelcomeBar, useUserContext } from '@/src/contexts';
+import { ProteccionProduct, Transaction } from '@/src/types';
+import { mockProteccionAvailableMonths } from '@/src/mocks';
+import { mapProtectionProducts, mapMovements, getDateMonthsAgo, formatApiDate } from '@/src/utils';
+import { getProductsProtection, getMovements } from '@/services/products.service';
+import type { ProtectionAccountResponse } from '@/types/api/products';
+import { isAuthError } from '@/lib/api/errors';
 
-/**
- * Mask product number with "No" prefix format
- */
+interface ProductMeta {
+  idCuenta: string;
+  codigoProductoCobis: string;
+}
+
 function maskProteccionNumber(number: string): string {
   return `No******${number}`;
 }
 
 export default function ProteccionPage() {
+  const { user } = useUserContext();
+  const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  // First product selected by default
-  const [selectedProduct, setSelectedProduct] = useState<ProteccionProduct>(
-    mockProteccionProducts[0]
-  );
-  const [transactions] = useState(mockProteccionTransactions);
-  const [selectedMonth, setSelectedMonth] = useState(
-    mockProteccionAvailableMonths[0]?.value || ''
-  );
+  const [products, setProducts] = useState<ProteccionProduct[]>([]);
+  const [productMetaMap, setProductMetaMap] = useState<Record<string, ProductMeta>>({});
+  const [selectedProduct, setSelectedProduct] = useState<ProteccionProduct | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [transactionsLoading, setTransactionsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState(mockProteccionAvailableMonths[0]?.value || '');
+  const fetchVersionRef = useRef(0);
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
-    setWelcomeBar({
-      title: 'Protección',
-      backHref: '/home',
-    });
+    setWelcomeBar({ title: 'Protección', backHref: '/home' });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Dynamic transaction title based on selected product
-  const transactionTitle = useMemo(() => {
-    const maskedNumber = maskProteccionNumber(selectedProduct.productNumber);
-    return `Consulta de Movimientos - ${selectedProduct.title} (${maskedNumber})`;
-  }, [selectedProduct]);
+  const { documentType, documentNumber } = user ?? {};
 
-  const handleProductSelect = (product: ProteccionProduct) => {
+  const fetchMovements = useCallback(async (meta: ProductMeta) => {
+    if (!documentType || !documentNumber) return;
+
+    const version = ++fetchVersionRef.current;
+    try {
+      setTransactionsLoading(true);
+      const movements = await getMovements({
+        documentType,
+        documentNumber,
+        codigoProductoCobis: meta.codigoProductoCobis,
+        idCuenta: meta.idCuenta,
+        fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
+      });
+      if (fetchVersionRef.current === version) {
+        setTransactions(mapMovements(movements));
+      }
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push('/login');
+        return;
+      }
+    } finally {
+      if (fetchVersionRef.current === version) {
+        setTransactionsLoading(false);
+      }
+    }
+  }, [documentType, documentNumber, router]);
+
+  const fetchData = useCallback(async () => {
+    if (!documentType || !documentNumber) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const params = { documentType, documentNumber };
+
+      const apiProducts = await getProductsProtection(params);
+      const mapped = mapProtectionProducts(apiProducts);
+      setProducts(mapped);
+
+      const metaMap: Record<string, ProductMeta> = {};
+      apiProducts.forEach((p: ProtectionAccountResponse) => {
+        metaMap[p.idCuenta] = {
+          idCuenta: p.idCuenta,
+          codigoProductoCobis: p.codigoProductoCobis,
+        };
+      });
+      setProductMetaMap(metaMap);
+
+      if (mapped.length > 0) {
+        setSelectedProduct(mapped[0]);
+        await fetchMovements(metaMap[mapped[0].id]);
+      }
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push('/login');
+        return;
+      }
+      setError('No fue posible cargar la información. Intente nuevamente.');
+    } finally {
+      setLoading(false);
+    }
+  }, [documentType, documentNumber, router, fetchMovements]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const transactionTitle = selectedProduct
+    ? `Consulta de Movimientos - ${selectedProduct.title} (${maskProteccionNumber(selectedProduct.productNumber)})`
+    : 'Consulta de Movimientos';
+
+  const handleProductSelect = useCallback((product: ProteccionProduct) => {
     setSelectedProduct(product);
-    // TODO: Fetch transactions for selected product from API
-    console.log('Selected product:', product.id);
-  };
+    const meta = productMetaMap[product.id];
+    if (meta) {
+      fetchMovements(meta);
+    }
+  }, [productMetaMap, fetchMovements]);
 
-  const handleFilter = (startDate: string, endDate: string) => {
-    // TODO: Call API to filter transactions
-    console.log('Filtering:', { startDate, endDate, productId: selectedProduct.id });
-  };
+  const handleFilter = useCallback(async (startDate: string, endDate: string) => {
+    if (!documentType || !documentNumber || !selectedProduct) return;
+    const meta = productMetaMap[selectedProduct.id];
+    if (!meta) return;
+
+    const version = ++fetchVersionRef.current;
+    try {
+      setTransactionsLoading(true);
+      const movements = await getMovements({
+        documentType,
+        documentNumber,
+        codigoProductoCobis: meta.codigoProductoCobis,
+        idCuenta: meta.idCuenta,
+        fechaConsulta: formatApiDate(startDate),
+      });
+      if (fetchVersionRef.current === version) {
+        const mapped = mapMovements(movements);
+        setTransactions(mapped.filter(t => t.date <= endDate));
+      }
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push('/login');
+        return;
+      }
+    } finally {
+      if (fetchVersionRef.current === version) {
+        setTransactionsLoading(false);
+      }
+    }
+  }, [documentType, documentNumber, selectedProduct, productMetaMap, router]);
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
-    console.log('Selected month:', month);
   };
 
   const handleDownload = () => {
-    // TODO: Trigger PDF download from API
-    console.log('Downloading:', { month: selectedMonth, productId: selectedProduct.id });
+    console.log('Downloading:', { month: selectedMonth, productId: selectedProduct?.id });
   };
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={['Inicio', 'Productos', 'Protección']} />
+        <div className="bg-white rounded-2xl p-6 text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={fetchData}
+            className="text-sm font-medium text-white bg-brand-navy px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={['Inicio', 'Productos', 'Protección']} />
+        <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
+          <div className="h-6 w-48 bg-gray-200 rounded" />
+          <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <Breadcrumbs items={['Inicio', 'Productos', 'Protección']} />
 
-      {/* Section 1: Product Carousel */}
       <ProteccionCarousel
         title="Resumen de Pólizas y Seguros"
-        products={mockProteccionProducts}
-        selectedProductId={selectedProduct.id}
+        products={products}
+        selectedProductId={selectedProduct?.id || ''}
         onProductSelect={handleProductSelect}
       />
 
-      {/* Section 2: Transaction History */}
       <TransactionHistoryCard
         title={transactionTitle}
         subtitle="Últimos movimientos registrados."
         transactions={transactions}
         onFilter={handleFilter}
+        loading={transactionsLoading}
       />
 
-      {/* Section 3: Download Reports */}
       <DownloadReportsCard
         availableMonths={mockProteccionAvailableMonths}
         selectedMonth={selectedMonth}

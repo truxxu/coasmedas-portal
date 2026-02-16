@@ -116,6 +116,7 @@ export function parseApiError(
     payload?: Record<string, unknown>;
   }>,
 ): ApiError {
+  console.log("parseApiError", error);
   if (!error.response) {
     return new NetworkError();
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Card } from "@/src/atoms";
 import { TransferAmountInput } from "@/src/molecules";
 import {
@@ -46,21 +46,25 @@ export function NetworkTransferForm({
   };
 
   // Build destination options from registered accounts
-  const destinationOptions: {
-    id: string;
-    label: string;
-    recipientName: string;
-  }[] = [];
+  const destinationOptions = useMemo(() => {
+    const options: {
+      id: string;
+      label: string;
+      recipientName: string;
+    }[] = [];
 
-  registeredAccounts.forEach((account) => {
-    account.products.forEach((product) => {
-      destinationOptions.push({
-        id: `${account.id}-${product.id}`,
-        label: `${account.name} - ${product.name} (${product.maskedNumber})`,
-        recipientName: account.name,
+    registeredAccounts.forEach((account) => {
+      account.products.forEach((product) => {
+        options.push({
+          id: `${account.id}-${product.id}`,
+          label: `${account.name} - ${product.name} (${product.maskedNumber})`,
+          recipientName: account.name,
+        });
       });
     });
-  });
+
+    return options;
+  }, [registeredAccounts]);
 
   return (
     <Card className="p-6 space-y-6">
