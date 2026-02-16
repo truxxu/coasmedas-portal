@@ -8,7 +8,6 @@ import type {
   ContributionsResponse,
   ProtectionAccountResponse,
 } from "@/types/api/products";
-import type { Account } from "@/src/types/account";
 import type { Transaction, TransactionType } from "@/src/types/transaction";
 import type { SavingsProduct } from "@/src/types/savings";
 import type {

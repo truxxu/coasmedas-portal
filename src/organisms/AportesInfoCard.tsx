@@ -64,7 +64,6 @@ export function AportesInfoCard({
   planName,
   productNumber,
   totalBalance,
-  paymentDeadline,
   detalleAportes,
   detalleFondos,
   className = "",
