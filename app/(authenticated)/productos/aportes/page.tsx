@@ -1,19 +1,28 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { Breadcrumbs } from '@/src/molecules';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { Breadcrumbs } from "@/src/molecules";
 import {
   AportesInfoCard,
   TransactionHistoryCard,
   DownloadReportsCard,
-} from '@/src/organisms';
-import { useWelcomeBar, useUserContext } from '@/src/contexts';
-import { mockAvailableMonths } from '@/src/mocks';
-import { maskNumber, mapContributionsResponse, mapMovements, getDateMonthsAgo, formatApiDate } from '@/src/utils';
-import { AportesProduct, Transaction } from '@/src/types';
-import { getProductsContributions, getMovements } from '@/services/products.service';
-import { isAuthError } from '@/lib/api/errors';
+} from "@/src/organisms";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { mockAvailableMonths } from "@/src/mocks";
+import {
+  maskNumber,
+  mapContributionsResponse,
+  mapMovements,
+  getDateMonthsAgo,
+  formatApiDate,
+} from "@/src/utils";
+import { AportesProduct, Transaction } from "@/src/types";
+import {
+  getProductsContributions,
+  getMovements,
+} from "@/services/products.service";
+import { isAuthError } from "@/lib/api/errors";
 
 interface AportesMeta {
   idCuenta: string;
@@ -31,11 +40,13 @@ export default function AportesPage() {
   const [loading, setLoading] = useState(true);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState(mockAvailableMonths[0]?.value || '');
+  const [selectedMonth, setSelectedMonth] = useState(
+    mockAvailableMonths[0]?.value || "",
+  );
   const fetchVersionRef = useRef(0);
 
   useEffect(() => {
-    setWelcomeBar({ title: 'Aportes', backHref: '/home' });
+    setWelcomeBar({ title: "Aportes", backHref: "/home" });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
@@ -54,7 +65,9 @@ export default function AportesPage() {
 
       const meta: AportesMeta = {
         idCuenta: String(contributions.aportes.idCuentaAportes),
-        codigoProductoCobis: String(contributions.aportes.codigoProductoCobisAportes),
+        codigoProductoCobis: String(
+          contributions.aportes.codigoProductoCobisAportes,
+        ),
       };
       setAportesMeta(meta);
 
@@ -67,15 +80,16 @@ export default function AportesPage() {
         idCuenta: meta.idCuenta,
         fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
       });
+
       if (fetchVersionRef.current === version) {
         setTransactions(mapMovements(movements));
       }
     } catch (err) {
       if (isAuthError(err)) {
-        router.push('/login');
+        router.push("/login");
         return;
       }
-      setError('No fue posible cargar la información. Intente nuevamente.');
+      setError("No fue posible cargar la información. Intente nuevamente.");
     } finally {
       setLoading(false);
       setTransactionsLoading(false);
@@ -86,48 +100,51 @@ export default function AportesPage() {
     fetchData();
   }, [fetchData]);
 
-  const handleFilter = useCallback(async (startDate: string, endDate: string) => {
-    if (!documentType || !documentNumber || !aportesMeta) return;
+  const handleFilter = useCallback(
+    async (startDate: string, endDate: string) => {
+      if (!documentType || !documentNumber || !aportesMeta) return;
 
-    const version = ++fetchVersionRef.current;
-    try {
-      setTransactionsLoading(true);
-      const movements = await getMovements({
-        documentType,
-        documentNumber,
-        codigoProductoCobis: aportesMeta.codigoProductoCobis,
-        idCuenta: aportesMeta.idCuenta,
-        fechaConsulta: formatApiDate(startDate),
-      });
-      if (fetchVersionRef.current === version) {
-        const mapped = mapMovements(movements);
-        setTransactions(mapped.filter(t => t.date <= endDate));
+      const version = ++fetchVersionRef.current;
+      try {
+        setTransactionsLoading(true);
+        const movements = await getMovements({
+          documentType,
+          documentNumber,
+          codigoProductoCobis: aportesMeta.codigoProductoCobis,
+          idCuenta: aportesMeta.idCuenta,
+          fechaConsulta: formatApiDate(startDate),
+        });
+        if (fetchVersionRef.current === version) {
+          const mapped = mapMovements(movements);
+          setTransactions(mapped.filter((t) => t.date <= endDate));
+        }
+      } catch (err) {
+        if (isAuthError(err)) {
+          router.push("/login");
+          return;
+        }
+      } finally {
+        if (fetchVersionRef.current === version) {
+          setTransactionsLoading(false);
+        }
       }
-    } catch (err) {
-      if (isAuthError(err)) {
-        router.push('/login');
-        return;
-      }
-    } finally {
-      if (fetchVersionRef.current === version) {
-        setTransactionsLoading(false);
-      }
-    }
-  }, [documentType, documentNumber, aportesMeta, router]);
+    },
+    [documentType, documentNumber, aportesMeta, router],
+  );
 
   const handleDownload = () => {
-    console.log('Downloading report for:', selectedMonth);
+    console.log("Downloading report for:", selectedMonth);
   };
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
-    console.log('Selected month:', month);
+    console.log("Selected month:", month);
   };
 
   if (error) {
     return (
       <div className="space-y-6">
-        <Breadcrumbs items={['Inicio', 'Productos', 'Aportes']} />
+        <Breadcrumbs items={["Inicio", "Productos", "Aportes"]} />
         <div className="bg-white rounded-2xl p-6 text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
@@ -144,7 +161,7 @@ export default function AportesPage() {
   if (loading || !aportesData) {
     return (
       <div className="space-y-6">
-        <Breadcrumbs items={['Inicio', 'Productos', 'Aportes']} />
+        <Breadcrumbs items={["Inicio", "Productos", "Aportes"]} />
         <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
           <div className="h-6 w-48 bg-gray-200 rounded" />
           <div className="h-4 w-32 bg-gray-200 rounded" />
@@ -156,7 +173,7 @@ export default function AportesPage() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={['Inicio', 'Productos', 'Aportes']} />
+      <Breadcrumbs items={["Inicio", "Productos", "Aportes"]} />
 
       <AportesInfoCard
         planName={aportesData.planName}
@@ -165,6 +182,7 @@ export default function AportesPage() {
         paymentDeadline={aportesData.paymentDeadline}
         detalleAportes={aportesData.detalleAportes}
         detalleFondos={aportesData.detalleFondos}
+        totalPermanente={aportesData.totalPermanente}
       />
 
       <TransactionHistoryCard

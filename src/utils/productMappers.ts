@@ -1,4 +1,4 @@
-import { normalizeMoney, normalizeString } from '@/types/api/common';
+import { normalizeMoney, normalizeString } from "@/types/api/common";
 import type {
   BalanceSummary,
   MovementItem,
@@ -7,15 +7,24 @@ import type {
   InvestmentAccountResponse,
   ContributionsResponse,
   ProtectionAccountResponse,
-} from '@/types/api/products';
-import type { Account } from '@/src/types/account';
-import type { Transaction, TransactionType } from '@/src/types/transaction';
-import type { SavingsProduct } from '@/src/types/savings';
-import type { ObligacionProduct, ObligacionStatus } from '@/src/types/obligaciones';
-import type { InversionProduct, InversionStatus } from '@/src/types/inversiones';
-import type { AportesProduct } from '@/src/types/products';
-import type { ProteccionProduct, ProteccionStatus } from '@/src/types/proteccion';
-import { parseApiDate, getTodayDate } from './dates';
+} from "@/types/api/products";
+import type { Account } from "@/src/types/account";
+import type { Transaction, TransactionType } from "@/src/types/transaction";
+import type { SavingsProduct } from "@/src/types/savings";
+import type {
+  ObligacionProduct,
+  ObligacionStatus,
+} from "@/src/types/obligaciones";
+import type {
+  InversionProduct,
+  InversionStatus,
+} from "@/src/types/inversiones";
+import type { AportesProduct } from "@/src/types/products";
+import type {
+  ProteccionProduct,
+  ProteccionStatus,
+} from "@/src/types/proteccion";
+import { parseApiDate, getTodayDate } from "./dates";
 
 // ─── Balance Summary ───
 
@@ -30,7 +39,13 @@ export function parseBalanceSummary(items: BalanceSummary[]): {
   credito: number;
   proteccion: number;
 } {
-  const raw = items[0] ?? { aportes: '0', ahorro: '0', inversion: '0', credito: '0', proteccion: '0' };
+  const raw = items[0] ?? {
+    aportes: "0",
+    ahorro: "0",
+    inversion: "0",
+    credito: "0",
+    proteccion: "0",
+  };
   return {
     aportes: normalizeMoney(raw.aportes),
     ahorro: normalizeMoney(raw.ahorro),
@@ -42,11 +57,14 @@ export function parseBalanceSummary(items: BalanceSummary[]): {
 
 // ─── Movement → Transaction ───
 
-export function mapMovementToTransaction(item: MovementItem, index: number): Transaction {
+export function mapMovementToTransaction(
+  item: MovementItem,
+  index: number,
+): Transaction {
   const amount = normalizeMoney(item.valorTransaccion);
   const tipo = item.tipoTransaccion.toUpperCase();
-  const type: TransactionType = tipo === 'CR' ? 'CREDITO' : 'DEBITO';
-  const signedAmount = type === 'DEBITO' ? -Math.abs(amount) : Math.abs(amount);
+  const type: TransactionType = tipo === "CR" ? "CREDITO" : "DEBITO";
+  const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
 
   return {
     id: item.referencia || String(index + 1),
@@ -63,26 +81,32 @@ export function mapMovements(items: MovementItem[]): Transaction[] {
 
 // ─── Savings ───
 
-export function mapSavingsResponse(item: SavingsAccountResponse): SavingsProduct {
+export function mapSavingsResponse(
+  item: SavingsAccountResponse,
+): SavingsProduct {
   return {
     id: item.idCuenta,
     title: item.nombreProducto,
     accountType: item.nombreProducto,
     productNumber: item.numeroCuenta,
     balance: normalizeMoney(item.saldoDisponible),
-    status: 'activo',
+    status: "activo",
   };
 }
 
-export function mapSavingsProducts(items: SavingsAccountResponse[]): SavingsProduct[] {
+export function mapSavingsProducts(
+  items: SavingsAccountResponse[],
+): SavingsProduct[] {
   return items.map(mapSavingsResponse);
 }
 
 // ─── Credits / Obligaciones ───
 
-export function mapCreditResponse(item: CreditAccountResponse): ObligacionProduct {
+export function mapCreditResponse(
+  item: CreditAccountResponse,
+): ObligacionProduct {
   const diasMora = normalizeMoney(item.diasMora);
-  const status: ObligacionStatus = diasMora > 0 ? 'en_mora' : 'al_dia';
+  const status: ObligacionStatus = diasMora > 0 ? "en_mora" : "al_dia";
 
   return {
     id: item.idCuenta,
@@ -97,19 +121,24 @@ export function mapCreditResponse(item: CreditAccountResponse): ObligacionProduc
   };
 }
 
-export function mapCreditProducts(items: CreditAccountResponse[]): ObligacionProduct[] {
+export function mapCreditProducts(
+  items: CreditAccountResponse[],
+): ObligacionProduct[] {
   return items.map(mapCreditResponse);
 }
 
 // ─── Investments / Inversiones ───
 
-export function mapInvestmentResponse(item: InvestmentAccountResponse): InversionProduct {
+export function mapInvestmentResponse(
+  item: InvestmentAccountResponse,
+): InversionProduct {
   const maturityDate = parseApiDate(item.fechaVencimiento);
   const today = getTodayDate();
-  const status: InversionStatus = maturityDate && maturityDate < today ? 'vencido' : 'activo';
+  const status: InversionStatus =
+    maturityDate && maturityDate < today ? "vencido" : "activo";
 
   const cobisCode = normalizeString(item.codigoProductoCobis);
-  const prefix = cobisCode === '4' ? 'PAC-' : 'DTA-';
+  const prefix = cobisCode === "4" ? "PAC-" : "DTA-";
 
   return {
     id: item.idCuenta,
@@ -120,21 +149,26 @@ export function mapInvestmentResponse(item: InvestmentAccountResponse): Inversio
     status,
     interestRate: `${normalizeMoney(item.tasaEfectiva)}% E.A`,
     termDays: normalizeMoney(item.plazo),
-    creationDate: '',
+    creationDate: "",
     maturityDate,
   };
 }
 
-export function mapInvestmentProducts(items: InvestmentAccountResponse[]): InversionProduct[] {
+export function mapInvestmentProducts(
+  items: InvestmentAccountResponse[],
+): InversionProduct[] {
   return items.map(mapInvestmentResponse);
 }
 
 // ─── Contributions / Aportes ───
 
-export function mapContributionsResponse(data: ContributionsResponse): AportesProduct {
+export function mapContributionsResponse(
+  data: ContributionsResponse,
+): AportesProduct {
   const a = data.aportes;
+  const b = data.ahorroPermanente;
   return {
-    planName: 'Plan de Aportes',
+    planName: "Plan de Aportes",
     productNumber: a.numeroCuentaAportes,
     totalBalance: normalizeMoney(a.saldoTotalAportes),
     paymentDeadline: parseApiDate(a.fechaCubrimientoAportes),
@@ -148,14 +182,17 @@ export function mapContributionsResponse(data: ContributionsResponse): AportesPr
       enMora: normalizeMoney(a.fondosSolidariosMora),
       fechaCubrimiento: parseApiDate(a.fechaCubrimientoFondosSolidarios),
     },
+    totalPermanente: normalizeMoney(b?.saldoTotalAhorroPermanente),
   };
 }
 
 // ─── Protection / Proteccion ───
 
-export function mapProtectionResponse(item: ProtectionAccountResponse): ProteccionProduct {
+export function mapProtectionResponse(
+  item: ProtectionAccountResponse,
+): ProteccionProduct {
   const diasMora = normalizeMoney(item.diasMora);
-  const status: ProteccionStatus = diasMora > 0 ? 'inactivo' : 'activo';
+  const status: ProteccionStatus = diasMora > 0 ? "inactivo" : "activo";
 
   return {
     id: item.idCuenta,
@@ -168,6 +205,8 @@ export function mapProtectionResponse(item: ProtectionAccountResponse): Protecci
   };
 }
 
-export function mapProtectionProducts(items: ProtectionAccountResponse[]): ProteccionProduct[] {
+export function mapProtectionProducts(
+  items: ProtectionAccountResponse[],
+): ProteccionProduct[] {
   return items.map(mapProtectionResponse);
 }
