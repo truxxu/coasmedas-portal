@@ -28,8 +28,8 @@ export function TransactionHistoryCard({
   className = "",
   infoBox,
 }: TransactionHistoryCardProps) {
-  const [startDate, setStartDate] = useState(getDateMonthsAgo(maxRangeMonths));
-  const [endDate, setEndDate] = useState(getTodayDate());
+  const [startDate, setStartDate] = useState(() => getDateMonthsAgo(maxRangeMonths));
+  const [endDate, setEndDate] = useState(() => getTodayDate());
 
   const handleApply = () => {
     onFilter(startDate, endDate);
