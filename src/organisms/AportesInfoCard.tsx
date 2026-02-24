@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Card, Divider } from '@/src/atoms';
-import { useUIContext } from '@/src/contexts';
-import { formatCurrency, maskCurrency, maskNumber } from '@/src/utils';
-import { formatDateCapitalized } from '@/src/utils/dates';
-import { ProductDetail } from '@/src/types/products';
+import { Card, Divider } from "@/src/atoms";
+import { useUIContext } from "@/src/contexts";
+import { formatCurrency, maskCurrency, maskNumber } from "@/src/utils";
+import { formatDateCapitalized } from "@/src/utils/dates";
+import { ProductDetail } from "@/src/types/products";
 
 interface AportesInfoCardProps {
   planName: string;
@@ -14,6 +14,7 @@ interface AportesInfoCardProps {
   detalleAportes: ProductDetail;
   detalleFondos: ProductDetail;
   className?: string;
+  totalPermanente: number;
 }
 
 interface DetailColumnProps {
@@ -40,12 +41,16 @@ function DetailColumn({ title, data, hideBalances }: DetailColumnProps) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-[14px] text-brand-gray-label">En mora:</span>
-          <span className={`text-[15px] font-bold ${data.enMora > 0 ? 'text-red-600' : 'text-red-600'}`}>
+          <span
+            className={`text-[15px] font-bold ${data.enMora > 0 ? "text-red-600" : "text-red-600"}`}
+          >
             {displayCurrency(data.enMora)}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[14px] text-brand-gray-label">Fecha cubrimiento:</span>
+          <span className="text-[14px] text-brand-gray-label">
+            Fecha cubrimiento:
+          </span>
           <span className="text-[14px] font-medium text-black">
             {formatDateCapitalized(data.fechaCubrimiento)}
           </span>
@@ -59,10 +64,10 @@ export function AportesInfoCard({
   planName,
   productNumber,
   totalBalance,
-  paymentDeadline,
   detalleAportes,
   detalleFondos,
-  className = '',
+  className = "",
+  totalPermanente,
 }: AportesInfoCardProps) {
   const { hideBalances } = useUIContext();
 
@@ -81,21 +86,35 @@ export function AportesInfoCard({
         {/* Left column - General info */}
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-brand-gray-label">Número de producto:</span>
+            <span className="text-[14px] text-brand-gray-label">
+              Número de producto:
+            </span>
             <span className="text-[14px] font-medium text-black">
               {maskNumber(productNumber)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-brand-gray-label">Saldo total aportes:</span>
+            <span className="text-[14px] text-brand-gray-label">
+              Saldo total aportes:
+            </span>
             <span className="text-[18px] font-bold text-brand-navy">
               {displayCurrency(totalBalance)}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-[14px] text-brand-gray-label">Fecha límite de pago:</span>
+            <span className="text-[14px] text-brand-gray-label">
+              Ahorro permanente:
+            </span>
+            <span className="text-[18px] font-bold text-brand-navy">
+              {displayCurrency(totalPermanente)}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-[14px] text-brand-gray-label">
+              Fecha límite de pago:
+            </span>
             <span className="text-[14px] font-medium text-black">
-              {formatDateCapitalized(paymentDeadline)}
+              {/* {formatDateCapitalized(paymentDeadline)} */}-
             </span>
           </div>
         </div>

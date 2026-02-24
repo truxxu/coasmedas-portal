@@ -78,3 +78,35 @@ export function getDateMonthsAgo(months: number): string {
 export function getTodayDate(): string {
   return new Date().toISOString().split('T')[0];
 }
+
+/**
+ * Parse API time format (HHMMSS) to HH:MM display string.
+ * The field is unstable — may omit the leading zero (e.g. "94523" for 09:45:23).
+ * @example parseApiTime("94523")  => "09:45"
+ * @example parseApiTime("142345") => "14:23"
+ */
+export function parseApiTime(hhmmss: string | undefined | null): string {
+  if (!hhmmss) return '';
+  const padded = String(hhmmss).padStart(6, '0');
+  const hh = padded.slice(0, 2);
+  const mm = padded.slice(2, 4);
+  if (isNaN(Number(hh)) || isNaN(Number(mm))) return '';
+  return `${hh}:${mm}`;
+}
+
+/**
+ * Convert API date format (YYYYMMDD) to ISO format (YYYY-MM-DD)
+ * @example parseApiDate("20251115") => "2025-11-15"
+ */
+export function parseApiDate(yyyymmdd: string): string {
+  if (!yyyymmdd || yyyymmdd.length < 8) return '';
+  return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
+}
+
+/**
+ * Convert ISO date format (YYYY-MM-DD) to API date format (YYYYMMDD)
+ * @example formatApiDate("2025-11-15") => "20251115"
+ */
+export function formatApiDate(isoDate: string): string {
+  return isoDate.replace(/-/g, '');
+}

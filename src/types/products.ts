@@ -1,5 +1,5 @@
 // Product types
-export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion';
+export type ProductType = "aportes" | "ahorros" | "inversiones" | "proteccion";
 
 // Aportes-specific types
 export interface AportesProduct {
@@ -9,6 +9,7 @@ export interface AportesProduct {
   paymentDeadline: string;
   detalleAportes: ProductDetail;
   detalleFondos: ProductDetail;
+  totalPermanente: number;
 }
 
 export interface ProductDetail {
