@@ -17,6 +17,7 @@ export const mockAportesData: AportesProduct = {
     enMora: 0,
     fechaCubrimiento: '2025-12-31',
   },
+  totalPermanente: 300000,
 };
 
 // Empty transactions for initial implementation - shows empty state
