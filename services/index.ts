@@ -23,3 +23,11 @@ export {
   getProductsContributions,
   getProductsProtection,
 } from './products.service';
+
+export {
+  getPaymentProducts,
+  getPaymentSourcesSavings,
+  getPaymentSourcesCredits,
+  createPaymentTransaction,
+  createPayzenTransaction,
+} from './payments.service';

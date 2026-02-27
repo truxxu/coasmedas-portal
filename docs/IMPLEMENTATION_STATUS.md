@@ -38,11 +38,11 @@
 
 ## 5. Payments
 
-- [ ] POST `/payment/products` ✅ Auth: JWT
-- [ ] POST `/payment/internal/sources/savings` ✅ Auth: JWT
-- [ ] POST `/payment/internal/sources/credits` ✅ Auth: JWT
-- [ ] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP
-- [ ] POST `/payment/payzen/createTransaction` ✅ Auth: JWT
+- [x] POST `/payment/products` ✅ Auth: JWT
+- [x] POST `/payment/internal/sources/savings` ✅ Auth: JWT
+- [x] POST `/payment/internal/sources/credits` ✅ Auth: JWT
+- [x] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/payment/payzen/createTransaction` ✅ Auth: JWT
 
 ## 6. Internal Transfers
 
@@ -93,9 +93,9 @@
 | Registration | 2 | 2 | 0 |
 | Password | 1 | 1 | 0 |
 | Products | 7 | 7 | 0 |
-| Payments | 5 | 0 | 5 |
+| Payments | 5 | 5 | 0 |
 | Internal Transfers | 7 | 0 | 7 |
 | External Transfers (Banks) | 5 | 0 | 5 |
 | External Transfers (Entities) | 3 | 0 | 3 |
 | BRE-B | 12 | 0 | 12 |
-| **Total** | **46** | **14** | **32** |
+| **Total** | **46** | **19** | **27** |
