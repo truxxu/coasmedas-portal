@@ -5,45 +5,19 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { useSMSCodeVerification } from "@/src/hooks";
-import {
-  OBLIGACION_PAYMENT_STEPS_ACCOUNT,
-  MOCK_OBLIGACION_VALID_CODE,
-  mockObligacionTransactionResult,
-  mockObligacionTransactionResultError,
-} from "@/src/mocks/mockObligacionPaymentData";
-import { ObligacionConfirmationData } from "@/src/types/obligacion-payment";
+import { OBLIGACION_PAYMENT_STEPS_ACCOUNT } from "@/src/mocks/mockObligacionPaymentData";
+import { createPaymentTransaction } from "@/services/payments.service";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { mapResultToObligacion } from "@/lib/mappers/payments.mapper";
+import type { ObligacionPaymentProduct } from "@/src/types/obligacion-payment";
 
 export default function ObligacionCodigoSmsPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
-  const handleSuccess = () => {
-    const confirmationStr = sessionStorage.getItem("obligacionPaymentConfirmation");
-    if (confirmationStr) {
-      const confirmation: ObligacionConfirmationData = JSON.parse(confirmationStr);
-      const result = {
-        ...mockObligacionTransactionResult,
-        lineaCredito: confirmation.productoAPagar,
-        numeroProducto: confirmation.numeroProducto,
-        valorPagado: confirmation.valorAPagar,
-      };
-      sessionStorage.setItem("obligacionPaymentResult", JSON.stringify(result));
-    } else {
-      sessionStorage.setItem(
-        "obligacionPaymentResult",
-        JSON.stringify(mockObligacionTransactionResult)
-      );
-    }
-  };
-
-  const handleError = () => {
-    sessionStorage.setItem(
-      "obligacionPaymentResult",
-      JSON.stringify(mockObligacionTransactionResultError)
-    );
-  };
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
 
   const {
     code,
@@ -55,15 +29,35 @@ export default function ObligacionCodigoSmsPage() {
     handleResendCode,
     handleSubmit,
   } = useSMSCodeVerification({
-    validCode: MOCK_OBLIGACION_VALID_CODE,
     sessionKey: "obligacionPaymentConfirmation",
     fallbackPath: "/pagos/pagar-mis-productos/obligaciones",
     successPath: "/pagos/pagar-mis-productos/obligaciones/resultado",
-    onSuccess: handleSuccess,
-    onError: handleError,
+    onSubmit: async (otp) => {
+      if (!documentType || !documentNumber) throw new Error("Sesion no valida");
+      const txRequestStr = sessionStorage.getItem("obligacionTransactionRequest");
+      if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
+      const txRequest = JSON.parse(txRequestStr);
+      const result = await createPaymentTransaction({
+        documentType,
+        documentNumber,
+        otp,
+        ...txRequest,
+      });
+      // Map and store result
+      const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+      const product: ObligacionPaymentProduct | null = productStr ? JSON.parse(productStr) : null;
+      const mappedResult = mapResultToObligacion(result, {
+        lineaCredito: product?.name ?? "Obligacion",
+        numeroProducto: product?.productNumber ?? "",
+      });
+      sessionStorage.setItem("obligacionPaymentResult", JSON.stringify(mappedResult));
+    },
+    onResend: async () => {
+      if (!documentType || !documentNumber) return;
+      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+    },
   });
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago de Obligaciones",
@@ -78,14 +72,12 @@ export default function ObligacionCodigoSmsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <Breadcrumbs items={["Inicio", "Pagos", "Pago de Obligaciones"]} />
 
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={OBLIGACION_PAYMENT_STEPS_ACCOUNT} />
       </div>
 
-      {/* SMS Code Input Card */}
       <CodeInputCard
         code={code}
         onCodeChange={handleCodeChange}
@@ -97,7 +89,6 @@ export default function ObligacionCodigoSmsPage() {
         disabled={isLoading}
       />
 
-      {/* Footer Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}

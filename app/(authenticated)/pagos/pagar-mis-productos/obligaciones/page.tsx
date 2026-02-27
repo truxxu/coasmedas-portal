@@ -1,33 +1,44 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ObligacionDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
-import { PaymentType, ObligacionPaymentMethod } from "@/src/types/obligacion-payment";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { PaymentType, ObligacionPaymentMethod, ObligacionSourceAccount, ObligacionPaymentProduct } from "@/src/types/obligacion-payment";
 import {
-  mockObligacionPaymentProducts,
-  mockObligacionSourceAccounts,
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
 } from "@/src/mocks/mockObligacionPaymentData";
+import { getPaymentSourcesSavings } from "@/services/payments.service";
+import { getProductsCredits } from "@/services/products.service";
+import { isAuthError } from "@/lib/api/errors";
+import { mapSavingsToSourceAccount, mapCreditToObligacionPaymentProduct } from "@/lib/mappers/payments.mapper";
+import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
 
 export default function PagoObligacionesPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
+  const { user } = useUserContext();
 
+  const [sourceAccounts, setSourceAccounts] = useState<ObligacionSourceAccount[]>([]);
+  const [products, setProducts] = useState<ObligacionPaymentProduct[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string>("");
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<ObligacionPaymentMethod>("account");
   const [valorAPagar, setValorAPagar] = useState<number>(0);
-  const [activePaymentType, setActivePaymentType] =
-    useState<PaymentType | null>(null);
+  const [activePaymentType, setActivePaymentType] = useState<PaymentType | null>(null);
   const [error, setError] = useState<string>("");
   const [accountError, setAccountError] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Store raw API data for transaction request building
+  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
+  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
 
   useEffect(() => {
     setWelcomeBar({
@@ -36,6 +47,46 @@ export default function PagoObligacionesPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
+
+  const { documentType, documentNumber } = user ?? {};
+
+  const fetchData = useCallback(async () => {
+    if (!documentType || !documentNumber) return;
+
+    try {
+      setLoading(true);
+      setLoadError(null);
+
+      const params = { documentType, documentNumber };
+      const [savingsRes, creditsRes] = await Promise.all([
+        getPaymentSourcesSavings(params),
+        getProductsCredits(params),
+      ]);
+
+      setSavingsApiData(savingsRes);
+      setCreditsApiData(creditsRes);
+
+      const mappedAccounts = savingsRes.map(mapSavingsToSourceAccount);
+      setSourceAccounts(mappedAccounts);
+
+      const mappedProducts = creditsRes.map(mapCreditToObligacionPaymentProduct);
+      setProducts(mappedProducts);
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push("/login");
+        return;
+      }
+      setLoadError("No fue posible cargar la informacion. Intente nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  }, [documentType, documentNumber, router]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const allSourceAccounts = sourceAccounts;
 
   const breadcrumbItems = [
     "Inicio",
@@ -47,8 +98,7 @@ export default function PagoObligacionesPage() {
   const handleProductSelect = (productId: string) => {
     setSelectedProductId(productId);
     setError("");
-    // Reset payment amount when product changes
-    const product = mockObligacionPaymentProducts.find((p) => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     if (product) {
       setValorAPagar(product.minimumPayment);
       setActivePaymentType("minimum");
@@ -62,9 +112,7 @@ export default function PagoObligacionesPage() {
   };
 
   const handlePaymentTypeSelect = (type: PaymentType) => {
-    const product = mockObligacionPaymentProducts.find(
-      (p) => p.id === selectedProductId
-    );
+    const product = products.find((p) => p.id === selectedProductId);
     if (!product) return;
 
     setActivePaymentType(type);
@@ -77,12 +125,11 @@ export default function PagoObligacionesPage() {
 
   const handleValorChange = (valor: number) => {
     setValorAPagar(valor);
-    setActivePaymentType(null); // Clear active button when manually editing
+    setActivePaymentType(null);
     setError("");
   };
 
   const handleContinue = () => {
-    // Validation
     if (!selectedAccountId) {
       setAccountError("Por favor selecciona una cuenta origen");
       return;
@@ -93,9 +140,7 @@ export default function PagoObligacionesPage() {
       return;
     }
 
-    const selectedProduct = mockObligacionPaymentProducts.find(
-      (p) => p.id === selectedProductId
-    );
+    const selectedProduct = products.find((p) => p.id === selectedProductId);
 
     if (!selectedProduct) {
       setError("Producto no encontrado");
@@ -109,9 +154,7 @@ export default function PagoObligacionesPage() {
 
     if (valorAPagar < selectedProduct.minimumPayment) {
       setError(
-        `El valor mínimo de pago es ${selectedProduct.minimumPayment.toLocaleString(
-          "es-CO"
-        )}`
+        `El valor minimo de pago es ${selectedProduct.minimumPayment.toLocaleString("es-CO")}`
       );
       return;
     }
@@ -121,42 +164,42 @@ export default function PagoObligacionesPage() {
       return;
     }
 
-    // Check if balance is sufficient (only for account payments, not PSE)
-    if (paymentMethod === 'account') {
-      const selectedAccount = mockObligacionSourceAccounts.find(
-        (a) => a.id === selectedAccountId
-      );
+    if (paymentMethod === "account") {
+      const selectedAccount = allSourceAccounts.find((a) => a.id === selectedAccountId);
       if (selectedAccount && valorAPagar > selectedAccount.balance) {
-        setAccountError('Saldo insuficiente en la cuenta seleccionada');
+        setAccountError("Saldo insuficiente en la cuenta seleccionada");
         return;
       }
     }
 
-    // Determine source account display
-    const isPSE = paymentMethod === 'pse';
-    const selectedAccount = mockObligacionSourceAccounts.find(
-      (a) => a.id === selectedAccountId
-    );
+    const isPSE = paymentMethod === "pse";
+    const selectedAccount = allSourceAccounts.find((a) => a.id === selectedAccountId);
     const sourceAccountDisplay = isPSE
-      ? 'PSE (Pagos con otras entidades)'
-      : (selectedAccount?.displayName || '');
+      ? "PSE (Pagos con otras entidades)"
+      : (selectedAccount?.displayName || "");
 
     // Store data in sessionStorage
     sessionStorage.setItem("obligacionPaymentProductId", selectedProductId);
     sessionStorage.setItem("obligacionPaymentValor", valorAPagar.toString());
-    sessionStorage.setItem(
-      "obligacionPaymentProduct",
-      JSON.stringify(selectedProduct)
-    );
+    sessionStorage.setItem("obligacionPaymentProduct", JSON.stringify(selectedProduct));
     sessionStorage.setItem("obligacionPaymentMethod", paymentMethod);
     sessionStorage.setItem("obligacionSourceAccountId", selectedAccountId);
     sessionStorage.setItem("obligacionSourceAccountDisplay", sourceAccountDisplay);
+
+    // Store raw API data for transaction request building
+    const selectedSavings = savingsApiData.find((a) => a.idCuenta === selectedAccountId);
+    if (selectedSavings) {
+      sessionStorage.setItem("obligacionSourceAccountApi", JSON.stringify(selectedSavings));
+    }
+    const selectedCredit = creditsApiData.find((c) => c.idCuenta === selectedProductId);
+    if (selectedCredit) {
+      sessionStorage.setItem("obligacionTargetProductApi", JSON.stringify(selectedCredit));
+    }
 
     router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
   };
 
   const handleNeedMoreBalance = () => {
-    // TODO: Open modal or navigate to transfer page
     console.log("Need more balance");
   };
 
@@ -164,10 +207,39 @@ export default function PagoObligacionesPage() {
     router.push("/pagos/pagar-mis-productos");
   };
 
-  // Determine which steps to show based on payment method
-  const currentSteps = paymentMethod === 'pse'
+  const currentSteps = paymentMethod === "pse"
     ? OBLIGACION_PAYMENT_STEPS
     : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
+
+  if (loadError) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="bg-white rounded-2xl p-6 text-center">
+          <p className="text-red-600 mb-4">{loadError}</p>
+          <button
+            onClick={fetchData}
+            className="text-sm font-medium text-white bg-brand-navy px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
+          <div className="h-6 w-48 bg-gray-200 rounded" />
+          <div className="h-32 w-full bg-gray-200 rounded" />
+          <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -178,8 +250,8 @@ export default function PagoObligacionesPage() {
       </div>
 
       <ObligacionDetailsCard
-        products={mockObligacionPaymentProducts}
-        sourceAccounts={mockObligacionSourceAccounts}
+        products={products}
+        sourceAccounts={allSourceAccounts}
         selectedProductId={selectedProductId}
         selectedAccountId={selectedAccountId}
         valorAPagar={valorAPagar}

@@ -5,16 +5,19 @@ import { useRouter } from "next/navigation";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { Button } from "@/src/atoms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { useSMSCodeVerification } from "@/src/hooks";
-import {
-  APORTES_PAYMENT_STEPS,
-  APORTES_MOCK_VALID_CODE,
-} from "@/src/mocks/mockAportesPaymentData";
+import { APORTES_PAYMENT_STEPS } from "@/src/mocks/mockAportesPaymentData";
+import { createPaymentTransaction } from "@/services/payments.service";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { mapResultToAportes } from "@/lib/mappers/payments.mapper";
+import type { AportesPaymentBreakdown } from "@/src/types/aportes-payment";
 
 export default function VerificacionAportesPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
 
   const {
     code,
@@ -26,10 +29,33 @@ export default function VerificacionAportesPage() {
     handleResendCode,
     handleSubmit,
   } = useSMSCodeVerification({
-    validCode: APORTES_MOCK_VALID_CODE,
     sessionKey: "aportesPaymentConfirmation",
     fallbackPath: "/pagos/pagar-mis-productos/aportes",
     successPath: "/pagos/pagar-mis-productos/aportes/resultado",
+    onSubmit: async (otp) => {
+      if (!documentType || !documentNumber) throw new Error("Sesion no valida");
+      const txRequestStr = sessionStorage.getItem("aportesTransactionRequest");
+      if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
+      const txRequest = JSON.parse(txRequestStr);
+      const result = await createPaymentTransaction({
+        documentType,
+        documentNumber,
+        otp,
+        ...txRequest,
+      });
+      // Map and store result for the resultado page
+      const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
+      const breakdown: AportesPaymentBreakdown | null = breakdownStr ? JSON.parse(breakdownStr) : null;
+      const mappedResult = mapResultToAportes(result, {
+        lineaCredito: breakdown?.planName ?? "Aportes",
+        numeroProducto: breakdown?.productNumber ?? "",
+      });
+      sessionStorage.setItem("aportesPaymentResult", JSON.stringify(mappedResult));
+    },
+    onResend: async () => {
+      if (!documentType || !documentNumber) return;
+      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+    },
   });
 
   // Set welcome bar on mount

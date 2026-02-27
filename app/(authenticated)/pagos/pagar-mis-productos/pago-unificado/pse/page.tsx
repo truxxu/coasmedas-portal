@@ -1,20 +1,58 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Card } from "@/src/atoms";
-import { useWelcomeBar } from "@/src/contexts";
+import React, { useEffect } from "react";
+import { PSELoadingCard } from "@/src/organisms";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { usePSERedirect } from "@/src/hooks";
+import { createPayzenTransaction } from "@/services/payments.service";
+import { buildUnifiedTargets } from "@/lib/mappers/payments.mapper";
+import type { PaymentProduct } from "@/types/api/payments";
 
 export default function PSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const router = useRouter();
-  const [isPSEMethodValid] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem("paymentMethod") === "pse";
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
+
+  const { message } = usePSERedirect({
+    sessionKey: "paymentConfirmationData",
+    fallbackPath: "/pagos/pagar-mis-productos/pago-unificado",
+    successPath: "/pagos/pagar-mis-productos/pago-unificado/resultado",
+    errorPath: "/pagos/pagar-mis-productos/pago-unificado/resultado",
+    phases: [
+      { message: "Conectando con PSE...", duration: 2000 },
+      { message: "Procesando pago...", duration: 2000 },
+    ],
+    onCreateTransaction: async () => {
+      if (!documentType || !documentNumber || !user) {
+        throw new Error("Sesion no valida");
+      }
+      const confirmationStr = sessionStorage.getItem("paymentConfirmationData");
+      const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
+      if (!confirmationStr || !productsStr) throw new Error("Datos de pago no encontrados");
+
+      const confirmation = JSON.parse(confirmationStr);
+      const products: PaymentProduct[] = JSON.parse(productsStr);
+      const vlrPagoTotal = confirmation.totalAmount;
+
+      const result = await createPayzenTransaction({
+        documentType,
+        documentNumber,
+        vlrPagoTotal,
+        pagador: {
+          documentType,
+          documentNumber,
+          names: user.firstName,
+          lastNames: user.lastName,
+          email: user.email,
+          mobile: user.mobile ?? "",
+        },
+        merchantComment: "Pago Unificado",
+        cuentas: buildUnifiedTargets(products),
+      });
+      return result.paymentUrl;
+    },
   });
 
-  // Configure WelcomeBar on mount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago Unificado",
@@ -23,54 +61,9 @@ export default function PSEPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if PSE method was not selected
-  useEffect(() => {
-    if (!isPSEMethodValid) {
-      router.push("/pagos/pagar-mis-productos/pago-unificado");
-    }
-  }, [isPSEMethodValid, router]);
-
-  const handleBeforeRedirect = () => {
-    sessionStorage.setItem("paymentStatus", "success");
-  };
-
-  const { message, isSessionValid } = usePSERedirect({
-    sessionKey: "paymentConfirmationData",
-    fallbackPath: "/pagos/pagar-mis-productos/pago-unificado",
-    successPath: "/pagos/pagar-mis-productos/pago-unificado/resultado",
-    phases: [
-      { message: "Conectando a PSE", duration: 3000 },
-      { message: "Procesando pago", duration: 5000 },
-    ],
-    onBeforeRedirect: handleBeforeRedirect,
-  });
-
-  if (!isSessionValid || !isPSEMethodValid) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-gray-high">Cargando...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <Card className="p-8 md:p-12 text-center max-w-md w-full">
-        {/* Spinner */}
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 md:w-20 md:h-20 border-4 border-brand-border border-t-brand-primary rounded-full animate-spin" />
-        </div>
-
-        {/* Title */}
-        <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">
-          {message}
-        </h2>
-
-        {/* Description */}
-        <p className="text-sm md:text-base text-brand-gray-high">
-          Estamos preparando tu solicitud con la plataforma de pagos segura.
-        </p>
-      </Card>
+    <div className="space-y-6">
+      <PSELoadingCard message={message} />
     </div>
   );
 }

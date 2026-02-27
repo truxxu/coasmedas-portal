@@ -6,18 +6,22 @@ import { useRouter } from "next/navigation";
 const RESEND_COOLDOWN_SECONDS = 60;
 
 export interface SMSCodeVerificationConfig {
-  /** Valid code for mock validation */
-  validCode: string;
+  /** Valid code for mock validation (optional when using onSubmit) */
+  validCode?: string;
   /** Session storage key to check for session validation */
   sessionKey: string;
   /** Path to redirect if session is invalid */
   fallbackPath: string;
   /** Path to redirect on successful verification */
   successPath: string;
+  /** Async handler for real API submission. Receives OTP code. Should throw on failure. */
+  onSubmit?: (code: string) => Promise<void>;
   /** Optional callback to build and store result before redirecting */
   onSuccess?: (code: string) => void;
   /** Optional callback on error */
   onError?: (code: string) => void;
+  /** Async handler for resending OTP */
+  onResend?: () => Promise<void>;
 }
 
 export interface SMSCodeVerificationState {
@@ -71,13 +75,17 @@ export function useSMSCodeVerification(
   }, []);
 
   const handleResendCode = useCallback(() => {
-    console.log("Resending code...");
     setIsResendDisabled(true);
     setResendCountdown(RESEND_COOLDOWN_SECONDS);
     setCode("");
     setError("");
-    // TODO: API call to resend SMS code
-  }, []);
+
+    if (config.onResend) {
+      config.onResend().catch((err) => {
+        console.error("Error resending OTP:", err);
+      });
+    }
+  }, [config]);
 
   const handleSubmit = async () => {
     if (code.length !== 6) {
@@ -89,18 +97,28 @@ export function useSMSCodeVerification(
     setError("");
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      if (code === config.validCode) {
+      if (config.onSubmit) {
+        // Real API flow
+        await config.onSubmit(code);
         config.onSuccess?.(code);
         router.push(config.successPath);
       } else {
-        config.onError?.(code);
-        setError("Codigo incorrecto. Por favor intenta nuevamente.");
+        // Legacy mock flow: compare against validCode
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        if (code === config.validCode) {
+          config.onSuccess?.(code);
+          router.push(config.successPath);
+        } else {
+          config.onError?.(code);
+          setError("Codigo incorrecto. Por favor intenta nuevamente.");
+        }
       }
-    } catch {
-      setError("Error al procesar el pago. Por favor intenta nuevamente.");
+    } catch (err) {
+      config.onError?.(code);
+      const message =
+        err instanceof Error ? err.message : "Error al procesar el pago. Por favor intenta nuevamente.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }

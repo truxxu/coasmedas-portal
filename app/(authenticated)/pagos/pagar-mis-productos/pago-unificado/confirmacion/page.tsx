@@ -6,67 +6,67 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { PaymentConfirmationCard } from "@/src/organisms";
 import { Button } from "@/src/atoms";
 import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
-import { PaymentConfirmationData } from "@/src/types/payment";
-import {
-  mockPaymentAccounts,
-  mockPendingPayments,
-  mockUserData,
-  PAYMENT_STEPS,
-} from "@/src/mocks/mockPaymentData";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { PaymentConfirmationData, PendingPayments } from "@/src/types/payment";
+import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
+import { maskNumber } from "@/src/utils";
+import { buildAccountReference, buildUnifiedTargets } from "@/lib/mappers/payments.mapper";
+import type { SavingsAccountResponse } from "@/types/api/products";
+import type { PaymentProduct } from "@/types/api/payments";
 
 export default function ConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
+  const { user } = useUserContext();
+
   const [confirmationData] =
     useState<PaymentConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+      if (typeof window === "undefined") return null;
 
       const accountId = sessionStorage.getItem("paymentAccountId");
       const paymentMethod = sessionStorage.getItem("paymentMethod");
+      const pendingStr = sessionStorage.getItem("unifiedPendingPayments");
 
-      if (!accountId) {
-        return null;
-      }
+      if (!accountId || !pendingStr) return null;
 
-      // Handle PSE payment method
+      const pending: PendingPayments = JSON.parse(pendingStr);
+
+      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const maskedDoc = user
+        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+        : "";
+
       if (paymentMethod === "pse") {
         return {
-          titular: mockUserData.name,
-          documento: mockUserData.document,
-          aportes: mockPendingPayments.aportes,
-          obligaciones: mockPendingPayments.obligaciones,
-          proteccion: mockPendingPayments.proteccion,
+          titular: userName,
+          documento: maskedDoc,
+          aportes: pending.aportes,
+          obligaciones: pending.obligaciones,
+          proteccion: pending.proteccion,
           debitAccount: "PSE (Pagos con otras entidades)",
           debitAccountNumber: "",
-          totalAmount: mockPendingPayments.total,
+          totalAmount: pending.total,
         };
       }
 
-      // Find the selected account
-      const selectedAccount = mockPaymentAccounts.find(
-        (acc) => acc.id === accountId
-      );
+      const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
+      if (!sourceAccountStr) return null;
 
-      if (!selectedAccount) {
-        return null;
-      }
+      const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
 
-      // Build confirmation data
       return {
-        titular: mockUserData.name,
-        documento: mockUserData.document,
-        aportes: mockPendingPayments.aportes,
-        obligaciones: mockPendingPayments.obligaciones,
-        proteccion: mockPendingPayments.proteccion,
-        debitAccount: selectedAccount.name,
-        debitAccountNumber: selectedAccount.number,
-        totalAmount: mockPendingPayments.total,
+        titular: userName,
+        documento: maskedDoc,
+        aportes: pending.aportes,
+        obligaciones: pending.obligaciones,
+        proteccion: pending.proteccion,
+        debitAccount: sourceAccount.nombreProducto,
+        debitAccountNumber: maskNumber(sourceAccount.numeroCuenta),
+        totalAmount: pending.total,
       };
     });
 
-  // Configure WelcomeBar on mount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago Unificado",
@@ -75,7 +75,6 @@ export default function ConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if data is missing
   useEffect(() => {
     if (!confirmationData) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
@@ -83,21 +82,31 @@ export default function ConfirmacionPage() {
   }, [confirmationData, router]);
 
   const handleConfirm = () => {
-    // Store confirmation data for next step
     if (confirmationData) {
       sessionStorage.setItem(
         "paymentConfirmationData",
         JSON.stringify(confirmationData)
       );
+
+      // Pre-build transaction request
+      const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
+      const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
+      if (sourceAccountStr && productsStr) {
+        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
+        const products: PaymentProduct[] = JSON.parse(productsStr);
+        const txRequest = {
+          origen: buildAccountReference(sourceAccount),
+          cuentas: buildUnifiedTargets(products),
+          vlrPagoTotal: confirmationData.totalAmount,
+        };
+        sessionStorage.setItem("unifiedTransactionRequest", JSON.stringify(txRequest));
+      }
     }
 
-    // Check payment method and navigate accordingly
     const paymentMethod = sessionStorage.getItem("paymentMethod");
     if (paymentMethod === "pse") {
-      // Navigate to PSE loading page
       router.push("/pagos/pagar-mis-productos/pago-unificado/pse");
     } else {
-      // Navigate to SMS verification
       router.push("/pagos/pagar-mis-productos/pago-unificado/verificacion");
     }
   };
