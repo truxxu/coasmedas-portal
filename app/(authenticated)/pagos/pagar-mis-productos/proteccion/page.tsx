@@ -14,11 +14,12 @@ import type {
   ProtectionPaymentMethod,
   ProtectionPaymentSourceAccount,
 } from "@/src/types";
-import { getPaymentSourcesSavings } from "@/services/payments.service";
+import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
 import { getProductsProtection } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 import { mapSavingsToSourceAccount, mapProtectionToPaymentProduct } from "@/lib/mappers/payments.mapper";
 import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
+import type { PaymentProduct } from "@/types/api/payments";
 import type { ObligacionSourceAccount } from "@/src/types/obligacion-payment";
 
 const initialFormData: ProtectionPaymentDetailsFormData = {
@@ -45,6 +46,7 @@ export default function ProteccionDetallePage() {
   // Store raw API data
   const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
   const [protectionApiData, setProtectionApiData] = useState<ProtectionAccountResponse[]>([]);
+  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
 
   useEffect(() => {
     setWelcomeBar({
@@ -64,13 +66,15 @@ export default function ProteccionDetallePage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, protectionRes] = await Promise.all([
+      const [savingsRes, protectionRes, paymentProductsRes] = await Promise.all([
         getPaymentSourcesSavings(params),
         getProductsProtection(params),
+        getPaymentProducts(params),
       ]);
 
       setSavingsApiData(savingsRes);
       setProtectionApiData(protectionRes);
+      setPaymentProductsData(paymentProductsRes);
 
       // Map savings → ProtectionPaymentSourceAccount (same shape as ObligacionSourceAccount)
       const mappedAccounts: ProtectionPaymentSourceAccount[] = savingsRes.map((s) => {
@@ -181,6 +185,14 @@ export default function ProteccionDetallePage() {
       );
       if (protectionApi) {
         sessionStorage.setItem("protectionTargetProductApi", JSON.stringify(protectionApi));
+      }
+
+      // Cross-reference payment products to find tipoProducto for the target
+      const matchingProduct = paymentProductsData.find(
+        (p) => String(p.idCuenta) === String(selectedProduct.id)
+      );
+      if (matchingProduct) {
+        sessionStorage.setItem("protectionTargetTipoProducto", matchingProduct.tipoProducto);
       }
     }
 

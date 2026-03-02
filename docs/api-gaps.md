@@ -99,12 +99,23 @@ These endpoints had conflicting auth requirements between sources. Resolved on 2
 
 **Action:** Test whether `indPag` is truly required or silently ignored. The mobile app works without it for most endpoints. **For web: omit unless pagination is needed.**
 
-### 3.2 `/payment/internal/createTransaction` - `cuentas` array
+### 3.2 `/payment/internal/createTransaction` - `cuentas` array (RESOLVED)
 
 - **Mobile:** Sends `cuentas` array (supports multi-product unified payment)
 - **Backend:** Does not document `cuentas` field
 
-**Action:** The `cuentas` array is needed for unified payment. Include it. Verify field structure matches mobile implementation.
+**Resolution:** The `cuentas` array uses `tipoProducto` (not `codigoProductoCobis`) as the product identifier. Correct structure:
+
+```typescript
+cuentas: [{
+  tipoProducto: string,  // e.g. "AP", "CR", "PR"
+  idCuenta: string,
+  numeroCuenta: string,
+  vlrPago: number,
+}]
+```
+
+The `tipoProducto` value is obtained from `/payment/products` by cross-referencing `idCuenta`.
 
 ---
 

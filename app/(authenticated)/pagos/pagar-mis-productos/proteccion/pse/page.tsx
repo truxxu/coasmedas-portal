@@ -28,6 +28,7 @@ export default function ProteccionPSEPage() {
       }
       const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
       const targetProductStr = sessionStorage.getItem("protectionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("protectionTargetTipoProducto") || '';
       if (!confirmationStr || !targetProductStr) throw new Error("Datos de pago no encontrados");
 
       const confirmation = JSON.parse(confirmationStr);
@@ -47,7 +48,7 @@ export default function ProteccionPSEPage() {
           mobile: user.mobile ?? "",
         },
         merchantComment: "Pago de Proteccion",
-        cuentas: [buildProtectionTarget(targetProduct, vlrPagoTotal)],
+        cuentas: [buildProtectionTarget(targetProduct, vlrPagoTotal, tipoProducto)],
       });
       return result.paymentUrl;
     },

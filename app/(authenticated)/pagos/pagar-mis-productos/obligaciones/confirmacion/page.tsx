@@ -103,12 +103,13 @@ export default function ConfirmacionPage() {
       // Pre-build transaction request
       const sourceAccountStr = sessionStorage.getItem("obligacionSourceAccountApi");
       const targetProductStr = sessionStorage.getItem("obligacionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("obligacionTargetTipoProducto") || '';
       if (sourceAccountStr && targetProductStr) {
         const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
         const targetProduct: CreditAccountResponse = JSON.parse(targetProductStr);
         const txRequest = {
           origen: buildAccountReference(sourceAccount),
-          cuentas: [buildCreditTarget(targetProduct, confirmationData.valorAPagar)],
+          cuentas: [buildCreditTarget(targetProduct, confirmationData.valorAPagar, tipoProducto)],
           vlrPagoTotal: confirmationData.valorAPagar,
         };
         sessionStorage.setItem("obligacionTransactionRequest", JSON.stringify(txRequest));

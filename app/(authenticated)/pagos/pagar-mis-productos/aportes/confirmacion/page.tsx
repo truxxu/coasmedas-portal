@@ -103,12 +103,13 @@ export default function ConfirmacionAportesPage() {
       // Pre-build transaction request for the verification step
       const sourceAccountStr = sessionStorage.getItem('aportesSourceAccount');
       const contributionsStr = sessionStorage.getItem('aportesContributions');
+      const tipoProducto = sessionStorage.getItem('aportesTargetTipoProducto') || '';
       if (sourceAccountStr && contributionsStr) {
         const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
         const contributions: ContributionsResponse = JSON.parse(contributionsStr);
         const txRequest = {
           origen: buildAccountReference(sourceAccount),
-          cuentas: [buildAportesTarget(contributions, confirmationData.valorAPagar)],
+          cuentas: [buildAportesTarget(contributions, confirmationData.valorAPagar, tipoProducto)],
           vlrPagoTotal: confirmationData.valorAPagar,
         };
         sessionStorage.setItem('aportesTransactionRequest', JSON.stringify(txRequest));

@@ -257,12 +257,12 @@ export function buildAccountReference(account: SavingsAccountResponse): AccountR
 /**
  * Build a PaymentAccountTarget for aportes (contributions).
  */
-export function buildAportesTarget(contributions: ContributionsResponse, amount: number): PaymentAccountTarget {
+export function buildAportesTarget(contributions: ContributionsResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
   const a = contributions.aportes;
   return {
     idCuenta: normalizeString(a.idCuentaAportes),
     numeroCuenta: a.numeroCuentaAportes,
-    codigoProductoCobis: normalizeString(a.codigoProductoCobisAportes),
+    tipoProducto,
     vlrPago: amount,
   };
 }
@@ -270,11 +270,11 @@ export function buildAportesTarget(contributions: ContributionsResponse, amount:
 /**
  * Build a PaymentAccountTarget from a CreditAccountResponse.
  */
-export function buildCreditTarget(credit: CreditAccountResponse, amount: number): PaymentAccountTarget {
+export function buildCreditTarget(credit: CreditAccountResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
   return {
     idCuenta: credit.idCuenta,
     numeroCuenta: credit.numeroCuenta,
-    codigoProductoCobis: credit.codigoProductoCobis,
+    tipoProducto,
     vlrPago: amount,
   };
 }
@@ -282,11 +282,11 @@ export function buildCreditTarget(credit: CreditAccountResponse, amount: number)
 /**
  * Build a PaymentAccountTarget from a ProtectionAccountResponse.
  */
-export function buildProtectionTarget(protection: ProtectionAccountResponse, amount: number): PaymentAccountTarget {
+export function buildProtectionTarget(protection: ProtectionAccountResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
   return {
     idCuenta: protection.idCuenta,
     numeroCuenta: protection.numeroCuenta,
-    codigoProductoCobis: protection.codigoProductoCobis,
+    tipoProducto,
     vlrPago: amount,
   };
 }
@@ -298,7 +298,7 @@ export function buildUnifiedTargets(products: PaymentProduct[]): PaymentAccountT
   return products.map((p) => ({
     idCuenta: p.idCuenta,
     numeroCuenta: p.numeroCuenta,
-    codigoProductoCobis: '', // Will be populated from product detail if available
+    tipoProducto: p.tipoProducto,
     vlrPago: normalizeMoney(p.pagoMinimo),
   }));
 }

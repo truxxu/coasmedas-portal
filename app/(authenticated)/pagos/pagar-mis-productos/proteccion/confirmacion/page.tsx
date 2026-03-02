@@ -91,12 +91,13 @@ export default function ProteccionConfirmacionPage() {
       // Pre-build transaction request
       const sourceAccountStr = sessionStorage.getItem("protectionSourceAccountApi");
       const targetProductStr = sessionStorage.getItem("protectionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("protectionTargetTipoProducto") || '';
       if (sourceAccountStr && targetProductStr) {
         const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
         const targetProduct: ProtectionAccountResponse = JSON.parse(targetProductStr);
         const txRequest = {
           origen: buildAccountReference(sourceAccount),
-          cuentas: [buildProtectionTarget(targetProduct, confirmation.amountToPay)],
+          cuentas: [buildProtectionTarget(targetProduct, confirmation.amountToPay, tipoProducto)],
           vlrPagoTotal: confirmation.amountToPay,
         };
         sessionStorage.setItem("protectionTransactionRequest", JSON.stringify(txRequest));

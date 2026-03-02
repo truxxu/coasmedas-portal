@@ -40,7 +40,7 @@ export interface PaymentProduct {
 export interface PaymentAccountTarget {
   idCuenta: string;
   numeroCuenta: string;
-  codigoProductoCobis: string;
+  tipoProducto: string;
   vlrPago: number;
 }
 

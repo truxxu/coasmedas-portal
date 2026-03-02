@@ -30,6 +30,7 @@ export default function PSEPage() {
       }
       const valor = sessionStorage.getItem("obligacionPaymentValor");
       const targetProductStr = sessionStorage.getItem("obligacionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("obligacionTargetTipoProducto") || '';
       if (!valor || !targetProductStr) throw new Error("Datos de pago no encontrados");
 
       const targetProduct: CreditAccountResponse = JSON.parse(targetProductStr);
@@ -48,7 +49,7 @@ export default function PSEPage() {
           mobile: user.mobile ?? "",
         },
         merchantComment: "Pago de Obligaciones",
-        cuentas: [buildCreditTarget(targetProduct, vlrPagoTotal)],
+        cuentas: [buildCreditTarget(targetProduct, vlrPagoTotal, tipoProducto)],
       });
       return result.paymentUrl;
     },

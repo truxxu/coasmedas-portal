@@ -12,11 +12,12 @@ import {
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
 } from "@/src/mocks/mockObligacionPaymentData";
-import { getPaymentSourcesSavings } from "@/services/payments.service";
+import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
 import { getProductsCredits } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 import { mapSavingsToSourceAccount, mapCreditToObligacionPaymentProduct } from "@/lib/mappers/payments.mapper";
 import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
+import type { PaymentProduct } from "@/types/api/payments";
 
 export default function PagoObligacionesPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
@@ -39,6 +40,7 @@ export default function PagoObligacionesPage() {
   // Store raw API data for transaction request building
   const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
   const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
+  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
 
   useEffect(() => {
     setWelcomeBar({
@@ -58,13 +60,15 @@ export default function PagoObligacionesPage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, creditsRes] = await Promise.all([
+      const [savingsRes, creditsRes, paymentProductsRes] = await Promise.all([
         getPaymentSourcesSavings(params),
         getProductsCredits(params),
+        getPaymentProducts(params),
       ]);
 
       setSavingsApiData(savingsRes);
       setCreditsApiData(creditsRes);
+      setPaymentProductsData(paymentProductsRes);
 
       const mappedAccounts = savingsRes.map(mapSavingsToSourceAccount);
       setSourceAccounts(mappedAccounts);
@@ -194,6 +198,14 @@ export default function PagoObligacionesPage() {
     const selectedCredit = creditsApiData.find((c) => String(c.idCuenta) === String(selectedProductId));
     if (selectedCredit) {
       sessionStorage.setItem("obligacionTargetProductApi", JSON.stringify(selectedCredit));
+    }
+
+    // Cross-reference payment products to find tipoProducto for the target
+    const matchingProduct = paymentProductsData.find(
+      (p) => String(p.idCuenta) === String(selectedProductId)
+    );
+    if (matchingProduct) {
+      sessionStorage.setItem("obligacionTargetTipoProducto", matchingProduct.tipoProducto);
     }
 
     router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
