@@ -15,6 +15,7 @@ import type {
 } from "@/src/types";
 import { maskNumber } from "@/src/utils";
 import { buildAccountReference, buildProtectionTarget } from "@/lib/mappers/payments.mapper";
+import { sendTransactionOtp } from "@/services/auth.service";
 import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
 
 export default function ProteccionConfirmacionPage() {
@@ -110,6 +111,10 @@ export default function ProteccionConfirmacionPage() {
           router.push("/pagos/pagar-mis-productos/proteccion");
           setIsLoading(false);
           return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
         }
         router.push("/pagos/pagar-mis-productos/proteccion/codigo-sms");
       }

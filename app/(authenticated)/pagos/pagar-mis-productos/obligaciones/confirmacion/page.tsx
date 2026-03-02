@@ -18,6 +18,7 @@ import {
 } from "@/src/types/obligacion-payment";
 import { maskNumber } from "@/src/utils";
 import { buildAccountReference, buildCreditTarget } from "@/lib/mappers/payments.mapper";
+import { sendTransactionOtp } from "@/services/auth.service";
 import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
 
 export default function ConfirmacionPage() {
@@ -122,6 +123,10 @@ export default function ConfirmacionPage() {
           router.push("/pagos/pagar-mis-productos/obligaciones");
           setIsLoading(false);
           return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
         }
         router.push("/pagos/pagar-mis-productos/obligaciones/codigo-sms");
       }

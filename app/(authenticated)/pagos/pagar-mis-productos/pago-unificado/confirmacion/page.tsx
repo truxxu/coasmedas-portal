@@ -11,6 +11,7 @@ import { PaymentConfirmationData, PendingPayments } from "@/src/types/payment";
 import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 import { maskNumber } from "@/src/utils";
 import { buildAccountReference, buildUnifiedTargets } from "@/lib/mappers/payments.mapper";
+import { sendTransactionOtp } from "@/services/auth.service";
 import type { SavingsAccountResponse } from "@/types/api/products";
 import type { PaymentProduct } from "@/types/api/payments";
 
@@ -81,26 +82,26 @@ export default function ConfirmacionPage() {
     }
   }, [confirmationData, router]);
 
-  const handleConfirm = () => {
-    if (confirmationData) {
-      sessionStorage.setItem(
-        "paymentConfirmationData",
-        JSON.stringify(confirmationData)
-      );
+  const handleConfirm = async () => {
+    if (!confirmationData) return;
 
-      // Pre-build transaction request
-      const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
-      const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
-      if (sourceAccountStr && productsStr) {
-        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
-        const products: PaymentProduct[] = JSON.parse(productsStr);
-        const txRequest = {
-          origen: buildAccountReference(sourceAccount),
-          cuentas: buildUnifiedTargets(products),
-          vlrPagoTotal: confirmationData.totalAmount,
-        };
-        sessionStorage.setItem("unifiedTransactionRequest", JSON.stringify(txRequest));
-      }
+    sessionStorage.setItem(
+      "paymentConfirmationData",
+      JSON.stringify(confirmationData)
+    );
+
+    // Pre-build transaction request
+    const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
+    const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
+    if (sourceAccountStr && productsStr) {
+      const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
+      const products: PaymentProduct[] = JSON.parse(productsStr);
+      const txRequest = {
+        origen: buildAccountReference(sourceAccount),
+        cuentas: buildUnifiedTargets(products),
+        vlrPagoTotal: confirmationData.totalAmount,
+      };
+      sessionStorage.setItem("unifiedTransactionRequest", JSON.stringify(txRequest));
     }
 
     const paymentMethod = sessionStorage.getItem("paymentMethod");
@@ -110,6 +111,10 @@ export default function ConfirmacionPage() {
       if (!sourceAccountStr || !productsStr) {
         router.push("/pagos/pagar-mis-productos/pago-unificado");
         return;
+      }
+      const { documentType, documentNumber } = user ?? {};
+      if (documentType && documentNumber) {
+        await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
       }
       router.push("/pagos/pagar-mis-productos/pago-unificado/verificacion");
     }

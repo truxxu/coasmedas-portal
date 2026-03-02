@@ -18,6 +18,7 @@ import {
 } from '@/src/types/aportes-payment';
 import { maskNumber } from '@/src/utils';
 import { buildAccountReference, buildAportesTarget } from '@/lib/mappers/payments.mapper';
+import { sendTransactionOtp } from '@/services/auth.service';
 import type { SavingsAccountResponse, ContributionsResponse } from '@/types/api/products';
 
 export default function ConfirmacionAportesPage() {
@@ -93,7 +94,7 @@ export default function ConfirmacionAportesPage() {
     }
   }, [confirmationData, router]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (confirmationData) {
       sessionStorage.setItem(
         'aportesPaymentConfirmation',
@@ -122,6 +123,10 @@ export default function ConfirmacionAportesPage() {
         if (!sourceAccountStr || !contributionsStr) {
           router.push('/pagos/pagar-mis-productos/aportes');
           return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
         }
         router.push('/pagos/pagar-mis-productos/aportes/verificacion');
       }
