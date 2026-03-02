@@ -144,7 +144,7 @@ export default function PagoAportesPage() {
 
     // Store raw API data for transaction request building
     const selectedSavingsAccount = savingsApiData.find(
-      (a) => a.idCuenta === selectedAccountId,
+      (a) => String(a.idCuenta) === String(selectedAccountId),
     );
     if (selectedSavingsAccount) {
       sessionStorage.setItem(

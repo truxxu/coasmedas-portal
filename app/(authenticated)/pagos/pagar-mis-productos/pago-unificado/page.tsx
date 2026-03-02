@@ -109,7 +109,7 @@ export default function PagoUnificadoPage() {
 
     // Store raw API data for transaction building
     const selectedSavings = savingsApiData.find(
-      (a) => a.idCuenta === selectedAccountId
+      (a) => String(a.idCuenta) === String(selectedAccountId)
     );
     if (selectedSavings) {
       sessionStorage.setItem("unifiedSourceAccountApi", JSON.stringify(selectedSavings));

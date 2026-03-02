@@ -118,6 +118,10 @@ export default function ConfirmacionAportesPage() {
       if (confirmationData.paymentMethod === 'pse') {
         router.push('/pagos/pagar-mis-productos/aportes/pse-redirect');
       } else {
+        if (!sourceAccountStr || !contributionsStr) {
+          router.push('/pagos/pagar-mis-productos/aportes');
+          return;
+        }
         router.push('/pagos/pagar-mis-productos/aportes/verificacion');
       }
     }

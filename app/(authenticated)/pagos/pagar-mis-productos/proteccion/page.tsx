@@ -170,14 +170,14 @@ export default function ProteccionDetallePage() {
 
     // Store raw API data for transaction building
     const selectedSavings = savingsApiData.find(
-      (a) => a.idCuenta === formData.sourceAccountId
+      (a) => String(a.idCuenta) === String(formData.sourceAccountId)
     );
     if (selectedSavings) {
       sessionStorage.setItem("protectionSourceAccountApi", JSON.stringify(selectedSavings));
     }
     if (selectedProduct) {
       const protectionApi = protectionApiData.find(
-        (p) => p.idCuenta === selectedProduct.id
+        (p) => String(p.idCuenta) === String(selectedProduct.id)
       );
       if (protectionApi) {
         sessionStorage.setItem("protectionTargetProductApi", JSON.stringify(protectionApi));

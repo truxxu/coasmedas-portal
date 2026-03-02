@@ -107,6 +107,10 @@ export default function ConfirmacionPage() {
     if (paymentMethod === "pse") {
       router.push("/pagos/pagar-mis-productos/pago-unificado/pse");
     } else {
+      if (!sourceAccountStr || !productsStr) {
+        router.push("/pagos/pagar-mis-productos/pago-unificado");
+        return;
+      }
       router.push("/pagos/pagar-mis-productos/pago-unificado/verificacion");
     }
   };

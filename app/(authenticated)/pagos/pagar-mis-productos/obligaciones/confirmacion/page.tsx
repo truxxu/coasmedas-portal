@@ -117,6 +117,11 @@ export default function ConfirmacionPage() {
       if (paymentMethod === "pse") {
         router.push("/pagos/pagar-mis-productos/obligaciones/pse");
       } else {
+        if (!sourceAccountStr || !targetProductStr) {
+          router.push("/pagos/pagar-mis-productos/obligaciones");
+          setIsLoading(false);
+          return;
+        }
         router.push("/pagos/pagar-mis-productos/obligaciones/codigo-sms");
       }
     } catch (error) {

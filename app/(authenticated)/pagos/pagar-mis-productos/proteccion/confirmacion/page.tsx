@@ -105,6 +105,11 @@ export default function ProteccionConfirmacionPage() {
       if (paymentMethod === "pse") {
         router.push("/pagos/pagar-mis-productos/proteccion/pse");
       } else {
+        if (!sourceAccountStr || !targetProductStr) {
+          router.push("/pagos/pagar-mis-productos/proteccion");
+          setIsLoading(false);
+          return;
+        }
         router.push("/pagos/pagar-mis-productos/proteccion/codigo-sms");
       }
     } catch (error) {

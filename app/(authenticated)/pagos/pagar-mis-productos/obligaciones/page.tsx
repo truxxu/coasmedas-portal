@@ -187,11 +187,11 @@ export default function PagoObligacionesPage() {
     sessionStorage.setItem("obligacionSourceAccountDisplay", sourceAccountDisplay);
 
     // Store raw API data for transaction request building
-    const selectedSavings = savingsApiData.find((a) => a.idCuenta === selectedAccountId);
+    const selectedSavings = savingsApiData.find((a) => String(a.idCuenta) === String(selectedAccountId));
     if (selectedSavings) {
       sessionStorage.setItem("obligacionSourceAccountApi", JSON.stringify(selectedSavings));
     }
-    const selectedCredit = creditsApiData.find((c) => c.idCuenta === selectedProductId);
+    const selectedCredit = creditsApiData.find((c) => String(c.idCuenta) === String(selectedProductId));
     if (selectedCredit) {
       sessionStorage.setItem("obligacionTargetProductApi", JSON.stringify(selectedCredit));
     }
