@@ -6,9 +6,8 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ObligacionConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import {
-  mockObligacionUserData,
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
 } from "@/src/mocks/mockObligacionPaymentData";
@@ -17,20 +16,26 @@ import {
   ObligacionPaymentProduct,
   ObligacionPaymentMethod,
 } from "@/src/types/obligacion-payment";
+import { maskNumber } from "@/src/utils";
+import { buildAccountReference, buildCreditTarget } from "@/lib/mappers/payments.mapper";
+import { sendTransactionOtp } from "@/services/auth.service";
+import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
 
 export default function ConfirmacionPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
+  const { user } = useUserContext();
+
   const [paymentMethod] = useState<ObligacionPaymentMethod>(() => {
-    if (typeof window === 'undefined') return "pse";
+    if (typeof window === "undefined") return "pse";
     const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
     return method || "pse";
   });
 
   const [confirmationData] =
     useState<ObligacionConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+      if (typeof window === "undefined") return null;
 
       const productStr = sessionStorage.getItem("obligacionPaymentProduct");
       const valor = sessionStorage.getItem("obligacionPaymentValor");
@@ -43,13 +48,18 @@ export default function ConfirmacionPage() {
 
       const product: ObligacionPaymentProduct = JSON.parse(productStr);
 
-      const productoADebitar = method === 'pse'
+      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const maskedDoc = user
+        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+        : "";
+
+      const productoADebitar = method === "pse"
         ? "PSE (Pagos con otras entidades)"
-        : (sourceAccountDisplay?.split(' - ')[0] || 'Cuenta de Ahorros');
+        : (sourceAccountDisplay?.split(" - ")[0] || "Cuenta de Ahorros");
 
       return {
-        titular: mockObligacionUserData.name,
-        documento: mockObligacionUserData.document,
+        titular: userName,
+        documento: maskedDoc,
         productoAPagar: product.name,
         numeroProducto: product.productNumber,
         productoADebitar,
@@ -74,7 +84,6 @@ export default function ConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if data is missing
   useEffect(() => {
     if (!confirmationData) {
       router.push("/pagos/pagar-mis-productos/obligaciones");
@@ -87,22 +96,42 @@ export default function ConfirmacionPage() {
     setIsLoading(true);
 
     try {
-      // Store confirmation data for result page
       sessionStorage.setItem(
         "obligacionPaymentConfirmation",
         JSON.stringify(confirmationData)
       );
 
-      if (paymentMethod === 'pse') {
-        // PSE flow: redirect to PSE loading page (then external site)
+      // Pre-build transaction request
+      const sourceAccountStr = sessionStorage.getItem("obligacionSourceAccountApi");
+      const targetProductStr = sessionStorage.getItem("obligacionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("obligacionTargetTipoProducto") || '';
+      if (sourceAccountStr && targetProductStr) {
+        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
+        const targetProduct: CreditAccountResponse = JSON.parse(targetProductStr);
+        const txRequest = {
+          origen: buildAccountReference(sourceAccount),
+          cuentas: [buildCreditTarget(targetProduct, confirmationData.valorAPagar, tipoProducto)],
+          vlrPagoTotal: confirmationData.valorAPagar,
+        };
+        sessionStorage.setItem("obligacionTransactionRequest", JSON.stringify(txRequest));
+      }
+
+      if (paymentMethod === "pse") {
         router.push("/pagos/pagar-mis-productos/obligaciones/pse");
       } else {
-        // Account flow: simulate SMS send delay, then go to code input
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (!sourceAccountStr || !targetProductStr) {
+          router.push("/pagos/pagar-mis-productos/obligaciones");
+          setIsLoading(false);
+          return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+        }
         router.push("/pagos/pagar-mis-productos/obligaciones/codigo-sms");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       setIsLoading(false);
     }
   };
@@ -119,8 +148,7 @@ export default function ConfirmacionPage() {
     );
   }
 
-  // Determine which steps to show based on payment method
-  const currentSteps = paymentMethod === 'pse'
+  const currentSteps = paymentMethod === "pse"
     ? OBLIGACION_PAYMENT_STEPS
     : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
 

@@ -13,7 +13,7 @@ export interface PSERedirectConfig {
   sessionKey: string;
   /** Path to redirect if session is invalid */
   fallbackPath: string;
-  /** Path to redirect on completion */
+  /** Path to redirect on completion (used by mock flow; real flow redirects externally) */
   successPath: string;
   /**
    * Phases to show during the PSE flow.
@@ -22,6 +22,10 @@ export interface PSERedirectConfig {
   phases?: PSEPhase[];
   /** Optional callback before redirecting to success path */
   onBeforeRedirect?: () => void;
+  /** Async handler that calls the API and returns an external redirect URL */
+  onCreateTransaction?: () => Promise<string>;
+  /** Path to redirect on API error (typically the result page with error state) */
+  errorPath?: string;
 }
 
 const DEFAULT_PHASES: PSEPhase[] = [
@@ -55,14 +59,36 @@ export function usePSERedirect(config: PSERedirectConfig): PSERedirectState {
     if (!isSessionValid) return;
 
     const runPhases = async () => {
-      for (let i = 0; i < phases.length; i++) {
-        setCurrentPhase(i);
-        await new Promise((resolve) => setTimeout(resolve, phases[i].duration));
-      }
+      if (config.onCreateTransaction) {
+        // Real API flow: show first phase, then call API
+        setCurrentPhase(0);
+        await new Promise((resolve) => setTimeout(resolve, phases[0]?.duration ?? 2000));
 
-      // All phases complete, trigger callback and redirect
-      config.onBeforeRedirect?.();
-      router.push(config.successPath);
+        try {
+          const paymentUrl = await config.onCreateTransaction();
+          config.onBeforeRedirect?.();
+          window.location.href = paymentUrl;
+        } catch (err) {
+          console.error("PSE transaction error:", err);
+          // Store error state for result page
+          const errorMessage =
+            err instanceof Error ? err.message : "Error al conectar con PSE";
+          sessionStorage.setItem(
+            "pseTransactionError",
+            JSON.stringify({ error: true, message: errorMessage })
+          );
+          router.push(config.errorPath ?? config.successPath);
+        }
+      } else {
+        // Legacy mock flow: run all phases, then redirect internally
+        for (let i = 0; i < phases.length; i++) {
+          setCurrentPhase(i);
+          await new Promise((resolve) => setTimeout(resolve, phases[i].duration));
+        }
+
+        config.onBeforeRedirect?.();
+        router.push(config.successPath);
+      }
     };
 
     runPhases();

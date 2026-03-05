@@ -1,22 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ProtectionPaymentDetailsCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
-import {
-  mockProtectionSourceAccounts,
-  mockProtectionPaymentProducts,
-  PROTECTION_PAYMENT_STEPS,
-} from "@/src/mocks";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { PROTECTION_PAYMENT_STEPS } from "@/src/mocks";
 import type {
   ProtectionPaymentProduct,
   ProtectionPaymentDetailsFormData,
   ProtectionPaymentMethod,
+  ProtectionPaymentSourceAccount,
 } from "@/src/types";
+import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
+import { getProductsProtection } from "@/services/products.service";
+import { isAuthError } from "@/lib/api/errors";
+import { mapSavingsToSourceAccount, mapProtectionToPaymentProduct } from "@/lib/mappers/payments.mapper";
+import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
+import type { PaymentProduct } from "@/types/api/payments";
+import type { ObligacionSourceAccount } from "@/src/types/obligacion-payment";
 
 const initialFormData: ProtectionPaymentDetailsFormData = {
   sourceAccountId: "",
@@ -29,18 +33,21 @@ export default function ProteccionDetallePage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  const { user } = useUserContext();
 
-  const [formData, setFormData] =
-    useState<ProtectionPaymentDetailsFormData>(initialFormData);
-  const [selectedProduct, setSelectedProduct] =
-    useState<ProtectionPaymentProduct | null>(null);
-  const [errors, setErrors] = useState<{
-    sourceAccount?: string;
-    product?: string;
-  }>({});
-  const [, setIsLoading] = useState(false);
+  const [sourceAccounts, setSourceAccounts] = useState<ProtectionPaymentSourceAccount[]>([]);
+  const [products, setProducts] = useState<ProtectionPaymentProduct[]>([]);
+  const [formData, setFormData] = useState<ProtectionPaymentDetailsFormData>(initialFormData);
+  const [selectedProduct, setSelectedProduct] = useState<ProtectionPaymentProduct | null>(null);
+  const [errors, setErrors] = useState<{ sourceAccount?: string; product?: string }>({});
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  // Configure WelcomeBar on mount, clear on unmount
+  // Store raw API data
+  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
+  const [protectionApiData, setProtectionApiData] = useState<ProtectionAccountResponse[]>([]);
+  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
+
   useEffect(() => {
     setWelcomeBar({
       title: "Pago de Proteccion",
@@ -49,14 +56,58 @@ export default function ProteccionDetallePage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  const { documentType, documentNumber } = user ?? {};
+
+  const fetchData = useCallback(async () => {
+    if (!documentType || !documentNumber) return;
+
+    try {
+      setLoading(true);
+      setLoadError(null);
+
+      const params = { documentType, documentNumber };
+      const [savingsRes, protectionRes, paymentProductsRes] = await Promise.all([
+        getPaymentSourcesSavings(params),
+        getProductsProtection(params),
+        getPaymentProducts(params),
+      ]);
+
+      setSavingsApiData(savingsRes);
+      setProtectionApiData(protectionRes);
+      setPaymentProductsData(paymentProductsRes);
+
+      // Map savings → ProtectionPaymentSourceAccount (same shape as ObligacionSourceAccount)
+      const mappedAccounts: ProtectionPaymentSourceAccount[] = savingsRes.map((s) => {
+        const mapped: ObligacionSourceAccount = mapSavingsToSourceAccount(s);
+        return mapped;
+      });
+      setSourceAccounts(mappedAccounts);
+
+      const mappedProducts = protectionRes.map(mapProtectionToPaymentProduct);
+      setProducts(mappedProducts);
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push("/login");
+        return;
+      }
+      setLoadError("No fue posible cargar la informacion. Intente nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  }, [documentType, documentNumber, router]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const allSourceAccounts = sourceAccounts;
+
   const handleAccountChange = (
     accountId: string,
     paymentMethod: ProtectionPaymentMethod
   ) => {
     const isPSE = paymentMethod === "pse";
-    const account = mockProtectionSourceAccounts.find(
-      (a) => a.id === accountId
-    );
+    const account = allSourceAccounts.find((a) => a.id === accountId);
 
     setFormData((prev) => ({
       ...prev,
@@ -88,13 +139,12 @@ export default function ProteccionDetallePage() {
       newErrors.product = "Por favor selecciona un producto de proteccion";
     }
 
-    // Check if balance is sufficient (only for account payments, not PSE)
     if (
       formData.sourceAccountId &&
       selectedProduct &&
       formData.paymentMethod === "account"
     ) {
-      const selectedAccount = mockProtectionSourceAccounts.find(
+      const selectedAccount = allSourceAccounts.find(
         (a) => a.id === formData.sourceAccountId
       );
       if (
@@ -113,9 +163,6 @@ export default function ProteccionDetallePage() {
   const handleContinue = () => {
     if (!validateForm()) return;
 
-    setIsLoading(true);
-
-    // Store form data in sessionStorage
     const dataToStore: ProtectionPaymentDetailsFormData = {
       ...formData,
       selectedProduct,
@@ -125,6 +172,30 @@ export default function ProteccionDetallePage() {
       JSON.stringify(dataToStore)
     );
 
+    // Store raw API data for transaction building
+    const selectedSavings = savingsApiData.find(
+      (a) => String(a.idCuenta) === String(formData.sourceAccountId)
+    );
+    if (selectedSavings) {
+      sessionStorage.setItem("protectionSourceAccountApi", JSON.stringify(selectedSavings));
+    }
+    if (selectedProduct) {
+      const protectionApi = protectionApiData.find(
+        (p) => String(p.idCuenta) === String(selectedProduct.id)
+      );
+      if (protectionApi) {
+        sessionStorage.setItem("protectionTargetProductApi", JSON.stringify(protectionApi));
+      }
+
+      // Cross-reference payment products to find tipoProducto for the target
+      const matchingProduct = paymentProductsData.find(
+        (p) => String(p.idCuenta) === String(selectedProduct.id)
+      );
+      if (matchingProduct) {
+        sessionStorage.setItem("protectionTargetTipoProducto", matchingProduct.tipoProducto);
+      }
+    }
+
     router.push("/pagos/pagar-mis-productos/proteccion/confirmacion");
   };
 
@@ -132,22 +203,49 @@ export default function ProteccionDetallePage() {
     router.push("/pagos/pagar-mis-productos");
   };
 
+  if (loadError) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <div className="bg-white rounded-2xl p-6 text-center">
+          <p className="text-red-600 mb-4">{loadError}</p>
+          <button
+            onClick={fetchData}
+            className="text-sm font-medium text-white bg-brand-navy px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
+          <div className="h-6 w-48 bg-gray-200 rounded" />
+          <div className="h-32 w-full bg-gray-200 rounded" />
+          <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
       </div>
 
-      {/* Stepper */}
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={1} steps={PROTECTION_PAYMENT_STEPS} />
       </div>
 
-      {/* Details Card */}
       <ProtectionPaymentDetailsCard
-        sourceAccounts={mockProtectionSourceAccounts}
-        products={mockProtectionPaymentProducts}
+        sourceAccounts={allSourceAccounts}
+        products={products}
         selectedAccountId={formData.sourceAccountId}
         selectedProduct={selectedProduct}
         onAccountChange={handleAccountChange}
@@ -156,7 +254,6 @@ export default function ProteccionDetallePage() {
         hideBalances={hideBalances}
       />
 
-      {/* Footer Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}

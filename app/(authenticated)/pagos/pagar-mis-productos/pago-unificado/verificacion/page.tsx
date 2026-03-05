@@ -1,31 +1,57 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { Button } from "@/src/atoms";
-import { useWelcomeBar } from "@/src/contexts";
-import { PAYMENT_STEPS, MOCK_VALID_CODE } from "@/src/mocks/mockPaymentData";
-
-const RESEND_COOLDOWN = 60; // seconds
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { useSMSCodeVerification } from "@/src/hooks";
+import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
+import { createPaymentTransaction } from "@/services/payments.service";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { mapResultToTransaction } from "@/lib/mappers/payments.mapper";
 
 export default function VerificacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
 
-  const [code, setCode] = useState("");
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasRequiredData] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return !!sessionStorage.getItem("paymentConfirmationData");
+  const {
+    code,
+    error,
+    isResendDisabled,
+    resendCountdown,
+    isLoading,
+    handleCodeChange,
+    handleResendCode,
+    handleSubmit,
+  } = useSMSCodeVerification({
+    sessionKey: "paymentConfirmationData",
+    fallbackPath: "/pagos/pagar-mis-productos/pago-unificado",
+    successPath: "/pagos/pagar-mis-productos/pago-unificado/resultado",
+    onSubmit: async (otp) => {
+      if (!documentType || !documentNumber) throw new Error("Sesion no valida");
+      const txRequestStr = sessionStorage.getItem("unifiedTransactionRequest");
+      if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
+      const txRequest = JSON.parse(txRequestStr);
+      const result = await createPaymentTransaction({
+        documentType,
+        documentNumber,
+        otp,
+        ...txRequest,
+      });
+      // Map and store result
+      const mappedResult = mapResultToTransaction(result);
+      sessionStorage.setItem("unifiedPaymentResult", JSON.stringify(mappedResult));
+    },
+    onResend: async () => {
+      if (!documentType || !documentNumber) return;
+      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+    },
   });
-  const [resendDisabled, setResendDisabled] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(0);
 
-  // Configure WelcomeBar on mount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago Unificado",
@@ -34,94 +60,9 @@ export default function VerificacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if required data is missing
-  useEffect(() => {
-    if (!hasRequiredData) {
-      router.push("/pagos/pagar-mis-productos/pago-unificado");
-    }
-  }, [hasRequiredData, router]);
-
-  // Resend countdown timer
-  useEffect(() => {
-    if (resendCountdown > 0) {
-      const timer = setTimeout(() => {
-        setResendCountdown((prev) => {
-          const next = prev - 1;
-          if (next === 0) {
-            setResendDisabled(false);
-          }
-          return next;
-        });
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [resendCountdown]);
-
-  const handleCodeChange = useCallback((newCode: string) => {
-    setCode(newCode);
-    // Clear error when user starts typing
-    if (newCode.length > 0) {
-      setHasError(false);
-      setErrorMessage("");
-    }
-  }, []);
-
-  const handleResend = useCallback(() => {
-    if (resendDisabled) return;
-
-    // Start cooldown
-    setResendDisabled(true);
-    setResendCountdown(RESEND_COOLDOWN);
-
-    // Clear current code and errors
-    setCode("");
-    setHasError(false);
-    setErrorMessage("");
-
-    // In a real app, this would call an API to resend the code
-    console.log("Resending code...");
-  }, [resendDisabled]);
-
-  const handleSubmit = async () => {
-    // Validate code length
-    if (code.length !== 6) {
-      setHasError(true);
-      setErrorMessage("Por favor ingresa los 6 dígitos del código");
-      return;
-    }
-
-    setIsLoading(true);
-    setHasError(false);
-    setErrorMessage("");
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Validate code (mock validation)
-    if (code !== MOCK_VALID_CODE) {
-      setIsLoading(false);
-      setHasError(true);
-      setErrorMessage("El código ingresado es incorrecto. Intenta de nuevo.");
-      return;
-    }
-
-    // Code is valid, navigate to result page
-    // Store success status for result page
-    sessionStorage.setItem("paymentStatus", "success");
-    router.push("/pagos/pagar-mis-productos/pago-unificado/resultado");
-  };
-
   const handleBack = () => {
     router.push("/pagos/pagar-mis-productos/pago-unificado/confirmacion");
   };
-
-  if (!hasRequiredData) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-brand-gray-high">Cargando...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -136,11 +77,11 @@ export default function VerificacionPage() {
       <CodeInputCard
         code={code}
         onCodeChange={handleCodeChange}
-        hasError={hasError}
-        errorMessage={errorMessage}
-        onResend={handleResend}
-        resendDisabled={resendDisabled}
-        resendCountdown={resendCountdown}
+        hasError={!!error}
+        errorMessage={error}
+        onResend={handleResendCode}
+        resendDisabled={isResendDisabled}
+        resendCountdown={resendCountdown > 0 ? resendCountdown : undefined}
         disabled={isLoading}
       />
 

@@ -5,44 +5,19 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { useSMSCodeVerification } from "@/src/hooks";
-import {
-  PROTECTION_PAYMENT_STEPS,
-  MOCK_PROTECTION_VALID_CODE,
-  mockProtectionPaymentResult,
-  mockProtectionPaymentResultError,
-} from "@/src/mocks";
+import { PROTECTION_PAYMENT_STEPS } from "@/src/mocks";
+import { createPaymentTransaction } from "@/services/payments.service";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { mapResultToProtection } from "@/lib/mappers/payments.mapper";
+import type { ProtectionPaymentConfirmationData } from "@/src/types/protection-payment";
 
 export default function ProteccionCodigoSmsPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
-  const handleSuccess = () => {
-    const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
-    if (confirmationStr) {
-      const confirmation = JSON.parse(confirmationStr);
-      const result = {
-        ...mockProtectionPaymentResult,
-        creditLine: confirmation.productToPay,
-        productNumber: confirmation.policyNumber,
-        amountPaid: confirmation.amountToPay,
-      };
-      sessionStorage.setItem("protectionPaymentResult", JSON.stringify(result));
-    } else {
-      sessionStorage.setItem(
-        "protectionPaymentResult",
-        JSON.stringify(mockProtectionPaymentResult)
-      );
-    }
-  };
-
-  const handleError = () => {
-    sessionStorage.setItem(
-      "protectionPaymentResult",
-      JSON.stringify(mockProtectionPaymentResultError)
-    );
-  };
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
 
   const {
     code,
@@ -54,15 +29,37 @@ export default function ProteccionCodigoSmsPage() {
     handleResendCode,
     handleSubmit,
   } = useSMSCodeVerification({
-    validCode: MOCK_PROTECTION_VALID_CODE,
     sessionKey: "protectionPaymentConfirmation",
     fallbackPath: "/pagos/pagar-mis-productos/proteccion",
     successPath: "/pagos/pagar-mis-productos/proteccion/respuesta",
-    onSuccess: handleSuccess,
-    onError: handleError,
+    onSubmit: async (otp) => {
+      if (!documentType || !documentNumber) throw new Error("Sesion no valida");
+      const txRequestStr = sessionStorage.getItem("protectionTransactionRequest");
+      if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
+      const txRequest = JSON.parse(txRequestStr);
+      const result = await createPaymentTransaction({
+        documentType,
+        documentNumber,
+        otp,
+        ...txRequest,
+      });
+      // Map and store result
+      const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
+      const confirmation: ProtectionPaymentConfirmationData | null = confirmationStr
+        ? JSON.parse(confirmationStr)
+        : null;
+      const mappedResult = mapResultToProtection(result, {
+        creditLine: confirmation?.productToPay ?? "Proteccion",
+        productNumber: confirmation?.policyNumber ?? "",
+      });
+      sessionStorage.setItem("protectionPaymentResult", JSON.stringify(mappedResult));
+    },
+    onResend: async () => {
+      if (!documentType || !documentNumber) return;
+      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+    },
   });
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago de Proteccion",
@@ -77,14 +74,12 @@ export default function ProteccionCodigoSmsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
 
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={PROTECTION_PAYMENT_STEPS} />
       </div>
 
-      {/* SMS Code Input Card */}
       <CodeInputCard
         code={code}
         onCodeChange={handleCodeChange}
@@ -96,7 +91,6 @@ export default function ProteccionCodigoSmsPage() {
         disabled={isLoading}
       />
 
-      {/* Footer Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}

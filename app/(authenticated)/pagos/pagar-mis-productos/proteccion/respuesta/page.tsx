@@ -15,12 +15,39 @@ export default function ProteccionRespuestaPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [result] = useState<ProtectionPaymentResultData | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
+
+    // Try to read real API result first
     const resultStr = sessionStorage.getItem("protectionPaymentResult");
-    return resultStr ? JSON.parse(resultStr) as ProtectionPaymentResultData : null;
+    if (resultStr) {
+      try {
+        return JSON.parse(resultStr) as ProtectionPaymentResultData;
+      } catch {
+        // fall through
+      }
+    }
+
+    // Check for PSE error
+    const pseErrorStr = sessionStorage.getItem("pseTransactionError");
+    if (pseErrorStr) {
+      const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
+      const confirmation = confirmationStr ? JSON.parse(confirmationStr) : null;
+      return {
+        success: false,
+        creditLine: confirmation?.productToPay ?? "Proteccion",
+        productNumber: confirmation?.policyNumber ?? "",
+        amountPaid: 0,
+        transactionCost: 0,
+        transmissionDate: "",
+        transactionTime: "",
+        approvalNumber: "",
+        description: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+      };
+    }
+
+    return null;
   });
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago de Proteccion",
@@ -29,7 +56,6 @@ export default function ProteccionRespuestaPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if result data is missing
   useEffect(() => {
     if (!result) {
       router.push("/pagos/pagar-mis-productos/proteccion");
@@ -41,10 +67,13 @@ export default function ProteccionRespuestaPage() {
   };
 
   const handleFinish = () => {
-    // Clear all session data
     sessionStorage.removeItem("protectionPaymentDetails");
     sessionStorage.removeItem("protectionPaymentConfirmation");
     sessionStorage.removeItem("protectionPaymentResult");
+    sessionStorage.removeItem("protectionSourceAccountApi");
+    sessionStorage.removeItem("protectionTargetProductApi");
+    sessionStorage.removeItem("protectionTransactionRequest");
+    sessionStorage.removeItem("pseTransactionError");
 
     router.push("/pagos/pagar-mis-productos");
   };
@@ -59,17 +88,14 @@ export default function ProteccionRespuestaPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
       </div>
 
-      {/* Stepper - All steps completed */}
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={4} steps={PROTECTION_PAYMENT_STEPS} />
       </div>
 
-      {/* Result Card */}
       <ProtectionPaymentResultCard
         result={result}
         onPrint={handlePrint}

@@ -6,10 +6,8 @@ import { Breadcrumbs, Stepper } from '@/src/molecules';
 import { AportesConfirmationCard } from '@/src/organisms';
 import { Button } from '@/src/atoms';
 import { useUIContext } from '@/src/contexts/UIContext';
-import { useWelcomeBar } from '@/src/contexts';
+import { useWelcomeBar, useUserContext } from '@/src/contexts';
 import {
-  mockAportesPaymentAccounts,
-  mockAportesUserData,
   APORTES_PAYMENT_STEPS,
   PSE_PAYMENT_NAME,
 } from '@/src/mocks/mockAportesPaymentData';
@@ -18,11 +16,17 @@ import {
   AportesPaymentBreakdown,
   AportesPaymentMethod,
 } from '@/src/types/aportes-payment';
+import { maskNumber } from '@/src/utils';
+import { buildAccountReference, buildAportesTarget } from '@/lib/mappers/payments.mapper';
+import { sendTransactionOtp } from '@/services/auth.service';
+import type { SavingsAccountResponse, ContributionsResponse } from '@/types/api/products';
 
 export default function ConfirmacionAportesPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
+  const { user } = useUserContext();
+
   const [confirmationData] =
     useState<AportesConfirmationData | null>(() => {
       if (typeof window === 'undefined') return null;
@@ -38,11 +42,17 @@ export default function ConfirmacionAportesPage() {
 
       const breakdown: AportesPaymentBreakdown = JSON.parse(breakdownStr);
 
+      // Build user display
+      const userName = user?.fullName || `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim();
+      const maskedDoc = user
+        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+        : '';
+
       // For PSE, we don't need to find an account
       if (paymentMethod === 'pse') {
         return {
-          titular: mockAportesUserData.name,
-          documento: mockAportesUserData.document,
+          titular: userName,
+          documento: maskedDoc,
           productoAPagar: breakdown.planName,
           numeroProducto: breakdown.productNumber,
           productoADebitar: PSE_PAYMENT_NAME,
@@ -51,21 +61,18 @@ export default function ConfirmacionAportesPage() {
         };
       }
 
-      // For account payment, find the account
-      const account = mockAportesPaymentAccounts.find(
-        (acc) => acc.id === accountId
-      );
+      // For account payment, read the stored account
+      const sourceAccountStr = sessionStorage.getItem('aportesSourceAccount');
+      if (!sourceAccountStr) return null;
 
-      if (!account) {
-        return null;
-      }
+      const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
 
       return {
-        titular: mockAportesUserData.name,
-        documento: mockAportesUserData.document,
+        titular: userName,
+        documento: maskedDoc,
         productoAPagar: breakdown.planName,
         numeroProducto: breakdown.productNumber,
-        productoADebitar: account.name,
+        productoADebitar: sourceAccount.nombreProducto,
         valorAPagar: parseInt(valor, 10),
         paymentMethod: 'account',
       };
@@ -87,19 +94,40 @@ export default function ConfirmacionAportesPage() {
     }
   }, [confirmationData, router]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (confirmationData) {
       sessionStorage.setItem(
         'aportesPaymentConfirmation',
         JSON.stringify(confirmationData)
       );
 
+      // Pre-build transaction request for the verification step
+      const sourceAccountStr = sessionStorage.getItem('aportesSourceAccount');
+      const contributionsStr = sessionStorage.getItem('aportesContributions');
+      const tipoProducto = sessionStorage.getItem('aportesTargetTipoProducto') || '';
+      if (sourceAccountStr && contributionsStr) {
+        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
+        const contributions: ContributionsResponse = JSON.parse(contributionsStr);
+        const txRequest = {
+          origen: buildAccountReference(sourceAccount),
+          cuentas: [buildAportesTarget(contributions, confirmationData.valorAPagar, tipoProducto)],
+          vlrPagoTotal: confirmationData.valorAPagar,
+        };
+        sessionStorage.setItem('aportesTransactionRequest', JSON.stringify(txRequest));
+      }
+
       // Navigate based on payment method
       if (confirmationData.paymentMethod === 'pse') {
-        // PSE: Go to PSE redirect/loading page
         router.push('/pagos/pagar-mis-productos/aportes/pse-redirect');
       } else {
-        // Account: Go to SMS verification step
+        if (!sourceAccountStr || !contributionsStr) {
+          router.push('/pagos/pagar-mis-productos/aportes');
+          return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+        }
         router.push('/pagos/pagar-mis-productos/aportes/verificacion');
       }
     }
