@@ -6,22 +6,27 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ProtectionPaymentConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { PROTECTION_PAYMENT_STEPS } from "@/src/mocks";
 import type {
   ProtectionPaymentDetailsFormData,
   ProtectionPaymentConfirmationData,
   ProtectionPaymentMethod,
 } from "@/src/types";
+import { maskNumber } from "@/src/utils";
+import { buildAccountReference, buildProtectionTarget } from "@/lib/mappers/payments.mapper";
+import { sendTransactionOtp } from "@/services/auth.service";
+import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
 
 export default function ProteccionConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  const { user } = useUserContext();
 
   const [paymentMethod] =
     useState<ProtectionPaymentMethod>(() => {
-      if (typeof window === 'undefined') return "account";
+      if (typeof window === "undefined") return "account";
       const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
       if (!detailsStr) return "account";
       const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
@@ -30,12 +35,17 @@ export default function ProteccionConfirmacionPage() {
 
   const [confirmation] =
     useState<ProtectionPaymentConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+      if (typeof window === "undefined") return null;
 
       const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
       if (!detailsStr) return null;
 
       const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
+
+      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const maskedDoc = user
+        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+        : "";
 
       const isPSE = details.paymentMethod === "pse";
       const productToDebit = isPSE
@@ -43,8 +53,8 @@ export default function ProteccionConfirmacionPage() {
         : details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros";
 
       return {
-        holderName: "CAMILO ANDRES CRUZ",
-        holderDocument: "CC 1.***.***234",
+        holderName: userName,
+        holderDocument: maskedDoc,
         productToPay: details.selectedProduct?.title || "",
         policyNumber: details.selectedProduct?.productNumber || "",
         productToDebit,
@@ -54,7 +64,6 @@ export default function ProteccionConfirmacionPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago de Proteccion",
@@ -63,7 +72,6 @@ export default function ProteccionConfirmacionPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if data is missing
   useEffect(() => {
     if (!confirmation) {
       router.push("/pagos/pagar-mis-productos/proteccion");
@@ -76,18 +84,38 @@ export default function ProteccionConfirmacionPage() {
     setIsLoading(true);
 
     try {
-      // Store confirmation data for result page
       sessionStorage.setItem(
         "protectionPaymentConfirmation",
         JSON.stringify(confirmation)
       );
 
+      // Pre-build transaction request
+      const sourceAccountStr = sessionStorage.getItem("protectionSourceAccountApi");
+      const targetProductStr = sessionStorage.getItem("protectionTargetProductApi");
+      const tipoProducto = sessionStorage.getItem("protectionTargetTipoProducto") || '';
+      if (sourceAccountStr && targetProductStr) {
+        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
+        const targetProduct: ProtectionAccountResponse = JSON.parse(targetProductStr);
+        const txRequest = {
+          origen: buildAccountReference(sourceAccount),
+          cuentas: [buildProtectionTarget(targetProduct, confirmation.amountToPay, tipoProducto)],
+          vlrPagoTotal: confirmation.amountToPay,
+        };
+        sessionStorage.setItem("protectionTransactionRequest", JSON.stringify(txRequest));
+      }
+
       if (paymentMethod === "pse") {
-        // PSE flow: redirect to PSE loading page (then external site)
         router.push("/pagos/pagar-mis-productos/proteccion/pse");
       } else {
-        // Account flow: simulate SMS send delay, then go to code input
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (!sourceAccountStr || !targetProductStr) {
+          router.push("/pagos/pagar-mis-productos/proteccion");
+          setIsLoading(false);
+          return;
+        }
+        const { documentType, documentNumber } = user ?? {};
+        if (documentType && documentNumber) {
+          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+        }
         router.push("/pagos/pagar-mis-productos/proteccion/codigo-sms");
       }
     } catch (error) {
@@ -110,23 +138,19 @@ export default function ProteccionConfirmacionPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
       </div>
 
-      {/* Stepper */}
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={2} steps={PROTECTION_PAYMENT_STEPS} />
       </div>
 
-      {/* Confirmation Card */}
       <ProtectionPaymentConfirmationCard
         confirmation={confirmation}
         hideBalances={hideBalances}
       />
 
-      {/* Footer Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}

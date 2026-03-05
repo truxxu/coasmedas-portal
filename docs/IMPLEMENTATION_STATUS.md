@@ -38,11 +38,11 @@
 
 ## 5. Payments
 
-- [ ] POST `/payment/products` ✅ Auth: JWT
-- [ ] POST `/payment/internal/sources/savings` ✅ Auth: JWT
-- [ ] POST `/payment/internal/sources/credits` ✅ Auth: JWT
-- [ ] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP
-- [ ] POST `/payment/payzen/createTransaction` ✅ Auth: JWT
+- [x] POST `/payment/products` ✅ Auth: JWT
+- [x] POST `/payment/internal/sources/savings` ✅ Auth: JWT
+- [x] POST `/payment/internal/sources/credits` ✅ Auth: JWT
+- [x] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/payment/payzen/createTransaction` ✅ Auth: JWT
 
 ## 6. Internal Transfers
 
@@ -83,6 +83,38 @@
 - [ ] POST `/bre-b/txs/status` ✅ Auth: JWT
 - [ ] POST `/bre-b/txs/list` ✅ Auth: JWT
 
+## 10. Endpoints Not in Backend (UI Features Without API)
+
+> See [`docs/ui-features-without-api.md`](./ui-features-without-api.md) for full report.
+
+These endpoints are **needed by the portal UI** but do **not exist** in the backend API documentation.
+
+### High Priority (blocking UI features)
+- [ ] `POST /reports/download` - Descarga de extractos mensuales (5 product pages)
+- [ ] `POST /utilities/companies` - Listar empresas de servicios públicos
+- [ ] `POST /utilities/register` - Inscribir servicio público
+- [ ] `POST /utilities/debt` - Consultar deuda de servicio
+- [ ] `POST /utilities/list` - Listar servicios inscritos
+- [ ] `POST /utilities/pay` - Ejecutar pago de servicio público
+- [ ] `POST /utilities/delete` - Eliminar servicio inscrito
+- [ ] `POST /beneficiaries/list` - Listar beneficiarios registrados
+- [ ] `POST /beneficiaries/search` - Buscar asociados por nombre/documento
+- [ ] `POST /beneficiaries/register` - Inscribir nuevo beneficiario
+- [ ] `POST /beneficiaries/delete` - Eliminar beneficiario
+- [ ] `POST /accounts/inscribed/register` - Inscribir cuenta externa
+- [ ] `POST /accounts/inscribed/list` - Listar cuentas inscritas
+- [ ] `POST /accounts/inscribed/update` - Editar cuenta inscrita
+- [ ] `POST /accounts/inscribed/delete` - Eliminar cuenta inscrita
+
+### Medium Priority
+- [ ] `POST /transactions/receipt` - Descarga de comprobante de transacción
+- [ ] `POST /user/profile` - Consultar perfil completo del usuario
+- [ ] `POST /user/update` - Actualizar datos de perfil
+- [ ] `POST /refresh-token` - Renovar sesión sin re-auth
+- [ ] `POST /payment/pse/status` - Consultar estado de transacción PSE
+
+**Note**: Los nombres de endpoint son propuestas. Los endpoints reales deben ser definidos por el equipo backend.
+
 ---
 
 ## Summary
@@ -93,9 +125,23 @@
 | Registration | 2 | 2 | 0 |
 | Password | 1 | 1 | 0 |
 | Products | 7 | 7 | 0 |
-| Payments | 5 | 0 | 5 |
+| Payments | 5 | 5 | 0 |
 | Internal Transfers | 7 | 0 | 7 |
 | External Transfers (Banks) | 5 | 0 | 5 |
 | External Transfers (Entities) | 3 | 0 | 3 |
 | BRE-B | 12 | 0 | 12 |
-| **Total** | **46** | **14** | **32** |
+| **Subtotal (existing API)** | **46** | **19** | **27** |
+
+### Missing from Backend API
+
+| Domain | Endpoints Needed | Priority |
+|--------|-----------------|----------|
+| Reportes/Extractos | 1 | Alta |
+| Servicios Públicos | 6 | Alta |
+| Beneficiarios | 4 | Alta |
+| Cuentas Inscritas (CRUD) | 4 | Alta |
+| Comprobantes | 1 | Media |
+| Perfil de Usuario | 2 | Media |
+| Sesión (Refresh Token) | 1 | Media |
+| Estado PSE | 1 | Media |
+| **Total sin API** | **20** | - |

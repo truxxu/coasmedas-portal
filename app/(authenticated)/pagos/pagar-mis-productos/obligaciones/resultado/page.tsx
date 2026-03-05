@@ -7,36 +7,47 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ObligacionResultCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
-import {
-  OBLIGACION_PAYMENT_STEPS,
-  mockObligacionTransactionResult,
-} from "@/src/mocks/mockObligacionPaymentData";
-import {
-  ObligacionTransactionResult,
-  ObligacionPaymentProduct,
-} from "@/src/types/obligacion-payment";
+import { OBLIGACION_PAYMENT_STEPS } from "@/src/mocks/mockObligacionPaymentData";
+import { ObligacionTransactionResult } from "@/src/types/obligacion-payment";
 
 export default function ResultadoPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [result] = useState<ObligacionTransactionResult>(() => {
-    if (typeof window === 'undefined') return mockObligacionTransactionResult;
 
-    const valor = sessionStorage.getItem("obligacionPaymentValor");
-    const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+  const [result] = useState<ObligacionTransactionResult | null>(() => {
+    if (typeof window === "undefined") return null;
 
-    if (valor && productStr) {
-      const product: ObligacionPaymentProduct = JSON.parse(productStr);
+    // Try to read real API result first (stored by codigo-sms page)
+    const apiResultStr = sessionStorage.getItem("obligacionPaymentResult");
+    if (apiResultStr) {
+      try {
+        return JSON.parse(apiResultStr) as ObligacionTransactionResult;
+      } catch {
+        // fall through
+      }
+    }
+
+    // Check for PSE error
+    const pseErrorStr = sessionStorage.getItem("pseTransactionError");
+    if (pseErrorStr) {
+      const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+      const product = productStr ? JSON.parse(productStr) : null;
       return {
-        ...mockObligacionTransactionResult,
-        valorPagado: parseInt(valor, 10),
-        lineaCredito: product.name,
-        numeroProducto: product.productNumber,
+        status: "error",
+        lineaCredito: product?.name ?? "Obligacion",
+        numeroProducto: product?.productNumber ?? "",
+        valorPagado: 0,
+        costoTransaccion: 0,
+        abonoExcedente: "-",
+        fechaTransmision: "",
+        horaTransaccion: "",
+        numeroAprobacion: "-",
+        descripcion: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
       };
     }
 
-    return mockObligacionTransactionResult;
+    return null;
   });
 
   const breadcrumbItems = [
@@ -54,16 +65,29 @@ export default function ResultadoPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  useEffect(() => {
+    if (!result) {
+      router.push("/pagos/pagar-mis-productos/obligaciones");
+    }
+  }, [result, router]);
+
   const handlePrintSave = () => {
     window.print();
   };
 
   const handleFinish = () => {
-    // Clear session storage
     sessionStorage.removeItem("obligacionPaymentProductId");
     sessionStorage.removeItem("obligacionPaymentValor");
     sessionStorage.removeItem("obligacionPaymentProduct");
     sessionStorage.removeItem("obligacionPaymentConfirmation");
+    sessionStorage.removeItem("obligacionPaymentMethod");
+    sessionStorage.removeItem("obligacionSourceAccountId");
+    sessionStorage.removeItem("obligacionSourceAccountDisplay");
+    sessionStorage.removeItem("obligacionSourceAccountApi");
+    sessionStorage.removeItem("obligacionTargetProductApi");
+    sessionStorage.removeItem("obligacionTransactionRequest");
+    sessionStorage.removeItem("obligacionPaymentResult");
+    sessionStorage.removeItem("pseTransactionError");
 
     router.push("/pagos");
   };

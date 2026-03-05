@@ -99,12 +99,23 @@ These endpoints had conflicting auth requirements between sources. Resolved on 2
 
 **Action:** Test whether `indPag` is truly required or silently ignored. The mobile app works without it for most endpoints. **For web: omit unless pagination is needed.**
 
-### 3.2 `/payment/internal/createTransaction` - `cuentas` array
+### 3.2 `/payment/internal/createTransaction` - `cuentas` array (RESOLVED)
 
 - **Mobile:** Sends `cuentas` array (supports multi-product unified payment)
 - **Backend:** Does not document `cuentas` field
 
-**Action:** The `cuentas` array is needed for unified payment. Include it. Verify field structure matches mobile implementation.
+**Resolution:** The `cuentas` array uses `tipoProducto` (not `codigoProductoCobis`) as the product identifier. Correct structure:
+
+```typescript
+cuentas: [{
+  tipoProducto: string,  // e.g. "AP", "CR", "PR"
+  idCuenta: string,
+  numeroCuenta: string,
+  vlrPago: number,
+}]
+```
+
+The `tipoProducto` value is obtained from `/payment/products` by cross-referencing `idCuenta`.
 
 ---
 
@@ -178,3 +189,37 @@ Endpoints that need Postman collection entries for testing:
 5. **Hardcoded OTP bypass** - Document number `93370888` skips OTP validation in login flow. Present in test/dev environments.
 6. **Empty results** - List endpoints return `{ statusCode: 0, payload: [] }` for empty results. Not an error.
 7. **U119 state code** - Dual meaning: "empty result" in some contexts, "already exists" in BRE-B key creation.
+
+---
+
+## 7. UI Features Without API Support
+
+> **Full report**: See [`docs/ui-features-without-api.md`](./ui-features-without-api.md) for detailed analysis with affected components.
+> **Added**: 2026-03-03
+
+The following UI functionalities have **no corresponding backend endpoint** in the documented API. They currently operate with mock data or non-functional buttons.
+
+### 7.1 Missing Endpoints - High Priority
+
+| UI Feature | Endpoints Needed | Current State |
+|---|---|---|
+| Descarga de extractos mensuales | `POST /reports/download` or similar | Botón visible en 5 páginas de productos, sin acción |
+| Servicios públicos (inscripción + pago) | ~6 endpoints (listar empresas, inscribir, consultar deuda, listar inscritos, pagar, eliminar) | Módulo completo 100% mock |
+| Beneficiarios otros asociados (CRUD) | ~4 endpoints (listar, buscar, inscribir, eliminar) | Lista de beneficiarios es mock |
+| Inscripción cuentas externas (CRUD) | ~4 endpoints (inscribir, listar inscritas, editar, eliminar) | Formulario sin persistencia. `listBanks`/`listEntities` sí existen |
+
+### 7.2 Missing Endpoints - Medium Priority
+
+| UI Feature | Endpoints Needed | Current State |
+|---|---|---|
+| Comprobantes de transacción | `POST /transactions/receipt` or similar | Botón "Descargar comprobante" sin funcionalidad |
+| Perfil de usuario | `POST /user/profile`, `POST /user/update` | Solo datos de login; sin edición posible |
+| Renovación de sesión | `POST /refresh-token` or `POST /extend-session` | Re-auth completa (con OTP) al expirar |
+| Retorno PSE (callback) | Endpoint de consulta de estado de transacción PSE | Sin confirmación automática post-pago PSE |
+
+### 7.3 Recommended Actions
+
+1. **Backend team**: Priorizar endpoints de extractos, servicios públicos, y CRUDs de beneficiarios/cuentas
+2. **Frontend team**: Ocultar o deshabilitar funcionalidades sin API hasta contar con soporte backend
+3. **Alternativa temporal**: Generar comprobantes de transacción client-side (PDF con datos en pantalla)
+4. **Definir contratos API**: Documentar request/response esperados para los endpoints faltantes

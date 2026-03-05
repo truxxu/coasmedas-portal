@@ -7,24 +7,41 @@ import { TransactionResultCard } from "@/src/organisms";
 import { Button } from "@/src/atoms";
 import { useWelcomeBar } from "@/src/contexts";
 import { TransactionResult } from "@/src/types/payment";
-import {
-  PAYMENT_STEPS,
-  mockTransactionResult,
-  mockTransactionResultError,
-} from "@/src/mocks/mockPaymentData";
+import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 
 export default function ResultadoPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
 
   const [result] = useState<TransactionResult | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const paymentStatus = sessionStorage.getItem("paymentStatus");
-    if (!paymentStatus) return null;
-    return paymentStatus === "success" ? mockTransactionResult : mockTransactionResultError;
+    if (typeof window === "undefined") return null;
+
+    // Try to read real API result first
+    const resultStr = sessionStorage.getItem("unifiedPaymentResult");
+    if (resultStr) {
+      try {
+        return JSON.parse(resultStr) as TransactionResult;
+      } catch {
+        // fall through
+      }
+    }
+
+    // Check for PSE error
+    const pseErrorStr = sessionStorage.getItem("pseTransactionError");
+    if (pseErrorStr) {
+      return {
+        status: "error",
+        transactionCost: 0,
+        transactionDate: "",
+        transactionTime: "",
+        approvalNumber: "",
+        description: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+      };
+    }
+
+    return null;
   });
 
-  // Configure WelcomeBar on mount
   useEffect(() => {
     setWelcomeBar({
       title: "Pago Unificado",
@@ -33,7 +50,6 @@ export default function ResultadoPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Redirect if no payment status data
   useEffect(() => {
     if (!result) {
       router.push("/pagos/pagar-mis-productos/pago-unificado");
@@ -45,12 +61,16 @@ export default function ResultadoPage() {
   };
 
   const handleFinish = () => {
-    // Clear all payment flow data
     sessionStorage.removeItem("paymentAccountId");
+    sessionStorage.removeItem("paymentMethod");
     sessionStorage.removeItem("paymentConfirmationData");
-    sessionStorage.removeItem("paymentStatus");
+    sessionStorage.removeItem("unifiedSourceAccountApi");
+    sessionStorage.removeItem("unifiedPaymentProducts");
+    sessionStorage.removeItem("unifiedPendingPayments");
+    sessionStorage.removeItem("unifiedTransactionRequest");
+    sessionStorage.removeItem("unifiedPaymentResult");
+    sessionStorage.removeItem("pseTransactionError");
 
-    // Navigate back to payments menu
     router.push("/pagos/pagar-mis-productos");
   };
 

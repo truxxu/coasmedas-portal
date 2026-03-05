@@ -779,14 +779,14 @@ All responses follow this structure:
     {
       "idCuenta": "16264",
       "numeroCuenta": "054040001314",
-      "codigoProductoCobis": "4",
+      "tipoProducto": "AP",
       "vlrPago": 150000
     }
   ]
 }
 ```
 
-> :warning: **Discrepancy:** Mobile app sends `cuentas` array (multi-product payment support). Backend docs do not show this field. The `cuentas` array likely supports unified payment of multiple products.
+> **Note:** The `cuentas` array supports multi-product unified payment. Each entry uses `tipoProducto` (e.g. "AP", "CR", "PR") obtained from `/payment/products` by matching `idCuenta`.
 
 **Response:**
 ```json

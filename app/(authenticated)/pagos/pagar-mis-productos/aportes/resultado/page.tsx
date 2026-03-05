@@ -7,37 +7,46 @@ import { AportesTransactionResultCard } from "@/src/organisms";
 import { Button } from "@/src/atoms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar } from "@/src/contexts";
-import {
-  APORTES_PAYMENT_STEPS,
-  mockAportesTransactionResult,
-} from "@/src/mocks/mockAportesPaymentData";
+import { APORTES_PAYMENT_STEPS } from "@/src/mocks/mockAportesPaymentData";
 import { AportesTransactionResult } from "@/src/types/aportes-payment";
 
 export default function ResultadoAportesPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const [result] = useState<AportesTransactionResult>(() => {
-    if (typeof window === 'undefined') return mockAportesTransactionResult;
 
-    const valor = sessionStorage.getItem("aportesPaymentValor");
-    const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
+  const [result] = useState<AportesTransactionResult | null>(() => {
+    if (typeof window === "undefined") return null;
 
-    if (valor && breakdownStr) {
+    // Try to read real API result first (stored by verificacion page)
+    const apiResultStr = sessionStorage.getItem("aportesPaymentResult");
+    if (apiResultStr) {
       try {
-        const breakdown = JSON.parse(breakdownStr);
-        return {
-          ...mockAportesTransactionResult,
-          valorPagado: parseInt(valor, 10),
-          lineaCredito: breakdown.planName,
-          numeroProducto: breakdown.productNumber,
-        };
+        return JSON.parse(apiResultStr) as AportesTransactionResult;
       } catch {
-        return mockAportesTransactionResult;
+        // fall through
       }
     }
 
-    return mockAportesTransactionResult;
+    // Check for PSE error
+    const pseErrorStr = sessionStorage.getItem("pseTransactionError");
+    if (pseErrorStr) {
+      const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
+      const breakdown = breakdownStr ? JSON.parse(breakdownStr) : null;
+      return {
+        status: "error",
+        lineaCredito: breakdown?.planName ?? "Aportes",
+        numeroProducto: breakdown?.productNumber ?? "",
+        valorPagado: 0,
+        costoTransaccion: 0,
+        fechaTransmision: "",
+        horaTransaccion: "",
+        numeroAprobacion: "-",
+        descripcion: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+      };
+    }
+
+    return null;
   });
 
   // Set welcome bar on mount
@@ -48,6 +57,13 @@ export default function ResultadoAportesPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
+
+  // Redirect if no result data
+  useEffect(() => {
+    if (!result) {
+      router.push("/pagos/pagar-mis-productos/aportes");
+    }
+  }, [result, router]);
 
   const handlePrintSave = () => {
     window.print();
@@ -60,6 +76,11 @@ export default function ResultadoAportesPage() {
     sessionStorage.removeItem("aportesPaymentBreakdown");
     sessionStorage.removeItem("aportesPaymentConfirmation");
     sessionStorage.removeItem("aportesPaymentMethod");
+    sessionStorage.removeItem("aportesSourceAccount");
+    sessionStorage.removeItem("aportesContributions");
+    sessionStorage.removeItem("aportesTransactionRequest");
+    sessionStorage.removeItem("aportesPaymentResult");
+    sessionStorage.removeItem("pseTransactionError");
 
     router.push("/pagos/pagar-mis-productos");
   };
