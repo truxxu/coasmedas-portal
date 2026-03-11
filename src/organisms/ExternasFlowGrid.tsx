@@ -24,10 +24,10 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     enabled: true,
   },
   {
-    id: "red-copcentral",
+    id: "red-coopcentral",
     title: "Cuentas de mi Red Coopcentral",
     description: "Envía dinero a otras cooperativas de la red.",
-    href: "/transferencias/externas/desde-cupos-rotativos",
+    href: "/transferencias/externas/red-coopcentral",
     enabled: true,
   },
 ];

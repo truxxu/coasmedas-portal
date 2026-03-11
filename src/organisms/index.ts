@@ -71,4 +71,7 @@ export { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 export { ExternalTransferDetailsCard } from "./ExternalTransferDetailsCard";
 export { ExternalTransferConfirmationCard } from "./ExternalTransferConfirmationCard";
 export { ExternalTransferResultCard } from "./ExternalTransferResultCard";
+export { RedCoopTransferDetailsCard } from "./RedCoopTransferDetailsCard";
+export { RedCoopTransferConfirmationCard } from "./RedCoopTransferConfirmationCard";
+export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 export { AuthHydrator } from "./AuthHydrator";

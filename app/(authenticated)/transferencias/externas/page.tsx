@@ -23,8 +23,8 @@ export default function TransferenciasExternasPage() {
       router.push("/transferencias/externas/inscribir-cuentas");
     } else if (flowId === "otros-bancos") {
       router.push("/transferencias/externas/otros-bancos");
-    } else if (flowId === "red-copcentral") {
-      router.push("/transferencias/externas/red-copcentral");
+    } else if (flowId === "red-coopcentral") {
+      router.push("/transferencias/externas/red-coopcentral");
     }
   };
 
