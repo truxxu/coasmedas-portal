@@ -47,6 +47,7 @@ export interface NetworkTransferConfirmationData {
   holderName: string;
   holderDocument: string; // Masked: "CC 1.***.***. 231"
   sourceProduct: string; // e.g., "Cuenta de Ahorros"
+  sourceAccountMaskedNumber?: string; // e.g., "***4428"
 
   // Destination info
   destinationHolder: string; // e.g., "PEDRO PEREZ"
@@ -56,6 +57,7 @@ export interface NetworkTransferConfirmationData {
 
   // Transfer details
   amount: number;
+  transactionCost?: number; // Always 0 for now
   concept?: string;
 }
 

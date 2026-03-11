@@ -45,8 +45,8 @@ export function RegisteredAccountsList({
       </div>
 
       <InfoNoteBox>
-        <strong>Nota:</strong> Para transferir a un nuevo asociado, primero debes
-        inscribir su cuenta en una de nuestras oficinas.
+        <strong>Nota:</strong> Para transferir a un nuevo asociado, primero
+        debes inscribir su cuenta en una de nuestras oficinas.
       </InfoNoteBox>
     </Card>
   );

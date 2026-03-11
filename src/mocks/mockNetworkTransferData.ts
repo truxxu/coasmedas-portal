@@ -100,11 +100,13 @@ export const mockNetworkTransferConfirmation: NetworkTransferConfirmationData =
     holderName: "CAMILO ANDRES CRUZ",
     holderDocument: "CC 1.***.***. 231",
     sourceProduct: "Cuenta de Ahorros",
+    sourceAccountMaskedNumber: "***4428",
     destinationHolder: "PEDRO PEREZ",
     destinationBank: "Coopcentral",
     destinationAccountType: "Ahorros",
     destinationAccountNumber: "123.-456789-01",
     amount: 200000,
+    transactionCost: 0,
     concept: "Clases mensuales",
   };
 

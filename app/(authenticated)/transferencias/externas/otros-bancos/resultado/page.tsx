@@ -14,7 +14,7 @@ export default function ResultadoPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<ExternalTransferResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
     const resultData = sessionStorage.getItem("externalTransferResult");
     if (!resultData) return null;
@@ -35,7 +35,7 @@ export default function ResultadoPage() {
 
   useEffect(() => {
     if (!result) {
-      router.push("/transferencias/otros-bancos");
+      router.push("/transferencias/externas/otros-bancos");
     }
   }, [result, router]);
 
@@ -54,7 +54,7 @@ export default function ResultadoPage() {
 
   const handleNewTransaction = () => {
     clearSessionStorage();
-    router.push("/transferencias/otros-bancos");
+    router.push("/transferencias/externas/otros-bancos");
   };
 
   const handleFinish = () => {
@@ -66,7 +66,7 @@ export default function ResultadoPage() {
     // Go back to details to try again
     sessionStorage.removeItem("externalTransferConfirmation");
     sessionStorage.removeItem("externalTransferResult");
-    router.push("/transferencias/otros-bancos");
+    router.push("/transferencias/externas/otros-bancos");
   };
 
   if (!result) {

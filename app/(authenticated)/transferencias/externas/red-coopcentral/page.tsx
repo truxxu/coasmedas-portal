@@ -1,22 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { NetworkTransferForm } from "@/src/organisms";
+import { RedCoopTransferDetailsCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import {
-  mockNetworkSourceAccounts,
-  mockRegisteredNetworkAccounts,
-  NETWORK_TRANSFER_STEPS,
-} from "@/src/mocks/mockNetworkTransferData";
-import {
-  RegisteredNetworkAccount,
-  NetworkProduct,
-} from "@/src/types/networkTransfer";
+  mockRedCoopSourceAccounts,
+  mockRedCoopDestinationAccounts,
+  RED_COOP_TRANSFER_STEPS,
+} from "@/src/mocks";
 
-export default function DetallePage() {
+export default function RedCoopcentalPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
@@ -29,32 +25,15 @@ export default function DetallePage() {
 
   useEffect(() => {
     setWelcomeBar({
-      title: "A Cuentas de mi Red",
-      backHref: "/transferencias",
+      title: "Cuentas de mi Red Coopcentral",
+      backHref: "/transferencias/externas",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Parse the destination ID to get recipient and product
-  const getDestinationData = (): {
-    recipient: RegisteredNetworkAccount | null;
-    product: NetworkProduct | null;
-  } => {
-    if (!selectedDestinationId) {
-      return { recipient: null, product: null };
-    }
-
-    const [accountId, productId] = selectedDestinationId.split("-");
-    const recipient = mockRegisteredNetworkAccounts.find((acc) => acc.id === accountId);
-    const product = recipient?.products.find((p) => p.id === productId);
-
-    return { recipient: recipient || null, product: product || null };
-  };
-
   const handleConfirm = () => {
     setError("");
 
-    // Validation
     if (!selectedSourceId) {
       setError("Por favor selecciona una cuenta origen");
       return;
@@ -68,55 +47,55 @@ export default function DetallePage() {
       return;
     }
 
-    const sourceAccount = mockNetworkSourceAccounts.find(
+    const sourceAccount = mockRedCoopSourceAccounts.find(
       (acc) => acc.id === selectedSourceId,
     );
 
     if (sourceAccount && Number(amount) > sourceAccount.balance) {
-      setError("Saldo insuficiente en la cuenta seleccionada");
+      setError("El valor supera el saldo disponible");
       return;
     }
 
-    const { recipient, product } = getDestinationData();
-
-    if (!recipient || !product) {
-      setError("Error al obtener datos de la cuenta destino");
+    if (concept.length > 100) {
+      setError("El concepto no puede exceder 100 caracteres");
       return;
     }
 
     // Store data for next step
-    sessionStorage.setItem("networkTransferRecipient", JSON.stringify(recipient));
-    sessionStorage.setItem("networkTransferDestination", JSON.stringify(product));
-    sessionStorage.setItem("networkTransferSourceId", selectedSourceId);
-    sessionStorage.setItem("networkTransferAmount", amount);
-    sessionStorage.setItem("networkTransferConcept", concept);
+    sessionStorage.setItem("redCoopTransferSourceId", selectedSourceId);
+    sessionStorage.setItem(
+      "redCoopTransferDestinationId",
+      selectedDestinationId,
+    );
+    sessionStorage.setItem("redCoopTransferAmount", amount);
+    sessionStorage.setItem("redCoopTransferConcept", concept);
 
-    // Navigate to confirmation
-    router.push("/transferencias/cuentas-mi-red/confirmacion");
+    router.push("/transferencias/externas/red-coopcentral/confirmacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias");
+    router.push("/transferencias/externas");
   };
+
+  const isFormValid =
+    selectedSourceId && selectedDestinationId && amount && Number(amount) > 0;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "A Cuentas de mi Red"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
       </div>
 
       {/* Stepper */}
       <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={1} steps={NETWORK_TRANSFER_STEPS} />
+        <Stepper currentStep={1} steps={RED_COOP_TRANSFER_STEPS} />
       </div>
 
-      {/* Transfer Form */}
-      <NetworkTransferForm
-        sourceAccounts={mockNetworkSourceAccounts}
-        registeredAccounts={mockRegisteredNetworkAccounts}
+      {/* Form Card */}
+      <RedCoopTransferDetailsCard
+        sourceAccounts={mockRedCoopSourceAccounts}
+        destinationAccounts={mockRedCoopDestinationAccounts}
         selectedSourceId={selectedSourceId}
         selectedDestinationId={selectedDestinationId}
         amount={amount}
@@ -129,7 +108,7 @@ export default function DetallePage() {
         error={error}
       />
 
-      {/* Footer Actions */}
+      {/* Actions */}
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
@@ -140,7 +119,7 @@ export default function DetallePage() {
         <Button
           variant="primary"
           onClick={handleConfirm}
-          disabled={!selectedSourceId || !selectedDestinationId || !amount}
+          disabled={!isFormValid}
         >
           Confirmar
         </Button>
