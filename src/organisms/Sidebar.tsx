@@ -72,12 +72,13 @@ const pagosSubItems = [
 
 const transferenciasSubItems = [
   { label: "Internas", href: "/transferencias/internas" },
-  { label: "Inscribir cuentas", href: "/transferencias/inscribir-cuentas" },
-  { label: "A otros bancos", href: "/transferencias/otros-bancos" },
-  {
-    label: "Cuentas de mi red Coopcentral",
-    href: "/transferencias/cuentas-mi-red",
-  },
+  { label: "Externas", href: "/transferencias/externas" },
+  // { label: "Inscribir cuentas", href: "/transferencias/inscribir-cuentas" },
+  // { label: "A otros bancos", href: "/transferencias/otros-bancos" },
+  // {
+  //   label: "Cuentas de mi red Coopcentral",
+  //   href: "/transferencias/cuentas-mi-red",
+  // },
   {
     label: "Programar transferencias",
     href: "/transferencias/programar",
