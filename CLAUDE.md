@@ -133,8 +133,12 @@ app/
         │   ├── entre-mis-cuentas/    # Between own accounts: page → confirmacion → sms → resultado
         │   ├── desde-cupos-rotativos/# From rotating credit: page → confirmacion → sms → resultado
         │   └── recargar-pse/         # PSE recharge: page → confirmacion → pse → resultado
+        ├── externas/             # External transfers
+        │   ├── page.tsx          # External transfer type selection
+        │   ├── otros-bancos/     # Other banks: page → confirmacion → sms → resultado
+        │   ├── red-coopcentral/  # Red Coopcentral: page → confirmacion → sms → resultado
+        │   └── inscribir-cuentas/# Register external accounts: page
         ├── cuentas-mi-red/       # Network accounts (Coopcentral): page → detalle → confirmacion → verificacion → resultado
-        ├── otros-bancos/         # Other banks: page → confirmacion → sms → resultado
         └── inscribir-cuentas/    # Register external accounts: page
 ```
 
@@ -441,6 +445,12 @@ Always reference the consolidated API docs when implementing new endpoints.
 - `ExternalTransferConfirmationCard` - External transfer confirmation
 - `ExternalTransferResultCard` - External transfer result
 
+#### Transfers - Red Coopcentral
+
+- `RedCoopTransferDetailsCard` - Red Coopcentral transfer details
+- `RedCoopTransferConfirmationCard` - Red Coopcentral transfer confirmation
+- `RedCoopTransferResultCard` - Red Coopcentral transfer result
+
 #### Cupo Rotativo (Rotating Credit)
 
 - `CupoRotativoDetailsCard` - Rotating credit transfer details
@@ -575,6 +585,14 @@ Always reference the consolidated API docs when implementing new endpoints.
 
 - External (other banks) transfer data and state types
 
+#### Red Coopcentral Transfer Types (src/types/redCoopTransfer.ts)
+
+- `RedCoopSourceAccount` - Source account for Red Coopcentral transfer
+- `RedCoopDestinationAccount` - Destination account (Coopcentral network)
+- `RedCoopTransferFormData` - Transfer details form data
+- `RedCoopTransferConfirmationData` - Confirmation display data
+- `RedCoopTransferResult` - Transaction result
+
 #### Account Registration Types (src/types/accountRegistration.ts)
 
 - Account registration form data and inscribed account types
@@ -624,6 +642,7 @@ Always reference the consolidated API docs when implementing new endpoints.
 - `mockTransferData` - Internal transfer mock data
 - `mockNetworkTransferData` - Network transfer mock data
 - `mockExternalTransferData` - External (other banks) transfer mock data
+- `mockRedCoopTransferData` - Red Coopcentral transfer mock data
 - `mockCupoRotativoData` - Rotating credit transfer mock data
 - `mockPSERechargeData` - PSE recharge mock data
 - `mockAccountRegistrationData` - Account registration mock data
@@ -745,7 +764,8 @@ The Transferencias feature handles multiple transfer types between accounts.
 | Desde cupos rotativos | `/transferencias/internas/desde-cupos-rotativos` | SMS          | From rotating credit lines      |
 | Recargar PSE          | `/transferencias/internas/recargar-pse`          | PSE          | Top-up via PSE gateway          |
 | Cuentas mi red        | `/transferencias/internas/cuentas-mi-red`        | SMS          | To Coopcentral network accounts |
-| Otros bancos          | `/transferencias/otros-bancos`                   | SMS          | Inter-bank transfers (ACH)      |
+| Otros bancos          | `/transferencias/externas/otros-bancos`           | SMS          | Inter-bank transfers (ACH)      |
+| Red Coopcentral       | `/transferencias/externas/red-coopcentral`        | SMS          | Coopcentral network transfers   |
 | Inscribir cuentas     | `/transferencias/inscribir-cuentas`              | -            | Register external accounts      |
 
 ### Transfer Flow Structure
@@ -777,9 +797,9 @@ The Transferencias feature handles multiple transfer types between accounts.
 ### Key Components
 
 - `InternasFlowGrid` - Grid for selecting transfer type
-- `TransferDetailsCard` / `CupoRotativoDetailsCard` / `PSERechargeDetailsCard` / `ExternalTransferDetailsCard` - Details forms per transfer type
-- `TransferConfirmationCard` / `NetworkTransferConfirmationCard` / `CupoRotativoConfirmationCard` / `PSERechargeConfirmationCard` / `ExternalTransferConfirmationCard` - Confirmation cards per type
-- `TransferResultCard` / `NetworkTransferResultCard` / `CupoRotativoResultCard` / `PSERechargeResultCard` / `ExternalTransferResultCard` - Result cards per type
+- `TransferDetailsCard` / `CupoRotativoDetailsCard` / `PSERechargeDetailsCard` / `ExternalTransferDetailsCard` / `RedCoopTransferDetailsCard` - Details forms per transfer type
+- `TransferConfirmationCard` / `NetworkTransferConfirmationCard` / `CupoRotativoConfirmationCard` / `PSERechargeConfirmationCard` / `ExternalTransferConfirmationCard` / `RedCoopTransferConfirmationCard` - Confirmation cards per type
+- `TransferResultCard` / `NetworkTransferResultCard` / `CupoRotativoResultCard` / `PSERechargeResultCard` / `ExternalTransferResultCard` / `RedCoopTransferResultCard` - Result cards per type
 - `AccountRegistrationForm` / `InscribedAccountsList` - Account registration management
 
 ---
