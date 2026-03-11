@@ -8,13 +8,9 @@ import { NetworkTransferForm } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import {
   mockNetworkSourceAccounts,
-  mockRegisteredNetworkAccounts,
   NETWORK_TRANSFER_STEPS,
 } from "@/src/mocks/mockNetworkTransferData";
-import {
-  RegisteredNetworkAccount,
-  NetworkProduct,
-} from "@/src/types/networkTransfer";
+import { RegisteredNetworkAccount } from "@/src/types/networkTransfer";
 
 export default function DetallePage() {
   const router = useRouter();
@@ -22,47 +18,43 @@ export default function DetallePage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [selectedSourceId, setSelectedSourceId] = useState("");
-  const [selectedDestinationId, setSelectedDestinationId] = useState("");
+  const [selectedDestinationProductId, setSelectedDestinationProductId] =
+    useState("");
   const [amount, setAmount] = useState("");
   const [concept, setConcept] = useState("");
   const [error, setError] = useState("");
+  const [recipient, setRecipient] =
+    useState<RegisteredNetworkAccount | null>(null);
+
+  useEffect(() => {
+    // Read selected recipient from sessionStorage
+    const recipientData = sessionStorage.getItem(
+      "networkTransferSelectedRecipient",
+    );
+    if (!recipientData) {
+      router.replace("/transferencias/internas/cuentas-mi-red");
+      return;
+    }
+    setRecipient(JSON.parse(recipientData));
+  }, [router]);
 
   useEffect(() => {
     setWelcomeBar({
       title: "A Cuentas de mi Red",
-      backHref: "/transferencias",
+      backHref: "/transferencias/internas/cuentas-mi-red",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Parse the destination ID to get recipient and product
-  const getDestinationData = (): {
-    recipient: RegisteredNetworkAccount | null;
-    product: NetworkProduct | null;
-  } => {
-    if (!selectedDestinationId) {
-      return { recipient: null, product: null };
-    }
-
-    const [accountId, productId] = selectedDestinationId.split("-");
-    const recipient = mockRegisteredNetworkAccounts.find(
-      (acc) => acc.id === accountId,
-    );
-    const product = recipient?.products.find((p) => p.id === productId);
-
-    return { recipient: recipient || null, product: product || null };
-  };
-
   const handleConfirm = () => {
     setError("");
 
-    // Validation
     if (!selectedSourceId) {
       setError("Por favor selecciona una cuenta origen");
       return;
     }
-    if (!selectedDestinationId) {
-      setError("Por favor selecciona una cuenta destino");
+    if (!selectedDestinationProductId) {
+      setError("Por favor selecciona un producto destino");
       return;
     }
     if (!amount || Number(amount) <= 0) {
@@ -79,10 +71,17 @@ export default function DetallePage() {
       return;
     }
 
-    const { recipient, product } = getDestinationData();
+    if (!recipient) {
+      setError("Error al obtener datos del destinatario");
+      return;
+    }
 
-    if (!recipient || !product) {
-      setError("Error al obtener datos de la cuenta destino");
+    const product = recipient.products.find(
+      (p) => p.id === selectedDestinationProductId,
+    );
+
+    if (!product) {
+      setError("Error al obtener datos del producto destino");
       return;
     }
 
@@ -99,13 +98,20 @@ export default function DetallePage() {
     sessionStorage.setItem("networkTransferAmount", amount);
     sessionStorage.setItem("networkTransferConcept", concept);
 
-    // Navigate to confirmation
     router.push("/transferencias/internas/cuentas-mi-red/confirmacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/internas");
+    router.push("/transferencias/internas/cuentas-mi-red");
   };
+
+  if (!recipient) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <span className="text-gray-500">Cargando...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -124,13 +130,14 @@ export default function DetallePage() {
       {/* Transfer Form */}
       <NetworkTransferForm
         sourceAccounts={mockNetworkSourceAccounts}
-        registeredAccounts={mockRegisteredNetworkAccounts}
+        recipientName={recipient.name}
+        recipientProducts={recipient.products}
         selectedSourceId={selectedSourceId}
-        selectedDestinationId={selectedDestinationId}
+        selectedDestinationProductId={selectedDestinationProductId}
         amount={amount}
         concept={concept}
         onSourceChange={setSelectedSourceId}
-        onDestinationChange={setSelectedDestinationId}
+        onDestinationProductChange={setSelectedDestinationProductId}
         onAmountChange={setAmount}
         onConceptChange={setConcept}
         hideBalances={hideBalances}
@@ -148,7 +155,9 @@ export default function DetallePage() {
         <Button
           variant="primary"
           onClick={handleConfirm}
-          disabled={!selectedSourceId || !selectedDestinationId || !amount}
+          disabled={
+            !selectedSourceId || !selectedDestinationProductId || !amount
+          }
         >
           Confirmar
         </Button>

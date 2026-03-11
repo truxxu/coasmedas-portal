@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { NetworkTransferConfirmationCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
@@ -15,6 +16,7 @@ import {
   mockNetworkSourceAccounts,
   mockNetworkTransferUserData,
 } from "@/src/mocks/mockNetworkTransferData";
+import { maskNumber } from "@/src/utils";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
@@ -47,12 +49,16 @@ export default function ConfirmacionPage() {
         holderName: mockNetworkTransferUserData.holderName,
         holderDocument: mockNetworkTransferUserData.holderDocument,
         sourceProduct: sourceAccount?.name || "Cuenta de Ahorros",
+        sourceAccountMaskedNumber: sourceAccount
+          ? maskNumber(sourceAccount.productNumber)
+          : undefined,
         destinationHolder: recipient.name,
         destinationBank: "Coopcentral",
         destinationAccountType:
           destination.type === "ahorros" ? "Ahorros" : "Corriente",
-        destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
+        destinationAccountNumber: destination.maskedNumber,
         amount: Number(amount),
+        transactionCost: 0,
         concept: concept || undefined,
       };
     },
@@ -104,9 +110,20 @@ export default function ConfirmacionPage() {
       <NetworkTransferConfirmationCard
         confirmationData={confirmationData}
         hideBalances={hideBalances}
-        onConfirm={handleConfirm}
-        onBack={handleBack}
       />
+
+      {/* Footer Actions */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handleBack}
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleConfirm}>
+          Confirmar Pago
+        </Button>
+      </div>
     </div>
   );
 }
