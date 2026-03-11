@@ -8,7 +8,7 @@ export default function CuentasMiRedPage() {
 
   useEffect(() => {
     // Redirect directly to the details page
-    router.replace("/transferencias/cuentas-mi-red/detalle");
+    router.replace("/transferencias/internas/cuentas-mi-red/detalle");
   }, [router]);
 
   return (

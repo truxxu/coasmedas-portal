@@ -21,12 +21,14 @@ export default function ConfirmacionPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmationData] =
-    useState<NetworkTransferConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<NetworkTransferConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
       const recipientData = sessionStorage.getItem("networkTransferRecipient");
-      const destinationData = sessionStorage.getItem("networkTransferDestination");
+      const destinationData = sessionStorage.getItem(
+        "networkTransferDestination",
+      );
       const sourceId = sessionStorage.getItem("networkTransferSourceId");
       const amount = sessionStorage.getItem("networkTransferAmount");
       const concept = sessionStorage.getItem("networkTransferConcept") || "";
@@ -37,7 +39,9 @@ export default function ConfirmacionPage() {
 
       const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
       const destination: NetworkProduct = JSON.parse(destinationData);
-      const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
+      const sourceAccount = mockNetworkSourceAccounts.find(
+        (acc) => acc.id === sourceId,
+      );
 
       return {
         holderName: mockNetworkTransferUserData.holderName,
@@ -51,28 +55,29 @@ export default function ConfirmacionPage() {
         amount: Number(amount),
         concept: concept || undefined,
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
       title: "Red Coopcentral",
-      backHref: "/transferencias/cuentas-mi-red/detalle",
+      backHref: "/transferencias/internas/cuentas-mi-red/detalle",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     if (!confirmationData) {
-      router.push("/transferencias/cuentas-mi-red");
+      router.push("/transferencias/internas/cuentas-mi-red");
     }
   }, [confirmationData, router]);
 
   const handleConfirm = () => {
-    router.push("/transferencias/cuentas-mi-red/verificacion");
+    router.push("/transferencias/internas/cuentas-mi-red/verificacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/cuentas-mi-red/detalle");
+    router.push("/transferencias/internas/cuentas-mi-red/detalle");
   };
 
   if (!confirmationData) {
@@ -87,9 +92,7 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Red Coopcentral"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
       </div>
 
       {/* Stepper */}

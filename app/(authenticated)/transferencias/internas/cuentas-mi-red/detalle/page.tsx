@@ -45,7 +45,9 @@ export default function DetallePage() {
     }
 
     const [accountId, productId] = selectedDestinationId.split("-");
-    const recipient = mockRegisteredNetworkAccounts.find((acc) => acc.id === accountId);
+    const recipient = mockRegisteredNetworkAccounts.find(
+      (acc) => acc.id === accountId,
+    );
     const product = recipient?.products.find((p) => p.id === productId);
 
     return { recipient: recipient || null, product: product || null };
@@ -85,18 +87,24 @@ export default function DetallePage() {
     }
 
     // Store data for next step
-    sessionStorage.setItem("networkTransferRecipient", JSON.stringify(recipient));
-    sessionStorage.setItem("networkTransferDestination", JSON.stringify(product));
+    sessionStorage.setItem(
+      "networkTransferRecipient",
+      JSON.stringify(recipient),
+    );
+    sessionStorage.setItem(
+      "networkTransferDestination",
+      JSON.stringify(product),
+    );
     sessionStorage.setItem("networkTransferSourceId", selectedSourceId);
     sessionStorage.setItem("networkTransferAmount", amount);
     sessionStorage.setItem("networkTransferConcept", concept);
 
     // Navigate to confirmation
-    router.push("/transferencias/cuentas-mi-red/confirmacion");
+    router.push("/transferencias/internas/cuentas-mi-red/confirmacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias");
+    router.push("/transferencias/internas");
   };
 
   return (

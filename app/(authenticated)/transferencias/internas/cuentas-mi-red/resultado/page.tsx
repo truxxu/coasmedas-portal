@@ -21,11 +21,11 @@ export default function ResultadoPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<NetworkTransferResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
     const recipientData = sessionStorage.getItem("networkTransferRecipient");
     const destinationData = sessionStorage.getItem(
-      "networkTransferDestination"
+      "networkTransferDestination",
     );
     const sourceId = sessionStorage.getItem("networkTransferSourceId");
     const amount = sessionStorage.getItem("networkTransferAmount");
@@ -37,7 +37,9 @@ export default function ResultadoPage() {
 
     const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
     const destination: NetworkProduct = JSON.parse(destinationData);
-    const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
+    const sourceAccount = mockNetworkSourceAccounts.find(
+      (acc) => acc.id === sourceId,
+    );
 
     return {
       status: "success" as const,
@@ -74,7 +76,7 @@ export default function ResultadoPage() {
 
   useEffect(() => {
     if (!result) {
-      router.push("/transferencias/cuentas-mi-red");
+      router.push("/transferencias/internas/cuentas-mi-red");
     }
   }, [result, router]);
 
@@ -92,7 +94,7 @@ export default function ResultadoPage() {
 
   const handleNewTransaction = () => {
     clearNetworkTransferData();
-    router.push("/transferencias/cuentas-mi-red");
+    router.push("/transferencias/internas/cuentas-mi-red");
   };
 
   const handleFinish = () => {

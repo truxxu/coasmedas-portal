@@ -24,7 +24,7 @@ export default function VerificacionPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "A Cuentas de mi Red",
-      backHref: "/transferencias/cuentas-mi-red/confirmacion",
+      backHref: "/transferencias/internas/cuentas-mi-red/confirmacion",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -36,7 +36,7 @@ export default function VerificacionPage() {
     const amount = sessionStorage.getItem("networkTransferAmount");
 
     if (!recipientData || !sourceId || !amount) {
-      router.push("/transferencias/cuentas-mi-red");
+      router.push("/transferencias/internas/cuentas-mi-red");
     }
   }, [router]);
 
@@ -77,13 +77,13 @@ export default function VerificacionPage() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (code === NETWORK_TRANSFER_MOCK_VALID_CODE) {
-        router.push("/transferencias/cuentas-mi-red/resultado");
+        router.push("/transferencias/internas/cuentas-mi-red/resultado");
       } else {
         setError("Código incorrecto. Por favor intenta nuevamente.");
       }
     } catch {
       setError(
-        "Error al procesar la transferencia. Por favor intenta nuevamente."
+        "Error al procesar la transferencia. Por favor intenta nuevamente.",
       );
     } finally {
       setIsLoading(false);
@@ -91,7 +91,7 @@ export default function VerificacionPage() {
   };
 
   const handleBack = () => {
-    router.push("/transferencias/cuentas-mi-red/confirmacion");
+    router.push("/transferencias/internas/cuentas-mi-red/confirmacion");
   };
 
   return (
