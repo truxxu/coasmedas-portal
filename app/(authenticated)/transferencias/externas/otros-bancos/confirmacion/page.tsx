@@ -18,9 +18,9 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData] =
-    useState<ExternalTransferConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<ExternalTransferConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
       const sourceId = sessionStorage.getItem("externalTransferSourceId");
       const destinationId = sessionStorage.getItem(
@@ -56,19 +56,20 @@ export default function ConfirmacionPage() {
         amount: Number(amount),
         concept: concept || "",
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
       title: "A Otros Bancos",
-      backHref: "/transferencias/otros-bancos",
+      backHref: "/transferencias/externas/otros-bancos",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     if (!confirmationData) {
-      router.push("/transferencias/otros-bancos");
+      router.push("/transferencias/externas/otros-bancos");
     }
   }, [confirmationData, router]);
 
@@ -80,11 +81,11 @@ export default function ConfirmacionPage() {
       );
     }
 
-    router.push("/transferencias/otros-bancos/sms");
+    router.push("/transferencias/externas/otros-bancos/sms");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/otros-bancos");
+    router.push("/transferencias/externas/otros-bancos");
   };
 
   if (!confirmationData) {

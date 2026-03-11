@@ -73,9 +73,6 @@ const pagosSubItems = [
 const transferenciasSubItems = [
   { label: "Internas", href: "/transferencias/internas" },
   { label: "Externas", href: "/transferencias/externas" },
-  // { label: "Inscribir cuentas", href: "/transferencias/inscribir-cuentas" },
-  // { label: "A otros bancos", href: "/transferencias/otros-bancos" },
-  // {
   {
     label: "Programar transferencias",
     href: "/transferencias/programar",

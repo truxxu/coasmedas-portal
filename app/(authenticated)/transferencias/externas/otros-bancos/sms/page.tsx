@@ -27,7 +27,7 @@ export default function SMSVerificationPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "A Otros Bancos",
-      backHref: "/transferencias/otros-bancos/confirmacion",
+      backHref: "/transferencias/externas/otros-bancos/confirmacion",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -38,7 +38,7 @@ export default function SMSVerificationPage() {
       "externalTransferConfirmation",
     );
     if (!confirmationData) {
-      router.push("/transferencias/otros-bancos");
+      router.push("/transferencias/externas/otros-bancos");
     }
   }, [router]);
 
@@ -148,7 +148,7 @@ export default function SMSVerificationPage() {
           "externalTransferResult",
           JSON.stringify(result),
         );
-        router.push("/transferencias/otros-bancos/resultado");
+        router.push("/transferencias/externas/otros-bancos/resultado");
       } else {
         setError("Codigo incorrecto. Por favor intenta nuevamente.");
       }
@@ -162,7 +162,7 @@ export default function SMSVerificationPage() {
   };
 
   const handleBack = () => {
-    router.push("/transferencias/otros-bancos/confirmacion");
+    router.push("/transferencias/externas/otros-bancos/confirmacion");
   };
 
   return (

@@ -20,11 +20,11 @@ const INTERNAL_FLOWS: InternalTransferOption[] = [
     id: "otros-bancos",
     title: "A Otros Bancos",
     description: "Transfiere a cuentas de otras entidades financieras.",
-    href: "/transferencias/externas/cuentas-mi-red",
+    href: "/transferencias/externas/otros-bancos",
     enabled: true,
   },
   {
-    id: "red-ccopcentral",
+    id: "red-copcentral",
     title: "Cuentas de mi Red Coopcentral",
     description: "Envía dinero a otras cooperativas de la red.",
     href: "/transferencias/externas/desde-cupos-rotativos",

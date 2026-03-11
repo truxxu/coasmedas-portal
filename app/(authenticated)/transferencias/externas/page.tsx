@@ -19,14 +19,12 @@ export default function TransferenciasExternasPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleSelectFlow = (flowId: string) => {
-    if (flowId === "entre-mis-cuentas") {
-      router.push("/transferencias/internas/entre-mis-cuentas");
-    } else if (flowId === "cuentas-mi-red") {
-      router.push("/transferencias/internas/cuentas-mi-red");
-    } else if (flowId === "desde-cupos-rotativos") {
-      router.push("/transferencias/internas/desde-cupos-rotativos");
-    } else if (flowId === "recargar-pse") {
-      router.push("/transferencias/internas/recargar-pse");
+    if (flowId === "inscribir-cuentas") {
+      router.push("/transferencias/externas/inscribir-cuentas");
+    } else if (flowId === "otros-bancos") {
+      router.push("/transferencias/externas/otros-bancos");
+    } else if (flowId === "red-copcentral") {
+      router.push("/transferencias/externas/red-copcentral");
     }
   };
 

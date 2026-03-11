@@ -40,7 +40,7 @@ export default function InscribirCuentasPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "Inscribir Cuentas",
-      backHref: "/transferencias/internas",
+      backHref: "/transferencias/externas",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
