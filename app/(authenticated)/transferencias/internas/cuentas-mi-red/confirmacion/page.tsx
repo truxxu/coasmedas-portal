@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { NetworkTransferConfirmationCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
@@ -15,18 +16,21 @@ import {
   mockNetworkSourceAccounts,
   mockNetworkTransferUserData,
 } from "@/src/mocks/mockNetworkTransferData";
+import { maskNumber } from "@/src/utils";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [confirmationData] =
-    useState<NetworkTransferConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<NetworkTransferConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
       const recipientData = sessionStorage.getItem("networkTransferRecipient");
-      const destinationData = sessionStorage.getItem("networkTransferDestination");
+      const destinationData = sessionStorage.getItem(
+        "networkTransferDestination",
+      );
       const sourceId = sessionStorage.getItem("networkTransferSourceId");
       const amount = sessionStorage.getItem("networkTransferAmount");
       const concept = sessionStorage.getItem("networkTransferConcept") || "";
@@ -37,42 +41,49 @@ export default function ConfirmacionPage() {
 
       const recipient: RegisteredNetworkAccount = JSON.parse(recipientData);
       const destination: NetworkProduct = JSON.parse(destinationData);
-      const sourceAccount = mockNetworkSourceAccounts.find((acc) => acc.id === sourceId);
+      const sourceAccount = mockNetworkSourceAccounts.find(
+        (acc) => acc.id === sourceId,
+      );
 
       return {
         holderName: mockNetworkTransferUserData.holderName,
         holderDocument: mockNetworkTransferUserData.holderDocument,
         sourceProduct: sourceAccount?.name || "Cuenta de Ahorros",
+        sourceAccountMaskedNumber: sourceAccount
+          ? maskNumber(sourceAccount.productNumber)
+          : undefined,
         destinationHolder: recipient.name,
         destinationBank: "Coopcentral",
         destinationAccountType:
           destination.type === "ahorros" ? "Ahorros" : "Corriente",
-        destinationAccountNumber: `123-456789-${destination.maskedNumber.slice(-2)}`,
+        destinationAccountNumber: destination.maskedNumber,
         amount: Number(amount),
+        transactionCost: 0,
         concept: concept || undefined,
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
       title: "Red Coopcentral",
-      backHref: "/transferencias/cuentas-mi-red/detalle",
+      backHref: "/transferencias/internas/cuentas-mi-red/detalle",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     if (!confirmationData) {
-      router.push("/transferencias/cuentas-mi-red");
+      router.push("/transferencias/internas/cuentas-mi-red");
     }
   }, [confirmationData, router]);
 
   const handleConfirm = () => {
-    router.push("/transferencias/cuentas-mi-red/verificacion");
+    router.push("/transferencias/internas/cuentas-mi-red/verificacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/cuentas-mi-red/detalle");
+    router.push("/transferencias/internas/cuentas-mi-red/detalle");
   };
 
   if (!confirmationData) {
@@ -87,9 +98,7 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Red Coopcentral"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
       </div>
 
       {/* Stepper */}
@@ -101,9 +110,20 @@ export default function ConfirmacionPage() {
       <NetworkTransferConfirmationCard
         confirmationData={confirmationData}
         hideBalances={hideBalances}
-        onConfirm={handleConfirm}
-        onBack={handleBack}
       />
+
+      {/* Footer Actions */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handleBack}
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
+        >
+          Volver
+        </button>
+        <Button variant="primary" onClick={handleConfirm}>
+          Confirmar Pago
+        </Button>
+      </div>
     </div>
   );
 }

@@ -4,39 +4,39 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ExternalTransferConfirmationCard } from "@/src/organisms";
+import { RedCoopTransferConfirmationCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
-import type { ExternalTransferConfirmationData } from "@/src/types/externalTransfer";
+import type { RedCoopTransferConfirmationData } from "@/src/types/redCoopTransfer";
 import {
-  mockExternalTransferSourceAccounts,
-  mockExternalTransferDestinations,
-  mockExternalTransferUserData,
-  EXTERNAL_TRANSFER_STEPS,
+  mockRedCoopSourceAccounts,
+  mockRedCoopDestinationAccounts,
+  mockRedCoopUserData,
+  RED_COOP_TRANSFER_STEPS,
 } from "@/src/mocks";
 
-export default function ConfirmacionPage() {
+export default function RedCoopConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData] =
-    useState<ExternalTransferConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<RedCoopTransferConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
-      const sourceId = sessionStorage.getItem("externalTransferSourceId");
+      const sourceId = sessionStorage.getItem("redCoopTransferSourceId");
       const destinationId = sessionStorage.getItem(
-        "externalTransferDestinationId",
+        "redCoopTransferDestinationId",
       );
-      const amount = sessionStorage.getItem("externalTransferAmount");
-      const concept = sessionStorage.getItem("externalTransferConcept");
+      const amount = sessionStorage.getItem("redCoopTransferAmount");
+      const concept = sessionStorage.getItem("redCoopTransferConcept");
 
       if (!sourceId || !destinationId || !amount) {
         return null;
       }
 
-      const sourceAccount = mockExternalTransferSourceAccounts.find(
+      const sourceAccount = mockRedCoopSourceAccounts.find(
         (acc) => acc.id === sourceId,
       );
-      const destination = mockExternalTransferDestinations.find(
+      const destination = mockRedCoopDestinationAccounts.find(
         (acc) => acc.id === destinationId,
       );
 
@@ -45,46 +45,47 @@ export default function ConfirmacionPage() {
       }
 
       return {
-        holderName: mockExternalTransferUserData.holderName,
-        holderDocument: mockExternalTransferUserData.holderDocument,
+        holderName: mockRedCoopUserData.holderName,
+        holderDocument: mockRedCoopUserData.holderDocument,
         sourceProduct: sourceAccount.type,
         destinationHolder: destination.holderName,
-        destinationBank: destination.bankName,
+        destinationBank: "Coopcentral",
         destinationAccountType:
           destination.accountType === "ahorros" ? "Ahorros" : "Corriente",
         destinationAccountNumber: destination.accountNumber,
         amount: Number(amount),
         concept: concept || "",
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
-      title: "A Otros Bancos",
-      backHref: "/transferencias/otros-bancos",
+      title: "Cuentas de mi Red Coopcentral",
+      backHref: "/transferencias/externas/red-coopcentral",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     if (!confirmationData) {
-      router.push("/transferencias/otros-bancos");
+      router.push("/transferencias/externas/red-coopcentral");
     }
   }, [confirmationData, router]);
 
   const handleConfirmPayment = () => {
     if (confirmationData) {
       sessionStorage.setItem(
-        "externalTransferConfirmation",
+        "redCoopTransferConfirmation",
         JSON.stringify(confirmationData),
       );
     }
 
-    router.push("/transferencias/otros-bancos/sms");
+    router.push("/transferencias/externas/red-coopcentral/sms");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/otros-bancos");
+    router.push("/transferencias/externas/red-coopcentral");
   };
 
   if (!confirmationData) {
@@ -99,16 +100,16 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Transferencias", "A Otros Bancos"]} />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
       </div>
 
       {/* Stepper */}
       <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={EXTERNAL_TRANSFER_STEPS} />
+        <Stepper currentStep={2} steps={RED_COOP_TRANSFER_STEPS} />
       </div>
 
       {/* Confirmation Card */}
-      <ExternalTransferConfirmationCard
+      <RedCoopTransferConfirmationCard
         confirmationData={confirmationData}
         hideBalances={hideBalances}
       />

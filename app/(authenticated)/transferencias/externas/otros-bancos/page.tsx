@@ -26,7 +26,7 @@ export default function AOtrosBancosPage() {
   useEffect(() => {
     setWelcomeBar({
       title: "A Otros Bancos",
-      backHref: "/transferencias/internas",
+      backHref: "/transferencias/externas",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -70,18 +70,15 @@ export default function AOtrosBancosPage() {
     sessionStorage.setItem("externalTransferAmount", amount);
     sessionStorage.setItem("externalTransferConcept", concept);
 
-    router.push("/transferencias/otros-bancos/confirmacion");
+    router.push("/transferencias/externas/otros-bancos/confirmacion");
   };
 
   const handleBack = () => {
-    router.push("/transferencias/internas");
+    router.push("/transferencias/externas");
   };
 
   const isFormValid =
-    selectedSourceId &&
-    selectedDestinationId &&
-    amount &&
-    Number(amount) > 0;
+    selectedSourceId && selectedDestinationId && amount && Number(amount) > 0;
 
   return (
     <div className="space-y-6">
