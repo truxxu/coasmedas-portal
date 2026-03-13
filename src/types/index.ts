@@ -21,3 +21,4 @@ export * from './pseRecharge';
 export * from './accountRegistration';
 export * from './externalTransfer';
 export * from './redCoopTransfer';
+export * from './scheduledTransfer';
