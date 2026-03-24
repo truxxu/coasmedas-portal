@@ -46,13 +46,13 @@
 
 ## 6. Internal Transfers
 
-- [ ] POST `/transfer/internal/sources/savings` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/sources/credits` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/sources/investments` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/savings` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/credits` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/investments` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/transfer/internal/sources/savings` ✅ Auth: JWT
+- [x] POST `/transfer/internal/sources/credits` ✅ Auth: JWT
+- [x] POST `/transfer/internal/sources/investments` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/savings` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/credits` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/investments` ✅ Auth: JWT
+- [x] POST `/transfer/internal/createTransaction` ✅ Auth: JWT + OTP
 
 ## 7. External Transfers (Banks - Visionamos)
 
@@ -126,11 +126,11 @@ These endpoints are **needed by the portal UI** but do **not exist** in the back
 | Password | 1 | 1 | 0 |
 | Products | 7 | 7 | 0 |
 | Payments | 5 | 5 | 0 |
-| Internal Transfers | 7 | 0 | 7 |
+| Internal Transfers | 7 | 7 | 0 |
 | External Transfers (Banks) | 5 | 0 | 5 |
 | External Transfers (Entities) | 3 | 0 | 3 |
 | BRE-B | 12 | 0 | 12 |
-| **Subtotal (existing API)** | **46** | **19** | **27** |
+| **Subtotal (existing API)** | **46** | **26** | **20** |
 
 ### Missing from Backend API
 

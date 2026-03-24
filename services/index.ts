@@ -31,3 +31,13 @@ export {
   createPaymentTransaction,
   createPayzenTransaction,
 } from './payments.service';
+
+export {
+  getTransferSourcesSavings,
+  getTransferSourcesCredits,
+  getTransferSourcesInvestments,
+  getTransferTargetsSavings,
+  getTransferTargetsCredits,
+  getTransferTargetsInvestments,
+  createInternalTransfer,
+} from './transfers.service';
