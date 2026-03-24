@@ -46,6 +46,12 @@ export default function ResultadoPage() {
     sessionStorage.removeItem("externalTransferConcept");
     sessionStorage.removeItem("externalTransferConfirmation");
     sessionStorage.removeItem("externalTransferResult");
+    sessionStorage.removeItem("externalTransferSavingsApi");
+    sessionStorage.removeItem("externalTransferCreditsApi");
+    sessionStorage.removeItem("externalTransferTxRequest");
+    sessionStorage.removeItem("externalTransferSourceName");
+    sessionStorage.removeItem("externalTransferDestBank");
+    sessionStorage.removeItem("externalTransferDestAccNum");
   };
 
   const handlePrintSave = () => {

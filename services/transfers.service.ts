@@ -18,12 +18,20 @@ import type {
   TransferTargetCredits,
   TransferTargetInvestments,
   InternalTransferResult,
+  BankListItem,
+  EntityListItem,
+  GetTransactionCostRequest,
+  TransactionCostResponse,
+  CreateExternalTransferRequest,
+  ExternalTransferApiResult,
+  QueryProductRequest,
 } from '@/types/api/transfers';
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
   InvestmentAccountResponse,
 } from '@/types/api/products';
+import type { UserIdentification } from '@/types/api/common';
 
 // ─── Internal Transfer Sources ───
 
@@ -111,5 +119,97 @@ export async function createInternalTransfer(params: CreateInternalTransferReque
   return apiPost<InternalTransferResult>('/transfer/internal/createTransaction', params);
 }
 
-// TODO: Implement external transfer endpoints (Banks - Visionamos)
-// TODO: Implement external transfer endpoints (Coopcentral Entities)
+// ─── External Transfer Sources ───
+
+/**
+ * List savings accounts available as external transfer source.
+ *
+ * @endpoint POST /transfer/external/sources/savings
+ * @auth JWT
+ * @status ✅ Used in mobile (external transfer source selection)
+ */
+export async function getExternalSourcesSavings(params: TransferAccountsRequest): Promise<SavingsAccountResponse[]> {
+  return apiPost<SavingsAccountResponse[]>('/transfer/external/sources/savings', params);
+}
+
+/**
+ * List credit accounts available as external transfer source.
+ *
+ * @endpoint POST /transfer/external/sources/credits
+ * @auth JWT
+ * @status ✅ Used in mobile (external transfer source selection)
+ */
+export async function getExternalSourcesCredits(params: TransferAccountsRequest): Promise<CreditAccountResponse[]> {
+  return apiPost<CreditAccountResponse[]>('/transfer/external/sources/credits', params);
+}
+
+// ─── External Transfer (Banks - Visionamos) ───
+
+/**
+ * List available banks for external transfers (Visionamos network).
+ *
+ * @endpoint POST /transfer/external/listBanks
+ * @auth JWT
+ * @status ✅ Used in mobile (bank selection)
+ */
+export async function listBanks(params?: UserIdentification): Promise<BankListItem[]> {
+  return apiPost<BankListItem[]>('/transfer/external/listBanks', params ?? {});
+}
+
+/**
+ * Get transaction cost (commission) for an external bank transfer.
+ *
+ * @endpoint POST /transfer/external/getTransactionCost
+ * @auth JWT
+ * @status ✅ Used in mobile (shows commission before confirming)
+ */
+export async function getTransactionCost(params: GetTransactionCostRequest): Promise<TransactionCostResponse> {
+  return apiPost<TransactionCostResponse>('/transfer/external/getTransactionCost', params);
+}
+
+/**
+ * Execute an external bank transfer (Visionamos network).
+ *
+ * @endpoint POST /transfer/external/banks/createTransaction
+ * @auth JWT + OTP
+ * @status ✅ Used in mobile (transfer verification)
+ */
+export async function createExternalBankTransfer(params: CreateExternalTransferRequest): Promise<ExternalTransferApiResult> {
+  return apiPost<ExternalTransferApiResult>('/transfer/external/banks/createTransaction', params);
+}
+
+// ─── External Transfer (Coopcentral Entities) ───
+
+/**
+ * List available entities in Coopcentral network.
+ *
+ * @endpoint POST /transfer/external/listEntities
+ * @auth JWT
+ * @status ✅ Used in mobile (entity selection)
+ */
+export async function listEntities(params?: UserIdentification): Promise<EntityListItem[]> {
+  return apiPost<EntityListItem[]>('/transfer/external/listEntities', params ?? {});
+}
+
+/**
+ * Validate destination product exists in Coopcentral entity.
+ * Returns no payload (just statusCode confirmation).
+ *
+ * @endpoint POST /transfer/external/entities/targets/queryProduct
+ * @auth JWT
+ * @status ✅ Used in mobile (destination validation)
+ */
+export async function queryEntityProduct(params: QueryProductRequest): Promise<void> {
+  await apiPost<void>('/transfer/external/entities/targets/queryProduct', params);
+}
+
+/**
+ * Execute an external entity transfer (Coopcentral network).
+ *
+ * @endpoint POST /transfer/external/entities/createTransaction
+ * @auth JWT + OTP
+ * @status ✅ Used in mobile (transfer verification)
+ */
+export async function createExternalEntityTransfer(params: CreateExternalTransferRequest): Promise<ExternalTransferApiResult> {
+  return apiPost<ExternalTransferApiResult>('/transfer/external/entities/createTransaction', params);
+}

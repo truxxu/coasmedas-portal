@@ -1,4 +1,4 @@
-import type { UserIdentification, AccountReference } from './common';
+import type { UserIdentification, AccountReference, DocumentType } from './common';
 
 // ─── Request Types ───
 
@@ -73,4 +73,87 @@ export interface InternalTransferResult {
   /** Format: HHMMSS (may omit leading zero) */
   horaTrn: string | number;
   valorTransferencia: string | number;
+}
+
+// ─── External Transfer (Banks - Visionamos) ───
+
+/**
+ * Bank item returned by POST /transfer/external/listBanks.
+ */
+export interface BankListItem {
+  code: string;
+  name: string;
+}
+
+/**
+ * Destination account for external transfers (banks and entities).
+ */
+export interface ExternalTransferDestination {
+  name: string;
+  documentType: DocumentType;
+  documentNumber: string;
+  accountNumber: string;
+  /** "01" = savings, etc. */
+  accountType: string;
+  /** From listBanks or listEntities */
+  entityCode: string;
+}
+
+/**
+ * Source account reference for external transfers.
+ */
+export interface ExternalTransferSourceRef {
+  codigoProductoCobis: string;
+  tipoCartera: string;
+  idCuenta: string;
+  numeroCuenta?: string;
+}
+
+/**
+ * Request for POST /transfer/external/getTransactionCost.
+ */
+export interface GetTransactionCostRequest extends UserIdentification {
+  origen: ExternalTransferSourceRef;
+  destino: ExternalTransferDestination;
+  valorTransferencia: number;
+}
+
+/**
+ * Response from POST /transfer/external/getTransactionCost.
+ */
+export interface TransactionCostResponse {
+  numAprobacion: string | number;
+  comision: number;
+}
+
+/**
+ * Request for POST /transfer/external/banks/createTransaction
+ * and POST /transfer/external/entities/createTransaction.
+ */
+export interface CreateExternalTransferRequest extends UserIdentification {
+  otp: string;
+  origen: ExternalTransferSourceRef & { numeroCuenta: string };
+  destino: ExternalTransferDestination;
+  valorTransferencia: number;
+}
+
+/**
+ * Result from external transfer createTransaction endpoints.
+ * Same shape as InternalTransferResult.
+ */
+export type ExternalTransferApiResult = InternalTransferResult;
+
+// ─── External Transfer (Coopcentral Entities) ───
+
+/**
+ * Entity item returned by POST /transfer/external/listEntities.
+ * Same shape as BankListItem.
+ */
+export type EntityListItem = BankListItem;
+
+/**
+ * Request for POST /transfer/external/entities/targets/queryProduct.
+ */
+export interface QueryProductRequest extends UserIdentification {
+  destino: ExternalTransferDestination;
 }

@@ -46,6 +46,12 @@ export default function RedCoopResultadoPage() {
     sessionStorage.removeItem("redCoopTransferConcept");
     sessionStorage.removeItem("redCoopTransferConfirmation");
     sessionStorage.removeItem("redCoopTransferResult");
+    sessionStorage.removeItem("redCoopTransferSavingsApi");
+    sessionStorage.removeItem("redCoopTransferCreditsApi");
+    sessionStorage.removeItem("redCoopTransferTxRequest");
+    sessionStorage.removeItem("redCoopTransferSourceName");
+    sessionStorage.removeItem("redCoopTransferDestBank");
+    sessionStorage.removeItem("redCoopTransferDestAccNum");
   };
 
   const handlePrintSave = () => {

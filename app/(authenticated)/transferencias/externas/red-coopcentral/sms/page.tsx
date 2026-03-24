@@ -1,28 +1,73 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
-import {
-  RED_COOP_TRANSFER_STEPS,
-  RED_COOP_MOCK_VALID_CODE,
-  mockRedCoopSourceAccounts,
-  mockRedCoopDestinationAccounts,
-} from "@/src/mocks";
-import type { RedCoopTransferResult } from "@/src/types/redCoopTransfer";
+import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import { useSMSCodeVerification } from "@/src/hooks";
+import { RED_COOP_TRANSFER_STEPS } from "@/src/mocks";
+import { createExternalEntityTransfer } from "@/services/transfers.service";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { mapExternalEntityTransferResult } from "@/lib/mappers/externalTransfers.mapper";
 
 export default function RedCoopSMSPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  const { user } = useUserContext();
+  const { documentType, documentNumber } = user ?? {};
 
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [resendDisabled, setResendDisabled] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(0);
+  const {
+    code,
+    error,
+    isResendDisabled,
+    resendCountdown,
+    isLoading,
+    handleCodeChange,
+    handleResendCode,
+    handleSubmit,
+  } = useSMSCodeVerification({
+    sessionKey: "redCoopTransferConfirmation",
+    fallbackPath: "/transferencias/externas/red-coopcentral",
+    successPath: "/transferencias/externas/red-coopcentral/resultado",
+    onSubmit: async (otp) => {
+      if (!documentType || !documentNumber) throw new Error("Sesion no valida");
+
+      const txRequestStr = sessionStorage.getItem("redCoopTransferTxRequest");
+      if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
+
+      const txRequest = JSON.parse(txRequestStr);
+      const result = await createExternalEntityTransfer({
+        documentType,
+        documentNumber,
+        otp,
+        ...txRequest,
+      });
+
+      // Map and store result for the resultado page
+      const sourceName = sessionStorage.getItem("redCoopTransferSourceName") || "";
+      const destBank = sessionStorage.getItem("redCoopTransferDestBank") || "";
+      const destAccNum = sessionStorage.getItem("redCoopTransferDestAccNum") || "";
+      const concept = sessionStorage.getItem("redCoopTransferConcept") || "";
+
+      const mappedResult = mapExternalEntityTransferResult(result, {
+        sourceAccount: sourceName,
+        destinationBank: destBank,
+        destinationAccountNumber: destAccNum,
+        concept,
+      });
+      sessionStorage.setItem("redCoopTransferResult", JSON.stringify(mappedResult));
+    },
+    onResend: async () => {
+      if (!documentType || !documentNumber) return;
+      await sendTransactionOtp({
+        documentType,
+        documentNumber,
+        trnType: "TransferExternalEntities",
+      });
+    },
+  });
 
   useEffect(() => {
     setWelcomeBar({
@@ -31,135 +76,6 @@ export default function RedCoopSMSPage() {
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Check if previous steps were completed
-    const confirmationData = sessionStorage.getItem(
-      "redCoopTransferConfirmation",
-    );
-    if (!confirmationData) {
-      router.push("/transferencias/externas/red-coopcentral");
-    }
-  }, [router]);
-
-  useEffect(() => {
-    // Countdown timer for resend
-    if (resendCountdown > 0) {
-      const timer = setTimeout(() => {
-        setResendCountdown(resendCountdown - 1);
-        if (resendCountdown === 1) {
-          setResendDisabled(false);
-        }
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [resendCountdown]);
-
-  const handleCodeChange = (newCode: string) => {
-    setCode(newCode);
-    setError("");
-  };
-
-  const handleResendCode = () => {
-    setResendDisabled(true);
-    setResendCountdown(60);
-    setError("");
-    // TODO: API call to resend SMS
-  };
-
-  const generateTransactionResult = (
-    success: boolean,
-  ): RedCoopTransferResult => {
-    const sourceId = sessionStorage.getItem("redCoopTransferSourceId");
-    const destinationId = sessionStorage.getItem(
-      "redCoopTransferDestinationId",
-    );
-    const amount = sessionStorage.getItem("redCoopTransferAmount");
-    const concept = sessionStorage.getItem("redCoopTransferConcept");
-
-    const sourceAccount = mockRedCoopSourceAccounts.find(
-      (acc) => acc.id === sourceId,
-    );
-    const destination = mockRedCoopDestinationAccounts.find(
-      (acc) => acc.id === destinationId,
-    );
-
-    const now = new Date();
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-
-    if (success) {
-      return {
-        status: "success",
-        sourceAccount: sourceAccount?.type || "Cuenta de Ahorros",
-        destinationBank: destination?.bankName || "Coopcentral",
-        destinationAccountNumber: destination?.accountNumber || "",
-        amountTransferred: Number(amount) || 0,
-        concept: concept || "",
-        transactionCost: 0,
-        transactionDate: now.toLocaleDateString("es-CO", dateOptions),
-        transactionTime: now.toLocaleTimeString("es-CO", timeOptions),
-        approvalNumber: Math.floor(100000 + Math.random() * 900000).toString(),
-        description: "Transferencia Exitosa",
-      };
-    } else {
-      return {
-        status: "error",
-        sourceAccount: sourceAccount?.type || "Cuenta de Ahorros",
-        destinationBank: destination?.bankName || "Coopcentral",
-        destinationAccountNumber: destination?.accountNumber || "",
-        amountTransferred: 0,
-        concept: concept || "",
-        transactionCost: 0,
-        transactionDate: now.toLocaleDateString("es-CO", dateOptions),
-        transactionTime: now.toLocaleTimeString("es-CO", timeOptions),
-        approvalNumber: "-",
-        description: "Transaccion Fallida",
-        errorMessage: "Codigo de verificacion incorrecto",
-      };
-    }
-  };
-
-  const handlePay = async () => {
-    if (code.length !== 6) {
-      setError("Por favor ingresa el codigo de 6 digitos");
-      return;
-    }
-
-    setIsLoading(true);
-    setError("");
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      if (code === RED_COOP_MOCK_VALID_CODE) {
-        // Generate success result
-        const result = generateTransactionResult(true);
-        sessionStorage.setItem(
-          "redCoopTransferResult",
-          JSON.stringify(result),
-        );
-        router.push("/transferencias/externas/red-coopcentral/resultado");
-      } else {
-        setError("Codigo incorrecto. Por favor intenta nuevamente.");
-      }
-    } catch {
-      setError(
-        "Error al procesar la transferencia. Por favor intenta nuevamente.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleBack = () => {
     router.push("/transferencias/externas/red-coopcentral/confirmacion");
@@ -184,8 +100,8 @@ export default function RedCoopSMSPage() {
         hasError={!!error}
         errorMessage={error}
         onResend={handleResendCode}
-        resendDisabled={resendDisabled}
-        resendCountdown={resendCountdown}
+        resendDisabled={isResendDisabled}
+        resendCountdown={resendCountdown > 0 ? resendCountdown : undefined}
         disabled={isLoading}
       />
 
@@ -200,7 +116,7 @@ export default function RedCoopSMSPage() {
         </button>
         <Button
           variant="primary"
-          onClick={handlePay}
+          onClick={handleSubmit}
           disabled={isLoading || code.length !== 6}
         >
           {isLoading ? "Procesando..." : "Transferir"}

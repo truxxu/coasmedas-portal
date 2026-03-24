@@ -40,4 +40,12 @@ export {
   getTransferTargetsCredits,
   getTransferTargetsInvestments,
   createInternalTransfer,
+  getExternalSourcesSavings,
+  getExternalSourcesCredits,
+  listBanks,
+  getTransactionCost,
+  createExternalBankTransfer,
+  listEntities,
+  queryEntityProduct,
+  createExternalEntityTransfer,
 } from './transfers.service';
