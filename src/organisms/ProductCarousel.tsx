@@ -95,6 +95,19 @@ export function ProductCarousel({
     }
   };
 
+  if (products.length === 0) {
+    return (
+      <div className={`bg-white rounded-2xl p-6 ${className}`}>
+        <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
+          {title}
+        </h2>
+        <p className="text-[#58585B] text-center py-8">
+          No hay productos disponibles en esta categoria.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className={`bg-white rounded-2xl p-6 ${className}`}>
       {/* Title */}
