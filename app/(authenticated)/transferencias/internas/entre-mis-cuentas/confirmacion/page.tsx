@@ -115,6 +115,7 @@ export default function ConfirmacionPage() {
         sourceAccount: sourceInfo.name,
         destinationProduct: destinationName,
         amount: Number(amount),
+        transactionCost: 0,
       };
     });
 

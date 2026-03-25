@@ -45,6 +45,7 @@ export default function ConfirmacionPage() {
         cupoOrigen: selectedCupo.name,
         cuentaDestino: `${selectedDestination.name} (${selectedDestination.maskedNumber})`,
         amount: Number(amount),
+        transactionCost: 0,
       };
     });
 

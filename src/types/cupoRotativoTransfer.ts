@@ -36,6 +36,7 @@ export interface CupoRotativoConfirmationData {
   cupoOrigen: string;
   cuentaDestino: string;
   amount: number;
+  transactionCost?: number;
 }
 
 /**

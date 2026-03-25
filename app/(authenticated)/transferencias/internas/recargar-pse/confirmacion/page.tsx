@@ -38,6 +38,7 @@ export default function ConfirmacionPage() {
         productToRecharge: `${destination.name} (${destination.maskedNumber})`,
         amount: Number(amount),
         method: "PSE" as const,
+        transactionCost: 0,
       };
     });
 
