@@ -18,7 +18,9 @@ export function UtilityPaymentConfirmationCard({
   return (
     <Card className="p-6 md:p-8 space-y-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-brand-teal-dark">Confirmacion de Pago</h2>
+      <h2 className="text-lg font-bold text-brand-teal-dark">
+        Confirmación de Pago
+      </h2>
 
       {/* Description */}
       <p className="text-[15px] text-black">

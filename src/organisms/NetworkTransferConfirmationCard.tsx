@@ -25,7 +25,7 @@ export function NetworkTransferConfirmationCard({
       {/* Header */}
       <div>
         <h2 className="text-lg font-bold text-brand-navy">
-          Confirmacion de Pago
+          Confirmación de Pago
         </h2>
         <p className="text-[15px] text-brand-gray-high mt-1">
           Por favor, verifica que los datos de la transaccion sean correctos

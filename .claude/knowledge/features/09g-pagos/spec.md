@@ -28,19 +28,22 @@
 The **Pago de Proteccion** feature allows users to pay their insurance products (protection policies) such as "Seguro de Vida" and "Poliza Exequial". This is a 4-step wizard flow nested within the `pagos/pagar-mis-productos` section.
 
 ### Key Characteristics
-- **4-step wizard flow**: Detalle → Confirmacion → Codigo SMS → Respuesta
+
+- **4-step wizard flow**: Detalle → Confirmación → Codigo SMS → Respuesta
 - **Visual product cards**: Users select protection products via selectable cards (not dropdowns)
 - **SMS verification**: OTP code required to authorize the transaction
 - **Transaction receipt**: Final page shows complete transaction details with print option
 - **Insurance-specific labels**: Uses "Producto a Pagar", "Numero de Poliza" terminology
 
 ### User Journey
+
 1. Select source account and protection product via visual cards
 2. Review and confirm payment details (holder info, policy number, amount)
 3. Enter 6-digit SMS verification code
 4. View transaction result (success/failure) with receipt
 
 ### Route Structure
+
 ```
 /pagos/pagar-mis-productos/proteccion/detalle       → Step 1: Payment Details
 /pagos/pagar-mis-productos/proteccion/confirmacion  → Step 2: Confirmation
@@ -50,14 +53,14 @@ The **Pago de Proteccion** feature allows users to pay their insurance products 
 
 ### Key Differences from Other Payment Flows
 
-| Aspect | Utility Payment (09f) | Protection Payment (09g) |
-|--------|----------------------|--------------------------|
-| Product Selection | Dropdown selection | Visual product cards |
-| Card Display | N/A | Title + Number + Amount + Status |
-| Selected State | N/A | Blue border (`#007FFF`) on card |
-| Product Info | Service alias | Policy name, masked number |
-| Confirmation Labels | "Servicio a Pagar" | "Producto a Pagar", "Numero de Poliza" |
-| Response Labels | "Linea credito" | Insurance product name |
+| Aspect              | Utility Payment (09f) | Protection Payment (09g)               |
+| ------------------- | --------------------- | -------------------------------------- |
+| Product Selection   | Dropdown selection    | Visual product cards                   |
+| Card Display        | N/A                   | Title + Number + Amount + Status       |
+| Selected State      | N/A                   | Blue border (`#007FFF`) on card        |
+| Product Info        | Service alias         | Policy name, masked number             |
+| Confirmation Labels | "Servicio a Pagar"    | "Producto a Pagar", "Numero de Poliza" |
+| Response Labels     | "Linea credito"       | Insurance product name                 |
 
 ---
 
@@ -106,6 +109,7 @@ app/(authenticated)/pagos/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -125,26 +129,26 @@ app/(authenticated)/pagos/
  */
 export interface ProtectionSourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
-  maskedNumber: string;        // "***4428"
+  maskedNumber: string; // "***4428"
   balance: number;
-  displayName: string;         // "Cuenta de Ahorros - Saldo: $ 8.730.500"
+  displayName: string; // "Cuenta de Ahorros - Saldo: $ 8.730.500"
 }
 
 /**
  * Protection product status
  */
-export type ProtectionPaymentStatus = 'activo' | 'inactivo' | 'cancelado';
+export type ProtectionPaymentStatus = "activo" | "inactivo" | "cancelado";
 
 /**
  * Protection product for payment selection
  */
 export interface ProtectionPaymentProduct {
   id: string;
-  title: string;               // "Seguro de Vida Grupo Deudores"
-  productNumber: string;       // "No******65-9"
-  nextPaymentAmount: number;   // 150000
+  title: string; // "Seguro de Vida Grupo Deudores"
+  productNumber: string; // "No******65-9"
+  nextPaymentAmount: number; // 150000
   status: ProtectionPaymentStatus;
 }
 
@@ -161,12 +165,12 @@ export interface ProtectionPaymentDetailsForm {
  * Step 2 - Confirmation data
  */
 export interface ProtectionPaymentConfirmation {
-  holderName: string;          // "CAMILO ANDRES CRUZ"
-  holderDocument: string;      // "CC 1.***.***234"
-  productToPay: string;        // "Seguro de Vida Grupo Deudores"
-  policyNumber: string;        // "No******65-9"
-  productToDebit: string;      // "Cuenta de Ahorros"
-  amountToPay: number;         // 150000
+  holderName: string; // "CAMILO ANDRES CRUZ"
+  holderDocument: string; // "CC 1.***.***234"
+  productToPay: string; // "Seguro de Vida Grupo Deudores"
+  policyNumber: string; // "No******65-9"
+  productToDebit: string; // "Cuenta de Ahorros"
+  amountToPay: number; // 150000
 }
 
 /**
@@ -186,14 +190,14 @@ export interface ProtectionSmsVerificationState {
  */
 export interface ProtectionPaymentResult {
   success: boolean;
-  creditLine: string;          // "Seguro de Vida Grupo Deudores"
-  productNumber: string;       // "No******65-9"
-  amountPaid: number;          // 150000
-  transactionCost: number;     // 0
-  transmissionDate: string;    // "3 de septiembre de 2025"
-  transactionTime: string;     // "10:21 pm"
-  approvalNumber: string;      // "463342"
-  description: string;         // "Exitosa" or error message
+  creditLine: string; // "Seguro de Vida Grupo Deudores"
+  productNumber: string; // "No******65-9"
+  amountPaid: number; // 150000
+  transactionCost: number; // 0
+  transmissionDate: string; // "3 de septiembre de 2025"
+  transactionTime: string; // "10:21 pm"
+  approvalNumber: string; // "463342"
+  description: string; // "Exitosa" or error message
 }
 
 /**
@@ -238,7 +242,7 @@ export interface ProtectionStepperStep {
 ### Update: `src/types/index.ts`
 
 ```typescript
-export * from './protection-payment';
+export * from "./protection-payment";
 ```
 
 ---
@@ -249,19 +253,19 @@ export * from './protection-payment';
 
 The following components should already exist from 09f-pagos and can be reused:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `OtpDigitInput` | `src/atoms` | Single digit input for OTP |
-| `OtpInput` | `src/molecules` | 6-digit OTP input group |
-| `PaymentDetailRow` | `src/molecules` | Label-value row for confirmation |
-| `TransactionSuccessHeader` | `src/molecules` | Success/error icon with title |
-| `Stepper` | `src/molecules` | Progress stepper |
-| `BackButton` | `src/atoms` | Back navigation arrow |
-| `Button` | `src/atoms` | Primary, secondary buttons |
-| `Card` | `src/atoms` | Main content card |
-| `Divider` | `src/atoms` | Horizontal separators |
-| `Breadcrumbs` | `src/molecules` | Navigation breadcrumbs |
-| `HideBalancesToggle` | `src/molecules` | Balance visibility toggle |
+| Component                  | Location        | Usage                            |
+| -------------------------- | --------------- | -------------------------------- |
+| `OtpDigitInput`            | `src/atoms`     | Single digit input for OTP       |
+| `OtpInput`                 | `src/molecules` | 6-digit OTP input group          |
+| `PaymentDetailRow`         | `src/molecules` | Label-value row for confirmation |
+| `TransactionSuccessHeader` | `src/molecules` | Success/error icon with title    |
+| `Stepper`                  | `src/molecules` | Progress stepper                 |
+| `BackButton`               | `src/atoms`     | Back navigation arrow            |
+| `Button`                   | `src/atoms`     | Primary, secondary buttons       |
+| `Card`                     | `src/atoms`     | Main content card                |
+| `Divider`                  | `src/atoms`     | Horizontal separators            |
+| `Breadcrumbs`              | `src/molecules` | Navigation breadcrumbs           |
+| `HideBalancesToggle`       | `src/molecules` | Balance visibility toggle        |
 
 ---
 
@@ -274,6 +278,7 @@ The following components should already exist from 09f-pagos and can be reused:
 **Purpose**: Selectable protection product card for Step 1 product selection
 
 **Props Interface**:
+
 ```typescript
 interface ProtectionPaymentCardProps {
   product: ProtectionPaymentProduct;
@@ -284,6 +289,7 @@ interface ProtectionPaymentCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -373,6 +379,7 @@ export const ProtectionPaymentCard: React.FC<ProtectionPaymentCardProps> = ({
 **Purpose**: Step 1 form with source account dropdown and product card selection
 
 **Props Interface**:
+
 ```typescript
 interface ProtectionPaymentFormProps {
   sourceAccounts: ProtectionSourceAccount[];
@@ -393,6 +400,7 @@ interface ProtectionPaymentFormProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -545,6 +553,7 @@ export const ProtectionPaymentForm: React.FC<ProtectionPaymentFormProps> = ({
 **Location**: `src/organisms/ProtectionPaymentConfirmation.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ProtectionPaymentConfirmationProps {
   confirmation: ProtectionPaymentConfirmation;
@@ -556,6 +565,7 @@ interface ProtectionPaymentConfirmationProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Button, Divider } from '@/src/atoms';
@@ -583,7 +593,7 @@ export const ProtectionPaymentConfirmation: React.FC<ProtectionPaymentConfirmati
       {/* Card Title */}
       <div className="space-y-2">
         <h2 className="text-lg font-bold text-[#1D4E8F]">
-          Confirmacion de Pagos
+          Confirmación de Pagos
         </h2>
         <p className="text-[15px] text-black">
           Por favor, verifica que los datos de la transaccion sean correctos antes de continuar.
@@ -655,6 +665,7 @@ export const ProtectionPaymentConfirmation: React.FC<ProtectionPaymentConfirmati
 **Location**: `src/organisms/ProtectionPaymentSmsCode.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ProtectionPaymentSmsCodeProps {
   otpValue: string;
@@ -669,6 +680,7 @@ interface ProtectionPaymentSmsCodeProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -765,6 +777,7 @@ export const ProtectionPaymentSmsCode: React.FC<ProtectionPaymentSmsCodeProps> =
 **Location**: `src/organisms/ProtectionPaymentResponse.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ProtectionPaymentResponseProps {
   result: ProtectionPaymentResult;
@@ -775,6 +788,7 @@ interface ProtectionPaymentResponseProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Button, Divider } from '@/src/atoms';
@@ -870,10 +884,10 @@ export const ProtectionPaymentResponse: React.FC<ProtectionPaymentResponseProps>
 ```typescript
 // Used across all pages
 export const PROTECTION_PAYMENT_STEPS = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 ```
 
@@ -904,9 +918,9 @@ import {
 
 const STEPS = [
   { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
+  { number: 2, label: 'Confirmación' },
   { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 4, label: 'Finalización' },
 ];
 
 const initialFormData: FormData = {
@@ -1023,7 +1037,7 @@ export default function ProteccionDetallePage() {
 
 ---
 
-### Page 2: Confirmation (Confirmacion)
+### Page 2: Confirmation (Confirmación)
 
 **File**: `app/(authenticated)/pagos/pagar-mis-productos/proteccion/confirmacion/page.tsx`
 
@@ -1044,9 +1058,9 @@ import {
 
 const STEPS = [
   { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
+  { number: 2, label: 'Confirmación' },
   { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 4, label: 'Finalización' },
 ];
 
 export default function ProteccionConfirmacionPage() {
@@ -1159,9 +1173,9 @@ import { mockProtectionTransactionResult } from '@/src/mocks/mockProtectionPayme
 
 const STEPS = [
   { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
+  { number: 2, label: 'Confirmación' },
   { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 4, label: 'Finalización' },
 ];
 
 export default function ProteccionCodigoSmsPage() {
@@ -1287,9 +1301,9 @@ import { ProtectionPaymentResult } from '@/src/types/protection-payment';
 
 const STEPS = [
   { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
+  { number: 2, label: 'Confirmación' },
   { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 4, label: 'Finalización' },
 ];
 
 export default function ProteccionRespuestaPage() {
@@ -1375,11 +1389,11 @@ export default function ProteccionRespuestaPage() {
 
 ### SessionStorage Keys
 
-| Key | Description | Type |
-|-----|-------------|------|
-| `protectionPaymentDetails` | Form data from step 1 | JSON (ProtectionPaymentDetailsForm) |
-| `protectionPaymentConfirmation` | Confirmation data from step 2 | JSON (ProtectionPaymentConfirmation) |
-| `protectionPaymentResult` | Transaction result from step 4 | JSON (ProtectionPaymentResult) |
+| Key                             | Description                    | Type                                 |
+| ------------------------------- | ------------------------------ | ------------------------------------ |
+| `protectionPaymentDetails`      | Form data from step 1          | JSON (ProtectionPaymentDetailsForm)  |
+| `protectionPaymentConfirmation` | Confirmation data from step 2  | JSON (ProtectionPaymentConfirmation) |
+| `protectionPaymentResult`       | Transaction result from step 4 | JSON (ProtectionPaymentResult)       |
 
 ### Navigation Flow
 
@@ -1398,6 +1412,7 @@ export default function ProteccionRespuestaPage() {
 ```
 
 ### Back Navigation
+
 - Step 1 → /pagos/pagar-mis-productos page
 - Step 2 → Step 1 (preserves form data)
 - Step 3 → Step 2 (preserves data)
@@ -1414,27 +1429,27 @@ import {
   ProtectionSourceAccount,
   ProtectionPaymentProduct,
   ProtectionPaymentResult,
-} from '@/src/types/protection-payment';
+} from "@/src/types/protection-payment";
 
 /**
  * Mock source accounts for protection payment
  */
 export const mockProtectionSourceAccounts: ProtectionSourceAccount[] = [
   {
-    id: '1',
-    type: 'ahorros',
-    accountNumber: '12345678',
-    maskedNumber: '***5678',
+    id: "1",
+    type: "ahorros",
+    accountNumber: "12345678",
+    maskedNumber: "***5678",
     balance: 8730500,
-    displayName: 'Cuenta de Ahorros - Saldo: $ 8.730.500',
+    displayName: "Cuenta de Ahorros - Saldo: $ 8.730.500",
   },
   {
-    id: '2',
-    type: 'corriente',
-    accountNumber: '87654321',
-    maskedNumber: '***4321',
+    id: "2",
+    type: "corriente",
+    accountNumber: "87654321",
+    maskedNumber: "***4321",
     balance: 2500000,
-    displayName: 'Cuenta Corriente - Saldo: $ 2.500.000',
+    displayName: "Cuenta Corriente - Saldo: $ 2.500.000",
   },
 ];
 
@@ -1443,18 +1458,18 @@ export const mockProtectionSourceAccounts: ProtectionSourceAccount[] = [
  */
 export const mockProtectionPaymentProducts: ProtectionPaymentProduct[] = [
   {
-    id: '1',
-    title: 'Seguro de Vida Grupo Deudores',
-    productNumber: 'No******65-9',
+    id: "1",
+    title: "Seguro de Vida Grupo Deudores",
+    productNumber: "No******65-9",
     nextPaymentAmount: 150000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Poliza Exequial Familiar',
-    productNumber: 'No******12-3',
+    id: "2",
+    title: "Poliza Exequial Familiar",
+    productNumber: "No******12-3",
     nextPaymentAmount: 55000,
-    status: 'activo',
+    status: "activo",
   },
 ];
 
@@ -1463,14 +1478,14 @@ export const mockProtectionPaymentProducts: ProtectionPaymentProduct[] = [
  */
 export const mockProtectionTransactionResult: ProtectionPaymentResult = {
   success: true,
-  creditLine: 'Seguro de Vida Grupo Deudores',
-  productNumber: 'No******65-9',
+  creditLine: "Seguro de Vida Grupo Deudores",
+  productNumber: "No******65-9",
   amountPaid: 150000,
   transactionCost: 0,
-  transmissionDate: '3 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '463342',
-  description: 'Exitosa',
+  transmissionDate: "3 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "463342",
+  description: "Exitosa",
 };
 
 /**
@@ -1478,21 +1493,21 @@ export const mockProtectionTransactionResult: ProtectionPaymentResult = {
  */
 export const mockProtectionTransactionResultError: ProtectionPaymentResult = {
   success: false,
-  creditLine: 'Seguro de Vida Grupo Deudores',
-  productNumber: 'No******65-9',
+  creditLine: "Seguro de Vida Grupo Deudores",
+  productNumber: "No******65-9",
   amountPaid: 0,
   transactionCost: 0,
-  transmissionDate: '3 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '',
-  description: 'Fondos insuficientes',
+  transmissionDate: "3 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "",
+  description: "Fondos insuficientes",
 };
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './mockProtectionPaymentData';
+export * from "./mockProtectionPaymentData";
 ```
 
 ---
@@ -1502,7 +1517,7 @@ export * from './mockProtectionPaymentData';
 ### File: `src/schemas/protectionPaymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1 - Payment details validation
@@ -1510,11 +1525,11 @@ import * as yup from 'yup';
 export const protectionPaymentDetailsSchema = yup.object({
   sourceAccountId: yup
     .string()
-    .required('Por favor selecciona una cuenta origen'),
+    .required("Por favor selecciona una cuenta origen"),
   selectedProduct: yup
     .object()
     .nullable()
-    .required('Por favor selecciona un producto de proteccion'),
+    .required("Por favor selecciona un producto de proteccion"),
 });
 
 /**
@@ -1523,13 +1538,17 @@ export const protectionPaymentDetailsSchema = yup.object({
 export const protectionOtpCodeSchema = yup.object({
   code: yup
     .string()
-    .length(6, 'El codigo debe tener 6 digitos')
-    .matches(/^\d{6}$/, 'El codigo debe contener solo numeros')
-    .required('Por favor ingresa el codigo'),
+    .length(6, "El codigo debe tener 6 digitos")
+    .matches(/^\d{6}$/, "El codigo debe contener solo numeros")
+    .required("Por favor ingresa el codigo"),
 });
 
-export type ProtectionPaymentDetailsFormData = yup.InferType<typeof protectionPaymentDetailsSchema>;
-export type ProtectionOtpCodeFormData = yup.InferType<typeof protectionOtpCodeSchema>;
+export type ProtectionPaymentDetailsFormData = yup.InferType<
+  typeof protectionPaymentDetailsSchema
+>;
+export type ProtectionOtpCodeFormData = yup.InferType<
+  typeof protectionOtpCodeSchema
+>;
 ```
 
 ---
@@ -1584,6 +1603,7 @@ app/(authenticated)/pagos/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/protection-payment.ts`
    - Update `src/types/index.ts`
@@ -1593,11 +1613,13 @@ app/(authenticated)/pagos/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 3. Create molecules:
    - `src/molecules/ProtectionPaymentCard.tsx`
    - Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 4. Create organisms:
    - `src/organisms/ProtectionPaymentForm.tsx`
    - `src/organisms/ProtectionPaymentConfirmation.tsx`
@@ -1606,6 +1628,7 @@ app/(authenticated)/pagos/
    - Update `src/organisms/index.ts`
 
 ### Phase 4: Pages
+
 5. Create pages in order:
    - `app/(authenticated)/pagos/pagar-mis-productos/proteccion/detalle/page.tsx`
    - `app/(authenticated)/pagos/pagar-mis-productos/proteccion/confirmacion/page.tsx`
@@ -1613,14 +1636,17 @@ app/(authenticated)/pagos/
    - `app/(authenticated)/pagos/pagar-mis-productos/proteccion/respuesta/page.tsx`
 
 ### Phase 5: Integration
+
 6. Update pagar-mis-productos page:
    - Add link/navigation to protection payment flow
 
 ### Phase 6: Validation Schemas (Optional)
+
 7. Create validation schemas:
    - `src/schemas/protectionPaymentSchemas.ts`
 
 ### Phase 7: Testing & Refinement
+
 8. Manual testing of complete flow
 9. Edge case testing
 10. Responsive testing
@@ -1633,6 +1659,7 @@ app/(authenticated)/pagos/
 ### Manual Testing Checklist
 
 #### Page 1: Payment Details (Detalle)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to pagar-mis-productos page
 - [ ] Breadcrumbs display correctly: "Inicio / Pagos / Pagos de Proteccion"
@@ -1655,11 +1682,12 @@ app/(authenticated)/pagos/
 - [ ] "Continuar" button validates and navigates to step 2
 - [ ] Form data stored in sessionStorage
 
-#### Page 2: Confirmation (Confirmacion)
+#### Page 2: Confirmation (Confirmación)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to step 1
 - [ ] Stepper shows steps 1-2 as active
-- [ ] Card title "Confirmacion de Pagos" displays
+- [ ] Card title "Confirmación de Pagos" displays
 - [ ] Subtitle "Por favor, verifica que los datos..." displays
 - [ ] Titular displays (e.g., "CAMILO ANDRES CRUZ")
 - [ ] Documento displays masked (e.g., "CC 1.***.***234")
@@ -1674,6 +1702,7 @@ app/(authenticated)/pagos/
 - [ ] Successful confirmation navigates to step 3
 
 #### Page 3: SMS Code (Codigo SMS)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to step 2
 - [ ] Stepper shows steps 1-3 as active
@@ -1694,6 +1723,7 @@ app/(authenticated)/pagos/
 - [ ] Successful submission navigates to step 4
 
 #### Page 4: Response (Respuesta)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all 4 steps as active (blue)
 - [ ] Success icon (green checkmark) displays for success
@@ -1713,6 +1743,7 @@ app/(authenticated)/pagos/
 - [ ] sessionStorage is cleared on finish
 
 ### Error States Testing
+
 - [ ] Empty source account shows error
 - [ ] No product selected shows error
 - [ ] Invalid OTP shows error
@@ -1721,6 +1752,7 @@ app/(authenticated)/pagos/
 - [ ] Transaction failure displays error result
 
 ### Responsive Testing
+
 - [ ] Desktop (>=1024px): Full layout, cards side by side
 - [ ] Tablet (640-1023px): Cards may stack or scroll
 - [ ] Mobile (<640px): Stacked layouts, horizontal scroll for cards
@@ -1729,6 +1761,7 @@ app/(authenticated)/pagos/
 - [ ] Stepper labels visible on all sizes
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all elements
 - [ ] Focus states visible on all interactive elements
 - [ ] Form labels properly associated
@@ -1745,48 +1778,49 @@ app/(authenticated)/pagos/
 
 ### Colors
 
-| Element | Color | Hex |
-|---------|-------|-----|
-| Card Title | Navy Blue | #194E8D |
-| SMS Title | Navy Blue | #1D4E8F |
-| Primary Button | Blue | #007FFF |
-| Link Text | Navy Blue | #1D4E8F |
-| Back Link Text | Dark Blue | #004266 |
-| Success Text/Icon | Green | #00A44C |
-| Error Text/Icon | Red | #FF0D00 |
-| Active Stepper | Blue | #007FFF |
-| Inactive Stepper | Gray | #E4E6EA |
-| Selected Card Border | Blue | #007FFF |
-| Unselected Card Border | Gray | #E4E6EA |
-| Dividers | Light Gray | #E4E6EA |
-| Card Background | White | #FFFFFF |
-| Page Background | Light Blue | #F0F9FF |
-| Payment Amount | Navy | #194E8D |
-| Helper Text | Gray | #636363 |
-| Active Status | Green | #00A44C |
-| Inactive Status | Gray | #808284 |
-| Cancelled Status | Red | #FF0D00 |
+| Element                | Color      | Hex     |
+| ---------------------- | ---------- | ------- |
+| Card Title             | Navy Blue  | #194E8D |
+| SMS Title              | Navy Blue  | #1D4E8F |
+| Primary Button         | Blue       | #007FFF |
+| Link Text              | Navy Blue  | #1D4E8F |
+| Back Link Text         | Dark Blue  | #004266 |
+| Success Text/Icon      | Green      | #00A44C |
+| Error Text/Icon        | Red        | #FF0D00 |
+| Active Stepper         | Blue       | #007FFF |
+| Inactive Stepper       | Gray       | #E4E6EA |
+| Selected Card Border   | Blue       | #007FFF |
+| Unselected Card Border | Gray       | #E4E6EA |
+| Dividers               | Light Gray | #E4E6EA |
+| Card Background        | White      | #FFFFFF |
+| Page Background        | Light Blue | #F0F9FF |
+| Payment Amount         | Navy       | #194E8D |
+| Helper Text            | Gray       | #636363 |
+| Active Status          | Green      | #00A44C |
+| Inactive Status        | Gray       | #808284 |
+| Cancelled Status       | Red        | #FF0D00 |
 
 ### Typography
 
-| Element | Font | Size | Weight |
-|---------|------|------|--------|
-| Page Title | Ubuntu | 20px | Medium |
-| Card Title | Ubuntu | 20px | Bold |
-| Section Title | Ubuntu | 18px | Bold |
-| SMS Title | Ubuntu | 17px | Bold |
-| Body Text | Ubuntu | 15px | Regular |
-| Label | Ubuntu | 15px | Regular |
-| Value | Ubuntu | 15px | Medium |
-| Payment Amount (Large) | Ubuntu | 19px | Medium |
-| Amount on Card | Ubuntu | 19px | Medium |
-| Stepper Label | Ubuntu | 12px | Regular |
-| Button | Ubuntu | 14px | Bold |
-| Helper Text | Ubuntu | 14px | Regular |
-| Small Link | Ubuntu | 12px | Regular |
-| Status Badge | Ubuntu | 15px | Regular |
+| Element                | Font   | Size | Weight  |
+| ---------------------- | ------ | ---- | ------- |
+| Page Title             | Ubuntu | 20px | Medium  |
+| Card Title             | Ubuntu | 20px | Bold    |
+| Section Title          | Ubuntu | 18px | Bold    |
+| SMS Title              | Ubuntu | 17px | Bold    |
+| Body Text              | Ubuntu | 15px | Regular |
+| Label                  | Ubuntu | 15px | Regular |
+| Value                  | Ubuntu | 15px | Medium  |
+| Payment Amount (Large) | Ubuntu | 19px | Medium  |
+| Amount on Card         | Ubuntu | 19px | Medium  |
+| Stepper Label          | Ubuntu | 12px | Regular |
+| Button                 | Ubuntu | 14px | Bold    |
+| Helper Text            | Ubuntu | 14px | Regular |
+| Small Link             | Ubuntu | 12px | Regular |
+| Status Badge           | Ubuntu | 15px | Regular |
 
 ### Spacing
+
 - Card padding: `20-24px` (p-5 to p-6)
 - Section spacing: `24px` (space-y-6)
 - Form field spacing: `12-20px` (space-y-3 to space-y-5)
@@ -1795,6 +1829,7 @@ app/(authenticated)/pagos/
 - Stepper connector width: `140px`
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl) for main card
 - Product cards: `8px` (rounded-lg)
 - Stepper circles: `9999px` (rounded-full)
@@ -1806,6 +1841,7 @@ app/(authenticated)/pagos/
 ## Dependencies
 
 ### Existing Components (Reuse from 09f-pagos)
+
 - `OtpDigitInput` atom
 - `OtpInput` molecule
 - `PaymentDetailRow` molecule
@@ -1821,6 +1857,7 @@ app/(authenticated)/pagos/
 - `ErrorIcon` atom
 
 ### New for 09g-pagos
+
 - `ProtectionPaymentCard` molecule
 - `ProtectionPaymentForm` organism
 - `ProtectionPaymentConfirmation` organism
@@ -1844,6 +1881,7 @@ app/(authenticated)/pagos/
 ## Notes & Considerations
 
 ### Key Differences from Utility Payment (09f)
+
 1. **Product Selection**: Uses visual cards instead of dropdown
 2. **Card Structure**: Shows title, masked number, next payment, and status
 3. **Selection State**: Blue border on selected card
@@ -1851,16 +1889,19 @@ app/(authenticated)/pagos/
 5. **Amount Display**: Shows "Proximo Pago" on each card
 
 ### Product Card Behavior
+
 - Cards are horizontally scrollable on smaller screens
 - Only active products should be selectable
 - Inactive/cancelled products could be shown but disabled
 
 ### Hide Balances Feature
+
 - Source account balances should be masked
 - Product payment amounts should be masked
 - Transaction values should be masked on confirmation and result
 
 ### Error Handling
+
 - Form validation errors (Step 1)
 - Network/API errors
 - SMS code validation (Step 3)

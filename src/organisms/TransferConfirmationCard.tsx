@@ -17,7 +17,7 @@ export function TransferConfirmationCard({
     <Card className="space-y-6 p-8">
       <div>
         <h2 className="text-lg font-bold text-brand-teal-dark mb-2">
-          Confirmacion de Pago
+          Confirmación de Pago
         </h2>
         <p className="text-[15px] text-brand-text-black">
           Por favor, verifica que los datos de la transacción sean correctos

@@ -106,7 +106,7 @@ export const RED_COOP_MOCK_VALID_CODE = "123456";
  */
 export const RED_COOP_TRANSFER_STEPS: Step[] = [
   { number: 1, label: "Detalle" },
-  { number: 2, label: "Confirmacion" },
+  { number: 2, label: "Confirmación" },
   { number: 3, label: "SMS" },
-  { number: 4, label: "Finalizacion" },
+  { number: 4, label: "Finalización" },
 ];
