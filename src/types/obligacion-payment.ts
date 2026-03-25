@@ -31,6 +31,7 @@ export interface ObligacionPaymentProduct {
   paymentDeadline: string;
   fechaApertura: string; // Opening date — API gap: empty until backend provides it
   status: 'al_dia' | 'en_mora';
+  valorEnMora: number; // API gap: no dedicated field in CreditAccountResponse, defaults to 0
 }
 
 /**
@@ -52,9 +53,17 @@ export interface ObligacionPaymentDetailsData {
 export interface ObligacionConfirmationData {
   titular: string;
   documento: string; // Masked
-  productoAPagar: string; // Product name
-  numeroProducto: string; // Masked product number
-  productoADebitar: string; // "PSE (Pagos con otras entidades)"
+  // Credit details
+  lineaCredito: string;
+  fechaApertura: string;
+  saldoTotal: number;
+  fechaLimitePago: string;
+  valorEnMora: number;
+  pagoMinimo: number;
+  pagoTotal: number;
+  costoTransaccion: number;
+  // Payment info
+  productoADebitar: string; // "PSE (Pagos con otras entidades)" or account name
   valorAPagar: number;
   excessPaymentOption?: ExcessPaymentOption;
 }

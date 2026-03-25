@@ -136,6 +136,7 @@ export function mapCreditToObligacionPaymentProduct(
       : "",
     fechaApertura: "", // API gap: CreditAccountResponse does not provide opening date yet
     status: diasMora > 0 ? "en_mora" : "al_dia",
+    valorEnMora: 0, // API gap: no dedicated overdue amount field in CreditAccountResponse
   };
 }
 
