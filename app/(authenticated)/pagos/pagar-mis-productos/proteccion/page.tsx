@@ -268,6 +268,25 @@ export default function ProteccionDetallePage() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes productos de protección pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

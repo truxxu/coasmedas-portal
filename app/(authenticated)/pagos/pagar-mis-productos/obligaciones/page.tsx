@@ -262,6 +262,25 @@ export default function PagoObligacionesPage() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes obligaciones pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />

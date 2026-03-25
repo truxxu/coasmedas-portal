@@ -147,7 +147,7 @@ export default function PagoUnificadoPage() {
     );
   }
 
-  if (loading || !pendingPayments) {
+  if (loading) {
     return (
       <div className="space-y-6">
         <Breadcrumbs
@@ -156,6 +156,27 @@ export default function PagoUnificadoPage() {
         <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
           <div className="h-6 w-48 bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!pendingPayments || pendingPayments.total === 0) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs
+          items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
+        />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes productos pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
         </div>
       </div>
     );
