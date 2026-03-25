@@ -60,8 +60,14 @@ export default function ConfirmacionPage() {
       return {
         titular: userName,
         documento: maskedDoc,
-        productoAPagar: product.name,
-        numeroProducto: product.productNumber,
+        lineaCredito: product.name,
+        fechaApertura: product.fechaApertura,
+        saldoTotal: product.totalBalance,
+        fechaLimitePago: product.paymentDeadline,
+        valorEnMora: product.valorEnMora ?? 0,
+        pagoMinimo: product.minimumPayment,
+        pagoTotal: product.totalBalance,
+        costoTransaccion: 0,
         productoADebitar,
         valorAPagar: parseInt(valor, 10),
       };

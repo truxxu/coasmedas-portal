@@ -5,6 +5,7 @@
 Implementation plan for the **Pago de Proteccion** (Protection Payment) feature - a 4-step wizard flow for paying insurance products like "Seguro de Vida" and "Poliza Exequial".
 
 **Route Structure:**
+
 ```
 /pagos/pagar-mis-productos/proteccion/detalle       → Step 1
 /pagos/pagar-mis-productos/proteccion/confirmacion  → Step 2
@@ -18,18 +19,18 @@ Implementation plan for the **Pago de Proteccion** (Protection Payment) feature 
 
 The following components can be reused from previous implementations:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `CodeInputCard` | `src/organisms` | Step 3 SMS code entry |
-| `CodeInputGroup` | `src/molecules` | 6-digit OTP input |
-| `ConfirmationRow` | `src/molecules` | Label-value rows in confirmation/result |
-| `Stepper` | `src/molecules` | 4-step progress indicator |
-| `Breadcrumbs` | `src/molecules` | Navigation trail |
-| `HideBalancesToggle` | `src/molecules` | Balance visibility |
-| `Button` | `src/atoms` | Primary/secondary buttons |
-| `Card` | `src/atoms` | Content cards |
-| `Divider` | `src/atoms` | Section separators |
-| `SuccessIcon` | `src/atoms` | Success checkmark icon |
+| Component            | Location        | Usage                                   |
+| -------------------- | --------------- | --------------------------------------- |
+| `CodeInputCard`      | `src/organisms` | Step 3 SMS code entry                   |
+| `CodeInputGroup`     | `src/molecules` | 6-digit OTP input                       |
+| `ConfirmationRow`    | `src/molecules` | Label-value rows in confirmation/result |
+| `Stepper`            | `src/molecules` | 4-step progress indicator               |
+| `Breadcrumbs`        | `src/molecules` | Navigation trail                        |
+| `HideBalancesToggle` | `src/molecules` | Balance visibility                      |
+| `Button`             | `src/atoms`     | Primary/secondary buttons               |
+| `Card`               | `src/atoms`     | Content cards                           |
+| `Divider`            | `src/atoms`     | Section separators                      |
+| `SuccessIcon`        | `src/atoms`     | Success checkmark icon                  |
 
 ---
 
@@ -47,7 +48,7 @@ The following components can be reused from previous implementations:
  */
 export interface ProtectionPaymentSourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
   maskedNumber: string;
   balance: number;
@@ -57,7 +58,10 @@ export interface ProtectionPaymentSourceAccount {
 /**
  * Protection product status for payment
  */
-export type ProtectionPaymentProductStatus = 'activo' | 'inactivo' | 'cancelado';
+export type ProtectionPaymentProductStatus =
+  | "activo"
+  | "inactivo"
+  | "cancelado";
 
 /**
  * Protection product for payment selection
@@ -65,7 +69,7 @@ export type ProtectionPaymentProductStatus = 'activo' | 'inactivo' | 'cancelado'
 export interface ProtectionPaymentProduct {
   id: string;
   title: string;
-  productNumber: string;     // "No******65-9"
+  productNumber: string; // "No******65-9"
   nextPaymentAmount: number;
   status: ProtectionPaymentProductStatus;
 }
@@ -112,8 +116,9 @@ export interface ProtectionPaymentResultData {
 **File:** `src/types/index.ts`
 
 Add export:
+
 ```typescript
-export * from './protection-payment';
+export * from "./protection-payment";
 ```
 
 ---
@@ -129,76 +134,76 @@ import {
   ProtectionPaymentSourceAccount,
   ProtectionPaymentProduct,
   ProtectionPaymentResultData,
-} from '@/src/types/protection-payment';
+} from "@/src/types/protection-payment";
 
 export const PROTECTION_PAYMENT_STEPS = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 export const mockProtectionSourceAccounts: ProtectionPaymentSourceAccount[] = [
   {
-    id: '1',
-    type: 'ahorros',
-    accountNumber: '12345678',
-    maskedNumber: '***5678',
+    id: "1",
+    type: "ahorros",
+    accountNumber: "12345678",
+    maskedNumber: "***5678",
     balance: 8730500,
-    displayName: 'Cuenta de Ahorros - Saldo: $ 8.730.500',
+    displayName: "Cuenta de Ahorros - Saldo: $ 8.730.500",
   },
   {
-    id: '2',
-    type: 'corriente',
-    accountNumber: '87654321',
-    maskedNumber: '***4321',
+    id: "2",
+    type: "corriente",
+    accountNumber: "87654321",
+    maskedNumber: "***4321",
     balance: 2500000,
-    displayName: 'Cuenta Corriente - Saldo: $ 2.500.000',
+    displayName: "Cuenta Corriente - Saldo: $ 2.500.000",
   },
 ];
 
 export const mockProtectionPaymentProducts: ProtectionPaymentProduct[] = [
   {
-    id: '1',
-    title: 'Seguro de Vida Grupo Deudores',
-    productNumber: 'No******65-9',
+    id: "1",
+    title: "Seguro de Vida Grupo Deudores",
+    productNumber: "No******65-9",
     nextPaymentAmount: 150000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Poliza Exequial Familiar',
-    productNumber: 'No******12-3',
+    id: "2",
+    title: "Poliza Exequial Familiar",
+    productNumber: "No******12-3",
     nextPaymentAmount: 55000,
-    status: 'activo',
+    status: "activo",
   },
 ];
 
 export const mockProtectionPaymentResult: ProtectionPaymentResultData = {
   success: true,
-  creditLine: 'Seguro de Vida Grupo Deudores',
-  productNumber: 'No******65-9',
+  creditLine: "Seguro de Vida Grupo Deudores",
+  productNumber: "No******65-9",
   amountPaid: 150000,
   transactionCost: 0,
-  transmissionDate: '3 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '463342',
-  description: 'Exitosa',
+  transmissionDate: "3 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "463342",
+  description: "Exitosa",
 };
 
 export const mockProtectionPaymentResultError: ProtectionPaymentResultData = {
   success: false,
-  creditLine: 'Seguro de Vida Grupo Deudores',
-  productNumber: 'No******65-9',
+  creditLine: "Seguro de Vida Grupo Deudores",
+  productNumber: "No******65-9",
   amountPaid: 0,
   transactionCost: 0,
-  transmissionDate: '3 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '',
-  description: 'Fondos insuficientes',
+  transmissionDate: "3 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "",
+  description: "Fondos insuficientes",
 };
 
-export const MOCK_PROTECTION_VALID_CODE = '123456';
+export const MOCK_PROTECTION_VALID_CODE = "123456";
 ```
 
 #### Step 2.2: Update Mocks Index
@@ -206,8 +211,9 @@ export const MOCK_PROTECTION_VALID_CODE = '123456';
 **File:** `src/mocks/index.ts`
 
 Add export:
+
 ```typescript
-export * from './mockProtectionPaymentData';
+export * from "./mockProtectionPaymentData";
 ```
 
 ---
@@ -219,6 +225,7 @@ export * from './mockProtectionPaymentData';
 **File:** `src/molecules/ProtectionPaymentCard.tsx`
 
 A selectable product card for Step 1 product selection. Key features:
+
 - Shows product title, masked number, next payment amount, status
 - Blue border (`#007FFF`) when selected, gray border (`#E4E6EA`) when not
 - Payment amount in navy blue (`#194E8D`)
@@ -227,6 +234,7 @@ A selectable product card for Step 1 product selection. Key features:
 - Supports `hideBalances` prop to mask amounts
 
 **Props:**
+
 ```typescript
 interface ProtectionPaymentCardProps {
   product: ProtectionPaymentProduct;
@@ -237,6 +245,7 @@ interface ProtectionPaymentCardProps {
 ```
 
 **Layout:**
+
 ```
 ┌─────────────────────────────────────┐
 │ Seguro de Vida Grupo Deudores       │
@@ -254,8 +263,9 @@ interface ProtectionPaymentCardProps {
 **File:** `src/molecules/index.ts`
 
 Add export:
+
 ```typescript
-export { ProtectionPaymentCard } from './ProtectionPaymentCard';
+export { ProtectionPaymentCard } from "./ProtectionPaymentCard";
 ```
 
 ---
@@ -267,6 +277,7 @@ export { ProtectionPaymentCard } from './ProtectionPaymentCard';
 **File:** `src/organisms/ProtectionPaymentDetailsCard.tsx`
 
 Step 1 form card with source account selection and product cards. Key features:
+
 - Card title "Pago de Proteccion" in navy blue (`#194E8D`)
 - Source account dropdown with "Necesitas mas saldo?" link
 - Horizontal scrollable list of `ProtectionPaymentCard` components
@@ -274,6 +285,7 @@ Step 1 form card with source account selection and product cards. Key features:
 - "Volver" link and "Continuar" button
 
 **Props:**
+
 ```typescript
 interface ProtectionPaymentDetailsCardProps {
   sourceAccounts: ProtectionPaymentSourceAccount[];
@@ -298,7 +310,8 @@ interface ProtectionPaymentDetailsCardProps {
 **File:** `src/organisms/ProtectionPaymentConfirmationCard.tsx`
 
 Step 2 confirmation card. Key features:
-- Card title "Confirmacion de Pagos"
+
+- Card title "Confirmación de Pagos"
 - Subtitle explaining verification
 - Uses `ConfirmationRow` molecule for each field
 - Divider separating user info from product info
@@ -306,6 +319,7 @@ Step 2 confirmation card. Key features:
 - "Volver" link and "Confirmar Pago" button
 
 **Props:**
+
 ```typescript
 interface ProtectionPaymentConfirmationCardProps {
   confirmation: ProtectionPaymentConfirmationData;
@@ -321,6 +335,7 @@ interface ProtectionPaymentConfirmationCardProps {
 **File:** `src/organisms/ProtectionPaymentResultCard.tsx`
 
 Step 4 transaction result card. Key features:
+
 - Success/error icon (green checkmark or red X)
 - Title "Transaccion Exitosa" or "Transaccion Fallida"
 - Uses `ConfirmationRow` for transaction details
@@ -328,6 +343,7 @@ Step 4 transaction result card. Key features:
 - "Imprimir/Guardar" button and "Finalizar" button
 
 **Props:**
+
 ```typescript
 interface ProtectionPaymentResultCardProps {
   result: ProtectionPaymentResultData;
@@ -342,10 +358,11 @@ interface ProtectionPaymentResultCardProps {
 **File:** `src/organisms/index.ts`
 
 Add exports:
+
 ```typescript
-export { ProtectionPaymentDetailsCard } from './ProtectionPaymentDetailsCard';
-export { ProtectionPaymentConfirmationCard } from './ProtectionPaymentConfirmationCard';
-export { ProtectionPaymentResultCard } from './ProtectionPaymentResultCard';
+export { ProtectionPaymentDetailsCard } from "./ProtectionPaymentDetailsCard";
+export { ProtectionPaymentConfirmationCard } from "./ProtectionPaymentConfirmationCard";
+export { ProtectionPaymentResultCard } from "./ProtectionPaymentResultCard";
 ```
 
 ---
@@ -357,6 +374,7 @@ export { ProtectionPaymentResultCard } from './ProtectionPaymentResultCard';
 **File:** `app/(authenticated)/pagos/pagar-mis-productos/proteccion/detalle/page.tsx`
 
 Payment details page with:
+
 - WelcomeBar configuration
 - Breadcrumbs: "Inicio / Pagos / Pagos de Proteccion"
 - Stepper showing step 1 active
@@ -367,32 +385,37 @@ Payment details page with:
 - Navigation to step 2 on success
 
 **Key Logic:**
+
 ```typescript
 // Validation
 const validateForm = () => {
   const errors = {};
-  if (!selectedAccountId) errors.sourceAccount = 'Selecciona una cuenta';
-  if (!selectedProduct) errors.product = 'Selecciona un producto';
+  if (!selectedAccountId) errors.sourceAccount = "Selecciona una cuenta";
+  if (!selectedProduct) errors.product = "Selecciona un producto";
   return Object.keys(errors).length === 0;
 };
 
 // On continue
 const handleContinue = () => {
   if (!validateForm()) return;
-  sessionStorage.setItem('protectionPaymentDetails', JSON.stringify({
-    sourceAccountId,
-    sourceAccountDisplay,
-    selectedProduct,
-  }));
-  router.push('/pagos/pagar-mis-productos/proteccion/confirmacion');
+  sessionStorage.setItem(
+    "protectionPaymentDetails",
+    JSON.stringify({
+      sourceAccountId,
+      sourceAccountDisplay,
+      selectedProduct,
+    }),
+  );
+  router.push("/pagos/pagar-mis-productos/proteccion/confirmacion");
 };
 ```
 
-#### Step 5.2: Create Step 2 Page (Confirmacion)
+#### Step 5.2: Create Step 2 Page (Confirmación)
 
 **File:** `app/(authenticated)/pagos/pagar-mis-productos/proteccion/confirmacion/page.tsx`
 
 Confirmation page with:
+
 - WelcomeBar configuration
 - Breadcrumbs
 - Stepper showing steps 1-2 active
@@ -402,21 +425,22 @@ Confirmation page with:
 - Navigate to step 3 on confirm
 
 **Key Logic:**
+
 ```typescript
 // On mount - build confirmation from stored details
 useEffect(() => {
-  const detailsStr = sessionStorage.getItem('protectionPaymentDetails');
+  const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
   if (!detailsStr) {
-    router.push('/pagos/pagar-mis-productos/proteccion/detalle');
+    router.push("/pagos/pagar-mis-productos/proteccion/detalle");
     return;
   }
   const details = JSON.parse(detailsStr);
   setConfirmation({
-    holderName: 'CAMILO ANDRES CRUZ',
-    holderDocument: 'CC 1.***.***234',
+    holderName: "CAMILO ANDRES CRUZ",
+    holderDocument: "CC 1.***.***234",
     productToPay: details.selectedProduct.title,
     policyNumber: details.selectedProduct.productNumber,
-    productToDebit: details.sourceAccountDisplay.split(' - ')[0],
+    productToDebit: details.sourceAccountDisplay.split(" - ")[0],
     amountToPay: details.selectedProduct.nextPaymentAmount,
   });
 }, []);
@@ -427,6 +451,7 @@ useEffect(() => {
 **File:** `app/(authenticated)/pagos/pagar-mis-productos/proteccion/codigo-sms/page.tsx`
 
 SMS code entry page with:
+
 - WelcomeBar configuration
 - Breadcrumbs
 - Stepper showing steps 1-3 active
@@ -436,6 +461,7 @@ SMS code entry page with:
 - Navigate to step 4 on valid code
 
 **Key Logic:**
+
 ```typescript
 // Reuse CodeInputCard
 <CodeInputCard
@@ -470,6 +496,7 @@ const handlePay = async () => {
 **File:** `app/(authenticated)/pagos/pagar-mis-productos/proteccion/respuesta/page.tsx`
 
 Transaction result page with:
+
 - WelcomeBar configuration
 - Breadcrumbs
 - Stepper showing all 4 steps completed
@@ -480,13 +507,14 @@ Transaction result page with:
 - Navigate to home on finish
 
 **Key Logic:**
+
 ```typescript
 // On finish - clear all session data
 const handleFinish = () => {
-  sessionStorage.removeItem('protectionPaymentDetails');
-  sessionStorage.removeItem('protectionPaymentConfirmation');
-  sessionStorage.removeItem('protectionPaymentResult');
-  router.push('/home');
+  sessionStorage.removeItem("protectionPaymentDetails");
+  sessionStorage.removeItem("protectionPaymentConfirmation");
+  sessionStorage.removeItem("protectionPaymentResult");
+  router.push("/home");
 };
 
 // Print
@@ -501,32 +529,32 @@ const handlePrint = () => {
 
 Execute in this order to ensure dependencies are available:
 
-| # | Phase | File | Action |
-|---|-------|------|--------|
-| 1 | Types | `src/types/protection-payment.ts` | CREATE |
-| 2 | Types | `src/types/index.ts` | UPDATE (add export) |
-| 3 | Mocks | `src/mocks/mockProtectionPaymentData.ts` | CREATE |
-| 4 | Mocks | `src/mocks/index.ts` | UPDATE (add export) |
-| 5 | Molecules | `src/molecules/ProtectionPaymentCard.tsx` | CREATE |
-| 6 | Molecules | `src/molecules/index.ts` | UPDATE (add export) |
-| 7 | Organisms | `src/organisms/ProtectionPaymentDetailsCard.tsx` | CREATE |
-| 8 | Organisms | `src/organisms/ProtectionPaymentConfirmationCard.tsx` | CREATE |
-| 9 | Organisms | `src/organisms/ProtectionPaymentResultCard.tsx` | CREATE |
-| 10 | Organisms | `src/organisms/index.ts` | UPDATE (add exports) |
-| 11 | Pages | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/detalle/page.tsx` | CREATE |
-| 12 | Pages | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/confirmacion/page.tsx` | CREATE |
-| 13 | Pages | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/codigo-sms/page.tsx` | CREATE |
-| 14 | Pages | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/respuesta/page.tsx` | CREATE |
+| #   | Phase     | File                                                                             | Action               |
+| --- | --------- | -------------------------------------------------------------------------------- | -------------------- |
+| 1   | Types     | `src/types/protection-payment.ts`                                                | CREATE               |
+| 2   | Types     | `src/types/index.ts`                                                             | UPDATE (add export)  |
+| 3   | Mocks     | `src/mocks/mockProtectionPaymentData.ts`                                         | CREATE               |
+| 4   | Mocks     | `src/mocks/index.ts`                                                             | UPDATE (add export)  |
+| 5   | Molecules | `src/molecules/ProtectionPaymentCard.tsx`                                        | CREATE               |
+| 6   | Molecules | `src/molecules/index.ts`                                                         | UPDATE (add export)  |
+| 7   | Organisms | `src/organisms/ProtectionPaymentDetailsCard.tsx`                                 | CREATE               |
+| 8   | Organisms | `src/organisms/ProtectionPaymentConfirmationCard.tsx`                            | CREATE               |
+| 9   | Organisms | `src/organisms/ProtectionPaymentResultCard.tsx`                                  | CREATE               |
+| 10  | Organisms | `src/organisms/index.ts`                                                         | UPDATE (add exports) |
+| 11  | Pages     | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/detalle/page.tsx`      | CREATE               |
+| 12  | Pages     | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/confirmacion/page.tsx` | CREATE               |
+| 13  | Pages     | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/codigo-sms/page.tsx`   | CREATE               |
+| 14  | Pages     | `app/(authenticated)/pagos/pagar-mis-productos/proteccion/respuesta/page.tsx`    | CREATE               |
 
 ---
 
 ## Session Storage Keys
 
-| Key | Content | Created | Cleared |
-|-----|---------|---------|---------|
-| `protectionPaymentDetails` | Form data from Step 1 | Step 1 | Step 4 |
-| `protectionPaymentConfirmation` | Confirmation data | Step 2 | Step 4 |
-| `protectionPaymentResult` | Transaction result | Step 3 | Step 4 |
+| Key                             | Content               | Created | Cleared |
+| ------------------------------- | --------------------- | ------- | ------- |
+| `protectionPaymentDetails`      | Form data from Step 1 | Step 1  | Step 4  |
+| `protectionPaymentConfirmation` | Confirmation data     | Step 2  | Step 4  |
+| `protectionPaymentResult`       | Transaction result    | Step 3  | Step 4  |
 
 ---
 
@@ -547,6 +575,7 @@ Execute in this order to ensure dependencies are available:
 ```
 
 **Back Navigation:**
+
 - Step 1 → `/pagos/pagar-mis-productos`
 - Step 2 → Step 1 (preserves data)
 - Step 3 → Step 2 (preserves data)
@@ -557,27 +586,34 @@ Execute in this order to ensure dependencies are available:
 ## Key Implementation Notes
 
 ### 1. Product Card Selection
+
 Unlike utility payments (dropdowns), protection payment uses visual product cards:
+
 - Only one card can be selected at a time
 - Blue border indicates selection
 - Cards are horizontally scrollable on mobile
 
 ### 2. Reuse Existing Components
+
 - **Step 3 reuses `CodeInputCard`** - No need to create new SMS component
 - **Confirmation rows reuse `ConfirmationRow`** - For consistent styling
 
 ### 3. Hide Balances Support
+
 All monetary values should support the `hideBalances` toggle:
+
 - Source account balance in dropdown
 - Product next payment amount
 - Confirmation "Valor a Pagar"
 - Result "Valor pagado"
 
 ### 4. Validation
+
 - Step 1: Both account and product must be selected
 - Step 3: Code must be exactly 6 digits
 
 ### 5. Error Handling
+
 - Missing sessionStorage data → Redirect to Step 1
 - Invalid SMS code → Show error, allow retry
 - Network errors → Show error message

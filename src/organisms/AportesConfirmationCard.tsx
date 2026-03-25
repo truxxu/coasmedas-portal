@@ -20,7 +20,7 @@ export const AportesConfirmationCard: React.FC<
     <Card className="p-6 md:p-8 space-y-6">
       {/* Title */}
       <h2 className="text-xl md:text-2xl font-bold text-brand-navy">
-        Confirmacion de Pagos
+        Confirmación de Pagos
       </h2>
 
       {/* Description */}

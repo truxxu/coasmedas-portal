@@ -12,9 +12,10 @@
 This implementation plan outlines the step-by-step approach to build the 4-step payment wizard for registered public utilities.
 
 **Flow Summary:**
+
 ```
 Step 1: Detalle (Payment Details) → Select account, service, enter amount
-Step 2: Confirmacion (Confirmation) → Review payment details
+Step 2: Confirmación (Confirmation) → Review payment details
 Step 3: Codigo SMS (SMS Code) → Enter 6-digit OTP
 Step 4: Respuesta (Response) → View transaction result
 ```
@@ -25,51 +26,51 @@ Step 4: Respuesta (Response) → View transaction result
 
 ### Components to REUSE (No Changes Needed)
 
-| Component | Type | Location | Usage |
-|-----------|------|----------|-------|
-| `BackButton` | Atom | `src/atoms/BackButton.tsx` | Page navigation |
-| `Button` | Atom | `src/atoms/Button.tsx` | Primary/secondary actions |
-| `Card` | Atom | `src/atoms/Card.tsx` | Main content container |
-| `Divider` | Atom | `src/atoms/Divider.tsx` | Section separators |
-| `CurrencyInput` | Atom | `src/atoms/CurrencyInput.tsx` | Amount input field |
-| `Select` | Atom | `src/atoms/Select.tsx` | Dropdown selects |
-| `SuccessIcon` | Atom | `src/atoms/SuccessIcon.tsx` | Success header |
-| `ErrorIcon` | Atom | `src/atoms/ErrorIcon.tsx` | Error header |
-| `Breadcrumbs` | Molecule | `src/molecules/Breadcrumbs.tsx` | Navigation trail |
-| `Stepper` | Molecule | `src/molecules/Stepper.tsx` | 4-step progress indicator |
-| `HideBalancesToggle` | Molecule | `src/molecules/HideBalancesToggle.tsx` | Balance visibility |
-| `CaptchaPlaceholder` | Molecule | `src/molecules/CaptchaPlaceholder.tsx` | Captcha placeholder |
-| `ConfirmationRow` | Molecule | `src/molecules/ConfirmationRow.tsx` | Label-value rows |
-| `CodeInputGroup` | Molecule | `src/molecules/CodeInputGroup.tsx` | 6-digit OTP input |
-| `CodeInputCard` | Organism | `src/organisms/CodeInputCard.tsx` | Complete SMS code card |
+| Component            | Type     | Location                               | Usage                     |
+| -------------------- | -------- | -------------------------------------- | ------------------------- |
+| `BackButton`         | Atom     | `src/atoms/BackButton.tsx`             | Page navigation           |
+| `Button`             | Atom     | `src/atoms/Button.tsx`                 | Primary/secondary actions |
+| `Card`               | Atom     | `src/atoms/Card.tsx`                   | Main content container    |
+| `Divider`            | Atom     | `src/atoms/Divider.tsx`                | Section separators        |
+| `CurrencyInput`      | Atom     | `src/atoms/CurrencyInput.tsx`          | Amount input field        |
+| `Select`             | Atom     | `src/atoms/Select.tsx`                 | Dropdown selects          |
+| `SuccessIcon`        | Atom     | `src/atoms/SuccessIcon.tsx`            | Success header            |
+| `ErrorIcon`          | Atom     | `src/atoms/ErrorIcon.tsx`              | Error header              |
+| `Breadcrumbs`        | Molecule | `src/molecules/Breadcrumbs.tsx`        | Navigation trail          |
+| `Stepper`            | Molecule | `src/molecules/Stepper.tsx`            | 4-step progress indicator |
+| `HideBalancesToggle` | Molecule | `src/molecules/HideBalancesToggle.tsx` | Balance visibility        |
+| `CaptchaPlaceholder` | Molecule | `src/molecules/CaptchaPlaceholder.tsx` | Captcha placeholder       |
+| `ConfirmationRow`    | Molecule | `src/molecules/ConfirmationRow.tsx`    | Label-value rows          |
+| `CodeInputGroup`     | Molecule | `src/molecules/CodeInputGroup.tsx`     | 6-digit OTP input         |
+| `CodeInputCard`      | Organism | `src/organisms/CodeInputCard.tsx`      | Complete SMS code card    |
 
 ### Components to CREATE
 
-| Component | Type | Description |
-|-----------|------|-------------|
-| `UtilityPaymentDetailsForm` | Organism | Step 1 form with account/service/amount |
-| `UtilityPaymentConfirmationCard` | Organism | Step 2 confirmation details |
-| `UtilityPaymentResultCard` | Organism | Step 4 transaction result |
+| Component                        | Type     | Description                             |
+| -------------------------------- | -------- | --------------------------------------- |
+| `UtilityPaymentDetailsForm`      | Organism | Step 1 form with account/service/amount |
+| `UtilityPaymentConfirmationCard` | Organism | Step 2 confirmation details             |
+| `UtilityPaymentResultCard`       | Organism | Step 4 transaction result               |
 
 ### Types to CREATE
 
-| Type | File | Description |
-|------|------|-------------|
-| `SourceAccount` | `utility-payment.ts` | Source account for payment |
-| `RegisteredService` | `utility-payment.ts` | Registered utility service |
-| `UtilityPaymentDetails` | `utility-payment.ts` | Step 1 form data |
-| `UtilityPaymentConfirmation` | `utility-payment.ts` | Step 2 confirmation data |
-| `UtilityPaymentResult` | `utility-payment.ts` | Step 4 transaction result |
+| Type                         | File                 | Description                |
+| ---------------------------- | -------------------- | -------------------------- |
+| `SourceAccount`              | `utility-payment.ts` | Source account for payment |
+| `RegisteredService`          | `utility-payment.ts` | Registered utility service |
+| `UtilityPaymentDetails`      | `utility-payment.ts` | Step 1 form data           |
+| `UtilityPaymentConfirmation` | `utility-payment.ts` | Step 2 confirmation data   |
+| `UtilityPaymentResult`       | `utility-payment.ts` | Step 4 transaction result  |
 
 ### Mock Data to CREATE
 
-| Export | File | Description |
-|--------|------|-------------|
-| `mockSourceAccounts` | `mockUtilityPaymentData.ts` | Source account options |
-| `mockRegisteredServices` | `mockUtilityPaymentData.ts` | Registered services list |
-| `mockUtilityPaymentResult` | `mockUtilityPaymentData.ts` | Transaction result mock |
-| `UTILITY_PAYMENT_STEPS` | `mockUtilityPaymentData.ts` | Stepper configuration |
-| `MOCK_VALID_CODE` | `mockUtilityPaymentData.ts` | Valid OTP code for testing |
+| Export                     | File                        | Description                |
+| -------------------------- | --------------------------- | -------------------------- |
+| `mockSourceAccounts`       | `mockUtilityPaymentData.ts` | Source account options     |
+| `mockRegisteredServices`   | `mockUtilityPaymentData.ts` | Registered services list   |
+| `mockUtilityPaymentResult` | `mockUtilityPaymentData.ts` | Transaction result mock    |
+| `UTILITY_PAYMENT_STEPS`    | `mockUtilityPaymentData.ts` | Stepper configuration      |
+| `MOCK_VALID_CODE`          | `mockUtilityPaymentData.ts` | Valid OTP code for testing |
 
 ---
 
@@ -78,6 +79,7 @@ Step 4: Respuesta (Response) → View transaction result
 ### Phase 1: Types Definition
 
 **Files to create:**
+
 - `src/types/utility-payment.ts`
 
 **Implementation:**
@@ -90,7 +92,7 @@ Step 4: Respuesta (Response) → View transaction result
  */
 export interface SourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
   maskedNumber: string;
   balance: number;
@@ -150,6 +152,7 @@ export interface UtilityPaymentResult {
 ```
 
 **Files to update:**
+
 - `src/types/index.ts` - Add export
 
 ---
@@ -157,6 +160,7 @@ export interface UtilityPaymentResult {
 ### Phase 2: Mock Data
 
 **Files to create:**
+
 - `src/mocks/mockUtilityPaymentData.ts`
 
 **Implementation:**
@@ -167,90 +171,91 @@ import {
   SourceAccount,
   RegisteredService,
   UtilityPaymentResult,
-} from '@/src/types';
-import { StepperStep } from '@/src/types';
+} from "@/src/types";
+import { StepperStep } from "@/src/types";
 
 export const UTILITY_PAYMENT_STEPS: StepperStep[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmacion' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalizacion' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 
 export const mockSourceAccounts: SourceAccount[] = [
   {
-    id: '1',
-    type: 'ahorros',
-    accountNumber: '12345678',
-    maskedNumber: '***5678',
+    id: "1",
+    type: "ahorros",
+    accountNumber: "12345678",
+    maskedNumber: "***5678",
     balance: 8730500,
-    displayName: 'Cuenta de Ahorros - Saldo: $ 8.730.500',
+    displayName: "Cuenta de Ahorros - Saldo: $ 8.730.500",
   },
   {
-    id: '2',
-    type: 'corriente',
-    accountNumber: '87654321',
-    maskedNumber: '***4321',
+    id: "2",
+    type: "corriente",
+    accountNumber: "87654321",
+    maskedNumber: "***4321",
     balance: 2500000,
-    displayName: 'Cuenta Corriente - Saldo: $ 2.500.000',
+    displayName: "Cuenta Corriente - Saldo: $ 2.500.000",
   },
 ];
 
 export const mockRegisteredServices: RegisteredService[] = [
   {
-    id: '1',
-    alias: 'Luz Apartamento',
-    provider: 'ENEL',
-    serviceType: 'Energia',
-    reference: '123456789',
-    displayName: 'Luz Apartamento (ENEL - Energia)',
+    id: "1",
+    alias: "Luz Apartamento",
+    provider: "ENEL",
+    serviceType: "Energia",
+    reference: "123456789",
+    displayName: "Luz Apartamento (ENEL - Energia)",
   },
   {
-    id: '2',
-    alias: 'Gas Casa',
-    provider: 'Vanti',
-    serviceType: 'Gas',
-    reference: '987654321',
-    displayName: 'Gas Casa (Vanti - Gas)',
+    id: "2",
+    alias: "Gas Casa",
+    provider: "Vanti",
+    serviceType: "Gas",
+    reference: "987654321",
+    displayName: "Gas Casa (Vanti - Gas)",
   },
   {
-    id: '3',
-    alias: 'Agua Oficina',
-    provider: 'EAAB',
-    serviceType: 'Agua',
-    reference: '456789123',
-    displayName: 'Agua Oficina (EAAB - Agua)',
+    id: "3",
+    alias: "Agua Oficina",
+    provider: "EAAB",
+    serviceType: "Agua",
+    reference: "456789123",
+    displayName: "Agua Oficina (EAAB - Agua)",
   },
 ];
 
 export const mockUtilityPaymentResult: UtilityPaymentResult = {
   success: true,
-  creditLine: 'Cambio de palabras',
-  productNumber: '***5678',
+  creditLine: "Cambio de palabras",
+  productNumber: "***5678",
   amountPaid: 850000,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '950606',
-  description: 'Exitosa',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "950606",
+  description: "Exitosa",
 };
 
 export const mockUtilityPaymentResultError: UtilityPaymentResult = {
   success: false,
-  creditLine: 'Cambio de palabras',
-  productNumber: '***5678',
+  creditLine: "Cambio de palabras",
+  productNumber: "***5678",
   amountPaid: 0,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '',
-  description: 'Fondos insuficientes',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "",
+  description: "Fondos insuficientes",
 };
 ```
 
 **Files to update:**
+
 - `src/mocks/index.ts` - Add export
 
 ---
@@ -264,6 +269,7 @@ export const mockUtilityPaymentResultError: UtilityPaymentResult = {
 **Pattern Reference:** Similar to `UtilityRegistrationForm.tsx`
 
 **Props Interface:**
+
 ```typescript
 interface UtilityPaymentDetailsFormProps {
   sourceAccounts: SourceAccount[];
@@ -284,6 +290,7 @@ interface UtilityPaymentDetailsFormProps {
 ```
 
 **Structure:**
+
 - Card container
 - Title: "Pago de Servicios Publicos" (color: `#004266`)
 - Form fields (max-width: 500px):
@@ -303,6 +310,7 @@ interface UtilityPaymentDetailsFormProps {
 **Pattern Reference:** Similar to `OtrosAsociadosConfirmationCard.tsx`
 
 **Props Interface:**
+
 ```typescript
 interface UtilityPaymentConfirmationCardProps {
   confirmation: UtilityPaymentConfirmation;
@@ -313,8 +321,9 @@ interface UtilityPaymentConfirmationCardProps {
 ```
 
 **Structure:**
+
 - Card container
-- Title: "Confirmacion de Pago"
+- Title: "Confirmación de Pago"
 - Subtitle: "Por favor, verifica que los datos..."
 - Confirmation rows using `ConfirmationRow`:
   - Nombre del Titular
@@ -334,6 +343,7 @@ interface UtilityPaymentConfirmationCardProps {
 **Pattern Reference:** Similar to `OtrosAsociadosResultCard.tsx`
 
 **Props Interface:**
+
 ```typescript
 interface UtilityPaymentResultCardProps {
   result: UtilityPaymentResult;
@@ -343,6 +353,7 @@ interface UtilityPaymentResultCardProps {
 ```
 
 **Structure:**
+
 - Card container
 - Success/Error Header:
   - SuccessIcon or ErrorIcon
@@ -359,6 +370,7 @@ interface UtilityPaymentResultCardProps {
 - Footer: "Imprimir/Guardar" (outline) + "Finalizar" (primary)
 
 **Files to update:**
+
 - `src/organisms/index.ts` - Add exports for all 3 organisms
 
 ---
@@ -372,6 +384,7 @@ interface UtilityPaymentResultCardProps {
 **Pattern Reference:** See `app/(authenticated)/pagos/otros-asociados/pago/page.tsx`
 
 **Implementation Notes:**
+
 - Use `useWelcomeBar` hook to configure header
 - Load accounts and services from mock data
 - Store form data in `sessionStorage` key: `utilityPaymentDetails`
@@ -387,6 +400,7 @@ interface UtilityPaymentResultCardProps {
 **Pattern Reference:** See `app/(authenticated)/pagos/otros-asociados/pago/confirmacion/page.tsx`
 
 **Implementation Notes:**
+
 - Check `sessionStorage` for `utilityPaymentDetails`, redirect if missing
 - Build confirmation data from details + mock user context
 - Store confirmation in `sessionStorage` key: `utilityPaymentConfirmation`
@@ -401,6 +415,7 @@ interface UtilityPaymentResultCardProps {
 **Pattern Reference:** See `app/(authenticated)/pagos/otros-asociados/pago/sms/page.tsx`
 
 **Implementation Notes:**
+
 - Check `sessionStorage` for `utilityPaymentConfirmation`, redirect if missing
 - REUSE `CodeInputCard` organism directly (already has all needed functionality)
 - Implement resend cooldown (60 seconds)
@@ -417,6 +432,7 @@ interface UtilityPaymentResultCardProps {
 **Pattern Reference:** See `app/(authenticated)/pagos/otros-asociados/pago/resultado/page.tsx`
 
 **Implementation Notes:**
+
 - Check `sessionStorage` for `utilityPaymentResult`, redirect if missing
 - Display result using `UtilityPaymentResultCard`
 - On print: `window.print()`
@@ -430,9 +446,10 @@ interface UtilityPaymentResultCardProps {
 **File to update:** `app/(authenticated)/pagos/servicios-publicos/page.tsx`
 
 The `handleSelectPagar` function already points to `/pagos/servicios-publicos/pagar`. Update the route to:
+
 ```typescript
 const handleSelectPagar = () => {
-  router.push('/pagos/servicios-publicos/pagar/detalle');
+  router.push("/pagos/servicios-publicos/pagar/detalle");
 };
 ```
 
@@ -474,37 +491,42 @@ app/(authenticated)/pagos/
 
 ## SessionStorage Keys
 
-| Key | Type | Description | Created In | Used In |
-|-----|------|-------------|-----------|---------|
-| `utilityPaymentDetails` | `UtilityPaymentDetails` | Step 1 form data | Step 1 | Steps 2, 3, 4 |
-| `utilityPaymentConfirmation` | `UtilityPaymentConfirmation` | Step 2 confirmation | Step 2 | Steps 3, 4 |
-| `utilityPaymentResult` | `UtilityPaymentResult` | Transaction result | Step 3 | Step 4 |
+| Key                          | Type                         | Description         | Created In | Used In       |
+| ---------------------------- | ---------------------------- | ------------------- | ---------- | ------------- |
+| `utilityPaymentDetails`      | `UtilityPaymentDetails`      | Step 1 form data    | Step 1     | Steps 2, 3, 4 |
+| `utilityPaymentConfirmation` | `UtilityPaymentConfirmation` | Step 2 confirmation | Step 2     | Steps 3, 4    |
+| `utilityPaymentResult`       | `UtilityPaymentResult`       | Transaction result  | Step 3     | Step 4        |
 
 ---
 
 ## Implementation Checklist
 
 ### Phase 1: Types
+
 - [ ] Create `src/types/utility-payment.ts`
 - [ ] Update `src/types/index.ts` to export new types
 
 ### Phase 2: Mock Data
+
 - [ ] Create `src/mocks/mockUtilityPaymentData.ts`
 - [ ] Update `src/mocks/index.ts` to export mock data
 
 ### Phase 3: Organisms
+
 - [ ] Create `src/organisms/UtilityPaymentDetailsForm.tsx`
 - [ ] Create `src/organisms/UtilityPaymentConfirmationCard.tsx`
 - [ ] Create `src/organisms/UtilityPaymentResultCard.tsx`
 - [ ] Update `src/organisms/index.ts` to export new organisms
 
 ### Phase 4: Pages
+
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/pagar/detalle/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/pagar/confirmacion/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/pagar/codigo-sms/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/pagar/respuesta/page.tsx`
 
 ### Phase 5: Integration
+
 - [ ] Update `app/(authenticated)/pagos/servicios-publicos/page.tsx` to correct route
 
 ---
@@ -512,6 +534,7 @@ app/(authenticated)/pagos/
 ## Testing Checklist
 
 ### Navigation Flow
+
 - [ ] Step 1 → Step 2 (valid form)
 - [ ] Step 2 → Step 3 (confirm button)
 - [ ] Step 3 → Step 4 (valid code)
@@ -519,24 +542,28 @@ app/(authenticated)/pagos/
 - [ ] Back navigation preserves data
 
 ### Form Validation (Step 1)
+
 - [ ] Empty account shows error
 - [ ] Empty service shows error
 - [ ] Zero/empty amount shows error
 - [ ] All valid → proceeds to Step 2
 
 ### SMS Validation (Step 3)
+
 - [ ] Incomplete code (< 6 digits) shows error
 - [ ] Invalid code shows error
 - [ ] Valid code proceeds to Step 4
 - [ ] Resend button works with cooldown
 
 ### Result Display (Step 4)
+
 - [ ] Success shows green icon and "Exitosa"
 - [ ] Error shows red icon and error message
 - [ ] Print button triggers `window.print()`
 - [ ] Finish clears sessionStorage
 
 ### Responsive Design
+
 - [ ] Desktop (>=1024px)
 - [ ] Tablet (640-1023px)
 - [ ] Mobile (<640px)
@@ -546,6 +573,7 @@ app/(authenticated)/pagos/
 ## Dependencies
 
 This feature depends on:
+
 - Feature 09e-pagos (FlowSelectionCard, route structure)
 - Core atoms: `Button`, `Card`, `Select`, `CurrencyInput`, `SuccessIcon`, `ErrorIcon`
 - Core molecules: `Breadcrumbs`, `Stepper`, `ConfirmationRow`, `CodeInputGroup`, `HideBalancesToggle`

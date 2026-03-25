@@ -6,4 +6,5 @@ export interface Transaction {
   date: string;
   amount: number;
   type: TransactionType;
+  productName?: string;
 }

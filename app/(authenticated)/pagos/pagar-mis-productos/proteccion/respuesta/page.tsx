@@ -30,18 +30,21 @@ export default function ProteccionRespuestaPage() {
     // Check for PSE error
     const pseErrorStr = sessionStorage.getItem("pseTransactionError");
     if (pseErrorStr) {
-      const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
+      const confirmationStr = sessionStorage.getItem(
+        "protectionPaymentConfirmation",
+      );
       const confirmation = confirmationStr ? JSON.parse(confirmationStr) : null;
       return {
         success: false,
-        creditLine: confirmation?.productToPay ?? "Proteccion",
+        creditLine: confirmation?.productToPay ?? "Protección",
         productNumber: confirmation?.policyNumber ?? "",
         amountPaid: 0,
         transactionCost: 0,
         transmissionDate: "",
         transactionTime: "",
         approvalNumber: "",
-        description: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+        description:
+          JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
       };
     }
 
@@ -50,7 +53,7 @@ export default function ProteccionRespuestaPage() {
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Proteccion",
+      title: "Pago de Protección y Actividades",
       backHref: "/pagos/pagar-mis-productos",
     });
     return () => clearWelcomeBar();
@@ -89,7 +92,7 @@ export default function ProteccionRespuestaPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
       </div>
 
       <div className="-mx-8 bg-white shadow-sm">

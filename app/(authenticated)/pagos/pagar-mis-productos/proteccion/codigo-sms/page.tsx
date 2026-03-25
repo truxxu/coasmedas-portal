@@ -34,7 +34,9 @@ export default function ProteccionCodigoSmsPage() {
     successPath: "/pagos/pagar-mis-productos/proteccion/respuesta",
     onSubmit: async (otp) => {
       if (!documentType || !documentNumber) throw new Error("Sesion no valida");
-      const txRequestStr = sessionStorage.getItem("protectionTransactionRequest");
+      const txRequestStr = sessionStorage.getItem(
+        "protectionTransactionRequest",
+      );
       if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
       const txRequest = JSON.parse(txRequestStr);
       const result = await createPaymentTransaction({
@@ -44,25 +46,33 @@ export default function ProteccionCodigoSmsPage() {
         ...txRequest,
       });
       // Map and store result
-      const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
-      const confirmation: ProtectionPaymentConfirmationData | null = confirmationStr
-        ? JSON.parse(confirmationStr)
-        : null;
+      const confirmationStr = sessionStorage.getItem(
+        "protectionPaymentConfirmation",
+      );
+      const confirmation: ProtectionPaymentConfirmationData | null =
+        confirmationStr ? JSON.parse(confirmationStr) : null;
       const mappedResult = mapResultToProtection(result, {
-        creditLine: confirmation?.productToPay ?? "Proteccion",
+        creditLine: confirmation?.productToPay ?? "Protección",
         productNumber: confirmation?.policyNumber ?? "",
       });
-      sessionStorage.setItem("protectionPaymentResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "protectionPaymentResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;
-      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+      await sendTransactionOtp({
+        documentType,
+        documentNumber,
+        trnType: "PaymentInternal",
+      });
     },
   });
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Proteccion",
+      title: "Pago de Protección y Actividades",
       backHref: "/pagos/pagar-mis-productos/proteccion/confirmacion",
     });
     return () => clearWelcomeBar();
@@ -74,7 +84,7 @@ export default function ProteccionCodigoSmsPage() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+      <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
 
       <div className="-mx-8 bg-white shadow-sm">
         <Stepper currentStep={3} steps={PROTECTION_PAYMENT_STEPS} />

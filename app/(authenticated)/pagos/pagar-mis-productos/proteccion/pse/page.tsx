@@ -26,13 +26,20 @@ export default function ProteccionPSEPage() {
       if (!documentType || !documentNumber || !user) {
         throw new Error("Sesion no valida");
       }
-      const confirmationStr = sessionStorage.getItem("protectionPaymentConfirmation");
-      const targetProductStr = sessionStorage.getItem("protectionTargetProductApi");
-      const tipoProducto = sessionStorage.getItem("protectionTargetTipoProducto") || '';
-      if (!confirmationStr || !targetProductStr) throw new Error("Datos de pago no encontrados");
+      const confirmationStr = sessionStorage.getItem(
+        "protectionPaymentConfirmation",
+      );
+      const targetProductStr = sessionStorage.getItem(
+        "protectionTargetProductApi",
+      );
+      const tipoProducto =
+        sessionStorage.getItem("protectionTargetTipoProducto") || "";
+      if (!confirmationStr || !targetProductStr)
+        throw new Error("Datos de pago no encontrados");
 
       const confirmation = JSON.parse(confirmationStr);
-      const targetProduct: ProtectionAccountResponse = JSON.parse(targetProductStr);
+      const targetProduct: ProtectionAccountResponse =
+        JSON.parse(targetProductStr);
       const vlrPagoTotal = confirmation.amountToPay;
 
       const result = await createPayzenTransaction({
@@ -47,8 +54,10 @@ export default function ProteccionPSEPage() {
           email: user.email,
           mobile: user.mobile ?? "",
         },
-        merchantComment: "Pago de Proteccion",
-        cuentas: [buildProtectionTarget(targetProduct, vlrPagoTotal, tipoProducto)],
+        merchantComment: "Pago de Protección y Actividades",
+        cuentas: [
+          buildProtectionTarget(targetProduct, vlrPagoTotal, tipoProducto),
+        ],
       });
       return result.paymentUrl;
     },
@@ -56,7 +65,7 @@ export default function ProteccionPSEPage() {
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Proteccion",
+      title: "Pago de Protección y Actividades",
       backHref: "/pagos/pagar-mis-productos/proteccion/confirmacion",
     });
     return () => clearWelcomeBar();

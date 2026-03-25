@@ -46,6 +46,7 @@ Before creating any new files, fix typos in the existing externas flow that prev
 **Create**: `src/types/redCoopTransfer.ts`
 
 Define 5 interfaces:
+
 - `RedCoopSourceAccount` — id, type, balance, maskedNumber
 - `RedCoopDestinationAccount` — id, holderName, bankName (always "Coopcentral"), accountType, accountNumber, alias?
 - `RedCoopTransferFormData` — sourceAccountId, destinationAccountId, amount, concept
@@ -63,6 +64,7 @@ Define 5 interfaces:
 **Create**: `src/mocks/mockRedCoopTransferData.ts`
 
 Contents:
+
 - `mockRedCoopSourceAccounts` — 1 savings account (balance: 8,730,500)
 - `mockRedCoopDestinationAccounts` — 2 Coopcentral network accounts
 - `mockRedCoopUserData` — holder name + masked document
@@ -70,7 +72,7 @@ Contents:
 - `mockRedCoopResultSuccess` — successful transfer result
 - `mockRedCoopResultError` — failed transfer result
 - `RED_COOP_MOCK_VALID_CODE` — "123456"
-- `RED_COOP_TRANSFER_STEPS` — 4-step stepper config (Detalle, Confirmacion, SMS, Finalizacion)
+- `RED_COOP_TRANSFER_STEPS` — 4-step stepper config (Detalle, Confirmación, SMS, Finalización)
 
 **Reference**: Mirror `src/mocks/mockExternalTransferData.ts` structure.
 
@@ -81,6 +83,7 @@ Contents:
 **Modify**: `src/mocks/index.ts`
 
 Add exports for all mock data and constants from Step 3:
+
 ```typescript
 export {
   mockRedCoopSourceAccounts,
@@ -104,15 +107,15 @@ export {
 
 **Key differences from ExternalTransferDetailsCard**:
 
-| Aspect | ExternalTransferDetailsCard | RedCoopTransferDetailsCard |
-|--------|----------------------------|---------------------------|
-| Card title | "Transferencias Externas" | "Transferencias a Cuentas de mi Red Coopcentral" |
-| Card description | "Transfiere dinero a cuentas en otros bancos..." | "Envia dinero a otras cooperativas de la Red Coopcentral" |
-| Source label | "De cual cuenta quieres transferir?" | "¿De cual cuenta quieres transferir?" |
-| Destination label | "Cuenta destino" | "Cuenta destino / Codigo de producto" |
-| Destination format | `${account.alias} (${account.bankName})` | `${account.holderName} - ${account.accountNumber}` |
-| No-destination link | `/transferencias/inscribir-cuentas` | `/transferencias/externas/inscribir-cuentas` |
-| Types | `ExternalTransfer*` | `RedCoop*` |
+| Aspect              | ExternalTransferDetailsCard                      | RedCoopTransferDetailsCard                                |
+| ------------------- | ------------------------------------------------ | --------------------------------------------------------- |
+| Card title          | "Transferencias Externas"                        | "Transferencias a Cuentas de mi Red Coopcentral"          |
+| Card description    | "Transfiere dinero a cuentas en otros bancos..." | "Envia dinero a otras cooperativas de la Red Coopcentral" |
+| Source label        | "De cual cuenta quieres transferir?"             | "¿De cual cuenta quieres transferir?"                     |
+| Destination label   | "Cuenta destino"                                 | "Cuenta destino / Codigo de producto"                     |
+| Destination format  | `${account.alias} (${account.bankName})`         | `${account.holderName} - ${account.accountNumber}`        |
+| No-destination link | `/transferencias/inscribir-cuentas`              | `/transferencias/externas/inscribir-cuentas`              |
+| Types               | `ExternalTransfer*`                              | `RedCoop*`                                                |
 
 **Props**: sourceAccounts, destinationAccounts, selectedSourceId, selectedDestinationId, amount, concept, onChange handlers, hideBalances, error?
 
@@ -125,10 +128,12 @@ export {
 **Clone from**: `src/organisms/ExternalTransferConfirmationCard.tsx`
 
 **Key differences**:
-- Card title: "Confirmacion de Pago" (vs "Confirmacion de Transferencia")
+
+- Card title: "Confirmación de Pago" (vs "Confirmación de Transferencia")
 - Uses `RedCoopTransferConfirmationData` type
 
 **Layout**: 3 sections separated by `<Divider />`:
+
 1. Sender: Nombre Titular, Documento Titular, Producto a Debitar
 2. Destination: Titular Destino, Banco Destino ("Coopcentral"), Tipo de Cuenta, Cuenta Destino
 3. Transfer: Valor a Transferir (18px bold), Concepto (conditional)
@@ -146,6 +151,7 @@ export {
 **Key differences**: Uses `RedCoopTransferResult` type only.
 
 **Layout**: Same success/error states with icon SVGs, same detail rows:
+
 - Success: 12 detail rows (Cuenta Origen, Banco Destino, Cuenta Destino, Valor, Concepto, Costo, divider, Fecha, Hora, Aprobacion, Descripcion)
 - Error: Error icon + message + retry option
 
@@ -158,6 +164,7 @@ export {
 **Modify**: `src/organisms/index.ts`
 
 Add 3 new exports:
+
 ```typescript
 export { RedCoopTransferDetailsCard } from "./RedCoopTransferDetailsCard";
 export { RedCoopTransferConfirmationCard } from "./RedCoopTransferConfirmationCard";
@@ -173,6 +180,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 **Clone from**: `app/(authenticated)/transferencias/externas/otros-bancos/page.tsx`
 
 **Key changes**:
+
 - Component name: `RedCoopcentalPage`
 - WelcomeBar title: `"Cuentas de mi Red Coopcentral"`
 - Breadcrumbs: `["Inicio", "Transferencias", "Red Coopcentral"]`
@@ -184,6 +192,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 - Back route: `/transferencias/externas`
 
 **Validation**:
+
 1. Source account required
 2. Destination account required
 3. Amount > 0
@@ -201,6 +210,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 **Clone from**: `app/(authenticated)/transferencias/externas/otros-bancos/confirmacion/page.tsx`
 
 **Key changes**:
+
 - Component name: `RedCoopConfirmacionPage`
 - WelcomeBar title: `"Cuentas de mi Red Coopcentral"`
 - WelcomeBar backHref: `/transferencias/externas/red-coopcentral`
@@ -227,6 +237,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 **Clone from**: `app/(authenticated)/transferencias/externas/otros-bancos/sms/page.tsx`
 
 **Key changes**:
+
 - Component name: `RedCoopSMSPage`
 - WelcomeBar title: `"Cuentas de mi Red Coopcentral"`
 - WelcomeBar backHref: `/transferencias/externas/red-coopcentral/confirmacion`
@@ -254,6 +265,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 **Clone from**: `app/(authenticated)/transferencias/externas/otros-bancos/resultado/page.tsx`
 
 **Key changes**:
+
 - Component name: `RedCoopResultadoPage`
 - WelcomeBar title: `"Cuentas de mi Red Coopcentral"`
 - Breadcrumbs: `["Inicio", "Transferencias", "Red Coopcentral"]`
@@ -267,6 +279,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 - Stepper: `currentStep={5}` (all steps completed)
 
 **`clearSessionStorage` function** removes 6 keys:
+
 - `redCoopTransferSourceId`
 - `redCoopTransferDestinationId`
 - `redCoopTransferAmount`
@@ -275,6 +288,7 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 - `redCoopTransferResult`
 
 **Buttons**:
+
 - Success: 3 buttons (Imprimir/Guardar, Realizar otra transaccion, Finalizar)
 - Error: 2 buttons (Reintentar, Volver al inicio)
 
@@ -282,20 +296,20 @@ export { RedCoopTransferResultCard } from "./RedCoopTransferResultCard";
 
 ## Summary Checklist
 
-| Step | Action | Files |
-|------|--------|-------|
-| 1 | Fix bugs | Modify 2 existing files (3 changes) |
-| 2 | Create types | Create `src/types/redCoopTransfer.ts` |
-| 3 | Create mocks | Create `src/mocks/mockRedCoopTransferData.ts` |
-| 4 | Update mock index | Modify `src/mocks/index.ts` |
-| 5 | Create details organism | Create `src/organisms/RedCoopTransferDetailsCard.tsx` |
-| 6 | Create confirmation organism | Create `src/organisms/RedCoopTransferConfirmationCard.tsx` |
-| 7 | Create result organism | Create `src/organisms/RedCoopTransferResultCard.tsx` |
-| 8 | Update organism index | Modify `src/organisms/index.ts` |
-| 9 | Create Step 1 page | Create `app/.../red-coopcentral/page.tsx` |
-| 10 | Create Step 2 page | Create `app/.../red-coopcentral/confirmacion/page.tsx` |
-| 11 | Create Step 3 page | Create `app/.../red-coopcentral/sms/page.tsx` |
-| 12 | Create Step 4 page | Create `app/.../red-coopcentral/resultado/page.tsx` |
+| Step | Action                       | Files                                                      |
+| ---- | ---------------------------- | ---------------------------------------------------------- |
+| 1    | Fix bugs                     | Modify 2 existing files (3 changes)                        |
+| 2    | Create types                 | Create `src/types/redCoopTransfer.ts`                      |
+| 3    | Create mocks                 | Create `src/mocks/mockRedCoopTransferData.ts`              |
+| 4    | Update mock index            | Modify `src/mocks/index.ts`                                |
+| 5    | Create details organism      | Create `src/organisms/RedCoopTransferDetailsCard.tsx`      |
+| 6    | Create confirmation organism | Create `src/organisms/RedCoopTransferConfirmationCard.tsx` |
+| 7    | Create result organism       | Create `src/organisms/RedCoopTransferResultCard.tsx`       |
+| 8    | Update organism index        | Modify `src/organisms/index.ts`                            |
+| 9    | Create Step 1 page           | Create `app/.../red-coopcentral/page.tsx`                  |
+| 10   | Create Step 2 page           | Create `app/.../red-coopcentral/confirmacion/page.tsx`     |
+| 11   | Create Step 3 page           | Create `app/.../red-coopcentral/sms/page.tsx`              |
+| 12   | Create Step 4 page           | Create `app/.../red-coopcentral/resultado/page.tsx`        |
 
 **Total**: 9 new files created, 4 existing files modified (3 bug fixes + 2 index updates)
 

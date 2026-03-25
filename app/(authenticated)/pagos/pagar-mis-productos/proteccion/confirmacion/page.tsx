@@ -14,9 +14,15 @@ import type {
   ProtectionPaymentMethod,
 } from "@/src/types";
 import { maskNumber } from "@/src/utils";
-import { buildAccountReference, buildProtectionTarget } from "@/lib/mappers/payments.mapper";
+import {
+  buildAccountReference,
+  buildProtectionTarget,
+} from "@/lib/mappers/payments.mapper";
 import { sendTransactionOtp } from "@/services/auth.service";
-import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
+import type {
+  SavingsAccountResponse,
+  ProtectionAccountResponse,
+} from "@/types/api/products";
 
 export default function ProteccionConfirmacionPage() {
   const router = useRouter();
@@ -24,17 +30,16 @@ export default function ProteccionConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
 
-  const [paymentMethod] =
-    useState<ProtectionPaymentMethod>(() => {
-      if (typeof window === "undefined") return "account";
-      const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
-      if (!detailsStr) return "account";
-      const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
-      return details.paymentMethod;
-    });
+  const [paymentMethod] = useState<ProtectionPaymentMethod>(() => {
+    if (typeof window === "undefined") return "account";
+    const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
+    if (!detailsStr) return "account";
+    const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
+    return details.paymentMethod;
+  });
 
-  const [confirmation] =
-    useState<ProtectionPaymentConfirmationData | null>(() => {
+  const [confirmation] = useState<ProtectionPaymentConfirmationData | null>(
+    () => {
       if (typeof window === "undefined") return null;
 
       const detailsStr = sessionStorage.getItem("protectionPaymentDetails");
@@ -42,7 +47,9 @@ export default function ProteccionConfirmacionPage() {
 
       const details: ProtectionPaymentDetailsFormData = JSON.parse(detailsStr);
 
-      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const userName =
+        user?.fullName ||
+        `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
       const maskedDoc = user
         ? `${user.documentType} ${maskNumber(user.documentNumber)}`
         : "";
@@ -60,13 +67,14 @@ export default function ProteccionConfirmacionPage() {
         productToDebit,
         amountToPay: details.selectedProduct?.nextPaymentAmount || 0,
       };
-    });
+    },
+  );
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Proteccion",
+      title: "Pago de Protección y Actividades",
       backHref: "/pagos/pagar-mis-productos/proteccion",
     });
     return () => clearWelcomeBar();
@@ -86,22 +94,38 @@ export default function ProteccionConfirmacionPage() {
     try {
       sessionStorage.setItem(
         "protectionPaymentConfirmation",
-        JSON.stringify(confirmation)
+        JSON.stringify(confirmation),
       );
 
       // Pre-build transaction request
-      const sourceAccountStr = sessionStorage.getItem("protectionSourceAccountApi");
-      const targetProductStr = sessionStorage.getItem("protectionTargetProductApi");
-      const tipoProducto = sessionStorage.getItem("protectionTargetTipoProducto") || '';
+      const sourceAccountStr = sessionStorage.getItem(
+        "protectionSourceAccountApi",
+      );
+      const targetProductStr = sessionStorage.getItem(
+        "protectionTargetProductApi",
+      );
+      const tipoProducto =
+        sessionStorage.getItem("protectionTargetTipoProducto") || "";
       if (sourceAccountStr && targetProductStr) {
-        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
-        const targetProduct: ProtectionAccountResponse = JSON.parse(targetProductStr);
+        const sourceAccount: SavingsAccountResponse =
+          JSON.parse(sourceAccountStr);
+        const targetProduct: ProtectionAccountResponse =
+          JSON.parse(targetProductStr);
         const txRequest = {
           origen: buildAccountReference(sourceAccount),
-          cuentas: [buildProtectionTarget(targetProduct, confirmation.amountToPay, tipoProducto)],
+          cuentas: [
+            buildProtectionTarget(
+              targetProduct,
+              confirmation.amountToPay,
+              tipoProducto,
+            ),
+          ],
           vlrPagoTotal: confirmation.amountToPay,
         };
-        sessionStorage.setItem("protectionTransactionRequest", JSON.stringify(txRequest));
+        sessionStorage.setItem(
+          "protectionTransactionRequest",
+          JSON.stringify(txRequest),
+        );
       }
 
       if (paymentMethod === "pse") {
@@ -114,7 +138,11 @@ export default function ProteccionConfirmacionPage() {
         }
         const { documentType, documentNumber } = user ?? {};
         if (documentType && documentNumber) {
-          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+          await sendTransactionOtp({
+            documentType,
+            documentNumber,
+            trnType: "PaymentInternal",
+          });
         }
         router.push("/pagos/pagar-mis-productos/proteccion/codigo-sms");
       }
@@ -139,7 +167,7 @@ export default function ProteccionConfirmacionPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
       </div>
 
       <div className="-mx-8 bg-white shadow-sm">

@@ -25,7 +25,7 @@ export function UtilityConfirmationCard({
 
       {/* Confirmation Details */}
       <div className="space-y-1 border-t border-b border-gray-200 py-4">
-        <ConfirmationRow label="Ciudad:" value={confirmationData.city} />
+        <ConfirmationRow label="Categoría:" value={confirmationData.category} />
         <ConfirmationRow label="Convenio:" value={confirmationData.convenio} />
         <ConfirmationRow
           label="Número de Factura:"

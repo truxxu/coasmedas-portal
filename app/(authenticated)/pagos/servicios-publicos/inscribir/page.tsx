@@ -6,7 +6,7 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs } from "@/src/molecules";
 import { UtilityRegistrationForm } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
-import { mockCities, mockConvenios } from "@/src/mocks";
+import { mockCategories, mockConvenios } from "@/src/mocks";
 import type {
   UtilityRegistrationForm as FormData,
   UtilityRegistrationErrors,
@@ -15,8 +15,8 @@ import type {
 const STORAGE_KEY = "utilityRegistrationData";
 
 const initialFormData: FormData = {
-  cityId: "",
-  cityName: "",
+  categoryId: "",
+  categoryName: "",
   convenioId: "",
   convenioName: "",
   billNumber: "",
@@ -40,24 +40,24 @@ export default function InscribirServiciosPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
-  // Filter convenios based on selected city
+  // Filter convenios based on selected category
   const filteredConvenios = useMemo(() => {
-    if (!formData.cityId) return [];
-    return mockConvenios.filter((c) => c.cityId === formData.cityId);
-  }, [formData.cityId]);
+    if (!formData.categoryId) return [];
+    return mockConvenios.filter((c) => c.categoryId === formData.categoryId);
+  }, [formData.categoryId]);
 
-  // Handle city change - reset convenio when city changes
-  const handleCityChange = useCallback((cityId: string, cityName: string) => {
+  // Handle category change - reset convenio when category changes
+  const handleCategoryChange = useCallback((categoryId: string, categoryName: string) => {
     setFormData((prev) => ({
       ...prev,
-      cityId,
-      cityName,
+      categoryId,
+      categoryName,
       convenioId: "",
       convenioName: "",
     }));
     setErrors((prev) => ({
       ...prev,
-      cityId: undefined,
+      categoryId: undefined,
       convenioId: undefined,
     }));
   }, []);
@@ -97,8 +97,8 @@ export default function InscribirServiciosPage() {
   const validateForm = (): boolean => {
     const newErrors: UtilityRegistrationErrors = {};
 
-    if (!formData.cityId) {
-      newErrors.cityId = "Selecciona una ciudad";
+    if (!formData.categoryId) {
+      newErrors.categoryId = "Selecciona una categoría";
     }
 
     if (!formData.convenioId) {
@@ -151,11 +151,11 @@ export default function InscribirServiciosPage() {
 
       {/* Registration Form */}
       <UtilityRegistrationForm
-        cities={mockCities}
+        categories={mockCategories}
         convenios={filteredConvenios}
         formData={formData}
         errors={errors}
-        onCityChange={handleCityChange}
+        onCategoryChange={handleCategoryChange}
         onConvenioChange={handleConvenioChange}
         onBillNumberChange={handleBillNumberChange}
         onAliasChange={handleAliasChange}

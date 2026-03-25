@@ -62,7 +62,8 @@ export function mapMovementToTransaction(
 ): Transaction {
   const amount = normalizeMoney(item.valorTransaccion);
   const tipo = item.tipoTransaccion.toUpperCase();
-  const type: TransactionType = tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
+  const type: TransactionType =
+    tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
   const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
 
   const date = parseApiDate(item.fechaTransaccion);
@@ -70,7 +71,7 @@ export function mapMovementToTransaction(
 
   return {
     id: item.referencia || String(index + 1),
-    description: item.descripcion.replace(/_+$/, '').trim(),
+    description: item.descripcion.replace(/_+$/, "").trim(),
     date: time ? `${date} ${time}` : date,
     amount: signedAmount,
     type,
@@ -78,7 +79,9 @@ export function mapMovementToTransaction(
 }
 
 export function mapMovements(items: MovementItem[]): Transaction[] {
-  return items.map(mapMovementToTransaction).sort((a, b) => b.date.localeCompare(a.date));
+  return items
+    .map(mapMovementToTransaction)
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 // ─── Savings ───
@@ -199,7 +202,7 @@ export function mapContributionsResponse(
   };
 }
 
-// ─── Protection / Proteccion ───
+// ─── Protection / Protección ───
 
 export function mapProtectionResponse(
   item: ProtectionAccountResponse,

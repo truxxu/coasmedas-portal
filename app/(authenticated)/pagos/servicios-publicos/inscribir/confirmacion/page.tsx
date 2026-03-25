@@ -35,7 +35,7 @@ export default function ConfirmacionPage() {
     useState<UtilityConfirmationData | null>(() => {
       if (!formData) return null;
       return {
-        city: formData.cityName,
+        category: formData.categoryName,
         convenio: formData.convenioName,
         billNumber: formData.billNumber,
         alias: formData.alias,
@@ -74,7 +74,7 @@ export default function ConfirmacionPage() {
       ...mockRegistrationResultSuccess,
       alias: confirmationData.alias,
       convenio: confirmationData.convenio,
-      city: confirmationData.city,
+      category: confirmationData.category,
       billNumber: confirmationData.billNumber,
     };
 

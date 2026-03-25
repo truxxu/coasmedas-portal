@@ -56,6 +56,15 @@ export function CupoRotativoConfirmationCard({
           </span>
         </div>
 
+        <div className="flex justify-between items-center py-1">
+          <span className="text-[15px] text-brand-text-black">
+            Costo Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
+            {formatCurrency(confirmationData.transactionCost ?? 0)}
+          </span>
+        </div>
+
         {/* Amount */}
         <div className="flex justify-between items-center py-1">
           <span className="text-[15px] text-brand-text-black">

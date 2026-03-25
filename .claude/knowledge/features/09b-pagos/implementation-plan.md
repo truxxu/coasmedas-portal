@@ -17,17 +17,17 @@ This plan outlines the step-by-step implementation of the **Pago de Aportes** fe
 
 Before starting implementation, verify these components exist from 09a-pagos:
 
-| Component | Type | Location | Status |
-|-----------|------|----------|--------|
-| `StepperCircle` | Atom | `src/atoms/StepperCircle.tsx` | Exists |
-| `StepperConnector` | Atom | `src/atoms/StepperConnector.tsx` | Exists |
-| `CodeInput` | Atom | `src/atoms/CodeInput.tsx` | Exists |
-| `Stepper` | Molecule | `src/molecules/Stepper.tsx` | Exists |
-| `CodeInputGroup` | Molecule | `src/molecules/CodeInputGroup.tsx` | Exists |
-| `CodeInputCard` | Organism | `src/organisms/CodeInputCard.tsx` | Exists |
+| Component               | Type     | Location                                  | Status |
+| ----------------------- | -------- | ----------------------------------------- | ------ |
+| `StepperCircle`         | Atom     | `src/atoms/StepperCircle.tsx`             | Exists |
+| `StepperConnector`      | Atom     | `src/atoms/StepperConnector.tsx`          | Exists |
+| `CodeInput`             | Atom     | `src/atoms/CodeInput.tsx`                 | Exists |
+| `Stepper`               | Molecule | `src/molecules/Stepper.tsx`               | Exists |
+| `CodeInputGroup`        | Molecule | `src/molecules/CodeInputGroup.tsx`        | Exists |
+| `CodeInputCard`         | Organism | `src/organisms/CodeInputCard.tsx`         | Exists |
 | `TransactionResultCard` | Organism | `src/organisms/TransactionResultCard.tsx` | Exists |
-| Payment types | Types | `src/types/payment.ts` | Exists |
-| Stepper types | Types | `src/types/stepper.ts` | Exists |
+| Payment types           | Types    | `src/types/payment.ts`                    | Exists |
+| Stepper types           | Types    | `src/types/stepper.ts`                    | Exists |
 
 ---
 
@@ -43,15 +43,16 @@ Create new type definitions for the Aportes payment flow:
 
 ```typescript
 // Types to create:
-- AportesPaymentBreakdown
-- AportesPaymentDetailsData
-- AportesConfirmationData
-- AportesTransactionResult
-- AportesPaymentFlowState
-- AportesValueColor
+-AportesPaymentBreakdown -
+  AportesPaymentDetailsData -
+  AportesConfirmationData -
+  AportesTransactionResult -
+  AportesPaymentFlowState -
+  AportesValueColor;
 ```
 
 **Key differences from 09a types**:
+
 - `AportesPaymentBreakdown` includes detailed breakdown (vigentes, mora, fondo solidaridad)
 - `AportesConfirmationData` is single-product focused
 - `AportesTransactionResult` has aportes-specific fields (lineaCredito, numeroProducto, valorPagado)
@@ -67,6 +68,7 @@ Add export for new aportes-payment types.
 **File**: `src/mocks/mockAportesPaymentData.ts`
 
 Create mock data including:
+
 - `mockPaymentAccounts` (can reuse from 09a or create specific)
 - `mockUserData`
 - `mockAportesPaymentBreakdown`
@@ -90,6 +92,7 @@ Add exports for new mock data.
 **File**: `src/atoms/CurrencyInput.tsx`
 
 An editable currency input field with:
+
 - Peso prefix ("$")
 - Thousand separator formatting (Colombian locale)
 - Error state styling
@@ -97,6 +100,7 @@ An editable currency input field with:
 - Navy border color (`#1D4E8F`)
 
 **Props**:
+
 ```typescript
 interface CurrencyInputProps {
   value: number;
@@ -109,6 +113,7 @@ interface CurrencyInputProps {
 ```
 
 **Key implementation details**:
+
 - Use `inputMode="numeric"` for mobile keyboards
 - Format with `toLocaleString('es-CO')` for display
 - Parse by removing separators on change
@@ -131,16 +136,18 @@ Add export for `CurrencyInput`.
 A row component for displaying payment breakdown items with optional colored values:
 
 **Props**:
+
 ```typescript
 interface AportesPaymentDetailRowProps {
   label: string;
   value: string;
-  valueColor?: 'default' | 'red' | 'navy' | 'green';
+  valueColor?: "default" | "red" | "navy" | "green";
   hideValue?: boolean;
 }
 ```
 
 **Color mapping**:
+
 - `default`: Black (`text-black`)
 - `red`: Red (`text-[#E1172B]`) - for mora amounts
 - `navy`: Navy (`text-[#1D4E8F]`) - for highlighted amounts
@@ -161,6 +168,7 @@ Add export for `AportesPaymentDetailRow`.
 **File**: `src/organisms/AportesDetailsCard.tsx`
 
 Main card for Step 1 containing:
+
 - Title: "Pago de Aportes"
 - Account selector dropdown
 - "Necesitas mas saldo?" link
@@ -169,6 +177,7 @@ Main card for Step 1 containing:
 - Editable value input (CurrencyInput)
 
 **Props**:
+
 ```typescript
 interface AportesDetailsCardProps {
   accounts: PaymentAccount[];
@@ -187,13 +196,15 @@ interface AportesDetailsCardProps {
 **File**: `src/organisms/AportesConfirmationCard.tsx`
 
 Confirmation card for Step 2 containing:
-- Title: "Confirmacion de Pagos"
+
+- Title: "Confirmación de Pagos"
 - Description text
 - User info section (Titular, Documento)
 - Divider
 - Payment info section (Producto, Numero, Cuenta, Valor)
 
 **Props**:
+
 ```typescript
 interface AportesConfirmationCardProps {
   confirmationData: AportesConfirmationData;
@@ -206,6 +217,7 @@ interface AportesConfirmationCardProps {
 **File**: `src/organisms/AportesTransactionResultCard.tsx`
 
 Result card for Step 4 containing:
+
 - Success/Error icon (centered)
 - Title: "Transaccion Exitosa" / "Transaccion Fallida"
 - Transaction details section 1:
@@ -221,6 +233,7 @@ Result card for Step 4 containing:
   - Descripcion (green/red based on status)
 
 **Props**:
+
 ```typescript
 interface AportesTransactionResultCardProps {
   result: AportesTransactionResult;
@@ -235,6 +248,7 @@ interface AportesTransactionResultCardProps {
 **File**: `src/organisms/index.ts`
 
 Add exports for:
+
 - `AportesDetailsCard`
 - `AportesConfirmationCard`
 - `AportesTransactionResultCard`
@@ -250,6 +264,7 @@ Add exports for:
 **Route**: `/pagos/pago-aportes`
 
 Implementation:
+
 - Use `useWelcomeBar(false)` to hide welcome bar
 - State: `selectedAccountId`, `valorAPagar`, `error`
 - Breadcrumbs: `Inicio / Pagos / Pago de Aportes`
@@ -259,11 +274,13 @@ Implementation:
 - Navigation: "Volver" link + "Continuar" button
 
 **Validations**:
+
 - Account must be selected
 - Value must be > 0
 - Selected account must have sufficient balance
 
 **Data flow**:
+
 - Store `selectedAccountId`, `valorAPagar`, `paymentBreakdown` in sessionStorage
 - Navigate to `/pagos/pago-aportes/confirmacion`
 
@@ -274,6 +291,7 @@ Implementation:
 **Route**: `/pagos/pago-aportes/confirmacion`
 
 Implementation:
+
 - Use `useWelcomeBar(false)`
 - Read data from sessionStorage on mount
 - Redirect to step 1 if no data found
@@ -283,6 +301,7 @@ Implementation:
 - Navigation: "Volver" link + "Guardar Cambios" button
 
 **Data flow**:
+
 - Store `confirmationData` in sessionStorage
 - Navigate to `/pagos/pago-aportes/verificacion`
 
@@ -293,6 +312,7 @@ Implementation:
 **Route**: `/pagos/pago-aportes/verificacion`
 
 Implementation:
+
 - Use `useWelcomeBar(false)`
 - Verify sessionStorage has required data, redirect if not
 - State: `code`, `error`, `isResendDisabled`, `isLoading`
@@ -301,11 +321,13 @@ Implementation:
 - Navigation: "Volver" link + "Pagar" button
 
 **Code validation**:
+
 - Must be 6 digits
 - Compare against `MOCK_VALID_CODE` (for mock implementation)
 - Show error for invalid code
 
 **Data flow**:
+
 - On successful validation, navigate to `/pagos/pago-aportes/resultado`
 
 #### Step 5.4: Create Step 4 Page (Result)
@@ -315,6 +337,7 @@ Implementation:
 **Route**: `/pagos/pago-aportes/resultado`
 
 Implementation:
+
 - Use `useWelcomeBar(false)`
 - Read session data and build result with mock transaction result
 - Stepper at step 4 (all steps completed)
@@ -322,6 +345,7 @@ Implementation:
 - Action buttons: "Imprimir/Guardar" (outline) + "Finalizar" (primary)
 
 **Cleanup**:
+
 - Clear all sessionStorage keys on "Finalizar"
 - Navigate to `/pagos`
 
@@ -334,6 +358,7 @@ Implementation:
 **File**: `src/schemas/aportesPaymentSchemas.ts`
 
 Create yup schemas for:
+
 - `aportesPaymentDetailsSchema` - Step 1 validation
 - `codeVerificationSchema` - Step 3 validation (can reuse from 09a if exists)
 
@@ -343,30 +368,30 @@ Create yup schemas for:
 
 ### New Files to Create
 
-| # | File | Phase | Type |
-|---|------|-------|------|
-| 1 | `src/types/aportes-payment.ts` | 1 | Types |
-| 2 | `src/mocks/mockAportesPaymentData.ts` | 1 | Mocks |
-| 3 | `src/atoms/CurrencyInput.tsx` | 2 | Atom |
-| 4 | `src/molecules/AportesPaymentDetailRow.tsx` | 3 | Molecule |
-| 5 | `src/organisms/AportesDetailsCard.tsx` | 4 | Organism |
-| 6 | `src/organisms/AportesConfirmationCard.tsx` | 4 | Organism |
-| 7 | `src/organisms/AportesTransactionResultCard.tsx` | 4 | Organism |
-| 8 | `app/(authenticated)/pagos/pago-aportes/page.tsx` | 5 | Page |
-| 9 | `app/(authenticated)/pagos/pago-aportes/confirmacion/page.tsx` | 5 | Page |
-| 10 | `app/(authenticated)/pagos/pago-aportes/verificacion/page.tsx` | 5 | Page |
-| 11 | `app/(authenticated)/pagos/pago-aportes/resultado/page.tsx` | 5 | Page |
-| 12 | `src/schemas/aportesPaymentSchemas.ts` | 6 | Schema (Optional) |
+| #   | File                                                           | Phase | Type              |
+| --- | -------------------------------------------------------------- | ----- | ----------------- |
+| 1   | `src/types/aportes-payment.ts`                                 | 1     | Types             |
+| 2   | `src/mocks/mockAportesPaymentData.ts`                          | 1     | Mocks             |
+| 3   | `src/atoms/CurrencyInput.tsx`                                  | 2     | Atom              |
+| 4   | `src/molecules/AportesPaymentDetailRow.tsx`                    | 3     | Molecule          |
+| 5   | `src/organisms/AportesDetailsCard.tsx`                         | 4     | Organism          |
+| 6   | `src/organisms/AportesConfirmationCard.tsx`                    | 4     | Organism          |
+| 7   | `src/organisms/AportesTransactionResultCard.tsx`               | 4     | Organism          |
+| 8   | `app/(authenticated)/pagos/pago-aportes/page.tsx`              | 5     | Page              |
+| 9   | `app/(authenticated)/pagos/pago-aportes/confirmacion/page.tsx` | 5     | Page              |
+| 10  | `app/(authenticated)/pagos/pago-aportes/verificacion/page.tsx` | 5     | Page              |
+| 11  | `app/(authenticated)/pagos/pago-aportes/resultado/page.tsx`    | 5     | Page              |
+| 12  | `src/schemas/aportesPaymentSchemas.ts`                         | 6     | Schema (Optional) |
 
 ### Files to Update
 
-| # | File | Phase | Changes |
-|---|------|-------|---------|
-| 1 | `src/types/index.ts` | 1 | Add aportes-payment exports |
-| 2 | `src/mocks/index.ts` | 1 | Add mock data exports |
-| 3 | `src/atoms/index.ts` | 2 | Add CurrencyInput export |
-| 4 | `src/molecules/index.ts` | 3 | Add AportesPaymentDetailRow export |
-| 5 | `src/organisms/index.ts` | 4 | Add 3 organism exports |
+| #   | File                     | Phase | Changes                            |
+| --- | ------------------------ | ----- | ---------------------------------- |
+| 1   | `src/types/index.ts`     | 1     | Add aportes-payment exports        |
+| 2   | `src/mocks/index.ts`     | 1     | Add mock data exports              |
+| 3   | `src/atoms/index.ts`     | 2     | Add CurrencyInput export           |
+| 4   | `src/molecules/index.ts` | 3     | Add AportesPaymentDetailRow export |
+| 5   | `src/organisms/index.ts` | 4     | Add 3 organism exports             |
 
 ---
 
@@ -410,6 +435,7 @@ Phase 6: Validation (Optional)
 ### Session Storage Keys
 
 Use distinct keys from 09a to avoid conflicts:
+
 - `aportesPaymentAccountId`
 - `aportesPaymentValor`
 - `aportesPaymentBreakdown`
@@ -417,16 +443,16 @@ Use distinct keys from 09a to avoid conflicts:
 
 ### Component Reuse Strategy
 
-| Component | Source | Usage in 09b |
-|-----------|--------|--------------|
-| `Stepper` | 09a | Step indicator on all pages |
-| `CodeInput` | 09a | Individual digit input |
-| `CodeInputGroup` | 09a | 6-digit code input |
-| `CodeInputCard` | 09a | Step 3 main card |
-| `Breadcrumbs` | Existing | Navigation trail |
-| `Button` | Existing | Action buttons |
-| `Card` | Existing | Card containers |
-| `Divider` | Existing | Section separators |
+| Component        | Source   | Usage in 09b                |
+| ---------------- | -------- | --------------------------- |
+| `Stepper`        | 09a      | Step indicator on all pages |
+| `CodeInput`      | 09a      | Individual digit input      |
+| `CodeInputGroup` | 09a      | 6-digit code input          |
+| `CodeInputCard`  | 09a      | Step 3 main card            |
+| `Breadcrumbs`    | Existing | Navigation trail            |
+| `Button`         | Existing | Action buttons              |
+| `Card`           | Existing | Card containers             |
+| `Divider`        | Existing | Section separators          |
 
 ### Styling Considerations
 
@@ -438,6 +464,7 @@ Use distinct keys from 09a to avoid conflicts:
 ### Hide Balances Support
 
 All monetary values must respect the `hideBalances` toggle from UIContext:
+
 - Account balances in selector
 - Payment breakdown amounts
 - Valor a pagar in confirmation
@@ -448,6 +475,7 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 ## Testing Checklist
 
 ### Step 1: Details Page
+
 - [ ] Page renders with stepper at step 1
 - [ ] Account dropdown shows available accounts
 - [ ] Balance hidden when hideBalances is true
@@ -462,6 +490,7 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 - [ ] "Continuar" saves data and navigates to step 2
 
 ### Step 2: Confirmation Page
+
 - [ ] Page renders with stepper at step 2
 - [ ] Redirects to step 1 if no session data
 - [ ] User info displays correctly
@@ -471,6 +500,7 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 - [ ] "Guardar Cambios" saves data and navigates to step 3
 
 ### Step 3: Verification Page
+
 - [ ] Page renders with stepper at step 3
 - [ ] Redirects if no session data
 - [ ] 6 code inputs work correctly
@@ -481,6 +511,7 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 - [ ] "Volver" navigates back to step 2
 
 ### Step 4: Result Page
+
 - [ ] Page renders with stepper at step 4 (completed)
 - [ ] Success icon shows for successful transaction
 - [ ] All transaction details display correctly
@@ -490,12 +521,14 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 - [ ] "Finalizar" clears session and navigates to /pagos
 
 ### Responsive Testing
+
 - [ ] Desktop layout correct
 - [ ] Tablet layout adapts
 - [ ] Mobile layout stacks properly
 - [ ] Currency input usable on mobile
 
 ### Accessibility
+
 - [ ] Keyboard navigation works
 - [ ] Focus states visible
 - [ ] Form fields have proper labels
@@ -506,6 +539,7 @@ All monetary values must respect the `hideBalances` toggle from UIContext:
 ## Dependencies
 
 ### NPM Packages (Already Installed)
+
 - `react-hook-form` - Form handling (if using in components)
 - `yup` - Validation schemas
 

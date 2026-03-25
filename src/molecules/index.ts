@@ -43,3 +43,4 @@ export { CupoRotativoCard } from './CupoRotativoCard';
 export { AccountTypeRadioGroup } from './AccountTypeRadioGroup';
 export { HolderTypeRadioGroup } from './HolderTypeRadioGroup';
 export { BankBadge } from './BankBadge';
+export { ExcessPaymentRadioGroup } from './ExcessPaymentRadioGroup';

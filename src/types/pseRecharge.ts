@@ -26,6 +26,7 @@ export interface PSERechargeConfirmationData {
   productToRecharge: string;
   amount: number;
   method: string;
+  transactionCost?: number;
 }
 
 /**

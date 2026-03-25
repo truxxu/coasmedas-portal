@@ -25,7 +25,7 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
       type="button"
       onClick={onClick}
       className={`
-        w-full p-4 rounded-lg text-left transition-all
+        min-w-[280px] flex-shrink-0 p-4 rounded-lg text-left transition-all
         ${selected
           ? 'border-2 border-brand-primary bg-white'
           : 'border border-brand-border bg-white'
@@ -40,12 +40,12 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
 
       {/* Product Number */}
       <p className="text-[15px] text-black mb-3">
-        Número de producto: {product.productNumber}
+        Número: {product.productNumber}
       </p>
 
       {/* Balance Label */}
       <p className="text-[15px] text-black mb-1">
-        Saldo Total
+        Saldo a la fecha
       </p>
 
       {/* Balance Amount */}

@@ -43,27 +43,27 @@ Implement the "Cuentas de mi Red Coopcentral" external transfer flow under `/tra
 
 ### New Files to Create (in order)
 
-| # | File | Type | Description |
-|---|------|------|-------------|
-| 1 | `src/types/redCoopTransfer.ts` | Types | All TypeScript interfaces |
-| 2 | `src/mocks/mockRedCoopTransferData.ts` | Mocks | Mock data and step constants |
-| 3 | `src/organisms/RedCoopTransferDetailsCard.tsx` | Organism | Transfer details form |
-| 4 | `src/organisms/RedCoopTransferConfirmationCard.tsx` | Organism | Confirmation summary |
-| 5 | `src/organisms/RedCoopTransferResultCard.tsx` | Organism | Result display (success/error) |
-| 6 | `app/(authenticated)/transferencias/externas/red-coopcentral/page.tsx` | Page | Step 1: Details |
-| 7 | `app/(authenticated)/transferencias/externas/red-coopcentral/confirmacion/page.tsx` | Page | Step 2: Confirmation |
-| 8 | `app/(authenticated)/transferencias/externas/red-coopcentral/sms/page.tsx` | Page | Step 3: SMS verification |
-| 9 | `app/(authenticated)/transferencias/externas/red-coopcentral/resultado/page.tsx` | Page | Step 4: Result |
+| #   | File                                                                                | Type     | Description                    |
+| --- | ----------------------------------------------------------------------------------- | -------- | ------------------------------ |
+| 1   | `src/types/redCoopTransfer.ts`                                                      | Types    | All TypeScript interfaces      |
+| 2   | `src/mocks/mockRedCoopTransferData.ts`                                              | Mocks    | Mock data and step constants   |
+| 3   | `src/organisms/RedCoopTransferDetailsCard.tsx`                                      | Organism | Transfer details form          |
+| 4   | `src/organisms/RedCoopTransferConfirmationCard.tsx`                                 | Organism | Confirmation summary           |
+| 5   | `src/organisms/RedCoopTransferResultCard.tsx`                                       | Organism | Result display (success/error) |
+| 6   | `app/(authenticated)/transferencias/externas/red-coopcentral/page.tsx`              | Page     | Step 1: Details                |
+| 7   | `app/(authenticated)/transferencias/externas/red-coopcentral/confirmacion/page.tsx` | Page     | Step 2: Confirmation           |
+| 8   | `app/(authenticated)/transferencias/externas/red-coopcentral/sms/page.tsx`          | Page     | Step 3: SMS verification       |
+| 9   | `app/(authenticated)/transferencias/externas/red-coopcentral/resultado/page.tsx`    | Page     | Step 4: Result                 |
 
 ### Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/organisms/ExternasFlowGrid.tsx` | Fix typo + href (see Fix 1, Fix 2) |
-| `app/(authenticated)/transferencias/externas/page.tsx` | Fix handler typo (see Fix 3) |
-| `src/organisms/index.ts` | Export 3 new organism components |
-| `src/mocks/index.ts` | Export new mock data |
-| `src/types/index.ts` (if exists) | Export new types |
+| File                                                   | Change                             |
+| ------------------------------------------------------ | ---------------------------------- |
+| `src/organisms/ExternasFlowGrid.tsx`                   | Fix typo + href (see Fix 1, Fix 2) |
+| `app/(authenticated)/transferencias/externas/page.tsx` | Fix handler typo (see Fix 3)       |
+| `src/organisms/index.ts`                               | Export 3 new organism components   |
+| `src/mocks/index.ts`                                   | Export new mock data               |
+| `src/types/index.ts` (if exists)                       | Export new types                   |
 
 ---
 
@@ -79,9 +79,9 @@ Mirror the `externalTransfer.ts` structure. Key difference: destination bank is 
  */
 export interface RedCoopSourceAccount {
   id: string;
-  type: string;              // e.g., "Cuenta de Ahorros"
+  type: string; // e.g., "Cuenta de Ahorros"
   balance: number;
-  maskedNumber: string;      // e.g., "****4428"
+  maskedNumber: string; // e.g., "****4428"
 }
 
 /**
@@ -89,10 +89,10 @@ export interface RedCoopSourceAccount {
  */
 export interface RedCoopDestinationAccount {
   id: string;
-  holderName: string;        // e.g., "PEDRO PEREZ"
-  bankName: string;          // Always "Coopcentral"
+  holderName: string; // e.g., "PEDRO PEREZ"
+  bankName: string; // Always "Coopcentral"
   accountType: "ahorros" | "corriente";
-  accountNumber: string;     // e.g., "123-456789-01"
+  accountNumber: string; // e.g., "123-456789-01"
   alias?: string;
 }
 
@@ -112,12 +112,12 @@ export interface RedCoopTransferFormData {
 export interface RedCoopTransferConfirmationData {
   // Holder (sender) info
   holderName: string;
-  holderDocument: string;     // Masked: "CC 1.***.***. 231"
-  sourceProduct: string;      // e.g., "Cuenta de Ahorros"
+  holderDocument: string; // Masked: "CC 1.***.***. 231"
+  sourceProduct: string; // e.g., "Cuenta de Ahorros"
 
   // Destination info
-  destinationHolder: string;  // e.g., "PEDRO PEREZ"
-  destinationBank: string;    // Always "Coopcentral"
+  destinationHolder: string; // e.g., "PEDRO PEREZ"
+  destinationBank: string; // Always "Coopcentral"
   destinationAccountType: string; // "Ahorros" | "Corriente"
   destinationAccountNumber: string;
 
@@ -134,17 +134,17 @@ export interface RedCoopTransferResult {
 
   // Transfer details
   sourceAccount: string;
-  destinationBank: string;    // Always "Coopcentral"
+  destinationBank: string; // Always "Coopcentral"
   destinationAccountNumber: string;
   amountTransferred: number;
   concept: string;
-  transactionCost: number;    // Always 0 per design
+  transactionCost: number; // Always 0 per design
 
   // Transaction metadata
-  transactionDate: string;    // e.g., "5 de Enero de 2025"
-  transactionTime: string;    // e.g., "03:02 p.m."
-  approvalNumber: string;     // 6-digit string
-  description: string;        // "Transferencia Exitosa" or error
+  transactionDate: string; // e.g., "5 de Enero de 2025"
+  transactionTime: string; // e.g., "03:02 p.m."
+  approvalNumber: string; // 6-digit string
+  description: string; // "Transferencia Exitosa" or error
 
   // Error info
   errorMessage?: string;
@@ -264,9 +264,9 @@ export const RED_COOP_MOCK_VALID_CODE = "123456";
  */
 export const RED_COOP_TRANSFER_STEPS: Step[] = [
   { number: 1, label: "Detalle" },
-  { number: 2, label: "Confirmacion" },
+  { number: 2, label: "Confirmación" },
   { number: 3, label: "SMS" },
-  { number: 4, label: "Finalizacion" },
+  { number: 4, label: "Finalización" },
 ];
 ```
 
@@ -276,18 +276,18 @@ export const RED_COOP_TRANSFER_STEPS: Step[] = [
 
 Clone the `ExternalTransferDetailsCard` pattern with these differences:
 
-| Aspect | ExternalTransferDetailsCard | RedCoopTransferDetailsCard |
-|--------|-----------------------------|----------------------------|
-| Card title | "Transferencias Externas" | "Transferencias a Cuentas de mi Red Coopcentral" |
-| Card description | "Transfiere dinero a cuentas en otros bancos o entidades financieras." | "Envia dinero a otras cooperativas de la Red Coopcentral" |
-| Source label | "De cual cuenta quieres transferir?" | "¿De cual cuenta quieres transferir?" |
-| Destination label | "Cuenta destino" | "Cuenta destino / Codigo de producto" |
-| Destination placeholder | "Selecciona una cuenta inscrita..." | "Selecciona una cuenta inscrita..." |
-| Destination format | `${account.alias} (${account.bankName})` | `${account.holderName} - ${account.accountNumber}` |
-| Amount label | "Que valor deseas transferir?" | "¿Que valor deseas transferir?" |
-| Concept label | "Cual es el concepto de la transaccion? (opcional)" | "Concepto (Opcional)" |
-| No-destination link | `/transferencias/inscribir-cuentas` | `/transferencias/externas/inscribir-cuentas` |
-| Types imported | `ExternalTransferSourceAccount`, `ExternalTransferDestinationAccount` | `RedCoopSourceAccount`, `RedCoopDestinationAccount` |
+| Aspect                  | ExternalTransferDetailsCard                                            | RedCoopTransferDetailsCard                                |
+| ----------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------- |
+| Card title              | "Transferencias Externas"                                              | "Transferencias a Cuentas de mi Red Coopcentral"          |
+| Card description        | "Transfiere dinero a cuentas en otros bancos o entidades financieras." | "Envia dinero a otras cooperativas de la Red Coopcentral" |
+| Source label            | "De cual cuenta quieres transferir?"                                   | "¿De cual cuenta quieres transferir?"                     |
+| Destination label       | "Cuenta destino"                                                       | "Cuenta destino / Codigo de producto"                     |
+| Destination placeholder | "Selecciona una cuenta inscrita..."                                    | "Selecciona una cuenta inscrita..."                       |
+| Destination format      | `${account.alias} (${account.bankName})`                               | `${account.holderName} - ${account.accountNumber}`        |
+| Amount label            | "Que valor deseas transferir?"                                         | "¿Que valor deseas transferir?"                           |
+| Concept label           | "Cual es el concepto de la transaccion? (opcional)"                    | "Concepto (Opcional)"                                     |
+| No-destination link     | `/transferencias/inscribir-cuentas`                                    | `/transferencias/externas/inscribir-cuentas`              |
+| Types imported          | `ExternalTransferSourceAccount`, `ExternalTransferDestinationAccount`  | `RedCoopSourceAccount`, `RedCoopDestinationAccount`       |
 
 **Props interface:**
 
@@ -316,11 +316,11 @@ interface RedCoopTransferDetailsCardProps {
 
 Clone `ExternalTransferConfirmationCard` with these differences:
 
-| Aspect | External | RedCoop |
-|--------|----------|---------|
-| Card title | "Confirmacion de Transferencia" | "Confirmacion de Pago" |
-| Card description | Same text | Same text |
-| Types | `ExternalTransferConfirmationData` | `RedCoopTransferConfirmationData` |
+| Aspect           | External                           | RedCoop                           |
+| ---------------- | ---------------------------------- | --------------------------------- |
+| Card title       | "Confirmación de Transferencia"    | "Confirmación de Pago"            |
+| Card description | Same text                          | Same text                         |
+| Types            | `ExternalTransferConfirmationData` | `RedCoopTransferConfirmationData` |
 
 **Props interface:**
 
@@ -332,6 +332,7 @@ interface RedCoopTransferConfirmationCardProps {
 ```
 
 **Layout**: Identical to `ExternalTransferConfirmationCard.tsx` (lines 1-117). Three sections separated by `<Divider />`:
+
 1. Holder info: Nombre Titular, Documento Titular, Producto a Debitar
 2. Destination info: Titular Destino, Banco Destino (always "Coopcentral"), Tipo de Cuenta, Cuenta Destino
 3. Transfer details: Valor a Transferir (18px), Concepto (conditional)
@@ -344,9 +345,9 @@ Same row styling: `flex justify-between items-center py-2`, label `text-[15px] t
 
 Clone `ExternalTransferResultCard` with these differences:
 
-| Aspect | External | RedCoop |
-|--------|----------|---------|
-| Types | `ExternalTransferResult` | `RedCoopTransferResult` |
+| Aspect | External                 | RedCoop                 |
+| ------ | ------------------------ | ----------------------- |
+| Types  | `ExternalTransferResult` | `RedCoopTransferResult` |
 
 **Props interface:**
 
@@ -360,6 +361,7 @@ interface RedCoopTransferResultCardProps {
 **Layout**: Identical to `ExternalTransferResultCard.tsx` (lines 1-173). Same icon SVGs, same success/error states, same detail rows.
 
 Success rows:
+
 1. Cuenta Origen
 2. Banco Destino (always "Coopcentral")
 3. Cuenta Destino
@@ -379,26 +381,28 @@ Success rows:
 
 Clone `otros-bancos/page.tsx` with these changes:
 
-| Aspect | otros-bancos | red-coopcentral |
-|--------|--------------|-----------------|
-| Component name | `AOtrosBancosPage` | `RedCoopcentalPage` |
-| WelcomeBar title | `"A Otros Bancos"` | `"Cuentas de mi Red Coopcentral"` |
-| WelcomeBar backHref | `"/transferencias/externas"` | `"/transferencias/externas"` |
-| Breadcrumbs | `["Inicio", "Transferencias", "A Otros Bancos"]` | `["Inicio", "Transferencias", "Red Coopcentral"]` |
-| Organism used | `ExternalTransferDetailsCard` | `RedCoopTransferDetailsCard` |
-| Mock data imports | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts` |
-| Steps import | `EXTERNAL_TRANSFER_STEPS` | `RED_COOP_TRANSFER_STEPS` |
-| SessionStorage prefix | `externalTransfer*` | `redCoopTransfer*` |
-| Confirm route | `"/transferencias/externas/otros-bancos/confirmacion"` | `"/transferencias/externas/red-coopcentral/confirmacion"` |
-| Back route | `"/transferencias/externas"` | `"/transferencias/externas"` |
+| Aspect                | otros-bancos                                                             | red-coopcentral                                               |
+| --------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Component name        | `AOtrosBancosPage`                                                       | `RedCoopcentalPage`                                           |
+| WelcomeBar title      | `"A Otros Bancos"`                                                       | `"Cuentas de mi Red Coopcentral"`                             |
+| WelcomeBar backHref   | `"/transferencias/externas"`                                             | `"/transferencias/externas"`                                  |
+| Breadcrumbs           | `["Inicio", "Transferencias", "A Otros Bancos"]`                         | `["Inicio", "Transferencias", "Red Coopcentral"]`             |
+| Organism used         | `ExternalTransferDetailsCard`                                            | `RedCoopTransferDetailsCard`                                  |
+| Mock data imports     | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts` |
+| Steps import          | `EXTERNAL_TRANSFER_STEPS`                                                | `RED_COOP_TRANSFER_STEPS`                                     |
+| SessionStorage prefix | `externalTransfer*`                                                      | `redCoopTransfer*`                                            |
+| Confirm route         | `"/transferencias/externas/otros-bancos/confirmacion"`                   | `"/transferencias/externas/red-coopcentral/confirmacion"`     |
+| Back route            | `"/transferencias/externas"`                                             | `"/transferencias/externas"`                                  |
 
 **SessionStorage keys:**
+
 - `redCoopTransferSourceId`
 - `redCoopTransferDestinationId`
 - `redCoopTransferAmount`
 - `redCoopTransferConcept`
 
 **Validation logic**: Same as `otros-bancos/page.tsx` (lines 34-62):
+
 1. Required source account
 2. Required destination account
 3. Amount > 0
@@ -413,20 +417,20 @@ Clone `otros-bancos/page.tsx` with these changes:
 
 Clone `otros-bancos/confirmacion/page.tsx` with these changes:
 
-| Aspect | otros-bancos | red-coopcentral |
-|--------|--------------|-----------------|
-| Component name | `ConfirmacionPage` | `RedCoopConfirmacionPage` |
-| WelcomeBar title | `"A Otros Bancos"` | `"Cuentas de mi Red Coopcentral"` |
-| WelcomeBar backHref | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
-| Breadcrumbs | `["Inicio", "Transferencias", "A Otros Bancos"]` | `["Inicio", "Transferencias", "Red Coopcentral"]` |
-| Organism | `ExternalTransferConfirmationCard` | `RedCoopTransferConfirmationCard` |
-| Types | `ExternalTransferConfirmationData` | `RedCoopTransferConfirmationData` |
-| Mock imports | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations`, `mockExternalTransferUserData` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts`, `mockRedCoopUserData` |
-| Steps | `EXTERNAL_TRANSFER_STEPS` | `RED_COOP_TRANSFER_STEPS` |
-| SessionStorage prefix | `externalTransfer*` | `redCoopTransfer*` |
-| Redirect route | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
-| Next route | `"/transferencias/externas/otros-bancos/sms"` | `"/transferencias/externas/red-coopcentral/sms"` |
-| Back route | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
+| Aspect                | otros-bancos                                                                                             | red-coopcentral                                                                      |
+| --------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Component name        | `ConfirmacionPage`                                                                                       | `RedCoopConfirmacionPage`                                                            |
+| WelcomeBar title      | `"A Otros Bancos"`                                                                                       | `"Cuentas de mi Red Coopcentral"`                                                    |
+| WelcomeBar backHref   | `"/transferencias/externas/otros-bancos"`                                                                | `"/transferencias/externas/red-coopcentral"`                                         |
+| Breadcrumbs           | `["Inicio", "Transferencias", "A Otros Bancos"]`                                                         | `["Inicio", "Transferencias", "Red Coopcentral"]`                                    |
+| Organism              | `ExternalTransferConfirmationCard`                                                                       | `RedCoopTransferConfirmationCard`                                                    |
+| Types                 | `ExternalTransferConfirmationData`                                                                       | `RedCoopTransferConfirmationData`                                                    |
+| Mock imports          | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations`, `mockExternalTransferUserData` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts`, `mockRedCoopUserData` |
+| Steps                 | `EXTERNAL_TRANSFER_STEPS`                                                                                | `RED_COOP_TRANSFER_STEPS`                                                            |
+| SessionStorage prefix | `externalTransfer*`                                                                                      | `redCoopTransfer*`                                                                   |
+| Redirect route        | `"/transferencias/externas/otros-bancos"`                                                                | `"/transferencias/externas/red-coopcentral"`                                         |
+| Next route            | `"/transferencias/externas/otros-bancos/sms"`                                                            | `"/transferencias/externas/red-coopcentral/sms"`                                     |
+| Back route            | `"/transferencias/externas/otros-bancos"`                                                                | `"/transferencias/externas/red-coopcentral"`                                         |
 
 **Key difference in confirmation data building**: Destination bank is always `"Coopcentral"` (hardcoded from mock data). The `destinationAccountType` capitalization logic remains: `"ahorros" → "Ahorros"`, `"corriente" → "Corriente"`.
 
@@ -438,23 +442,24 @@ Clone `otros-bancos/confirmacion/page.tsx` with these changes:
 
 Clone `otros-bancos/sms/page.tsx` with these changes:
 
-| Aspect | otros-bancos | red-coopcentral |
-|--------|--------------|-----------------|
-| Component name | `SMSVerificationPage` | `RedCoopSMSPage` |
-| WelcomeBar title | `"A Otros Bancos"` | `"Cuentas de mi Red Coopcentral"` |
-| WelcomeBar backHref | `"/transferencias/externas/otros-bancos/confirmacion"` | `"/transferencias/externas/red-coopcentral/confirmacion"` |
-| Breadcrumbs | `["Inicio", "Transferencias", "A Otros Bancos"]` | `["Inicio", "Transferencias", "Red Coopcentral"]` |
-| Steps | `EXTERNAL_TRANSFER_STEPS` | `RED_COOP_TRANSFER_STEPS` |
-| Valid code | `EXTERNAL_TRANSFER_MOCK_VALID_CODE` | `RED_COOP_MOCK_VALID_CODE` |
-| Mock imports | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts` |
-| Result type | `ExternalTransferResult` | `RedCoopTransferResult` |
-| SessionStorage prefix | `externalTransfer*` | `redCoopTransfer*` |
-| Confirmation check key | `"externalTransferConfirmation"` | `"redCoopTransferConfirmation"` |
-| Redirect route | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
-| Success route | `"/transferencias/externas/otros-bancos/resultado"` | `"/transferencias/externas/red-coopcentral/resultado"` |
-| Back route | `"/transferencias/externas/otros-bancos/confirmacion"` | `"/transferencias/externas/red-coopcentral/confirmacion"` |
+| Aspect                 | otros-bancos                                                             | red-coopcentral                                               |
+| ---------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Component name         | `SMSVerificationPage`                                                    | `RedCoopSMSPage`                                              |
+| WelcomeBar title       | `"A Otros Bancos"`                                                       | `"Cuentas de mi Red Coopcentral"`                             |
+| WelcomeBar backHref    | `"/transferencias/externas/otros-bancos/confirmacion"`                   | `"/transferencias/externas/red-coopcentral/confirmacion"`     |
+| Breadcrumbs            | `["Inicio", "Transferencias", "A Otros Bancos"]`                         | `["Inicio", "Transferencias", "Red Coopcentral"]`             |
+| Steps                  | `EXTERNAL_TRANSFER_STEPS`                                                | `RED_COOP_TRANSFER_STEPS`                                     |
+| Valid code             | `EXTERNAL_TRANSFER_MOCK_VALID_CODE`                                      | `RED_COOP_MOCK_VALID_CODE`                                    |
+| Mock imports           | `mockExternalTransferSourceAccounts`, `mockExternalTransferDestinations` | `mockRedCoopSourceAccounts`, `mockRedCoopDestinationAccounts` |
+| Result type            | `ExternalTransferResult`                                                 | `RedCoopTransferResult`                                       |
+| SessionStorage prefix  | `externalTransfer*`                                                      | `redCoopTransfer*`                                            |
+| Confirmation check key | `"externalTransferConfirmation"`                                         | `"redCoopTransferConfirmation"`                               |
+| Redirect route         | `"/transferencias/externas/otros-bancos"`                                | `"/transferencias/externas/red-coopcentral"`                  |
+| Success route          | `"/transferencias/externas/otros-bancos/resultado"`                      | `"/transferencias/externas/red-coopcentral/resultado"`        |
+| Back route             | `"/transferencias/externas/otros-bancos/confirmacion"`                   | `"/transferencias/externas/red-coopcentral/confirmacion"`     |
 
 **`generateTransactionResult` function**: Same logic (lines 70-129 of otros-bancos sms page), but:
+
 - Uses `mockRedCoopSourceAccounts` and `mockRedCoopDestinationAccounts` for lookups
 - Returns `RedCoopTransferResult` type
 - `destinationBank` always comes from mock (always "Coopcentral")
@@ -465,20 +470,21 @@ Clone `otros-bancos/sms/page.tsx` with these changes:
 
 Clone `otros-bancos/resultado/page.tsx` with these changes:
 
-| Aspect | otros-bancos | red-coopcentral |
-|--------|--------------|-----------------|
-| Component name | `ResultadoPage` | `RedCoopResultadoPage` |
-| WelcomeBar title | `"A Otros Bancos"` | `"Cuentas de mi Red Coopcentral"` |
-| Breadcrumbs | `["Inicio", "Transferencias", "A Otros Bancos"]` | `["Inicio", "Transferencias", "Red Coopcentral"]` |
-| Organism | `ExternalTransferResultCard` | `RedCoopTransferResultCard` |
-| Result type | `ExternalTransferResult` | `RedCoopTransferResult` |
-| Steps | `EXTERNAL_TRANSFER_STEPS` | `RED_COOP_TRANSFER_STEPS` |
-| SessionStorage result key | `"externalTransferResult"` | `"redCoopTransferResult"` |
-| Redirect route | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
-| New transaction route | `"/transferencias/externas/otros-bancos"` | `"/transferencias/externas/red-coopcentral"` |
-| Finish route | `"/home"` | `"/home"` |
+| Aspect                    | otros-bancos                                     | red-coopcentral                                   |
+| ------------------------- | ------------------------------------------------ | ------------------------------------------------- |
+| Component name            | `ResultadoPage`                                  | `RedCoopResultadoPage`                            |
+| WelcomeBar title          | `"A Otros Bancos"`                               | `"Cuentas de mi Red Coopcentral"`                 |
+| Breadcrumbs               | `["Inicio", "Transferencias", "A Otros Bancos"]` | `["Inicio", "Transferencias", "Red Coopcentral"]` |
+| Organism                  | `ExternalTransferResultCard`                     | `RedCoopTransferResultCard`                       |
+| Result type               | `ExternalTransferResult`                         | `RedCoopTransferResult`                           |
+| Steps                     | `EXTERNAL_TRANSFER_STEPS`                        | `RED_COOP_TRANSFER_STEPS`                         |
+| SessionStorage result key | `"externalTransferResult"`                       | `"redCoopTransferResult"`                         |
+| Redirect route            | `"/transferencias/externas/otros-bancos"`        | `"/transferencias/externas/red-coopcentral"`      |
+| New transaction route     | `"/transferencias/externas/otros-bancos"`        | `"/transferencias/externas/red-coopcentral"`      |
+| Finish route              | `"/home"`                                        | `"/home"`                                         |
 
 **`clearSessionStorage` function** removes all 6 keys:
+
 - `redCoopTransferSourceId`
 - `redCoopTransferDestinationId`
 - `redCoopTransferAmount`
@@ -523,14 +529,14 @@ export {
 
 ## SessionStorage Keys Reference
 
-| Key | Set In | Read In | Cleared In |
-|-----|--------|---------|------------|
-| `redCoopTransferSourceId` | Step 1 | Steps 2, 3 | Step 4 |
-| `redCoopTransferDestinationId` | Step 1 | Steps 2, 3 | Step 4 |
-| `redCoopTransferAmount` | Step 1 | Steps 2, 3 | Step 4 |
-| `redCoopTransferConcept` | Step 1 | Steps 2, 3 | Step 4 |
-| `redCoopTransferConfirmation` | Step 2 | Step 3 | Step 4 |
-| `redCoopTransferResult` | Step 3 | Step 4 | Step 4 |
+| Key                            | Set In | Read In    | Cleared In |
+| ------------------------------ | ------ | ---------- | ---------- |
+| `redCoopTransferSourceId`      | Step 1 | Steps 2, 3 | Step 4     |
+| `redCoopTransferDestinationId` | Step 1 | Steps 2, 3 | Step 4     |
+| `redCoopTransferAmount`        | Step 1 | Steps 2, 3 | Step 4     |
+| `redCoopTransferConcept`       | Step 1 | Steps 2, 3 | Step 4     |
+| `redCoopTransferConfirmation`  | Step 2 | Step 3     | Step 4     |
+| `redCoopTransferResult`        | Step 3 | Step 4     | Step 4     |
 
 ---
 
@@ -569,14 +575,14 @@ app/(authenticated)/transferencias/externas/
 
 ## Validation Rules
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Source Account | Required | "Por favor selecciona una cuenta origen" |
-| Destination Account | Required | "Por favor selecciona una cuenta destino" |
-| Amount | Required, > 0 | "Por favor ingresa un valor a transferir" |
-| Amount | ≤ source balance | "El valor supera el saldo disponible" |
-| Concept | Optional, max 100 chars | "El concepto no puede exceder 100 caracteres" |
-| SMS Code | Exactly 6 digits | "Por favor ingresa el codigo de 6 digitos" |
+| Field               | Rule                    | Error Message                                 |
+| ------------------- | ----------------------- | --------------------------------------------- |
+| Source Account      | Required                | "Por favor selecciona una cuenta origen"      |
+| Destination Account | Required                | "Por favor selecciona una cuenta destino"     |
+| Amount              | Required, > 0           | "Por favor ingresa un valor a transferir"     |
+| Amount              | ≤ source balance        | "El valor supera el saldo disponible"         |
+| Concept             | Optional, max 100 chars | "El concepto no puede exceder 100 caracteres" |
+| SMS Code            | Exactly 6 digits        | "Por favor ingresa el codigo de 6 digitos"    |
 
 ---
 

@@ -4,10 +4,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ObligacionDetailsCard } from "@/src/organisms";
+import { ObligacionDetailsCard, ObligacionPaymentDetailsSection } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
-import { PaymentType, ObligacionPaymentMethod, ObligacionSourceAccount, ObligacionPaymentProduct } from "@/src/types/obligacion-payment";
+import { PaymentType, ObligacionPaymentMethod, ObligacionSourceAccount, ObligacionPaymentProduct, ExcessPaymentOption } from "@/src/types/obligacion-payment";
 import {
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
@@ -32,6 +32,7 @@ export default function PagoObligacionesPage() {
   const [paymentMethod, setPaymentMethod] = useState<ObligacionPaymentMethod>("account");
   const [valorAPagar, setValorAPagar] = useState<number>(0);
   const [activePaymentType, setActivePaymentType] = useState<PaymentType | null>(null);
+  const [excessPaymentOption, setExcessPaymentOption] = useState<ExcessPaymentOption | null>(null);
   const [error, setError] = useState<string>("");
   const [accountError, setAccountError] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -91,6 +92,7 @@ export default function PagoObligacionesPage() {
   }, [fetchData]);
 
   const allSourceAccounts = sourceAccounts;
+  const selectedProduct = products.find((p) => p.id === selectedProductId) ?? null;
 
   const breadcrumbItems = [
     "Inicio",
@@ -106,6 +108,7 @@ export default function PagoObligacionesPage() {
     if (product) {
       setValorAPagar(product.minimumPayment);
       setActivePaymentType("minimum");
+      setExcessPaymentOption(null);
     }
   };
 
@@ -120,6 +123,7 @@ export default function PagoObligacionesPage() {
     if (!product) return;
 
     setActivePaymentType(type);
+    setExcessPaymentOption(null);
     if (type === "minimum") {
       setValorAPagar(product.minimumPayment);
     } else {
@@ -130,6 +134,7 @@ export default function PagoObligacionesPage() {
   const handleValorChange = (valor: number) => {
     setValorAPagar(valor);
     setActivePaymentType(null);
+    setExcessPaymentOption(null);
     setError("");
   };
 
@@ -139,15 +144,8 @@ export default function PagoObligacionesPage() {
       return;
     }
 
-    if (!selectedProductId) {
+    if (!selectedProductId || !selectedProduct) {
       setError("Por favor selecciona un producto");
-      return;
-    }
-
-    const selectedProduct = products.find((p) => p.id === selectedProductId);
-
-    if (!selectedProduct) {
-      setError("Producto no encontrado");
       return;
     }
 
@@ -165,6 +163,11 @@ export default function PagoObligacionesPage() {
 
     if (valorAPagar > selectedProduct.totalBalance) {
       setError("El valor no puede exceder el saldo total");
+      return;
+    }
+
+    if (valorAPagar > selectedProduct.minimumPayment && !excessPaymentOption) {
+      setError("Selecciona cómo deseas aplicar el excedente");
       return;
     }
 
@@ -189,6 +192,12 @@ export default function PagoObligacionesPage() {
     sessionStorage.setItem("obligacionPaymentMethod", paymentMethod);
     sessionStorage.setItem("obligacionSourceAccountId", selectedAccountId);
     sessionStorage.setItem("obligacionSourceAccountDisplay", sourceAccountDisplay);
+
+    if (excessPaymentOption) {
+      sessionStorage.setItem("obligacionExcessPaymentOption", excessPaymentOption);
+    } else {
+      sessionStorage.removeItem("obligacionExcessPaymentOption");
+    }
 
     // Store raw API data for transaction request building
     const selectedSavings = savingsApiData.find((a) => String(a.idCuenta) === String(selectedAccountId));
@@ -253,6 +262,25 @@ export default function PagoObligacionesPage() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes obligaciones pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <Breadcrumbs items={breadcrumbItems} />
@@ -266,16 +294,25 @@ export default function PagoObligacionesPage() {
         sourceAccounts={allSourceAccounts}
         selectedProductId={selectedProductId}
         selectedAccountId={selectedAccountId}
-        valorAPagar={valorAPagar}
-        activePaymentType={activePaymentType}
         onProductSelect={handleProductSelect}
         onAccountChange={handleAccountChange}
-        onValorChange={handleValorChange}
-        onPaymentTypeSelect={handlePaymentTypeSelect}
         onNeedMoreBalance={handleNeedMoreBalance}
         hideBalances={hideBalances}
         accountError={accountError}
       />
+
+      {selectedProduct && (
+        <ObligacionPaymentDetailsSection
+          selectedProduct={selectedProduct}
+          valorAPagar={valorAPagar}
+          activePaymentType={activePaymentType}
+          excessPaymentOption={excessPaymentOption}
+          onValorChange={handleValorChange}
+          onPaymentTypeSelect={handlePaymentTypeSelect}
+          onExcessOptionChange={setExcessPaymentOption}
+          hideBalances={hideBalances}
+        />
+      )}
 
       {error && (
         <div className="text-sm text-brand-error text-center">{error}</div>

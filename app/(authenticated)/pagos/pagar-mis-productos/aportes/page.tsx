@@ -204,7 +204,7 @@ export default function PagoAportesPage() {
     );
   }
 
-  if (loading || !paymentBreakdown) {
+  if (loading) {
     return (
       <div className="space-y-6">
         <Breadcrumbs
@@ -214,6 +214,27 @@ export default function PagoAportesPage() {
           <div className="h-6 w-48 bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!paymentBreakdown) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs
+          items={["Inicio", "Pagos", "Pagar mis productos", "Pago de Aportes"]}
+        />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes aportes pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
         </div>
       </div>
     );

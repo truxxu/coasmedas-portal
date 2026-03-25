@@ -18,3 +18,4 @@ export * from './mockAccountRegistrationData';
 export * from './mockExternalTransferData';
 export * from './mockRedCoopTransferData';
 export * from './mockScheduledTransferData';
+export * from './home';

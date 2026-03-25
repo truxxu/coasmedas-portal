@@ -9,30 +9,38 @@
  * @see /src/types/redCoopTransfer.ts — UI types (Red Coopcentral)
  */
 
-import { normalizeMoney, normalizeString } from '@/types/api/common';
+import { normalizeMoney, normalizeString } from "@/types/api/common";
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
-} from '@/types/api/products';
+} from "@/types/api/products";
 import type {
   ExternalTransferSourceRef,
   ExternalTransferApiResult,
-} from '@/types/api/transfers';
-import type { ExternalTransferSourceAccount, ExternalTransferResult } from '@/src/types/externalTransfer';
-import type { RedCoopSourceAccount, RedCoopTransferResult } from '@/src/types/redCoopTransfer';
-import { maskNumber } from '@/src/utils';
-import { parseApiDate, parseApiTime, formatDate } from '@/src/utils/dates';
+} from "@/types/api/transfers";
+import type {
+  ExternalTransferSourceAccount,
+  ExternalTransferResult,
+} from "@/src/types/externalTransfer";
+import type {
+  RedCoopSourceAccount,
+  RedCoopTransferResult,
+} from "@/src/types/redCoopTransfer";
+import { maskNumber } from "@/src/utils";
+import { parseApiDate, parseApiTime, formatDate } from "@/src/utils/dates";
 
 // ─── Source Account Mappers ───
 
 /**
  * Map savings API response → ExternalTransferSourceAccount (UI type).
  */
-export function mapSavingsToExternalSource(item: SavingsAccountResponse): ExternalTransferSourceAccount {
+export function mapSavingsToExternalSource(
+  item: SavingsAccountResponse,
+): ExternalTransferSourceAccount {
   return {
     id: item.idCuenta,
     type: item.nombreProducto,
-    balance: normalizeMoney(item.saldoDisponible),
+    balance: normalizeMoney(item.saldoTotal),
     maskedNumber: maskNumber(item.numeroCuenta),
   };
 }
@@ -40,7 +48,9 @@ export function mapSavingsToExternalSource(item: SavingsAccountResponse): Extern
 /**
  * Map credits API response → ExternalTransferSourceAccount (UI type).
  */
-export function mapCreditsToExternalSource(item: CreditAccountResponse): ExternalTransferSourceAccount {
+export function mapCreditsToExternalSource(
+  item: CreditAccountResponse,
+): ExternalTransferSourceAccount {
   return {
     id: item.idCuenta,
     type: item.nombreProducto,
@@ -52,11 +62,13 @@ export function mapCreditsToExternalSource(item: CreditAccountResponse): Externa
 /**
  * Map savings API response → RedCoopSourceAccount (UI type).
  */
-export function mapSavingsToRedCoopSource(item: SavingsAccountResponse): RedCoopSourceAccount {
+export function mapSavingsToRedCoopSource(
+  item: SavingsAccountResponse,
+): RedCoopSourceAccount {
   return {
     id: item.idCuenta,
     type: item.nombreProducto,
-    balance: normalizeMoney(item.saldoDisponible),
+    balance: normalizeMoney(item.saldoTotal),
     maskedNumber: maskNumber(item.numeroCuenta),
   };
 }
@@ -64,7 +76,9 @@ export function mapSavingsToRedCoopSource(item: SavingsAccountResponse): RedCoop
 /**
  * Map credits API response → RedCoopSourceAccount (UI type).
  */
-export function mapCreditsToRedCoopSource(item: CreditAccountResponse): RedCoopSourceAccount {
+export function mapCreditsToRedCoopSource(
+  item: CreditAccountResponse,
+): RedCoopSourceAccount {
   return {
     id: item.idCuenta,
     type: item.nombreProducto,
@@ -78,10 +92,12 @@ export function mapCreditsToRedCoopSource(item: CreditAccountResponse): RedCoopS
 /**
  * Build ExternalTransferSourceRef from a SavingsAccountResponse.
  */
-export function buildExternalSavingsSourceRef(account: SavingsAccountResponse): ExternalTransferSourceRef & { numeroCuenta: string } {
+export function buildExternalSavingsSourceRef(
+  account: SavingsAccountResponse,
+): ExternalTransferSourceRef & { numeroCuenta: string } {
   return {
     codigoProductoCobis: account.codigoProductoCobis,
-    tipoCartera: '',
+    tipoCartera: "",
     idCuenta: account.idCuenta,
     numeroCuenta: account.numeroCuenta,
   };
@@ -90,7 +106,9 @@ export function buildExternalSavingsSourceRef(account: SavingsAccountResponse): 
 /**
  * Build ExternalTransferSourceRef from a CreditAccountResponse.
  */
-export function buildExternalCreditSourceRef(account: CreditAccountResponse): ExternalTransferSourceRef & { numeroCuenta: string } {
+export function buildExternalCreditSourceRef(
+  account: CreditAccountResponse,
+): ExternalTransferSourceRef & { numeroCuenta: string } {
   return {
     codigoProductoCobis: account.codigoProductoCobis,
     tipoCartera: account.tipoCartera,
@@ -111,24 +129,28 @@ export function getExternalSourceInfo(
 ): {
   name: string;
   number: string;
-  type: 'savings' | 'credits';
+  type: "savings" | "credits";
   sourceRef: ExternalTransferSourceRef & { numeroCuenta: string };
 } | null {
-  const savings = savingsData.find((a) => String(a.idCuenta) === String(sourceId));
+  const savings = savingsData.find(
+    (a) => String(a.idCuenta) === String(sourceId),
+  );
   if (savings) {
     return {
       name: `${savings.nombreProducto} (${maskNumber(savings.numeroCuenta)})`,
       number: savings.numeroCuenta,
-      type: 'savings',
+      type: "savings",
       sourceRef: buildExternalSavingsSourceRef(savings),
     };
   }
-  const credit = creditsData.find((a) => String(a.idCuenta) === String(sourceId));
+  const credit = creditsData.find(
+    (a) => String(a.idCuenta) === String(sourceId),
+  );
   if (credit) {
     return {
       name: `${credit.nombreProducto} (${maskNumber(credit.numeroCuenta)})`,
       number: credit.numeroCuenta,
-      type: 'credits',
+      type: "credits",
       sourceRef: buildExternalCreditSourceRef(credit),
     };
   }
@@ -151,17 +173,17 @@ export function mapExternalBankTransferResult(
 ): ExternalTransferResult {
   const iso = parseApiDate(String(result.fechaTrn));
   return {
-    status: 'success',
+    status: "success",
     sourceAccount: context.sourceAccount,
     destinationBank: context.destinationBank,
     destinationAccountNumber: context.destinationAccountNumber,
     amountTransferred: normalizeMoney(result.valorTransferencia),
     concept: context.concept,
     transactionCost: 0,
-    transactionDate: iso ? formatDate(iso) : '',
+    transactionDate: iso ? formatDate(iso) : "",
     transactionTime: parseApiTime(String(result.horaTrn)),
     approvalNumber: normalizeString(result.numAprobacion),
-    description: 'Transferencia Exitosa',
+    description: "Transferencia Exitosa",
   };
 }
 
@@ -179,16 +201,16 @@ export function mapExternalEntityTransferResult(
 ): RedCoopTransferResult {
   const iso = parseApiDate(String(result.fechaTrn));
   return {
-    status: 'success',
+    status: "success",
     sourceAccount: context.sourceAccount,
     destinationBank: context.destinationBank,
     destinationAccountNumber: context.destinationAccountNumber,
     amountTransferred: normalizeMoney(result.valorTransferencia),
     concept: context.concept,
     transactionCost: 0,
-    transactionDate: iso ? formatDate(iso) : '',
+    transactionDate: iso ? formatDate(iso) : "",
     transactionTime: parseApiTime(String(result.horaTrn)),
     approvalNumber: normalizeString(result.numAprobacion),
-    description: 'Transferencia Exitosa',
+    description: "Transferencia Exitosa",
   };
 }

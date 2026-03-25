@@ -19,7 +19,7 @@ export const ProtectionPaymentConfirmationCard: React.FC<
       {/* Card Title */}
       <div className="space-y-2">
         <h2 className="text-lg font-bold text-brand-navy">
-          Confirmacion de Pagos
+          Confirmación de Pagos
         </h2>
         <p className="text-[15px] text-black">
           Por favor, verifica que los datos de la transacción sean correctos

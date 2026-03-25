@@ -91,7 +91,7 @@ export const mockAportesTransactionResultError: AportesTransactionResult = {
  */
 export const APORTES_PAYMENT_STEPS: Step[] = [
   { number: 1, label: "Detalle" },
-  { number: 2, label: "Confirmacion" },
+  { number: 2, label: "Confirmación" },
   { number: 3, label: "SMS" },
   { number: 4, label: "Finalización" },
 ];

@@ -119,7 +119,7 @@ interface ExternalTransferConfirmationCardProps {
 
 **Sections**:
 
-1. Card header with title "Confirmacion de Transferencia"
+1. Card header with title "Confirmación de Transferencia"
 2. Holder section (name, document masked, source product)
 3. Divider
 4. Destination section (holder, bank, account type, account number)

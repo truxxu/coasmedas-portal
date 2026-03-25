@@ -37,6 +37,7 @@ export interface TransferConfirmationData {
   sourceAccount: string;
   destinationProduct: string;
   amount: number;
+  transactionCost?: number;
 }
 
 /**

@@ -40,18 +40,29 @@ export default function PagarServiciosConfirmacionPage() {
     }
 
     const details: UtilityPaymentDetails = JSON.parse(detailsStr);
-    const service = mockRegisteredServices.find(
-      (s) => s.id === details.serviceId
-    );
+
+    let serviceToPay = "";
+    let invoiceReference = "";
+
+    if (details.paymentType === "no-inscrito") {
+      serviceToPay = details.convenioName || "";
+      invoiceReference = details.reference || "";
+    } else {
+      const service = mockRegisteredServices.find(
+        (s) => s.id === details.serviceId
+      );
+      serviceToPay = service
+        ? `${service.provider} - ${service.serviceType}`
+        : "";
+      invoiceReference = service?.reference || "";
+    }
 
     // Build confirmation data from details + mock user context
     const confirmationData: UtilityPaymentConfirmation = {
       holderName: "CAMILO ANDRES CRUZ", // Would come from user context
       holderDocument: "CC 1.***.***234", // Would come from user context (masked)
-      serviceToPay: service
-        ? `${service.provider} - ${service.serviceType}`
-        : "",
-      invoiceReference: service?.reference || "",
+      serviceToPay,
+      invoiceReference,
       productToDebit:
         details.sourceAccountDisplay.split(" - ")[0] || "Cuenta de Ahorros",
       totalAmount: details.amount,

@@ -38,7 +38,9 @@ export const mockObligacionPaymentProducts: ObligacionPaymentProduct[] = [
     totalBalance: 12500000,
     minimumPayment: 850000,
     paymentDeadline: '15 Nov 2024',
+    fechaApertura: '20 Feb 2023',
     status: 'al_dia',
+    valorEnMora: 0,
   },
   {
     id: '2',
@@ -47,7 +49,9 @@ export const mockObligacionPaymentProducts: ObligacionPaymentProduct[] = [
     totalBalance: 1800000,
     minimumPayment: 180000,
     paymentDeadline: '20 Nov 2024',
+    fechaApertura: '15 Mar 2022',
     status: 'al_dia',
+    valorEnMora: 0,
   },
 ];
 
