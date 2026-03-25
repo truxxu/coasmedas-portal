@@ -33,6 +33,7 @@ export { AportesDetailsCard } from "./AportesDetailsCard";
 export { AportesConfirmationCard } from "./AportesConfirmationCard";
 export { AportesTransactionResultCard } from "./AportesTransactionResultCard";
 export { ObligacionDetailsCard } from "./ObligacionDetailsCard";
+export { ObligacionPaymentDetailsSection } from "./ObligacionPaymentDetailsSection";
 export { ObligacionConfirmationCard } from "./ObligacionConfirmationCard";
 export { PSELoadingCard } from "./PSELoadingCard";
 export { ObligacionResultCard } from "./ObligacionResultCard";

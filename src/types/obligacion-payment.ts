@@ -29,6 +29,7 @@ export interface ObligacionPaymentProduct {
   totalBalance: number;
   minimumPayment: number;
   paymentDeadline: string;
+  fechaApertura: string; // Opening date — API gap: empty until backend provides it
   status: 'al_dia' | 'en_mora';
 }
 
@@ -55,6 +56,7 @@ export interface ObligacionConfirmationData {
   numeroProducto: string; // Masked product number
   productoADebitar: string; // "PSE (Pagos con otras entidades)"
   valorAPagar: number;
+  excessPaymentOption?: ExcessPaymentOption;
 }
 
 /**
@@ -91,3 +93,8 @@ export interface ObligacionPaymentFlowState {
  * Payment type for quick selection
  */
 export type PaymentType = 'minimum' | 'total';
+
+/**
+ * Excess payment option when amount exceeds minimum payment
+ */
+export type ExcessPaymentOption = 'proximas_cuotas' | 'reduccion_plazo' | 'reduccion_cuota';

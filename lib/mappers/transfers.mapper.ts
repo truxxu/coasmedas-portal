@@ -7,45 +7,53 @@
  * @see /src/types/transfer.ts — UI types
  */
 
-import { normalizeMoney, normalizeString } from '@/types/api/common';
-import type { AccountReference } from '@/types/api/common';
+import { normalizeMoney, normalizeString } from "@/types/api/common";
+import type { AccountReference } from "@/types/api/common";
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
-} from '@/types/api/products';
+} from "@/types/api/products";
 import type {
   TransferTargetSavings,
   TransferTargetCredits,
   TransferTargetInvestments,
   InternalTransferResult,
-} from '@/types/api/transfers';
-import type { TransferAccount, DestinationProduct, TransferResult } from '@/src/types/transfer';
-import { maskNumber } from '@/src/utils';
-import { parseApiDate, parseApiTime, formatDate } from '@/src/utils/dates';
+} from "@/types/api/transfers";
+import type {
+  TransferAccount,
+  DestinationProduct,
+  TransferResult,
+} from "@/src/types/transfer";
+import { maskNumber } from "@/src/utils";
+import { parseApiDate, parseApiTime, formatDate } from "@/src/utils/dates";
 
 // ─── Source Account Mappers ───
 
 /**
  * Map savings API response → TransferAccount (source).
  */
-export function mapSavingsToTransferAccount(item: SavingsAccountResponse): TransferAccount {
+export function mapSavingsToTransferAccount(
+  item: SavingsAccountResponse,
+): TransferAccount {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
-    accountType: 'Ahorros',
+    accountType: "Ahorros",
     productNumber: item.numeroCuenta,
-    balance: normalizeMoney(item.saldoDisponible),
+    balance: normalizeMoney(item.saldoTotal),
   };
 }
 
 /**
  * Map credits API response → TransferAccount (source).
  */
-export function mapCreditsToTransferAccount(item: CreditAccountResponse): TransferAccount {
+export function mapCreditsToTransferAccount(
+  item: CreditAccountResponse,
+): TransferAccount {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
-    accountType: 'Credito',
+    accountType: "Credito",
     productNumber: item.numeroCuenta,
     balance: normalizeMoney(item.cupoDisponible),
   };
@@ -56,36 +64,42 @@ export function mapCreditsToTransferAccount(item: CreditAccountResponse): Transf
 /**
  * Map target savings → DestinationProduct.
  */
-export function mapTargetSavingsToDestination(item: TransferTargetSavings): DestinationProduct {
+export function mapTargetSavingsToDestination(
+  item: TransferTargetSavings,
+): DestinationProduct {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
     productNumber: item.numeroCuenta,
-    productType: 'Ahorros',
+    productType: "Ahorros",
   };
 }
 
 /**
  * Map target credits → DestinationProduct.
  */
-export function mapTargetCreditsToDestination(item: TransferTargetCredits): DestinationProduct {
+export function mapTargetCreditsToDestination(
+  item: TransferTargetCredits,
+): DestinationProduct {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
     productNumber: item.numeroCuenta,
-    productType: 'Credito',
+    productType: "Credito",
   };
 }
 
 /**
  * Map target investments → DestinationProduct.
  */
-export function mapTargetInvestmentsToDestination(item: TransferTargetInvestments): DestinationProduct {
+export function mapTargetInvestmentsToDestination(
+  item: TransferTargetInvestments,
+): DestinationProduct {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
     productNumber: item.numeroCuenta,
-    productType: 'Inversion',
+    productType: "Inversion",
   };
 }
 
@@ -94,7 +108,9 @@ export function mapTargetInvestmentsToDestination(item: TransferTargetInvestment
 /**
  * Build AccountReference from a SavingsAccountResponse (source).
  */
-export function buildTransferSourceReference(account: SavingsAccountResponse): AccountReference {
+export function buildTransferSourceReference(
+  account: SavingsAccountResponse,
+): AccountReference {
   return {
     codigoProductoCobis: account.codigoProductoCobis,
     idCuenta: account.idCuenta,
@@ -105,7 +121,9 @@ export function buildTransferSourceReference(account: SavingsAccountResponse): A
 /**
  * Build AccountReference from a CreditAccountResponse (source).
  */
-export function buildTransferCreditSourceReference(account: CreditAccountResponse): AccountReference {
+export function buildTransferCreditSourceReference(
+  account: CreditAccountResponse,
+): AccountReference {
   return {
     codigoProductoCobis: account.codigoProductoCobis,
     idCuenta: account.idCuenta,
@@ -117,7 +135,9 @@ export function buildTransferCreditSourceReference(account: CreditAccountRespons
 /**
  * Build AccountReference from a target savings account.
  */
-export function buildTargetSavingsReference(target: TransferTargetSavings): AccountReference {
+export function buildTargetSavingsReference(
+  target: TransferTargetSavings,
+): AccountReference {
   return {
     codigoProductoCobis: target.codigoProductoCobis,
     idCuenta: target.idCuenta,
@@ -128,7 +148,9 @@ export function buildTargetSavingsReference(target: TransferTargetSavings): Acco
 /**
  * Build AccountReference from a target credits account.
  */
-export function buildTargetCreditsReference(target: TransferTargetCredits): AccountReference {
+export function buildTargetCreditsReference(
+  target: TransferTargetCredits,
+): AccountReference {
   return {
     codigoProductoCobis: target.codigoProductoCobis,
     idCuenta: target.idCuenta,
@@ -148,15 +170,15 @@ export function mapTransferResult(
 ): TransferResult {
   const iso = parseApiDate(String(result.fechaTrn));
   return {
-    status: 'success',
+    status: "success",
     sourceType: context.sourceType,
     productNumber: context.productNumber,
     amountPaid: normalizeMoney(result.valorTransferencia),
     transactionCost: 0,
-    transmissionDate: iso ? formatDate(iso) : '',
+    transmissionDate: iso ? formatDate(iso) : "",
     transactionTime: parseApiTime(String(result.horaTrn)),
     approvalNumber: normalizeString(result.numAprobacion),
-    description: 'Transferencia Exitosa',
+    description: "Transferencia Exitosa",
   };
 }
 
@@ -169,21 +191,25 @@ export function getSourceDisplayName(
   savingsData: SavingsAccountResponse[],
   creditsData: CreditAccountResponse[],
   sourceId: string,
-): { name: string; number: string; type: 'savings' | 'credits' } | null {
-  const savings = savingsData.find((a) => String(a.idCuenta) === String(sourceId));
+): { name: string; number: string; type: "savings" | "credits" } | null {
+  const savings = savingsData.find(
+    (a) => String(a.idCuenta) === String(sourceId),
+  );
   if (savings) {
     return {
       name: `${savings.nombreProducto} (${maskNumber(savings.numeroCuenta)})`,
       number: savings.numeroCuenta,
-      type: 'savings',
+      type: "savings",
     };
   }
-  const credit = creditsData.find((a) => String(a.idCuenta) === String(sourceId));
+  const credit = creditsData.find(
+    (a) => String(a.idCuenta) === String(sourceId),
+  );
   if (credit) {
     return {
       name: `${credit.nombreProducto} (${maskNumber(credit.numeroCuenta)})`,
       number: credit.numeroCuenta,
-      type: 'credits',
+      type: "credits",
     };
   }
   return null;
@@ -198,14 +224,23 @@ export function getDestinationDisplayName(
   targetInvestments: TransferTargetInvestments[],
   destinationId: string,
 ): string | null {
-  const savings = targetSavings.find((a) => String(a.idCuenta) === String(destinationId));
-  if (savings) return `${savings.nombreProducto} (${maskNumber(savings.numeroCuenta)})`;
+  const savings = targetSavings.find(
+    (a) => String(a.idCuenta) === String(destinationId),
+  );
+  if (savings)
+    return `${savings.nombreProducto} (${maskNumber(savings.numeroCuenta)})`;
 
-  const credit = targetCredits.find((a) => String(a.idCuenta) === String(destinationId));
-  if (credit) return `${credit.nombreProducto} (${maskNumber(credit.numeroCuenta)})`;
+  const credit = targetCredits.find(
+    (a) => String(a.idCuenta) === String(destinationId),
+  );
+  if (credit)
+    return `${credit.nombreProducto} (${maskNumber(credit.numeroCuenta)})`;
 
-  const investment = targetInvestments.find((a) => String(a.idCuenta) === String(destinationId));
-  if (investment) return `${investment.nombreProducto} (${maskNumber(investment.numeroCuenta)})`;
+  const investment = targetInvestments.find(
+    (a) => String(a.idCuenta) === String(destinationId),
+  );
+  if (investment)
+    return `${investment.nombreProducto} (${maskNumber(investment.numeroCuenta)})`;
 
   return null;
 }
