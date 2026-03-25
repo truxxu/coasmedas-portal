@@ -207,20 +207,24 @@ export default function ProteccionPage() {
         onProductSelect={handleProductSelect}
       />
 
-      <TransactionHistoryCard
-        title={transactionTitle}
-        subtitle="Últimos movimientos registrados."
-        transactions={transactions}
-        onFilter={handleFilter}
-        loading={transactionsLoading}
-      />
+      {products.length > 0 && (
+        <>
+          <TransactionHistoryCard
+            title={transactionTitle}
+            subtitle="Últimos movimientos registrados."
+            transactions={transactions}
+            onFilter={handleFilter}
+            loading={transactionsLoading}
+          />
 
-      <DownloadReportsCard
-        availableMonths={mockProteccionAvailableMonths}
-        selectedMonth={selectedMonth}
-        onMonthChange={handleMonthChange}
-        onDownload={handleDownload}
-      />
+          <DownloadReportsCard
+            availableMonths={mockProteccionAvailableMonths}
+            selectedMonth={selectedMonth}
+            onMonthChange={handleMonthChange}
+            onDownload={handleDownload}
+          />
+        </>
+      )}
     </div>
   );
 }

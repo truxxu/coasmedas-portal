@@ -203,20 +203,24 @@ export default function InversionesPage() {
         onProductSelect={handleProductSelect}
       />
 
-      <TransactionHistoryCard
-        title={transactionTitle}
-        subtitle="Ultimos movimientos registrados."
-        transactions={transactions}
-        onFilter={handleFilter}
-        loading={transactionsLoading}
-      />
+      {products.length > 0 && (
+        <>
+          <TransactionHistoryCard
+            title={transactionTitle}
+            subtitle="Ultimos movimientos registrados."
+            transactions={transactions}
+            onFilter={handleFilter}
+            loading={transactionsLoading}
+          />
 
-      <DownloadReportsCard
-        availableMonths={mockInversionesAvailableMonths}
-        selectedMonth={selectedMonth}
-        onMonthChange={handleMonthChange}
-        onDownload={handleDownload}
-      />
+          <DownloadReportsCard
+            availableMonths={mockInversionesAvailableMonths}
+            selectedMonth={selectedMonth}
+            onMonthChange={handleMonthChange}
+            onDownload={handleDownload}
+          />
+        </>
+      )}
     </div>
   );
 }

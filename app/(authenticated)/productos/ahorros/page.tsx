@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import {
   ProductCarousel,
+  AhorrosInfoCard,
   TransactionHistoryCard,
   DownloadReportsCard,
 } from "@/src/organisms";
@@ -229,20 +230,34 @@ export default function AhorrosPage() {
         onProductSelect={handleProductSelect}
       />
 
-      <TransactionHistoryCard
-        title={transactionTitle}
-        subtitle="Últimos movimientos registrados."
-        transactions={transactions}
-        onFilter={handleFilter}
-        loading={transactionsLoading}
-      />
+      {products.length > 0 && selectedProduct && (
+        <>
+          <AhorrosInfoCard
+            saldoTotal={selectedProduct.balance}
+            saldoDisponible={selectedProduct.balance}
+            canjeLocal={0}
+            canjeTotal={0}
+            remesas={0}
+            numTransacciones={0}
+            ultimoMovimiento="-"
+          />
 
-      <DownloadReportsCard
-        availableMonths={mockAhorrosAvailableMonths}
-        selectedMonth={selectedMonth}
-        onMonthChange={handleMonthChange}
-        onDownload={handleDownload}
-      />
+          <TransactionHistoryCard
+            title={transactionTitle}
+            subtitle="Últimos movimientos registrados."
+            transactions={transactions}
+            onFilter={handleFilter}
+            loading={transactionsLoading}
+          />
+
+          <DownloadReportsCard
+            availableMonths={mockAhorrosAvailableMonths}
+            selectedMonth={selectedMonth}
+            onMonthChange={handleMonthChange}
+            onDownload={handleDownload}
+          />
+        </>
+      )}
     </div>
   );
 }
