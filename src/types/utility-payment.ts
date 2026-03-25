@@ -29,16 +29,28 @@ export interface RegisteredService {
 export type UtilityPaymentMethod = 'account' | 'pse';
 
 /**
+ * Payment type: registered service or non-registered (one-time)
+ */
+export type UtilityPaymentType = 'inscrito' | 'no-inscrito';
+
+/**
  * Step 1 - Payment details form data
  */
 export interface UtilityPaymentDetails {
   sourceAccountId: string;
   sourceAccountDisplay: string;
+  paymentType: UtilityPaymentType;
   serviceId: string;
   serviceDisplay: string;
   serviceType: string;
   amount: number;
   paymentMethod: UtilityPaymentMethod;
+  // Fields for non-registered service payment
+  categoryId?: string;
+  categoryName?: string;
+  convenioId?: string;
+  convenioName?: string;
+  reference?: string;
 }
 
 /**
