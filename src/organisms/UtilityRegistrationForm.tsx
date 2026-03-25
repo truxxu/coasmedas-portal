@@ -4,47 +4,47 @@ import { useMemo } from "react";
 import { Card } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
 import type {
-  CityOption,
+  CategoryOption,
   ConvenioOption,
   UtilityRegistrationForm as FormData,
   UtilityRegistrationErrors,
 } from "@/src/types";
 
 interface UtilityRegistrationFormProps {
-  cities: CityOption[];
+  categories: CategoryOption[];
   convenios: ConvenioOption[];
   formData: FormData;
   errors: UtilityRegistrationErrors;
-  onCityChange: (cityId: string, cityName: string) => void;
+  onCategoryChange: (categoryId: string, categoryName: string) => void;
   onConvenioChange: (convenioId: string, convenioName: string) => void;
   onBillNumberChange: (value: string) => void;
   onAliasChange: (value: string) => void;
 }
 
 export function UtilityRegistrationForm({
-  cities,
+  categories,
   convenios,
   formData,
   errors,
-  onCityChange,
+  onCategoryChange,
   onConvenioChange,
   onBillNumberChange,
   onAliasChange,
 }: UtilityRegistrationFormProps) {
-  const cityOptions = useMemo(() => cities.map((city) => ({
-    value: city.id,
-    label: city.name,
-  })), [cities]);
+  const categoryOptions = useMemo(() => categories.map((cat) => ({
+    value: cat.id,
+    label: cat.name,
+  })), [categories]);
 
   const convenioOptions = useMemo(() => convenios.map((convenio) => ({
     value: convenio.id,
     label: convenio.name,
   })), [convenios]);
 
-  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityId = e.target.value;
-    const city = cities.find((c) => c.id === cityId);
-    onCityChange(cityId, city?.name || "");
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = e.target.value;
+    const category = categories.find((c) => c.id === categoryId);
+    onCategoryChange(categoryId, category?.name || "");
   };
 
   const handleConvenioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -61,15 +61,15 @@ export function UtilityRegistrationForm({
       </h2>
 
       <div className="space-y-5">
-        {/* Ciudad Select */}
+        {/* Categoría Select */}
         <SelectField
-          label="Ciudad"
-          name="ciudad"
-          options={cityOptions}
-          placeholder="Selecciona una ciudad"
-          value={formData.cityId}
-          onChange={handleCityChange}
-          error={errors.cityId}
+          label="Categoría"
+          name="categoria"
+          options={categoryOptions}
+          placeholder="Selecciona una categoría"
+          value={formData.categoryId}
+          onChange={handleCategoryChange}
+          error={errors.categoryId}
           required
         />
 
@@ -82,7 +82,7 @@ export function UtilityRegistrationForm({
           value={formData.convenioId}
           onChange={handleConvenioChange}
           error={errors.convenioId}
-          disabled={!formData.cityId || convenioOptions.length === 0}
+          disabled={!formData.categoryId || convenioOptions.length === 0}
           required
         />
 
