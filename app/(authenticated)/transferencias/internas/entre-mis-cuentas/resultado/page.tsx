@@ -7,20 +7,42 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { TransferResultCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import type { TransferResult } from "@/src/types/transfer";
-import { TRANSFER_STEPS, mockTransferResult } from "@/src/mocks";
+import { TRANSFER_STEPS } from "@/src/mocks";
+
+const SESSION_KEYS = [
+  "transferSourceId",
+  "transferDestinationId",
+  "transferAmount",
+  "transferSourcesSavingsApi",
+  "transferSourcesCreditsApi",
+  "transferTargetSavingsApi",
+  "transferTargetCreditsApi",
+  "transferTargetInvestmentsApi",
+  "transferTransactionRequest",
+  "transferConfirmation",
+  "transferSourceName",
+  "transferDestinationName",
+  "transferResult",
+];
 
 export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<TransferResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
-    const confirmationData = sessionStorage.getItem("transferConfirmation");
-    if (!confirmationData) return null;
+    // Read real API result stored by SMS step
+    const apiResultStr = sessionStorage.getItem("transferResult");
+    if (apiResultStr) {
+      try {
+        return JSON.parse(apiResultStr) as TransferResult;
+      } catch {
+        // fall through
+      }
+    }
 
-    // Use mock result - in production this would come from API
-    return mockTransferResult;
+    return null;
   });
 
   useEffect(() => {
@@ -36,38 +58,28 @@ export default function ResultadoPage() {
     }
   }, [result, router]);
 
+  const clearSessionData = () => {
+    for (const key of SESSION_KEYS) {
+      sessionStorage.removeItem(key);
+    }
+  };
+
   const handlePrintSave = () => {
     window.print();
   };
 
   const handleNewTransaction = () => {
-    // Clear session storage
-    sessionStorage.removeItem("transferSourceId");
-    sessionStorage.removeItem("transferDestinationId");
-    sessionStorage.removeItem("transferAmount");
-    sessionStorage.removeItem("transferConfirmation");
-
-    // Navigate to start of flow
+    clearSessionData();
     router.push("/transferencias/internas/entre-mis-cuentas");
   };
 
   const handleFinish = () => {
-    // Clear session storage
-    sessionStorage.removeItem("transferSourceId");
-    sessionStorage.removeItem("transferDestinationId");
-    sessionStorage.removeItem("transferAmount");
-    sessionStorage.removeItem("transferConfirmation");
-
-    // Navigate to home
+    clearSessionData();
     router.push("/home");
   };
 
   if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando resultado...</span>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -93,7 +105,7 @@ export default function ResultadoPage() {
           Imprimir/Guardar
         </Button>
         <Button variant="secondary" onClick={handleNewTransaction}>
-          Realizar otra transacción
+          Realizar otra transaccion
         </Button>
         <Button variant="primary" onClick={handleFinish}>
           Finalizar

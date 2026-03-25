@@ -46,27 +46,27 @@
 
 ## 6. Internal Transfers
 
-- [ ] POST `/transfer/internal/sources/savings` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/sources/credits` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/sources/investments` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/savings` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/credits` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/targets/investments` ✅ Auth: JWT
-- [ ] POST `/transfer/internal/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/transfer/internal/sources/savings` ✅ Auth: JWT
+- [x] POST `/transfer/internal/sources/credits` ✅ Auth: JWT
+- [x] POST `/transfer/internal/sources/investments` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/savings` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/credits` ✅ Auth: JWT
+- [x] POST `/transfer/internal/targets/investments` ✅ Auth: JWT
+- [x] POST `/transfer/internal/createTransaction` ✅ Auth: JWT + OTP
 
 ## 7. External Transfers (Banks - Visionamos)
 
-- [ ] POST `/transfer/external/sources/savings` ✅ Auth: JWT
-- [ ] POST `/transfer/external/sources/credits` ✅ Auth: JWT
-- [ ] POST `/transfer/external/listBanks` ✅ Auth: JWT
-- [ ] POST `/transfer/external/getTransactionCost` ✅ Auth: JWT
-- [ ] POST `/transfer/external/banks/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/transfer/external/sources/savings` ✅ Auth: JWT
+- [x] POST `/transfer/external/sources/credits` ✅ Auth: JWT
+- [x] POST `/transfer/external/listBanks` ✅ Auth: JWT
+- [x] POST `/transfer/external/getTransactionCost` ✅ Auth: JWT
+- [x] POST `/transfer/external/banks/createTransaction` ✅ Auth: JWT + OTP
 
 ## 8. External Transfers (Coopcentral Entities)
 
-- [ ] POST `/transfer/external/listEntities` ✅ Auth: JWT
-- [ ] POST `/transfer/external/entities/targets/queryProduct` ✅ Auth: JWT
-- [ ] POST `/transfer/external/entities/createTransaction` ✅ Auth: JWT + OTP
+- [x] POST `/transfer/external/listEntities` ✅ Auth: JWT
+- [x] POST `/transfer/external/entities/targets/queryProduct` ✅ Auth: JWT
+- [x] POST `/transfer/external/entities/createTransaction` ✅ Auth: JWT + OTP
 
 ## 9. BRE-B (Key-Based Instant Transfers)
 
@@ -126,11 +126,11 @@ These endpoints are **needed by the portal UI** but do **not exist** in the back
 | Password | 1 | 1 | 0 |
 | Products | 7 | 7 | 0 |
 | Payments | 5 | 5 | 0 |
-| Internal Transfers | 7 | 0 | 7 |
-| External Transfers (Banks) | 5 | 0 | 5 |
-| External Transfers (Entities) | 3 | 0 | 3 |
+| Internal Transfers | 7 | 7 | 0 |
+| External Transfers (Banks) | 5 | 5 | 0 |
+| External Transfers (Entities) | 3 | 3 | 0 |
 | BRE-B | 12 | 0 | 12 |
-| **Subtotal (existing API)** | **46** | **19** | **27** |
+| **Subtotal (existing API)** | **46** | **34** | **12** |
 
 ### Missing from Backend API
 
