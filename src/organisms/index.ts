@@ -21,6 +21,7 @@ export { TransactionHistoryCard } from "./TransactionHistoryCard";
 export { DownloadReportsCard } from "./DownloadReportsCard";
 export { ProductCarousel } from "./ProductCarousel";
 export { ObligacionCarousel } from "./ObligacionCarousel";
+export { ObligacionInfoCard } from "./ObligacionInfoCard";
 export { InversionCarousel } from "./InversionCarousel";
 export { ProteccionCarousel } from "./ProteccionCarousel";
 export { PaymentOptionsGrid } from "./PaymentOptionsGrid";
