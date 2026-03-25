@@ -9,15 +9,18 @@
 ## 🎨 Color Palette
 
 ### Interface Backgrounds
+
 - **Sidebar Background**: `#005066` (Navy Blue)
 - **Main Content Background**: `#FFFEF2` (Light Blue)
 - **White**: `#FFFFFF`
 
 ### Primary Colors
+
 - **Primary Navy**: `#005066` - Main brand color, buttons, headers
 - **Primary Yellow**: `#FFC627` - Accent color, highlights
 
 ### Secondary Colors (Grays)
+
 - **Gray High**: `#58585B` - Secondary text, icons
 - **Gray Medium**: `#808284` - Disabled states, borders
 - **Gray Low**: `#D1D2D4` - Light borders, dividers
@@ -25,12 +28,14 @@
 - **Text Black**: `#111827` - Primary text color
 
 ### Tertiary Colors (Product Accents)
+
 - **Teal**: `#00AFA9` - Savings products
 - **Green**: `#82BC00` - Success, positive actions
 - **Pink/Red**: `#F6323E` - Warnings, important notices
 - **Bright Red**: `#FF0D00` - Errors, critical alerts
 
 ### Status Colors
+
 - **Success**: `#00AFA9` (Teal) or `#0AE577` (Green)
 - **Warning**: `#FFC627` (Yellow) or `#FF3945` (Red-orange)
 - **Error**: `#FF0D00` (Bright Red)
@@ -41,6 +46,7 @@
 - **Inactive**: `#808284` (Gray)
 
 ### Blue Scale (for gradients and variations)
+
 - Blue 50: `#E3F2FD`
 - Blue 100: `#BBDEFB`
 - Blue 200: `#90CAF9`
@@ -57,12 +63,15 @@
 ## 📝 Typography
 
 ### Font Family
+
 **Cabin** (Bold, Medium, Regular)
+
 - Headings: Cabin Bold
 - Subheadings: Cabin Medium
 - Body text: Cabin Regular
 
 ### Type Scale
+
 - **H1**: 32px / 2rem (Bold) - Page titles
 - **H2**: 28px / 1.75rem (Bold) - Section headers
 - **H3**: 24px / 1.5rem (Bold) - Subsection headers
@@ -74,6 +83,7 @@
 - **Tiny**: 12px / 0.75rem (Regular) - Labels, metadata
 
 ### Text Colors
+
 - **Primary**: `#111827` (Text Black)
 - **Secondary**: `#58585B` (Gray High)
 - **Tertiary**: `#808284` (Gray Medium)
@@ -86,6 +96,7 @@
 ## 🔘 Buttons
 
 ### Primary Button
+
 - **Background**: `#00B8ED` (Blue) or `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border**: None
@@ -97,6 +108,7 @@
 - **Disabled**: `#D1D2D4` background, `#808284` text
 
 ### Secondary Button
+
 - **Background**: Transparent or `#FFFFFF`
 - **Text**: `#005066` (Navy)
 - **Border**: `1px solid #005066`
@@ -105,6 +117,7 @@
 - **Hover**: Light background fill
 
 ### Text Button
+
 - **Background**: Transparent
 - **Text**: `#005066` (Navy) or `#00B8ED` (Blue)
 - **Border**: None
@@ -112,18 +125,21 @@
 - **Font**: Cabin Medium, 16px
 
 ### Icon Button
+
 - **Size**: `40px × 40px` (square or circle)
 - **Icon Size**: `20px × 20px`
 - **Background**: Varies by context
 - **Hover**: Background color change
 
 ### Button Sizes
+
 - **Large**: `48px` height, `20px 32px` padding
 - **Medium**: `40px` height, `12px 24px` padding (default)
 - **Small**: `32px` height, `8px 16px` padding
 - **Tiny**: `28px` height, `6px 12px` padding
 
 ### Button States
+
 - **Default**: Normal appearance
 - **Hover**: Subtle color change, cursor pointer
 - **Active/Pressed**: Darker color
@@ -135,6 +151,7 @@
 ## 📋 Form Elements
 
 ### Text Input
+
 - **Height**: `44px` (h-11)
 - **Padding**: `12px` (px-3)
 - **Border**: `1px solid #B1B1B1`
@@ -147,6 +164,7 @@
 - **Disabled**: `#FFFEF2` background, `#D1D2D4` border
 
 ### Select / Dropdown
+
 - **Height**: `44px`
 - **Padding**: `12px`
 - **Border**: `1px solid #B1B1B1`
@@ -157,6 +175,7 @@
 - **Focus**: `2px solid #00B8ED` border
 
 ### Textarea
+
 - **Min Height**: `88px` (2 lines)
 - **Padding**: `12px`
 - **Border**: `1px solid #B1B1B1`
@@ -164,6 +183,7 @@
 - **Resize**: Vertical only
 
 ### Checkbox
+
 - **Size**: `16px × 16px`
 - **Border**: `1px solid #B1B1B1`
 - **Border Radius**: `2px`
@@ -171,12 +191,14 @@
 - **Checkmark**: White icon
 
 ### Radio Button
+
 - **Size**: `16px × 16px`
 - **Border**: `1px solid #B1B1B1`
 - **Border Radius**: `50%` (circle)
 - **Selected**: Inner circle `8px`, background `#00B8ED`
 
 ### Toggle Switch
+
 - **Width**: `48px`
 - **Height**: `24px`
 - **Border Radius**: `12px` (fully rounded)
@@ -185,12 +207,14 @@
 - **Knob**: `18px × 18px` white circle
 
 ### Label
+
 - **Font Size**: `14px`
 - **Font Weight**: Medium
 - **Color**: `#111827`
 - **Margin Bottom**: `8px`
 
 ### Error Message
+
 - **Font Size**: `14px`
 - **Color**: `#FF0D00`
 - **Margin Top**: `4px`
@@ -201,6 +225,7 @@
 ## 🃏 Cards
 
 ### Standard Card
+
 - **Background**: `#FFFFFF`
 - **Border**: `1px solid #E4E6EA` or none
 - **Border Radius**: `16px` (rounded-2xl)
@@ -209,12 +234,14 @@
 - **Hover**: Subtle shadow increase (optional)
 
 ### Featured Card (Dark)
+
 - **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Border Radius**: `16px`
 - **Padding**: `24px`
 
 ### Module Card
+
 - **Background**: `#FFFFFF`
 - **Border**: `1px solid #E4E6EA`
 - **Border Radius**: `16px`
@@ -224,6 +251,7 @@
 - **Description**: Small text
 
 ### Carousel Card
+
 - **Background**: `#FFFFFF`
 - **Border**: `1px solid #E4E6EA`
 - **Border Radius**: `16px`
@@ -232,6 +260,7 @@
 - **Balance**: Large, bold text
 
 ### Product Card (Credit Card Style)
+
 - **Aspect Ratio**: 1.586:1 (credit card ratio)
 - **Background**: Gradient or solid navy
 - **Border Radius**: `16px`
@@ -243,6 +272,7 @@
 ## 📊 Lists & Tables
 
 ### Transaction List Item
+
 - **Height**: `auto` (min `64px`)
 - **Padding**: `16px`
 - **Border Bottom**: `1px solid #E4E6EA`
@@ -254,6 +284,7 @@
 - **Negative Amount**: Red color
 
 ### Selection List Item
+
 - **Height**: `70px`
 - **Padding**: `16px`
 - **Border**: `1px solid #E4E6EA`
@@ -267,12 +298,14 @@
 ## 🏷️ Status Labels & Badges
 
 ### Status Badge
+
 - **Padding**: `4px 12px`
 - **Border Radius**: `12px` (fully rounded)
 - **Font Size**: `12px`
 - **Font Weight**: Medium
 
 #### Status Types
+
 - **Active** (Activo): `#82BC00` background, white text
 - **Pending** (Pendiente): `#FFC627` background, black text
 - **Blocked** (Bloqueada): `#F6323E` background, white text
@@ -285,6 +318,7 @@
 ## 🚨 Alerts & Notifications
 
 ### Alert Box
+
 - **Padding**: `16px`
 - **Border Radius**: `8px`
 - **Border**: `1px solid` (varies by type)
@@ -292,6 +326,7 @@
 - **Close Button**: Optional, right side
 
 #### Alert Types
+
 - **Success**: `#82BC00` background (light), `#82BC00` border, `#005066` text
 - **Info**: `#E3F2FD` background, `#2196F3` border, `#005066` text
 - **Warning**: `#FFF8E1` background, `#FFC627` border, `#005066` text
@@ -302,6 +337,7 @@
 ## 🪟 Modals
 
 ### Modal Container
+
 - **Max Width**: `400px` (small), `600px` (medium), `800px` (large)
 - **Background**: `#FFFFFF`
 - **Border Radius**: `16px`
@@ -310,22 +346,26 @@
 - **Backdrop**: Black with 40% opacity
 
 ### Modal Header
+
 - **Title**: H3 or H4 size
 - **Close Button**: Top right, X icon
 - **Border Bottom**: `1px solid #E4E6EA` (optional)
 - **Padding Bottom**: `16px`
 
 ### Modal Body
+
 - **Padding**: `24px 0`
 - **Content**: Varies by modal type
 
 ### Modal Footer
+
 - **Border Top**: `1px solid #E4E6EA` (optional)
 - **Padding Top**: `16px`
 - **Buttons**: Right-aligned, gap between them
 - **Button Order**: Cancel (secondary) + Action (primary)
 
 ### Modal Types
+
 - **Action Modal**: Standard with title, content, actions
 - **Confirmation Modal**: Icon + title + message + actions
 - **Success Modal**: Success icon + message + single button
@@ -336,6 +376,7 @@
 ## 📈 Progress & Loading
 
 ### Progress Bar
+
 - **Height**: `10px`
 - **Border Radius**: `5px` (fully rounded)
 - **Background**: `#E4E6EA` (track)
@@ -343,11 +384,13 @@
 - **Labels**: Above or below, 14px
 
 ### Loading Spinner
+
 - **Size**: `48px × 48px` (medium)
 - **Color**: `#00B8ED` (primary)
 - **Animation**: Rotate 360deg, 1s linear infinite
 
 ### Skeleton Loader
+
 - **Background**: `#E4E6EA`
 - **Animation**: Shimmer effect
 - **Border Radius**: Match content shape
@@ -357,12 +400,14 @@
 ## 🧭 Navigation
 
 ### Sidebar
+
 - **Width**: `268px`
 - **Background**: `#005066` (Navy)
 - **Text**: `#FFFFFF` (White)
 - **Padding**: `20px`
 
 #### Menu Item
+
 - **Height**: `40px`
 - **Padding**: `8px 16px`
 - **Border Radius**: `8px`
@@ -373,6 +418,7 @@
 - **Chevron**: Right side for expandable items
 
 ### Header Bar
+
 - **Height**: `64px`
 - **Background**: `#FFFFFF`
 - **Border Bottom**: `1px solid #E4E6EA`
@@ -385,11 +431,13 @@
 ## 🔄 Stepper
 
 ### Stepper Container
+
 - **Horizontal Layout**: Flex row
 - **Connector Line**: `140px` wide, `1px` height
 - **Color**: `#E4E6EA` (inactive), `#00B8ED` (active)
 
 ### Step Item
+
 - **Circle**: `40px × 40px`
 - **Border**: `2px solid #E4E6EA` (inactive)
 - **Background**: `#00B8ED` (active), `#FFFFFF` (inactive)
@@ -398,6 +446,7 @@
 - **Completed**: Checkmark icon, `#00B8ED` background
 
 ### Step States
+
 - **Pending**: Gray circle, gray text
 - **Active**: Blue circle, blue text, bold
 - **Completed**: Blue circle with checkmark, blue text
@@ -407,6 +456,7 @@
 ## 🎯 Icons
 
 ### Icon Sizes
+
 - **Tiny**: `16px × 16px`
 - **Small**: `20px × 20px`
 - **Medium**: `24px × 24px` (default)
@@ -414,6 +464,7 @@
 - **XLarge**: `48px × 48px`
 
 ### Icon Colors
+
 - **Primary**: `#005066` (Navy)
 - **Secondary**: `#58585B` (Gray)
 - **Accent**: `#00B8ED` (Blue)
@@ -424,12 +475,14 @@
 ## 🖼️ Images & Media
 
 ### Avatar
+
 - **Sizes**: `32px`, `40px`, `48px`, `64px`
 - **Border Radius**: `50%` (circle)
 - **Background**: `#005066` with white initials
 - **Border**: Optional `2px solid #E4E6EA`
 
 ### Logo
+
 - **Primary**: Full color Coasmedas logo
 - **Monochrome**: White version for dark backgrounds
 - **Min Size**: `120px` width
@@ -476,16 +529,19 @@
 ## ♿ Accessibility
 
 ### Contrast Ratios
+
 - **Normal Text**: Minimum 4.5:1
 - **Large Text** (18px+): Minimum 3:1
 - **UI Components**: Minimum 3:1
 
 ### Focus States
+
 - **Outline**: `2px solid #00B8ED`
 - **Offset**: `2px`
 - **Visible**: Always on keyboard navigation
 
 ### ARIA Labels
+
 - Use semantic HTML
 - Add aria-label for icon-only buttons
 - Use aria-describedby for error messages
@@ -495,11 +551,13 @@
 ## 🎨 Animation Guidelines
 
 ### Duration
+
 - **Fast**: `150ms` - Hover, active states
 - **Base**: `300ms` - Most transitions
 - **Slow**: `500ms` - Modal open/close
 
 ### Easing
+
 - **Standard**: `cubic-bezier(0.4, 0, 0.2, 1)`
 - **Deceleration**: `cubic-bezier(0, 0, 0.2, 1)`
 - **Acceleration**: `cubic-bezier(0.4, 0, 1, 1)`

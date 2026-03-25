@@ -1,4 +1,4 @@
-import { HeroBanner } from '@/src/molecules';
+import { HeroBanner } from "@/src/molecules";
 
 export function PrehomeHero() {
   return (

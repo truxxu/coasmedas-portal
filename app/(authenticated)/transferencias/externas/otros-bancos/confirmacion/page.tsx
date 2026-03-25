@@ -14,7 +14,10 @@ import {
 import { maskNumber } from "@/src/utils";
 import { sendTransactionOtp } from "@/services/auth.service";
 import { getExternalSourceInfo } from "@/lib/mappers/externalTransfers.mapper";
-import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
+import type {
+  SavingsAccountResponse,
+  CreditAccountResponse,
+} from "@/types/api/products";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
@@ -39,8 +42,12 @@ export default function ConfirmacionPage() {
       }
 
       // Read raw API data for source lookup
-      const savingsApiStr = sessionStorage.getItem("externalTransferSavingsApi");
-      const creditsApiStr = sessionStorage.getItem("externalTransferCreditsApi");
+      const savingsApiStr = sessionStorage.getItem(
+        "externalTransferSavingsApi",
+      );
+      const creditsApiStr = sessionStorage.getItem(
+        "externalTransferCreditsApi",
+      );
 
       if (!savingsApiStr || !creditsApiStr) {
         return null;
@@ -49,7 +56,11 @@ export default function ConfirmacionPage() {
       const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
       const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
 
-      const sourceInfo = getExternalSourceInfo(savingsData, creditsData, sourceId);
+      const sourceInfo = getExternalSourceInfo(
+        savingsData,
+        creditsData,
+        sourceId,
+      );
       if (!sourceInfo) return null;
 
       // Destination still uses mock data (inscribed accounts API missing)
@@ -71,14 +82,22 @@ export default function ConfirmacionPage() {
         },
         valorTransferencia: Number(amount),
       };
-      sessionStorage.setItem("externalTransferTxRequest", JSON.stringify(txRequest));
+      sessionStorage.setItem(
+        "externalTransferTxRequest",
+        JSON.stringify(txRequest),
+      );
 
       // Store context for result mapping
       sessionStorage.setItem("externalTransferSourceName", sourceInfo.name);
       sessionStorage.setItem("externalTransferDestBank", destination.bankName);
-      sessionStorage.setItem("externalTransferDestAccNum", destination.accountNumber);
+      sessionStorage.setItem(
+        "externalTransferDestAccNum",
+        destination.accountNumber,
+      );
 
-      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const userName =
+        user?.fullName ||
+        `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
       const maskedDoc = user
         ? `${user.documentType} ${maskNumber(user.documentNumber)}`
         : "";

@@ -7,15 +7,19 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { PSERechargeConfirmationCard } from "@/src/organisms";
 import { useUIContext, useWelcomeBar } from "@/src/contexts";
 import type { PSERechargeConfirmationData } from "@/src/types/pseRecharge";
-import { mockPSERechargeAccounts, mockPSERechargeUserData, TRANSFER_STEPS } from "@/src/mocks";
+import {
+  mockPSERechargeAccounts,
+  mockPSERechargeUserData,
+  TRANSFER_STEPS,
+} from "@/src/mocks";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData] =
-    useState<PSERechargeConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<PSERechargeConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
       const destinationId = sessionStorage.getItem("pseRechargeDestinationId");
       const amount = sessionStorage.getItem("pseRechargeAmount");
@@ -25,7 +29,7 @@ export default function ConfirmacionPage() {
       }
 
       const destination = mockPSERechargeAccounts.find(
-        (acc) => acc.id === destinationId
+        (acc) => acc.id === destinationId,
       );
 
       if (!destination) {
@@ -40,7 +44,8 @@ export default function ConfirmacionPage() {
         method: "PSE" as const,
         transactionCost: 0,
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -60,7 +65,7 @@ export default function ConfirmacionPage() {
     if (confirmationData) {
       sessionStorage.setItem(
         "pseRechargeConfirmation",
-        JSON.stringify(confirmationData)
+        JSON.stringify(confirmationData),
       );
     }
 
@@ -83,9 +88,7 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Recargar con PSE"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Recargar con PSE"]} />
       </div>
 
       {/* Stepper */}

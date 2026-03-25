@@ -12,6 +12,7 @@
 Based on Figma design review (`node-id=3018-156`), the Home page consists of:
 
 ### Page Layout (Persistent for all authenticated pages)
+
 1. **Sidebar** (Left, 268px) - Navy blue navigation menu
 2. **Top Bar** (Right top) - User avatar with dropdown
 3. **Welcome Bar** - Dynamic title + hide balances toggle
@@ -19,11 +20,13 @@ Based on Figma design review (`node-id=3018-156`), the Home page consists of:
 5. **Session Footer** - Login timestamps and IP
 
 ### Home-Specific Content
+
 1. **Account Summary Card** - Primary account with balance
 2. **Quick Access Grid** - 6 feature cards (2x3)
 3. **Recent Transactions** - Last 5 movements
 
 ### Design Tokens
+
 - **Sidebar Background**: `#1D4E8F` (Navy Blue)
 - **Content Background**: `#F0F9FF` (Light Blue)
 - **Card Background**: `#FFFFFF` (White)
@@ -41,6 +44,7 @@ Based on Figma design review (`node-id=3018-156`), the Home page consists of:
 ## Prerequisites
 
 ### Before You Start
+
 - [ ] Review Figma design via MCP (node-id=3018-156)
 - [ ] Confirm development environment is running (`npm run dev`)
 - [ ] Read [spec.md](./spec.md) for full feature requirements
@@ -48,6 +52,7 @@ Based on Figma design review (`node-id=3018-156`), the Home page consists of:
 - [ ] Verify existing components in `src/atoms`, `src/molecules`, `src/organisms`
 
 ### Current State
+
 - ✅ Next.js 16 project initialized
 - ✅ Tailwind CSS v4 configured
 - ✅ TypeScript configured
@@ -58,6 +63,7 @@ Based on Figma design review (`node-id=3018-156`), the Home page consists of:
 - ⏳ Need to create Home page components
 
 ### Dependencies
+
 - Feature 01-auth should be implemented (login functionality)
 - Bre-B logo assets available in `attachments/designs/`
 
@@ -87,6 +93,7 @@ Copy logo files to public directory:
 **Destination**: `public/`
 
 Files:
+
 - `Bre-b-logo-blanco.svg` → `public/bre-b-logo-white.svg`
 - `Bre-b-logo-color.svg` → `public/bre-b-logo-color.svg`
 
@@ -101,11 +108,11 @@ Add any missing design tokens:
   /* Existing tokens... */
 
   /* Add if missing */
-  --brand-positive: #006B00;
-  --brand-negative: #FF0000;
-  --brand-breb-purple: #32005E;
-  --brand-gray-secondary: #7D8290;
-  --brand-footer-text: #B1B1B1;
+  --brand-positive: #006b00;
+  --brand-negative: #ff0000;
+  --brand-breb-purple: #32005e;
+  --brand-gray-secondary: #7d8290;
+  --brand-footer-text: #b1b1b1;
 }
 ```
 
@@ -121,7 +128,7 @@ Add any missing design tokens:
 export interface User {
   firstName: string;
   lastName: string;
-  documentType: 'CC' | 'CE' | 'TI' | 'PA';
+  documentType: "CC" | "CE" | "TI" | "PA";
   documentNumber: string;
   email: string;
 }
@@ -138,7 +145,7 @@ export interface Session {
 **File**: `src/types/account.ts`
 
 ```typescript
-export type AccountType = 'AHORROS' | 'CORRIENTE' | 'CREDITO' | 'INVERSION';
+export type AccountType = "AHORROS" | "CORRIENTE" | "CREDITO" | "INVERSION";
 
 export interface Account {
   accountNumber: string;
@@ -155,7 +162,7 @@ export interface Account {
 **File**: `src/types/transaction.ts`
 
 ```typescript
-export type TransactionType = 'DEBITO' | 'CREDITO';
+export type TransactionType = "DEBITO" | "CREDITO";
 
 export interface Transaction {
   id: string;
@@ -171,9 +178,9 @@ export interface Transaction {
 **File**: `src/types/index.ts`
 
 ```typescript
-export * from './user';
-export * from './account';
-export * from './transaction';
+export * from "./user";
+export * from "./account";
+export * from "./transaction";
 ```
 
 ### Step 2.5: Create Currency Formatter Utility
@@ -182,16 +189,16 @@ export * from './transaction';
 
 ```typescript
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
 }
 
 export function maskCurrency(): string {
-  return '$ ****';
+  return "$ ****";
 }
 ```
 
@@ -201,8 +208,8 @@ export function maskCurrency(): string {
 
 ```typescript
 export function generateInitials(firstName: string, lastName: string): string {
-  const first = firstName?.charAt(0) || '';
-  const last = lastName?.charAt(0) || '';
+  const first = firstName?.charAt(0) || "";
+  const last = lastName?.charAt(0) || "";
   return `${first}${last}`.toUpperCase();
 }
 ```
@@ -212,8 +219,8 @@ export function generateInitials(firstName: string, lastName: string): string {
 **File**: `src/utils/index.ts`
 
 ```typescript
-export * from './formatCurrency';
-export * from './generateInitials';
+export * from "./formatCurrency";
+export * from "./generateInitials";
 ```
 
 ---
@@ -350,8 +357,8 @@ export function useUIContext() {
 **File**: `src/contexts/index.ts`
 
 ```typescript
-export { UserProvider, useUserContext } from './UserContext';
-export { UIProvider, useUIContext } from './UIContext';
+export { UserProvider, useUserContext } from "./UserContext";
+export { UIProvider, useUIContext } from "./UIContext";
 ```
 
 ### Step 3.4: Create Custom Hooks
@@ -359,7 +366,7 @@ export { UIProvider, useUIContext } from './UIContext';
 **File**: `src/hooks/useUser.ts`
 
 ```typescript
-import { useUserContext } from '@/src/contexts';
+import { useUserContext } from "@/src/contexts";
 
 export function useUser() {
   const { user } = useUserContext();
@@ -375,7 +382,7 @@ export function useSession() {
 **File**: `src/hooks/useUI.ts`
 
 ```typescript
-import { useUIContext } from '@/src/contexts';
+import { useUIContext } from "@/src/contexts";
 
 export function useHideBalances() {
   const { hideBalances, toggleHideBalances } = useUIContext();
@@ -391,8 +398,8 @@ export function useSidebar() {
 **File**: `src/hooks/index.ts`
 
 ```typescript
-export * from './useUser';
-export * from './useUI';
+export * from "./useUser";
+export * from "./useUI";
 ```
 
 ---
@@ -534,10 +541,10 @@ Add new exports:
 
 ```typescript
 // Existing exports...
-export { Avatar } from './Avatar';
-export { Toggle } from './Toggle';
-export { Divider } from './Divider';
-export { ChevronIcon } from './ChevronIcon';
+export { Avatar } from "./Avatar";
+export { Toggle } from "./Toggle";
+export { Divider } from "./Divider";
+export { ChevronIcon } from "./ChevronIcon";
 ```
 
 ---
@@ -839,12 +846,12 @@ Add new exports:
 
 ```typescript
 // Existing exports...
-export { SidebarNavItem } from './SidebarNavItem';
-export { UserAvatar } from './UserAvatar';
-export { UserDropdown } from './UserDropdown';
-export { HideBalancesToggle } from './HideBalancesToggle';
-export { QuickAccessCard } from './QuickAccessCard';
-export { TransactionItem } from './TransactionItem';
+export { SidebarNavItem } from "./SidebarNavItem";
+export { UserAvatar } from "./UserAvatar";
+export { UserDropdown } from "./UserDropdown";
+export { HideBalancesToggle } from "./HideBalancesToggle";
+export { QuickAccessCard } from "./QuickAccessCard";
+export { TransactionItem } from "./TransactionItem";
 ```
 
 ---
@@ -1043,10 +1050,10 @@ Add new exports:
 
 ```typescript
 // Existing exports...
-export { Sidebar } from './Sidebar';
-export { TopBar } from './TopBar';
-export { WelcomeBar } from './WelcomeBar';
-export { SessionFooter } from './SessionFooter';
+export { Sidebar } from "./Sidebar";
+export { TopBar } from "./TopBar";
+export { WelcomeBar } from "./WelcomeBar";
+export { SessionFooter } from "./SessionFooter";
 ```
 
 ---
@@ -1244,9 +1251,9 @@ Add new exports:
 
 ```typescript
 // Existing exports...
-export { AccountSummaryCard } from './AccountSummaryCard';
-export { QuickAccessGrid } from './QuickAccessGrid';
-export { RecentTransactions } from './RecentTransactions';
+export { AccountSummaryCard } from "./AccountSummaryCard";
+export { QuickAccessGrid } from "./QuickAccessGrid";
+export { RecentTransactions } from "./RecentTransactions";
 ```
 
 ---
@@ -1310,7 +1317,7 @@ After successful login, redirect to `/home`:
 
 ```typescript
 // In login form submit handler
-router.push('/home');
+router.push("/home");
 ```
 
 ---
@@ -1320,6 +1327,7 @@ router.push('/home');
 ### Step 9.1: Create Icon Components
 
 Create SVG icon components for sidebar and cards. Options:
+
 1. Create custom SVG components in `src/atoms/icons/`
 2. Use an icon library like `lucide-react`
 3. Use inline SVGs
@@ -1341,6 +1349,7 @@ export function HomeIcon({ className = '' }) {
 ### Step 9.2: Create White Logo Variant
 
 If not already available, create a white version of the Coasmedas logo for the sidebar:
+
 - `public/logo-white.svg`
 
 ---
@@ -1362,6 +1371,7 @@ const [isMobileOpen, setIsMobileOpen] = useState(false);
 ### Step 10.2: Responsive Grid
 
 The QuickAccessGrid already uses responsive classes:
+
 - `grid-cols-1` on mobile
 - `md:grid-cols-2` on tablet
 - `lg:grid-cols-3` on desktop
@@ -1369,6 +1379,7 @@ The QuickAccessGrid already uses responsive classes:
 ### Step 10.3: Responsive Welcome Bar
 
 Adjust for mobile:
+
 - Stack title and toggle vertically on small screens
 - Reduce padding
 
@@ -1418,26 +1429,27 @@ npm run lint
 
 ## Time Tracking Summary
 
-| Phase | Estimated | Description |
-|-------|-----------|-------------|
-| Phase 1 | 0.5 hr | Project structure setup |
-| Phase 2 | 1 hr | Types & utilities |
-| Phase 3 | 2 hrs | Context & state management |
-| Phase 4 | 2 hrs | Atoms - new components |
-| Phase 5 | 3 hrs | Molecules - shared components |
-| Phase 6 | 4 hrs | Organisms - layout components |
-| Phase 7 | 3 hrs | Organisms - home page components |
-| Phase 8 | 2 hrs | Layout & page assembly |
-| Phase 9 | 1 hr | Icons & assets |
-| Phase 10 | 2 hrs | Responsive design |
-| Phase 11 | 2 hrs | Testing & polish |
-| **Total** | **~22-24 hrs (3-3.5 days)** | |
+| Phase     | Estimated                   | Description                      |
+| --------- | --------------------------- | -------------------------------- |
+| Phase 1   | 0.5 hr                      | Project structure setup          |
+| Phase 2   | 1 hr                        | Types & utilities                |
+| Phase 3   | 2 hrs                       | Context & state management       |
+| Phase 4   | 2 hrs                       | Atoms - new components           |
+| Phase 5   | 3 hrs                       | Molecules - shared components    |
+| Phase 6   | 4 hrs                       | Organisms - layout components    |
+| Phase 7   | 3 hrs                       | Organisms - home page components |
+| Phase 8   | 2 hrs                       | Layout & page assembly           |
+| Phase 9   | 1 hr                        | Icons & assets                   |
+| Phase 10  | 2 hrs                       | Responsive design                |
+| Phase 11  | 2 hrs                       | Testing & polish                 |
+| **Total** | **~22-24 hrs (3-3.5 days)** |                                  |
 
 ---
 
 ## Component Checklist
 
 ### Types & Utils
+
 - [ ] `src/types/user.ts`
 - [ ] `src/types/account.ts`
 - [ ] `src/types/transaction.ts`
@@ -1445,18 +1457,21 @@ npm run lint
 - [ ] `src/utils/generateInitials.ts`
 
 ### Contexts & Hooks
+
 - [ ] `src/contexts/UserContext.tsx`
 - [ ] `src/contexts/UIContext.tsx`
 - [ ] `src/hooks/useUser.ts`
 - [ ] `src/hooks/useUI.ts`
 
 ### Atoms
+
 - [ ] `Avatar.tsx`
 - [ ] `Toggle.tsx`
 - [ ] `Divider.tsx`
 - [ ] `ChevronIcon.tsx`
 
 ### Molecules
+
 - [ ] `SidebarNavItem.tsx`
 - [ ] `UserAvatar.tsx`
 - [ ] `UserDropdown.tsx`
@@ -1465,21 +1480,25 @@ npm run lint
 - [ ] `TransactionItem.tsx`
 
 ### Organisms (Layout)
+
 - [ ] `Sidebar.tsx`
 - [ ] `TopBar.tsx`
 - [ ] `WelcomeBar.tsx`
 - [ ] `SessionFooter.tsx`
 
 ### Organisms (Home)
+
 - [ ] `AccountSummaryCard.tsx`
 - [ ] `QuickAccessGrid.tsx`
 - [ ] `RecentTransactions.tsx`
 
 ### Pages
+
 - [ ] `app/(authenticated)/layout.tsx`
 - [ ] `app/(authenticated)/home/page.tsx`
 
 ### Assets
+
 - [ ] `public/bre-b-logo-white.svg`
 - [ ] `public/bre-b-logo-color.svg`
 - [ ] `public/logo-white.svg` (if needed)

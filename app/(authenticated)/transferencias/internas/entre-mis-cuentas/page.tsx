@@ -51,11 +51,21 @@ export default function EntreMisCuentasPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Raw API data for building transaction request later
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
-  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
-  const [targetSavingsApi, setTargetSavingsApi] = useState<TransferTargetSavings[]>([]);
-  const [targetCreditsApi, setTargetCreditsApi] = useState<TransferTargetCredits[]>([]);
-  const [targetInvestmentsApi, setTargetInvestmentsApi] = useState<TransferTargetInvestments[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
+  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>(
+    [],
+  );
+  const [targetSavingsApi, setTargetSavingsApi] = useState<
+    TransferTargetSavings[]
+  >([]);
+  const [targetCreditsApi, setTargetCreditsApi] = useState<
+    TransferTargetCredits[]
+  >([]);
+  const [targetInvestmentsApi, setTargetInvestmentsApi] = useState<
+    TransferTargetInvestments[]
+  >([]);
 
   useEffect(() => {
     setWelcomeBar({
@@ -140,9 +150,7 @@ export default function EntreMisCuentasPage() {
       return;
     }
 
-    const sourceAccount = accounts.find(
-      (acc) => acc.id === selectedSourceId
-    );
+    const sourceAccount = accounts.find((acc) => acc.id === selectedSourceId);
 
     if (sourceAccount && Number(amount) > sourceAccount.balance) {
       setError("Saldo insuficiente en la cuenta seleccionada");
@@ -155,11 +163,26 @@ export default function EntreMisCuentasPage() {
     sessionStorage.setItem("transferAmount", amount);
 
     // Store raw API data for building transaction request
-    sessionStorage.setItem("transferSourcesSavingsApi", JSON.stringify(savingsApiData));
-    sessionStorage.setItem("transferSourcesCreditsApi", JSON.stringify(creditsApiData));
-    sessionStorage.setItem("transferTargetSavingsApi", JSON.stringify(targetSavingsApi));
-    sessionStorage.setItem("transferTargetCreditsApi", JSON.stringify(targetCreditsApi));
-    sessionStorage.setItem("transferTargetInvestmentsApi", JSON.stringify(targetInvestmentsApi));
+    sessionStorage.setItem(
+      "transferSourcesSavingsApi",
+      JSON.stringify(savingsApiData),
+    );
+    sessionStorage.setItem(
+      "transferSourcesCreditsApi",
+      JSON.stringify(creditsApiData),
+    );
+    sessionStorage.setItem(
+      "transferTargetSavingsApi",
+      JSON.stringify(targetSavingsApi),
+    );
+    sessionStorage.setItem(
+      "transferTargetCreditsApi",
+      JSON.stringify(targetCreditsApi),
+    );
+    sessionStorage.setItem(
+      "transferTargetInvestmentsApi",
+      JSON.stringify(targetInvestmentsApi),
+    );
 
     router.push("/transferencias/internas/entre-mis-cuentas/confirmacion");
   };

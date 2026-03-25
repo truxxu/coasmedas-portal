@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { CarouselArrow, CarouselDots } from '@/src/atoms';
-import { SavingsProductCard } from '@/src/molecules';
-import { SavingsProduct } from '@/src/types';
-import { calculateTotalPages, getVisibleItems } from '@/src/utils';
+import { useRef, useState, useEffect, useCallback } from "react";
+import { CarouselArrow, CarouselDots } from "@/src/atoms";
+import { SavingsProductCard } from "@/src/molecules";
+import { SavingsProduct } from "@/src/types";
+import { calculateTotalPages, getVisibleItems } from "@/src/utils";
 
 const SCROLLBAR_HIDE_STYLE: React.CSSProperties = {
-  scrollbarWidth: 'none',
-  msOverflowStyle: 'none',
+  scrollbarWidth: "none",
+  msOverflowStyle: "none",
 };
 
 interface ProductCarouselProps {
@@ -24,7 +24,7 @@ export function ProductCarousel({
   products,
   selectedProductId,
   onProductSelect,
-  className = '',
+  className = "",
 }: ProductCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -44,8 +44,8 @@ export function ProductCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener('resize', updateVisibleItems, { passive: true });
-    return () => window.removeEventListener('resize', updateVisibleItems);
+    window.addEventListener("resize", updateVisibleItems, { passive: true });
+    return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
   // Update scroll state
@@ -66,10 +66,10 @@ export function ProductCarousel({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('scroll', updateScrollState, { passive: true });
+    container.addEventListener("scroll", updateScrollState, { passive: true });
     updateScrollState();
 
-    return () => container.removeEventListener('scroll', updateScrollState);
+    return () => container.removeEventListener("scroll", updateScrollState);
   }, [updateScrollState]);
 
   // Scroll handlers
@@ -79,7 +79,7 @@ export function ProductCarousel({
     const gap = 20; // gap-5 = 20px
     containerRef.current.scrollTo({
       left: page * (cardWidth + gap),
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 

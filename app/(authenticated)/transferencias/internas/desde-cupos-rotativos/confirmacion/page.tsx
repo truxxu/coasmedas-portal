@@ -18,9 +18,9 @@ export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [confirmationData] =
-    useState<CupoRotativoConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
+  const [confirmationData] = useState<CupoRotativoConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
 
       const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
       const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
@@ -32,7 +32,7 @@ export default function ConfirmacionPage() {
 
       const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
       const selectedDestination = mockCupoRotativoDestinations.find(
-        (d) => d.id === destinationId
+        (d) => d.id === destinationId,
       );
 
       if (!selectedCupo || !selectedDestination) {
@@ -47,7 +47,8 @@ export default function ConfirmacionPage() {
         amount: Number(amount),
         transactionCost: 0,
       };
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -67,7 +68,7 @@ export default function ConfirmacionPage() {
     if (confirmationData) {
       sessionStorage.setItem(
         "cupoRotativoConfirmation",
-        JSON.stringify(confirmationData)
+        JSON.stringify(confirmationData),
       );
     }
 

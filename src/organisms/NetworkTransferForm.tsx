@@ -137,9 +137,7 @@ export function NetworkTransferForm({
         />
       </div>
 
-      {error && (
-        <p className="text-sm text-brand-error text-center">{error}</p>
-      )}
+      {error && <p className="text-sm text-brand-error text-center">{error}</p>}
     </Card>
   );
 }

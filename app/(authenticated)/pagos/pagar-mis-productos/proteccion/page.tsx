@@ -274,7 +274,8 @@ export default function ProteccionDetallePage() {
         <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
         <div className="bg-white rounded-2xl p-8 text-center space-y-4">
           <p className="text-gray-500 text-base">
-            No tienes productos de protección pendientes por pagar en este momento.
+            No tienes productos de protección pendientes por pagar en este
+            momento.
           </p>
           <button
             onClick={handleBack}

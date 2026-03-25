@@ -14,10 +14,10 @@ The "Cuentas de mi Red Coopcentral" external transfer flow allows users to send 
 
 | Screen               | Node ID  | URL                                                                                        |
 | -------------------- | -------- | ------------------------------------------------------------------------------------------ |
-| Step 1: Details      | 842:11   | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-11)  |
-| Step 2: Confirmation | 842:594  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-594) |
+| Step 1: Details      | 842:11   | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-11)   |
+| Step 2: Confirmation | 842:594  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-594)  |
 | Step 3: SMS          | —        | Uses existing OTP verification page (CodeInputCard)                                        |
-| Step 4: Result       | 842:1052 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-1052)|
+| Step 4: Result       | 842:1052 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-1052) |
 
 ---
 
@@ -57,21 +57,25 @@ The "Cuentas de mi Red Coopcentral" external transfer flow allows users to send 
 | Concepto       | Text Input      | "Concepto (Opcional)"                 | "Descripción de la transferencia"                                           |
 
 #### Source Account Select
+
 - Displays account type and current balance
 - Format: "Cuenta de Ahorros - Saldo: $ X.XXX.XXX"
 - Chevron down icon on right
 
 #### Destination Account Select
+
 - Dropdown with registered Coopcentral network accounts
 - Placeholder: "Selecciona una cuenta inscrita..."
 - Chevron down icon on right
 
 #### Amount Input
+
 - Currency input with "$" prefix (21px, bold, gray `#666`)
 - Value right-aligned, "0" as default
 - Bottom border line style
 
 #### Concept Input
+
 - Single line text input, optional
 - Placeholder: "Descripción de la transferencia" (gray `#B1B1B1`)
 - Max 100 characters
@@ -101,8 +105,8 @@ The "Cuentas de mi Red Coopcentral" external transfer flow allows users to send 
 | Label               | Value Example      | Notes                    |
 | ------------------- | ------------------ | ------------------------ |
 | Nombre Titular:     | CAMILO ANDRÉS CRUZ | Sender name              |
-| Documento Titular:  | CC 1.***.***. 231  | Masked document          |
-| Producto a Debitar: | Cuenta de Ahorros  | Source account type       |
+| Documento Titular:  | CC 1.**_._**. 231  | Masked document          |
+| Producto a Debitar: | Cuenta de Ahorros  | Source account type      |
 | — divider —         |                    | `1px solid #E4E6EA`      |
 | Titular Destino:    | PEDRO PEREZ        | Recipient name           |
 | Banco Destino:      | Coopcentral        | Always "Coopcentral"     |
@@ -113,6 +117,7 @@ The "Cuentas de mi Red Coopcentral" external transfer flow allows users to send 
 | Concepto:           | Clases mensuales   | Optional                 |
 
 ### Row Styling
+
 - Label: 14px, regular, gray `#232323`, left-aligned
 - Value: 14px, regular, black, right-aligned
 - Amount: 18px, medium weight
@@ -146,25 +151,26 @@ Uses the existing OTP verification component pattern (`CodeInputCard`).
 ### Success State
 
 #### Success Icon & Title
+
 - **Icon**: Large green checkmark circle (~60px diameter, green `#00A44C` border, white checkmark)
 - **Title**: "Transacción Exitosa" (22px, bold, navy `#005066`)
 - Centered above details
 
 ### Transaction Details Summary
 
-| Label                 | Value Example          | Notes                              |
-| --------------------- | ---------------------- | ---------------------------------- |
-| Cuenta Origen:        | Cuenta de Ahorros      | Source account type                |
-| Banco Destino:        | Coopcentral            | Always "Coopcentral"              |
-| Cuenta Destino:       | 123-456789-01          | Destination number                 |
-| Valor Transferido:    | $200.000               | Bold, 18px                         |
-| Concepto:             | Clases mensuales       | Optional                           |
-| Costo Transacción:    | $ 0                    | Transaction fee                    |
-| — divider —           |                        | `1px solid #E4E6EA`               |
-| Fecha de Transacción: | 5 de Enero de 2025     | Spanish locale date                |
-| Hora de Transacción:  | 03:02 p.m.             | Spanish locale time                |
-| Número de Aprobación: | 251606                 | Random 6-digit approval            |
-| Descripción:          | Transferencia Exitosa  | Green `#00A44C`, medium weight     |
+| Label                 | Value Example         | Notes                          |
+| --------------------- | --------------------- | ------------------------------ |
+| Cuenta Origen:        | Cuenta de Ahorros     | Source account type            |
+| Banco Destino:        | Coopcentral           | Always "Coopcentral"           |
+| Cuenta Destino:       | 123-456789-01         | Destination number             |
+| Valor Transferido:    | $200.000              | Bold, 18px                     |
+| Concepto:             | Clases mensuales      | Optional                       |
+| Costo Transacción:    | $ 0                   | Transaction fee                |
+| — divider —           |                       | `1px solid #E4E6EA`            |
+| Fecha de Transacción: | 5 de Enero de 2025    | Spanish locale date            |
+| Hora de Transacción:  | 03:02 p.m.            | Spanish locale time            |
+| Número de Aprobación: | 251606                | Random 6-digit approval        |
+| Descripción:          | Transferencia Exitosa | Green `#00A44C`, medium weight |
 
 ### Action Buttons (3 horizontal)
 
@@ -195,28 +201,28 @@ app/(authenticated)/transferencias/externas/
 
 ### New Organisms
 
-| Component                              | Purpose                                         |
-| -------------------------------------- | ----------------------------------------------- |
-| `RedCoopTransferDetailsCard`           | Transfer details form (source, destination, amount, concept) |
-| `RedCoopTransferConfirmationCard`      | Confirmation summary with holder/destination info |
-| `RedCoopTransferResultCard`            | Result card with success/error states            |
+| Component                         | Purpose                                                      |
+| --------------------------------- | ------------------------------------------------------------ |
+| `RedCoopTransferDetailsCard`      | Transfer details form (source, destination, amount, concept) |
+| `RedCoopTransferConfirmationCard` | Confirmation summary with holder/destination info            |
+| `RedCoopTransferResultCard`       | Result card with success/error states                        |
 
 ### Existing Components to Reuse
 
-| Component              | Usage                                    |
-| ---------------------- | ---------------------------------------- |
-| `Breadcrumbs`          | Navigation trail                         |
-| `Stepper`              | 4-step progress indicator                |
-| `Select` / `SelectField` | Source and destination dropdowns       |
-| `CurrencyInput`        | Amount input with formatting             |
-| `Input`                | Concept text field                       |
-| `Button`               | Primary/secondary action buttons         |
-| `ConfirmationRow`      | Label + value rows in confirmation       |
-| `SuccessIcon`          | Green checkmark for result               |
-| `ErrorIcon`            | Red X for error result                   |
-| `CodeInputCard`        | SMS verification (Step 3)                |
-| `Divider`              | Section separators                       |
-| `Card`                 | Container card                           |
+| Component                | Usage                              |
+| ------------------------ | ---------------------------------- |
+| `Breadcrumbs`            | Navigation trail                   |
+| `Stepper`                | 4-step progress indicator          |
+| `Select` / `SelectField` | Source and destination dropdowns   |
+| `CurrencyInput`          | Amount input with formatting       |
+| `Input`                  | Concept text field                 |
+| `Button`                 | Primary/secondary action buttons   |
+| `ConfirmationRow`        | Label + value rows in confirmation |
+| `SuccessIcon`            | Green checkmark for result         |
+| `ErrorIcon`              | Red X for error result             |
+| `CodeInputCard`          | SMS verification (Step 3)          |
+| `Divider`                | Section separators                 |
+| `Card`                   | Container card                     |
 
 ---
 
@@ -305,12 +311,12 @@ interface RedCoopDestinationAccount {
 
 ### SessionStorage Keys (same pattern as otros-bancos)
 
-| Key                            | Purpose                     |
-| ------------------------------ | --------------------------- |
-| `redCoopTransferSourceId`      | Selected source account ID  |
-| `redCoopTransferDestinationId` | Selected destination ID     |
-| `redCoopTransferAmount`        | Transfer amount             |
-| `redCoopTransferConcept`       | Optional concept text       |
+| Key                            | Purpose                    |
+| ------------------------------ | -------------------------- |
+| `redCoopTransferSourceId`      | Selected source account ID |
+| `redCoopTransferDestinationId` | Selected destination ID    |
+| `redCoopTransferAmount`        | Transfer amount            |
+| `redCoopTransferConcept`       | Optional concept text      |
 
 ### Stepper Steps Constant
 
@@ -327,12 +333,12 @@ const RED_COOP_TRANSFER_STEPS = [
 
 ## Validation Rules
 
-| Field              | Rule                                    |
-| ------------------ | --------------------------------------- |
-| Source Account     | Required                                |
-| Destination Account| Required                                |
-| Amount             | Required, > 0, ≤ source balance         |
-| Concept            | Optional, max 100 characters            |
+| Field               | Rule                            |
+| ------------------- | ------------------------------- |
+| Source Account      | Required                        |
+| Destination Account | Required                        |
+| Amount              | Required, > 0, ≤ source balance |
+| Concept             | Optional, max 100 characters    |
 
 ---
 
@@ -340,18 +346,18 @@ const RED_COOP_TRANSFER_STEPS = [
 
 This flow follows the **same structure** as the existing `otros-bancos` external transfer flow:
 
-| Aspect               | otros-bancos                               | red-coopcentral (this feature)                  |
-| -------------------- | ------------------------------------------ | ----------------------------------------------- |
-| Base route           | `/transferencias/externas/otros-bancos`    | `/transferencias/externas/red-coopcentral`      |
-| Details page         | `page.tsx` with `ExternalTransferDetailsCard` | `page.tsx` with `RedCoopTransferDetailsCard`  |
-| Confirmation page    | `confirmacion/page.tsx`                    | `confirmacion/page.tsx`                         |
-| SMS page             | `sms/page.tsx`                             | `sms/page.tsx`                                  |
-| Result page          | `resultado/page.tsx`                       | `resultado/page.tsx`                            |
-| WelcomeBar title     | "A Otros Bancos"                           | "Cuentas de mi Red Coopcentral"                 |
-| WelcomeBar backHref  | `/transferencias/externas`                 | `/transferencias/externas`                      |
-| SessionStorage prefix| `externalTransfer*`                        | `redCoopTransfer*`                              |
-| Steps constant       | `EXTERNAL_TRANSFER_STEPS`                  | `RED_COOP_TRANSFER_STEPS`                       |
-| Destination bank     | Varies per destination                     | Always "Coopcentral"                            |
+| Aspect                | otros-bancos                                  | red-coopcentral (this feature)               |
+| --------------------- | --------------------------------------------- | -------------------------------------------- |
+| Base route            | `/transferencias/externas/otros-bancos`       | `/transferencias/externas/red-coopcentral`   |
+| Details page          | `page.tsx` with `ExternalTransferDetailsCard` | `page.tsx` with `RedCoopTransferDetailsCard` |
+| Confirmation page     | `confirmacion/page.tsx`                       | `confirmacion/page.tsx`                      |
+| SMS page              | `sms/page.tsx`                                | `sms/page.tsx`                               |
+| Result page           | `resultado/page.tsx`                          | `resultado/page.tsx`                         |
+| WelcomeBar title      | "A Otros Bancos"                              | "Cuentas de mi Red Coopcentral"              |
+| WelcomeBar backHref   | `/transferencias/externas`                    | `/transferencias/externas`                   |
+| SessionStorage prefix | `externalTransfer*`                           | `redCoopTransfer*`                           |
+| Steps constant        | `EXTERNAL_TRANSFER_STEPS`                     | `RED_COOP_TRANSFER_STEPS`                    |
+| Destination bank      | Varies per destination                        | Always "Coopcentral"                         |
 
 ---
 

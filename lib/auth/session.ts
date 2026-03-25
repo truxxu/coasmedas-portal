@@ -1,4 +1,4 @@
-import { getAuthCookie } from './tokens';
+import { getAuthCookie } from "./tokens";
 
 /**
  * Check if the user has a valid auth session (server-side).
@@ -22,7 +22,7 @@ export function parseTokenClaims(token: string): {
   exp?: number;
 } | null {
   try {
-    const parts = token.split('.');
+    const parts = token.split(".");
     if (parts.length !== 3) return null;
     const payload = JSON.parse(atob(parts[1]));
     return payload;

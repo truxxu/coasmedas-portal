@@ -10,7 +10,7 @@
  * @see /services/_template.ts for implementation patterns
  */
 
-import { apiPost } from '@/lib/api/client';
+import { apiPost } from "@/lib/api/client";
 import type {
   TransferAccountsRequest,
   CreateInternalTransferRequest,
@@ -25,13 +25,13 @@ import type {
   CreateExternalTransferRequest,
   ExternalTransferApiResult,
   QueryProductRequest,
-} from '@/types/api/transfers';
+} from "@/types/api/transfers";
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
   InvestmentAccountResponse,
-} from '@/types/api/products';
-import type { UserIdentification } from '@/types/api/common';
+} from "@/types/api/products";
+import type { UserIdentification } from "@/types/api/common";
 
 // ─── Internal Transfer Sources ───
 
@@ -43,8 +43,13 @@ import type { UserIdentification } from '@/types/api/common';
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer source selection)
  */
-export async function getTransferSourcesSavings(params: TransferAccountsRequest): Promise<SavingsAccountResponse[]> {
-  return apiPost<SavingsAccountResponse[]>('/transfer/internal/sources/savings', params);
+export async function getTransferSourcesSavings(
+  params: TransferAccountsRequest,
+): Promise<SavingsAccountResponse[]> {
+  return apiPost<SavingsAccountResponse[]>(
+    "/transfer/internal/sources/savings",
+    params,
+  );
 }
 
 /**
@@ -55,8 +60,13 @@ export async function getTransferSourcesSavings(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer source selection)
  */
-export async function getTransferSourcesCredits(params: TransferAccountsRequest): Promise<CreditAccountResponse[]> {
-  return apiPost<CreditAccountResponse[]>('/transfer/internal/sources/credits', params);
+export async function getTransferSourcesCredits(
+  params: TransferAccountsRequest,
+): Promise<CreditAccountResponse[]> {
+  return apiPost<CreditAccountResponse[]>(
+    "/transfer/internal/sources/credits",
+    params,
+  );
 }
 
 /**
@@ -67,8 +77,13 @@ export async function getTransferSourcesCredits(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer source selection)
  */
-export async function getTransferSourcesInvestments(params: TransferAccountsRequest): Promise<InvestmentAccountResponse[]> {
-  return apiPost<InvestmentAccountResponse[]>('/transfer/internal/sources/investments', params);
+export async function getTransferSourcesInvestments(
+  params: TransferAccountsRequest,
+): Promise<InvestmentAccountResponse[]> {
+  return apiPost<InvestmentAccountResponse[]>(
+    "/transfer/internal/sources/investments",
+    params,
+  );
 }
 
 // ─── Internal Transfer Targets ───
@@ -80,8 +95,13 @@ export async function getTransferSourcesInvestments(params: TransferAccountsRequ
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer destination selection)
  */
-export async function getTransferTargetsSavings(params: TransferAccountsRequest): Promise<TransferTargetSavings[]> {
-  return apiPost<TransferTargetSavings[]>('/transfer/internal/targets/savings', params);
+export async function getTransferTargetsSavings(
+  params: TransferAccountsRequest,
+): Promise<TransferTargetSavings[]> {
+  return apiPost<TransferTargetSavings[]>(
+    "/transfer/internal/targets/savings",
+    params,
+  );
 }
 
 /**
@@ -91,8 +111,13 @@ export async function getTransferTargetsSavings(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer destination selection)
  */
-export async function getTransferTargetsCredits(params: TransferAccountsRequest): Promise<TransferTargetCredits[]> {
-  return apiPost<TransferTargetCredits[]>('/transfer/internal/targets/credits', params);
+export async function getTransferTargetsCredits(
+  params: TransferAccountsRequest,
+): Promise<TransferTargetCredits[]> {
+  return apiPost<TransferTargetCredits[]>(
+    "/transfer/internal/targets/credits",
+    params,
+  );
 }
 
 /**
@@ -102,8 +127,13 @@ export async function getTransferTargetsCredits(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (internal transfer destination selection)
  */
-export async function getTransferTargetsInvestments(params: TransferAccountsRequest): Promise<TransferTargetInvestments[]> {
-  return apiPost<TransferTargetInvestments[]>('/transfer/internal/targets/investments', params);
+export async function getTransferTargetsInvestments(
+  params: TransferAccountsRequest,
+): Promise<TransferTargetInvestments[]> {
+  return apiPost<TransferTargetInvestments[]>(
+    "/transfer/internal/targets/investments",
+    params,
+  );
 }
 
 // ─── Internal Transfer Transaction ───
@@ -115,8 +145,13 @@ export async function getTransferTargetsInvestments(params: TransferAccountsRequ
  * @auth JWT + OTP
  * @status ✅ Used in mobile (transfer verification)
  */
-export async function createInternalTransfer(params: CreateInternalTransferRequest): Promise<InternalTransferResult> {
-  return apiPost<InternalTransferResult>('/transfer/internal/createTransaction', params);
+export async function createInternalTransfer(
+  params: CreateInternalTransferRequest,
+): Promise<InternalTransferResult> {
+  return apiPost<InternalTransferResult>(
+    "/transfer/internal/createTransaction",
+    params,
+  );
 }
 
 // ─── External Transfer Sources ───
@@ -128,8 +163,13 @@ export async function createInternalTransfer(params: CreateInternalTransferReque
  * @auth JWT
  * @status ✅ Used in mobile (external transfer source selection)
  */
-export async function getExternalSourcesSavings(params: TransferAccountsRequest): Promise<SavingsAccountResponse[]> {
-  return apiPost<SavingsAccountResponse[]>('/transfer/external/sources/savings', params);
+export async function getExternalSourcesSavings(
+  params: TransferAccountsRequest,
+): Promise<SavingsAccountResponse[]> {
+  return apiPost<SavingsAccountResponse[]>(
+    "/transfer/external/sources/savings",
+    params,
+  );
 }
 
 /**
@@ -139,8 +179,13 @@ export async function getExternalSourcesSavings(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (external transfer source selection)
  */
-export async function getExternalSourcesCredits(params: TransferAccountsRequest): Promise<CreditAccountResponse[]> {
-  return apiPost<CreditAccountResponse[]>('/transfer/external/sources/credits', params);
+export async function getExternalSourcesCredits(
+  params: TransferAccountsRequest,
+): Promise<CreditAccountResponse[]> {
+  return apiPost<CreditAccountResponse[]>(
+    "/transfer/external/sources/credits",
+    params,
+  );
 }
 
 // ─── External Transfer (Banks - Visionamos) ───
@@ -152,8 +197,10 @@ export async function getExternalSourcesCredits(params: TransferAccountsRequest)
  * @auth JWT
  * @status ✅ Used in mobile (bank selection)
  */
-export async function listBanks(params?: UserIdentification): Promise<BankListItem[]> {
-  return apiPost<BankListItem[]>('/transfer/external/listBanks', params ?? {});
+export async function listBanks(
+  params?: UserIdentification,
+): Promise<BankListItem[]> {
+  return apiPost<BankListItem[]>("/transfer/external/listBanks", params ?? {});
 }
 
 /**
@@ -163,8 +210,13 @@ export async function listBanks(params?: UserIdentification): Promise<BankListIt
  * @auth JWT
  * @status ✅ Used in mobile (shows commission before confirming)
  */
-export async function getTransactionCost(params: GetTransactionCostRequest): Promise<TransactionCostResponse> {
-  return apiPost<TransactionCostResponse>('/transfer/external/getTransactionCost', params);
+export async function getTransactionCost(
+  params: GetTransactionCostRequest,
+): Promise<TransactionCostResponse> {
+  return apiPost<TransactionCostResponse>(
+    "/transfer/external/getTransactionCost",
+    params,
+  );
 }
 
 /**
@@ -174,8 +226,13 @@ export async function getTransactionCost(params: GetTransactionCostRequest): Pro
  * @auth JWT + OTP
  * @status ✅ Used in mobile (transfer verification)
  */
-export async function createExternalBankTransfer(params: CreateExternalTransferRequest): Promise<ExternalTransferApiResult> {
-  return apiPost<ExternalTransferApiResult>('/transfer/external/banks/createTransaction', params);
+export async function createExternalBankTransfer(
+  params: CreateExternalTransferRequest,
+): Promise<ExternalTransferApiResult> {
+  return apiPost<ExternalTransferApiResult>(
+    "/transfer/external/banks/createTransaction",
+    params,
+  );
 }
 
 // ─── External Transfer (Coopcentral Entities) ───
@@ -187,8 +244,13 @@ export async function createExternalBankTransfer(params: CreateExternalTransferR
  * @auth JWT
  * @status ✅ Used in mobile (entity selection)
  */
-export async function listEntities(params?: UserIdentification): Promise<EntityListItem[]> {
-  return apiPost<EntityListItem[]>('/transfer/external/listEntities', params ?? {});
+export async function listEntities(
+  params?: UserIdentification,
+): Promise<EntityListItem[]> {
+  return apiPost<EntityListItem[]>(
+    "/transfer/external/listEntities",
+    params ?? {},
+  );
 }
 
 /**
@@ -199,8 +261,13 @@ export async function listEntities(params?: UserIdentification): Promise<EntityL
  * @auth JWT
  * @status ✅ Used in mobile (destination validation)
  */
-export async function queryEntityProduct(params: QueryProductRequest): Promise<void> {
-  await apiPost<void>('/transfer/external/entities/targets/queryProduct', params);
+export async function queryEntityProduct(
+  params: QueryProductRequest,
+): Promise<void> {
+  await apiPost<void>(
+    "/transfer/external/entities/targets/queryProduct",
+    params,
+  );
 }
 
 /**
@@ -210,6 +277,11 @@ export async function queryEntityProduct(params: QueryProductRequest): Promise<v
  * @auth JWT + OTP
  * @status ✅ Used in mobile (transfer verification)
  */
-export async function createExternalEntityTransfer(params: CreateExternalTransferRequest): Promise<ExternalTransferApiResult> {
-  return apiPost<ExternalTransferApiResult>('/transfer/external/entities/createTransaction', params);
+export async function createExternalEntityTransfer(
+  params: CreateExternalTransferRequest,
+): Promise<ExternalTransferApiResult> {
+  return apiPost<ExternalTransferApiResult>(
+    "/transfer/external/entities/createTransaction",
+    params,
+  );
 }

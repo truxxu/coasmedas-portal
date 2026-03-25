@@ -15,9 +15,9 @@ export default function PagarServiciosRespuestaPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [result] = useState<UtilityPaymentResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     const resultStr = sessionStorage.getItem("utilityPaymentResult");
-    return resultStr ? JSON.parse(resultStr) as UtilityPaymentResult : null;
+    return resultStr ? (JSON.parse(resultStr) as UtilityPaymentResult) : null;
   });
 
   // Configure WelcomeBar on mount, clear on unmount

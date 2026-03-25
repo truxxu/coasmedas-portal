@@ -43,7 +43,9 @@ export function RegisteredAccountItem({
       <div className="flex items-center gap-4">
         <Avatar initials={initials} size="md" />
         <div className="text-left">
-          <p className="text-lg font-medium text-brand-navy uppercase">{name}</p>
+          <p className="text-lg font-medium text-brand-navy uppercase">
+            {name}
+          </p>
           <p className="text-sm text-brand-text-black">
             {productCount} producto{productCount !== 1 ? "s" : ""} disponible
             {productCount !== 1 ? "s" : ""}

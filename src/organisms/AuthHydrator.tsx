@@ -4,7 +4,10 @@ import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/src/contexts";
 import { getSessionAction } from "@/app/actions/session";
-import { mapLoginResponseToUser, createSession } from "@/lib/mappers/auth.mapper";
+import {
+  mapLoginResponseToUser,
+  createSession,
+} from "@/lib/mappers/auth.mapper";
 import { setToken, getToken } from "@/lib/auth/tokens";
 import { setTokenGetter } from "@/lib/api/client";
 

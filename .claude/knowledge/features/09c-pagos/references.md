@@ -2,6 +2,7 @@
 
 **Feature**: Obligaciones Payment Flow (Pago de Obligaciones)
 **Figma References**:
+
 - [Step 1 - Details](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3353-3513)
 - [Step 2 - Confirmation](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=621-3)
 - [Step 3 - PSE Loading](existing PSE loading screen from 09a-pagos)
@@ -107,6 +108,7 @@ The **Pago de Obligaciones** (Loan/Credit Payment) flow allows users to pay thei
 ### UI Elements
 
 #### Payment Method Selector
+
 - **Type**: Select dropdown
 - **Label**: "¿De cuál cuenta quiere pagar?"
 - **Default Option**: "PSE (Pagos con otras entidades)"
@@ -114,6 +116,7 @@ The **Pago de Obligaciones** (Loan/Credit Payment) flow allows users to pay thei
 - **Chevron**: Dropdown icon on right
 
 #### "Need More Balance" Link
+
 - **Text**: "¿Necesitas más saldo?"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 12px
@@ -121,27 +124,31 @@ The **Pago de Obligaciones** (Loan/Credit Payment) flow allows users to pay thei
 - **Action**: Opens transfer/deposit flow (TBD)
 
 #### Product Selection Cards
+
 Two selectable cards displaying loan/credit products side by side:
 
 ##### Card 1: Crédito de Inversión (Selected State)
+
 - **Border**: `2px solid #007FFF` (Blue) when selected
 - **Background**: White
 - **Title**: "Crédito de Inversión" (19px, Medium, Black)
-- **Product Number**: "Número de producto: ***5678" (15px, Regular, Black)
+- **Product Number**: "Número de producto: \*\*\*5678" (15px, Regular, Black)
 - **Label**: "Saldo Total" (15px, Regular, Black)
 - **Amount**: "$ 12.500.000" (25px, Bold, Black)
 - **Status**: "Al día" (15px, Medium, Green `#00A44C`)
 
 ##### Card 2: Tarjeta de Crédito (Unselected State)
+
 - **Border**: `1px solid #E4E6EA` (Gray)
 - **Background**: White
 - **Title**: "Tarjeta de Crédito" (19px, Medium, Black)
-- **Product Number**: "Número de producto: ***1111" (15px, Regular, Black)
+- **Product Number**: "Número de producto: \*\*\*1111" (15px, Regular, Black)
 - **Label**: "Saldo Total" (15px, Regular, Black)
 - **Amount**: "$ 1.800.000" (25px, Bold, Black)
 - **Status**: "Al día" (15px, Medium, Green `#00A44C`)
 
 #### Payment Details Section
+
 - **Title**: "Detalle del Pago"
 - **Title Color**: `#1D4E8F` (Navy)
 - **Title Font Size**: 14px, Medium
@@ -149,14 +156,16 @@ Two selectable cards displaying loan/credit products side by side:
 - **Dividers**: `1px solid #E4E6EA` between sections
 
 #### Payment Detail Rows
-| Label | Value | Notes |
-|-------|-------|-------|
-| Pago Mínimo del Periodo: | $ 850.000 | Black |
-| Pago Total: | $ 12.500.000 | Black |
-| Fecha Límite de Pago: | 15 Nov 2024 | Black |
-| Costo de la Transacción: | $ 0 | Black |
+
+| Label                    | Value        | Notes |
+| ------------------------ | ------------ | ----- |
+| Pago Mínimo del Periodo: | $ 850.000    | Black |
+| Pago Total:              | $ 12.500.000 | Black |
+| Fecha Límite de Pago:    | 15 Nov 2024  | Black |
+| Costo de la Transacción: | $ 0          | Black |
 
 #### Payment Type Buttons
+
 - **Layout**: Two horizontal buttons side by side
 - **Button 1**: "Pago Mínimo"
   - Background: `#E4E6EA` (Gray)
@@ -171,6 +180,7 @@ Two selectable cards displaying loan/credit products side by side:
 - **Purpose**: Quick select to fill value input with min/total amount
 
 #### Value Input Field
+
 - **Label**: "Valor a Pagar" (Navy `#1D4E8F`, 16px, Bold)
 - **Type**: Currency input
 - **Prefix**: "$" (19px, Bold, Black)
@@ -179,10 +189,12 @@ Two selectable cards displaying loan/credit products side by side:
 - **Position**: Right-aligned in card
 
 #### Total Display
+
 - **Label**: "Total a Pagar" (16px, Bold, Black)
 - **Value**: "$ 850.000" (18px, Medium, Black)
 
 ### Data Required
+
 - Available loan/credit products with:
   - Product name (e.g., "Crédito de Inversión", "Tarjeta de Crédito")
   - Product number (masked)
@@ -195,6 +207,7 @@ Two selectable cards displaying loan/credit products side by side:
 - User payment value (user-entered or selected)
 
 ### Interactions
+
 - Payment method dropdown selection
 - "¿Necesitas más saldo?" link navigation
 - Product card selection (click to select different product)
@@ -205,6 +218,7 @@ Two selectable cards displaying loan/credit products side by side:
 - "Continuar" button: Validate and navigate to Step 2
 
 ### Validations
+
 - A product must be selected
 - Value must be greater than 0
 - Value must be at least the minimum payment amount
@@ -256,24 +270,27 @@ Two selectable cards displaying loan/credit products side by side:
 ### UI Elements
 
 #### Card Title
+
 - **Text**: "Confirmación de Pagos"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 18px, Bold
 
 #### Description Text
+
 - **Text**: "Por favor, verifica que los datos de la transacción sean correctos antes de continuar."
 - **Color**: Black
 - **Font Size**: 15px, Regular
 
 #### Confirmation Detail Rows
-| Label | Value |
-|-------|-------|
-| Titular: | CAMILO ANDRÉS CRUZ |
-| Documento: | CC 1.***.***234 |
-| Producto a Pagar: | Crédito Libre inversión |
-| Numero de Producto: | ***5488 |
+
+| Label               | Value                           |
+| ------------------- | ------------------------------- |
+| Titular:            | CAMILO ANDRÉS CRUZ              |
+| Documento:          | CC 1.***.***234                 |
+| Producto a Pagar:   | Crédito Libre inversión         |
+| Numero de Producto: | \*\*\*5488                      |
 | Producto a Debitar: | PSE (Pagos con otras entidades) |
-| Valor a Pagar: | $ 850.000 |
+| Valor a Pagar:      | $ 850.000                       |
 
 - **Label Font**: 15px, Regular, Black
 - **Value Font**: 15px, Medium, Black
@@ -281,12 +298,14 @@ Two selectable cards displaying loan/credit products side by side:
 - **Divider**: After Documento row
 
 #### Primary Button
+
 - **Text**: "Confirmar Pago"
 - **Style**: Blue gradient `#007FFF`, white text
 - **Border Radius**: `6px`
 - **Shadow**: `0px 2px 4px rgba(0,0,0,0.1)`
 
 ### Data Required (from Step 1)
+
 - Titular (user name)
 - Documento (masked document number)
 - Producto a Pagar (credit/loan product name)
@@ -295,6 +314,7 @@ Two selectable cards displaying loan/credit products side by side:
 - Valor a Pagar (payment amount)
 
 ### Interactions
+
 - "Volver" link: Navigate back to Step 1
 - "Confirmar Pago" button: Submit confirmation, navigate to Step 3 (PSE Loading)
 
@@ -311,12 +331,14 @@ Two selectable cards displaying loan/credit products side by side:
 This step reuses the existing PSE loading screen component from the Pago Unificado flow (09a-pagos). It displays a loading animation while the system connects to the PSE external payment gateway.
 
 ### UI Elements
+
 - **Stepper**: Step 3 active ("Conectando a PSE")
 - **Loading Indicator**: Animated spinner or progress
 - **Message**: "Conectando con PSE..." or similar
 - **Info Text**: Instructions about redirecting to external bank site
 
 ### Behavior
+
 - Display loading state
 - Simulate connection to PSE (mock)
 - Auto-navigate to Step 4 after completion/timeout
@@ -377,6 +399,7 @@ This step reuses the existing PSE loading screen component from the Pago Unifica
 ### UI Elements
 
 #### Success Icon
+
 - **Type**: Circle with checkmark
 - **Size**: Large (approximately `60px × 60px`)
 - **Circle**: Green/teal border `#00AFA9`
@@ -384,33 +407,38 @@ This step reuses the existing PSE loading screen component from the Pago Unifica
 - **Position**: Centered above title
 
 #### Result Title
+
 - **Text**: "Transacción Exitosa"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 22px, Bold
 - **Alignment**: Center
 
 #### Transaction Detail Rows - Section 1
-| Label | Value | Value Style |
-|-------|-------|-------------|
-| Línea crédito: | Crédito Libre Inversión | Black |
-| Número de producto: | ***5488 | Black |
-| Valor pagado: | $ 850.000 | Black, 18px |
+
+| Label               | Value                   | Value Style |
+| ------------------- | ----------------------- | ----------- |
+| Línea crédito:      | Crédito Libre Inversión | Black       |
+| Número de producto: | \*\*\*5488              | Black       |
+| Valor pagado:       | $ 850.000               | Black, 18px |
 
 #### Transaction Detail Rows - Section 2
-| Label | Value | Value Style |
-|-------|-------|-------------|
-| Costo Transacción: | $ 0 | Black |
-| Abono Excedente: | Reducción de Cuota | Black |
+
+| Label              | Value              | Value Style |
+| ------------------ | ------------------ | ----------- |
+| Costo Transacción: | $ 0                | Black       |
+| Abono Excedente:   | Reducción de Cuota | Black       |
 
 #### Transaction Detail Rows - Section 3
-| Label | Value | Value Style |
-|-------|-------|-------------|
-| Fecha de Transmisión: | 3 de septiembre de 2025 | Black |
-| Hora de Transacción: | 10:21 pm | Black |
-| Número de Aprobación: | 463342 | Black |
-| Descripción: | Exitosa | Green `#00A44C` |
+
+| Label                 | Value                   | Value Style     |
+| --------------------- | ----------------------- | --------------- |
+| Fecha de Transmisión: | 3 de septiembre de 2025 | Black           |
+| Hora de Transacción:  | 10:21 pm                | Black           |
+| Número de Aprobación: | 463342                  | Black           |
+| Descripción:          | Exitosa                 | Green `#00A44C` |
 
 #### Action Buttons
+
 - **"Imprimir/Guardar"**:
   - Variant: Outline
   - Border: `1px solid #1D4E8F`
@@ -425,6 +453,7 @@ This step reuses the existing PSE loading screen component from the Pago Unifica
   - Border Radius: `6px`
 
 ### Data Required (from API response)
+
 - Transaction status (success/error)
 - Línea crédito (credit/loan product name)
 - Número de producto (masked)
@@ -437,10 +466,12 @@ This step reuses the existing PSE loading screen component from the Pago Unifica
 - Descripción (status description)
 
 ### Interactions
+
 - "Imprimir/Guardar" button: Generate PDF with transaction details
 - "Finalizar" button: Navigate to Pagos menu or Home
 
 ### States
+
 - **Success**: Green checkmark, "Transacción Exitosa", green description
 - **Error**: Red X icon, "Transacción Fallida", red description
 
@@ -451,16 +482,19 @@ This step reuses the existing PSE loading screen component from the Pago Unifica
 The following components should be reused from previous payment flows:
 
 ### Atoms
+
 - `StepperCircle` - Individual step indicator
 - `StepperConnector` - Line connecting circles
 - `Divider` - Horizontal separator
 
 ### Molecules
+
 - `Stepper` - Multi-step progress indicator (4 steps)
 - `TransactionDetailRow` - Key-value pair display
 - `CurrencyInput` - Editable currency input field (from 09b-pagos)
 
 ### Organisms
+
 - `PSELoadingCard` - Loading card for PSE connection (from 09a-pagos)
 - `TransactionResultCard` - Card for result display (adapted)
 
@@ -471,6 +505,7 @@ The following components should be reused from previous payment flows:
 ### Molecules
 
 #### `ObligacionPaymentCard`
+
 - **Purpose**: Selectable card for loan/credit product display in payment flow
 - **Layout**: Card with product info, balance, and status
 - **Props**:
@@ -482,6 +517,7 @@ The following components should be reused from previous payment flows:
   - Unselected: Gray border `#E4E6EA`, white background
 
 #### `PaymentTypeButton`
+
 - **Purpose**: Quick action button to select payment type (Min/Total)
 - **Layout**: Small gray button
 - **Props**:
@@ -492,6 +528,7 @@ The following components should be reused from previous payment flows:
 ### Organisms
 
 #### `ObligacionDetailsCard`
+
 - **Purpose**: Main card for Step 1 - Product selection and payment details
 - **Components**:
   - Card container (white, rounded-2xl)
@@ -506,6 +543,7 @@ The following components should be reused from previous payment flows:
   - Total display row
 
 #### `ObligacionConfirmationCard`
+
 - **Purpose**: Main card for Step 2 - Confirmation
 - **Components**:
   - Card container
@@ -519,16 +557,17 @@ The following components should be reused from previous payment flows:
 ## Form Data Structures
 
 ### Step 1 Data (Details)
+
 ```typescript
 interface ObligacionPaymentDetailsData {
-  paymentMethod: 'PSE';
+  paymentMethod: "PSE";
   selectedProductId: string;
   selectedProduct: {
     id: string;
     name: string; // e.g., "Crédito de Inversión"
     productNumber: string; // masked, e.g., "***5678"
     totalBalance: number;
-    status: 'al_dia' | 'en_mora';
+    status: "al_dia" | "en_mora";
   };
   pagoMinimoPeriodo: number;
   pagoTotal: number;
@@ -539,6 +578,7 @@ interface ObligacionPaymentDetailsData {
 ```
 
 ### Step 2 Data (Confirmation)
+
 ```typescript
 interface ObligacionConfirmationData {
   titular: string;
@@ -551,9 +591,10 @@ interface ObligacionConfirmationData {
 ```
 
 ### Step 4 Data (Result)
+
 ```typescript
 interface ObligacionTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -571,6 +612,7 @@ interface ObligacionTransactionResult {
 ## State Management
 
 ### Flow State
+
 ```typescript
 interface ObligacionPaymentFlowState {
   currentStep: 1 | 2 | 3 | 4;
@@ -581,6 +623,7 @@ interface ObligacionPaymentFlowState {
 ```
 
 ### Navigation Between Steps
+
 - Use Next.js routing for each step
 - Store form data in Context or URL state
 - Prevent direct access to later steps without completing previous steps
@@ -591,6 +634,7 @@ interface ObligacionPaymentFlowState {
 ## Design System Values
 
 ### Colors
+
 - **Primary Blue**: `#007FFF` (stepper active, primary buttons, selected card border)
 - **Navy**: `#1D4E8F` (text, labels, titles)
 - **Text Black**: `#111827` (primary text)
@@ -604,6 +648,7 @@ interface ObligacionPaymentFlowState {
 - **White**: `#FFFFFF` (cards)
 
 ### Typography
+
 - **Page Title**: 20px, Medium, Black
 - **Card Title**: 18px, Bold, Navy
 - **Section Subtitle**: 14px, Medium, Navy
@@ -619,6 +664,7 @@ interface ObligacionPaymentFlowState {
 - **Button Text**: 14-16px, Bold
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Row spacing: `16px` (space-y-4)
@@ -626,6 +672,7 @@ interface ObligacionPaymentFlowState {
 - Product cards gap: `16px` (gap-4)
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Product cards: `8px` (rounded-lg)
 - Inputs: `6px` (rounded-md)
@@ -638,50 +685,53 @@ interface ObligacionPaymentFlowState {
 ## Mock Data Requirements
 
 ### Mock Obligacion Products
+
 ```typescript
 const mockObligacionProducts = [
   {
-    id: '1',
-    name: 'Crédito de Inversión',
-    productNumber: '***5678',
+    id: "1",
+    name: "Crédito de Inversión",
+    productNumber: "***5678",
     totalBalance: 12500000,
-    status: 'al_dia',
+    status: "al_dia",
     pagoMinimo: 850000,
-    fechaLimitePago: '15 Nov 2024'
+    fechaLimitePago: "15 Nov 2024",
   },
   {
-    id: '2',
-    name: 'Tarjeta de Crédito',
-    productNumber: '***1111',
+    id: "2",
+    name: "Tarjeta de Crédito",
+    productNumber: "***1111",
     totalBalance: 1800000,
-    status: 'al_dia',
+    status: "al_dia",
     pagoMinimo: 180000,
-    fechaLimitePago: '20 Nov 2024'
-  }
+    fechaLimitePago: "20 Nov 2024",
+  },
 ];
 ```
 
 ### Mock User Data
+
 ```typescript
 const mockUser = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234'
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 ```
 
 ### Mock Transaction Result
+
 ```typescript
 const mockObligacionTransactionResult = {
-  status: 'success',
-  lineaCredito: 'Crédito Libre Inversión',
-  numeroProducto: '***5488',
+  status: "success",
+  lineaCredito: "Crédito Libre Inversión",
+  numeroProducto: "***5488",
   valorPagado: 850000,
   costoTransaccion: 0,
-  abonoExcedente: 'Reducción de Cuota',
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '463342',
-  descripcion: 'Exitosa'
+  abonoExcedente: "Reducción de Cuota",
+  fechaTransmision: "3 de septiembre de 2025",
+  horaTransaccion: "10:21 pm",
+  numeroAprobacion: "463342",
+  descripcion: "Exitosa",
 };
 ```
 
@@ -689,12 +739,12 @@ const mockObligacionTransactionResult = {
 
 ## Routes Summary
 
-| Step | Route | Purpose |
-|------|-------|---------|
-| 1 | `/pagos/pago-obligaciones` | Product selection & payment configuration |
-| 2 | `/pagos/pago-obligaciones/confirmacion` | Review and confirm |
-| 3 | `/pagos/pago-obligaciones/pse` | PSE loading/connection |
-| 4 | `/pagos/pago-obligaciones/resultado` | Transaction result |
+| Step | Route                                   | Purpose                                   |
+| ---- | --------------------------------------- | ----------------------------------------- |
+| 1    | `/pagos/pago-obligaciones`              | Product selection & payment configuration |
+| 2    | `/pagos/pago-obligaciones/confirmacion` | Review and confirm                        |
+| 3    | `/pagos/pago-obligaciones/pse`          | PSE loading/connection                    |
+| 4    | `/pagos/pago-obligaciones/resultado`    | Transaction result                        |
 
 ---
 
@@ -726,29 +776,29 @@ PagoObligacionesPage
 
 ## Differences from Pago de Aportes (09b-pagos)
 
-| Aspect | Pago de Aportes | Pago de Obligaciones |
-|--------|-----------------|----------------------|
-| Payment Scope | Single Aportes product | Multiple loan/credit products |
-| Step 1 Selection | No product selection | Product card selection |
-| Payment Method | Account selection | PSE only |
-| Step 1 Details | Aportes breakdown (vigentes, mora) | Min/Total payment amounts |
-| Payment Type | Value input only | Quick buttons (Min/Total) + Value input |
-| Step 3 | SMS Code verification | PSE loading screen |
-| Result Fields | Plan-specific fields | Credit/loan-specific fields |
-| Route | `/pagos/pago-aportes` | `/pagos/pago-obligaciones` |
+| Aspect           | Pago de Aportes                    | Pago de Obligaciones                    |
+| ---------------- | ---------------------------------- | --------------------------------------- |
+| Payment Scope    | Single Aportes product             | Multiple loan/credit products           |
+| Step 1 Selection | No product selection               | Product card selection                  |
+| Payment Method   | Account selection                  | PSE only                                |
+| Step 1 Details   | Aportes breakdown (vigentes, mora) | Min/Total payment amounts               |
+| Payment Type     | Value input only                   | Quick buttons (Min/Total) + Value input |
+| Step 3           | SMS Code verification              | PSE loading screen                      |
+| Result Fields    | Plan-specific fields               | Credit/loan-specific fields             |
+| Route            | `/pagos/pago-aportes`              | `/pagos/pago-obligaciones`              |
 
 ---
 
 ## Differences from Pago Unificado (09a-pagos)
 
-| Aspect | Pago Unificado | Pago de Obligaciones |
-|--------|----------------|----------------------|
-| Payment Scope | All products combined | Single selected loan/credit |
-| Step 1 Display | Summary totals | Product cards + payment options |
-| Product Selection | None (all included) | Select from available products |
-| Payment Options | Fixed total | Min/Total quick buttons |
-| Confirmation | Combined totals | Single product details |
-| Route | `/pagos/pago-unificado` | `/pagos/pago-obligaciones` |
+| Aspect            | Pago Unificado          | Pago de Obligaciones            |
+| ----------------- | ----------------------- | ------------------------------- |
+| Payment Scope     | All products combined   | Single selected loan/credit     |
+| Step 1 Display    | Summary totals          | Product cards + payment options |
+| Product Selection | None (all included)     | Select from available products  |
+| Payment Options   | Fixed total             | Min/Total quick buttons         |
+| Confirmation      | Combined totals         | Single product details          |
+| Route             | `/pagos/pago-unificado` | `/pagos/pago-obligaciones`      |
 
 ---
 

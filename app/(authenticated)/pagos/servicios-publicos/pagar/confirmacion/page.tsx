@@ -49,7 +49,7 @@ export default function PagarServiciosConfirmacionPage() {
       invoiceReference = details.reference || "";
     } else {
       const service = mockRegisteredServices.find(
-        (s) => s.id === details.serviceId
+        (s) => s.id === details.serviceId,
       );
       serviceToPay = service
         ? `${service.provider} - ${service.serviceType}`
@@ -80,7 +80,7 @@ export default function PagarServiciosConfirmacionPage() {
       // Store confirmation data in sessionStorage
       sessionStorage.setItem(
         "utilityPaymentConfirmation",
-        JSON.stringify(confirmation)
+        JSON.stringify(confirmation),
       );
 
       // Check payment method from details

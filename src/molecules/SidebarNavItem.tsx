@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { ReactNode } from 'react';
-import { ChevronIcon } from '@/src/atoms';
+import Link from "next/link";
+import Image from "next/image";
+import { ReactNode } from "react";
+import { ChevronIcon } from "@/src/atoms";
 
 interface SidebarNavItemProps {
   label: string;
@@ -26,11 +26,18 @@ export function SidebarNavItem({
   onToggle,
   children,
 }: SidebarNavItemProps) {
-  const baseClasses = 'flex items-center gap-3 px-4 py-2 rounded-lg text-white font-bold text-[15px] transition-colors';
-  const activeClasses = isActive ? 'bg-brand-primary' : 'hover:bg-white/10';
+  const baseClasses =
+    "flex items-center gap-3 px-4 py-2 rounded-lg text-white font-bold text-[15px] transition-colors";
+  const activeClasses = isActive ? "bg-brand-primary" : "hover:bg-white/10";
 
   const iconElement = (
-    <Image src={icon} alt="" width={20} height={20} className="brightness-0 invert" />
+    <Image
+      src={icon}
+      alt=""
+      width={20}
+      height={20}
+      className="brightness-0 invert"
+    />
   );
 
   if (expandable) {
@@ -44,12 +51,13 @@ export function SidebarNavItem({
             {iconElement}
             {label}
           </span>
-          <ChevronIcon direction={isExpanded ? 'up' : 'down'} className="text-white" />
+          <ChevronIcon
+            direction={isExpanded ? "up" : "down"}
+            className="text-white"
+          />
         </button>
         {isExpanded && children && (
-          <div className="ml-8 mt-1 space-y-1">
-            {children}
-          </div>
+          <div className="ml-8 mt-1 space-y-1">{children}</div>
         )}
       </div>
     );

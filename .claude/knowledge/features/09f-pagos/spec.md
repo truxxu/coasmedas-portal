@@ -28,18 +28,21 @@
 The **Pago Servicios Publicos Inscritos** feature allows users to pay their previously registered utility services. This is a 4-step wizard flow that guides users through selecting a service, confirming payment details, entering SMS verification, and viewing the transaction result.
 
 ### Key Characteristics
+
 - **4-step wizard flow**: Details → Confirmation → SMS Code → Response
 - **Registered services**: Users pay from their list of previously registered utilities
 - **SMS verification**: OTP code required to authorize the transaction
 - **Transaction receipt**: Final page shows complete transaction details with print option
 
 ### User Journey
+
 1. Select source account, registered service, and enter payment amount
 2. Review and confirm payment details
 3. Enter 6-digit SMS verification code
 4. View transaction result (success/failure) with receipt
 
 ### Route Structure
+
 ```
 /pagos/servicios-publicos/pagar/detalle       → Step 1: Payment Details
 /pagos/servicios-publicos/pagar/confirmacion  → Step 2: Confirmation
@@ -49,13 +52,13 @@ The **Pago Servicios Publicos Inscritos** feature allows users to pay their prev
 
 ### Key Differences from Registration Flow (09e)
 
-| Aspect | Registration (09e) | Payment (09f) |
-|--------|-------------------|---------------|
-| Purpose | Register utility services | Pay registered services |
-| Steps | 3 steps (Form → Confirm → Result) | 4 steps (Details → Confirm → SMS → Response) |
-| Verification | None | SMS OTP required |
-| Form Fields | City, Convenio, Bill, Alias | Account, Service, Amount |
-| Result Type | Registration status | Transaction receipt |
+| Aspect       | Registration (09e)                | Payment (09f)                                |
+| ------------ | --------------------------------- | -------------------------------------------- |
+| Purpose      | Register utility services         | Pay registered services                      |
+| Steps        | 3 steps (Form → Confirm → Result) | 4 steps (Details → Confirm → SMS → Response) |
+| Verification | None                              | SMS OTP required                             |
+| Form Fields  | City, Convenio, Bill, Alias       | Account, Service, Amount                     |
+| Result Type  | Registration status               | Transaction receipt                          |
 
 ---
 
@@ -108,6 +111,7 @@ app/(authenticated)/pagos/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -127,11 +131,11 @@ app/(authenticated)/pagos/
  */
 export interface SourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
-  maskedNumber: string;  // "***4428"
+  maskedNumber: string; // "***4428"
   balance: number;
-  displayName: string;   // "Cuenta de Ahorros - Saldo: $ 8.730.500"
+  displayName: string; // "Cuenta de Ahorros - Saldo: $ 8.730.500"
 }
 
 /**
@@ -139,11 +143,11 @@ export interface SourceAccount {
  */
 export interface RegisteredService {
   id: string;
-  alias: string;           // "Luz Apartamento"
-  provider: string;        // "ENEL"
-  serviceType: string;     // "Energía"
-  reference: string;       // Invoice/bill number
-  displayName: string;     // "Luz Apartamento (ENEL - Energía)"
+  alias: string; // "Luz Apartamento"
+  provider: string; // "ENEL"
+  serviceType: string; // "Energía"
+  reference: string; // Invoice/bill number
+  displayName: string; // "Luz Apartamento (ENEL - Energía)"
 }
 
 /**
@@ -163,10 +167,10 @@ export interface UtilityPaymentDetailsForm {
  */
 export interface UtilityPaymentConfirmation {
   holderName: string;
-  holderDocument: string;      // Masked: "CC 1.***.***234"
-  serviceToPay: string;        // "ENEL - Energía"
-  invoiceReference: string;    // "123456789"
-  productToDebit: string;      // "Cuenta de Ahorros"
+  holderDocument: string; // Masked: "CC 1.***.***234"
+  serviceToPay: string; // "ENEL - Energía"
+  invoiceReference: string; // "123456789"
+  productToDebit: string; // "Cuenta de Ahorros"
   totalAmount: number;
 }
 
@@ -188,13 +192,13 @@ export interface SmsVerificationState {
 export interface UtilityPaymentResult {
   success: boolean;
   creditLine: string;
-  productNumber: string;       // Masked: "***5678"
+  productNumber: string; // Masked: "***5678"
   amountPaid: number;
   transactionCost: number;
-  transmissionDate: string;    // "1 de septiembre de 2025"
-  transactionTime: string;     // "10:21 pm"
-  approvalNumber: string;      // "950606"
-  description: string;         // "Exitosa" or error message
+  transmissionDate: string; // "1 de septiembre de 2025"
+  transactionTime: string; // "10:21 pm"
+  approvalNumber: string; // "950606"
+  description: string; // "Exitosa" or error message
 }
 
 /**
@@ -239,7 +243,7 @@ export interface StepperStep {
 ### Update: `src/types/index.ts`
 
 ```typescript
-export * from './utility-payment';
+export * from "./utility-payment";
 ```
 
 ---
@@ -253,6 +257,7 @@ export * from './utility-payment';
 **Location**: `src/atoms/OtpDigitInput.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface OtpDigitInputProps {
   value: string;
@@ -266,6 +271,7 @@ interface OtpDigitInputProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -321,6 +327,7 @@ export const OtpDigitInput: React.FC<OtpDigitInputProps> = ({
 **Location**: `src/molecules/OtpInput.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface OtpInputProps {
   value: string;
@@ -332,6 +339,7 @@ interface OtpInputProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -426,17 +434,19 @@ export const OtpInput: React.FC<OtpInputProps> = ({
 **Location**: `src/molecules/PaymentDetailRow.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PaymentDetailRowProps {
   label: string;
   value: string;
-  valueSize?: 'normal' | 'large';
-  valueColor?: 'default' | 'success' | 'error';
+  valueSize?: "normal" | "large";
+  valueColor?: "default" | "success" | "error";
   showDivider?: boolean;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Divider } from '@/src/atoms';
@@ -490,6 +500,7 @@ export const PaymentDetailRow: React.FC<PaymentDetailRowProps> = ({
 **Location**: `src/molecules/TransactionSuccessHeader.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransactionSuccessHeaderProps {
   success: boolean;
@@ -498,6 +509,7 @@ interface TransactionSuccessHeaderProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { SuccessIcon, ErrorIcon } from '@/src/atoms';
@@ -539,6 +551,7 @@ export const TransactionSuccessHeader: React.FC<TransactionSuccessHeaderProps> =
 **Note**: May already exist from previous payment flows. If so, reuse or update.
 
 **Props Interface**:
+
 ```typescript
 interface StepperProps {
   steps: StepperStep[];
@@ -547,6 +560,7 @@ interface StepperProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -618,6 +632,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
 **Location**: `src/organisms/UtilityPaymentDetailsForm.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityPaymentDetailsFormProps {
   sourceAccounts: SourceAccount[];
@@ -638,6 +653,7 @@ interface UtilityPaymentDetailsFormProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -818,6 +834,7 @@ export const UtilityPaymentDetailsForm: React.FC<UtilityPaymentDetailsFormProps>
 **Location**: `src/organisms/UtilityPaymentConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityPaymentConfirmationCardProps {
   confirmation: UtilityPaymentConfirmation;
@@ -828,6 +845,7 @@ interface UtilityPaymentConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Button } from '@/src/atoms';
@@ -923,6 +941,7 @@ export const UtilityPaymentConfirmationCard: React.FC<UtilityPaymentConfirmation
 **Location**: `src/organisms/UtilityPaymentSmsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityPaymentSmsCardProps {
   otpValue: string;
@@ -937,6 +956,7 @@ interface UtilityPaymentSmsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -1033,6 +1053,7 @@ export const UtilityPaymentSmsCard: React.FC<UtilityPaymentSmsCardProps> = ({
 **Location**: `src/organisms/UtilityPaymentResponseCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityPaymentResponseCardProps {
   result: UtilityPaymentResult;
@@ -1042,6 +1063,7 @@ interface UtilityPaymentResponseCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Button } from '@/src/atoms';
@@ -1135,10 +1157,10 @@ export const UtilityPaymentResponseCard: React.FC<UtilityPaymentResponseCardProp
 ```typescript
 // constants/stepperSteps.ts
 export const UTILITY_PAYMENT_STEPS = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 ```
 
@@ -1645,11 +1667,11 @@ export default function PagarServiciosRespuestaPage() {
 
 ### SessionStorage Keys
 
-| Key | Description | Type |
-|-----|-------------|------|
-| `utilityPaymentDetails` | Form data from step 1 | JSON (UtilityPaymentDetailsForm) |
-| `utilityPaymentConfirmation` | Confirmation data from step 2 | JSON (UtilityPaymentConfirmation) |
-| `utilityPaymentResult` | Transaction result from step 4 | JSON (UtilityPaymentResult) |
+| Key                          | Description                    | Type                              |
+| ---------------------------- | ------------------------------ | --------------------------------- |
+| `utilityPaymentDetails`      | Form data from step 1          | JSON (UtilityPaymentDetailsForm)  |
+| `utilityPaymentConfirmation` | Confirmation data from step 2  | JSON (UtilityPaymentConfirmation) |
+| `utilityPaymentResult`       | Transaction result from step 4 | JSON (UtilityPaymentResult)       |
 
 ### Navigation Flow
 
@@ -1668,6 +1690,7 @@ export default function PagarServiciosRespuestaPage() {
 ```
 
 ### Back Navigation
+
 - Step 1 → Flow selection page (/pagos/servicios-publicos)
 - Step 2 → Step 1 (preserves form data)
 - Step 3 → Step 2 (preserves data)
@@ -1684,27 +1707,27 @@ import {
   SourceAccount,
   RegisteredService,
   UtilityPaymentResult,
-} from '@/src/types/utility-payment';
+} from "@/src/types/utility-payment";
 
 /**
  * Mock source accounts
  */
 export const mockSourceAccounts: SourceAccount[] = [
   {
-    id: '1',
-    type: 'ahorros',
-    accountNumber: '12345678',
-    maskedNumber: '***5678',
+    id: "1",
+    type: "ahorros",
+    accountNumber: "12345678",
+    maskedNumber: "***5678",
     balance: 8730500,
-    displayName: 'Cuenta de Ahorros - Saldo: $ 8.730.500',
+    displayName: "Cuenta de Ahorros - Saldo: $ 8.730.500",
   },
   {
-    id: '2',
-    type: 'corriente',
-    accountNumber: '87654321',
-    maskedNumber: '***4321',
+    id: "2",
+    type: "corriente",
+    accountNumber: "87654321",
+    maskedNumber: "***4321",
     balance: 2500000,
-    displayName: 'Cuenta Corriente - Saldo: $ 2.500.000',
+    displayName: "Cuenta Corriente - Saldo: $ 2.500.000",
   },
 ];
 
@@ -1713,28 +1736,28 @@ export const mockSourceAccounts: SourceAccount[] = [
  */
 export const mockRegisteredServices: RegisteredService[] = [
   {
-    id: '1',
-    alias: 'Luz Apartamento',
-    provider: 'ENEL',
-    serviceType: 'Energía',
-    reference: '123456789',
-    displayName: 'Luz Apartamento (ENEL - Energía)',
+    id: "1",
+    alias: "Luz Apartamento",
+    provider: "ENEL",
+    serviceType: "Energía",
+    reference: "123456789",
+    displayName: "Luz Apartamento (ENEL - Energía)",
   },
   {
-    id: '2',
-    alias: 'Gas Casa',
-    provider: 'Vanti',
-    serviceType: 'Gas',
-    reference: '987654321',
-    displayName: 'Gas Casa (Vanti - Gas)',
+    id: "2",
+    alias: "Gas Casa",
+    provider: "Vanti",
+    serviceType: "Gas",
+    reference: "987654321",
+    displayName: "Gas Casa (Vanti - Gas)",
   },
   {
-    id: '3',
-    alias: 'Agua Oficina',
-    provider: 'EAAB',
-    serviceType: 'Agua',
-    reference: '456789123',
-    displayName: 'Agua Oficina (EAAB - Agua)',
+    id: "3",
+    alias: "Agua Oficina",
+    provider: "EAAB",
+    serviceType: "Agua",
+    reference: "456789123",
+    displayName: "Agua Oficina (EAAB - Agua)",
   },
 ];
 
@@ -1743,14 +1766,14 @@ export const mockRegisteredServices: RegisteredService[] = [
  */
 export const mockTransactionResult: UtilityPaymentResult = {
   success: true,
-  creditLine: 'Cambio de palabras',
-  productNumber: '***5678',
+  creditLine: "Cambio de palabras",
+  productNumber: "***5678",
   amountPaid: 850000,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '950606',
-  description: 'Exitosa',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "950606",
+  description: "Exitosa",
 };
 
 /**
@@ -1758,21 +1781,21 @@ export const mockTransactionResult: UtilityPaymentResult = {
  */
 export const mockTransactionResultError: UtilityPaymentResult = {
   success: false,
-  creditLine: 'Cambio de palabras',
-  productNumber: '***5678',
+  creditLine: "Cambio de palabras",
+  productNumber: "***5678",
   amountPaid: 0,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '',
-  description: 'Fondos insuficientes',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "10:21 pm",
+  approvalNumber: "",
+  description: "Fondos insuficientes",
 };
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './mockUtilityPaymentData';
+export * from "./mockUtilityPaymentData";
 ```
 
 ---
@@ -1782,7 +1805,7 @@ export * from './mockUtilityPaymentData';
 ### File: `src/schemas/utilityPaymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1 - Payment details validation
@@ -1790,14 +1813,12 @@ import * as yup from 'yup';
 export const utilityPaymentDetailsSchema = yup.object({
   sourceAccountId: yup
     .string()
-    .required('Por favor selecciona una cuenta origen'),
-  serviceId: yup
-    .string()
-    .required('Por favor selecciona un servicio a pagar'),
+    .required("Por favor selecciona una cuenta origen"),
+  serviceId: yup.string().required("Por favor selecciona un servicio a pagar"),
   amount: yup
     .number()
-    .positive('El valor debe ser mayor a cero')
-    .required('Por favor ingresa el valor a pagar'),
+    .positive("El valor debe ser mayor a cero")
+    .required("Por favor ingresa el valor a pagar"),
 });
 
 /**
@@ -1806,12 +1827,14 @@ export const utilityPaymentDetailsSchema = yup.object({
 export const otpCodeSchema = yup.object({
   code: yup
     .string()
-    .length(6, 'El código debe tener 6 dígitos')
-    .matches(/^\d{6}$/, 'El código debe contener solo números')
-    .required('Por favor ingresa el código'),
+    .length(6, "El código debe tener 6 dígitos")
+    .matches(/^\d{6}$/, "El código debe contener solo números")
+    .required("Por favor ingresa el código"),
 });
 
-export type UtilityPaymentDetailsFormData = yup.InferType<typeof utilityPaymentDetailsSchema>;
+export type UtilityPaymentDetailsFormData = yup.InferType<
+  typeof utilityPaymentDetailsSchema
+>;
 export type OtpCodeFormData = yup.InferType<typeof otpCodeSchema>;
 ```
 
@@ -1874,6 +1897,7 @@ app/(authenticated)/pagos/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/utility-payment.ts`
    - Update `src/types/index.ts`
@@ -1883,11 +1907,13 @@ app/(authenticated)/pagos/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Atoms
+
 3. Create atoms:
    - `src/atoms/OtpDigitInput.tsx`
    - Update `src/atoms/index.ts`
 
 ### Phase 3: Molecules
+
 4. Create molecules:
    - `src/molecules/OtpInput.tsx`
    - `src/molecules/PaymentDetailRow.tsx`
@@ -1896,6 +1922,7 @@ app/(authenticated)/pagos/
    - Update `src/molecules/index.ts`
 
 ### Phase 4: Organisms
+
 5. Create organisms:
    - `src/organisms/UtilityPaymentDetailsForm.tsx`
    - `src/organisms/UtilityPaymentConfirmationCard.tsx`
@@ -1904,6 +1931,7 @@ app/(authenticated)/pagos/
    - Update `src/organisms/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/pagos/servicios-publicos/pagar/detalle/page.tsx`
    - `app/(authenticated)/pagos/servicios-publicos/pagar/confirmacion/page.tsx`
@@ -1911,14 +1939,17 @@ app/(authenticated)/pagos/
    - `app/(authenticated)/pagos/servicios-publicos/pagar/respuesta/page.tsx`
 
 ### Phase 6: Integration
+
 7. Update flow selection page (09e):
    - Update `/pagos/servicios-publicos/page.tsx` to link to payment flow
 
 ### Phase 7: Validation Schemas (Optional)
+
 8. Create validation schemas:
    - `src/schemas/utilityPaymentSchemas.ts`
 
 ### Phase 8: Testing & Refinement
+
 9. Manual testing of complete flow
 10. Edge case testing
 11. Responsive testing
@@ -1931,6 +1962,7 @@ app/(authenticated)/pagos/
 ### Manual Testing Checklist
 
 #### Page 1: Payment Details (Detalle)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to flow selection
 - [ ] Breadcrumbs display correctly
@@ -1953,6 +1985,7 @@ app/(authenticated)/pagos/
 - [ ] Form data stored in sessionStorage
 
 #### Page 2: Confirmation (Confirmación)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to step 1
 - [ ] Stepper shows steps 1-2 as active
@@ -1970,6 +2003,7 @@ app/(authenticated)/pagos/
 - [ ] Successful confirmation navigates to step 3
 
 #### Page 3: SMS Code (Código SMS)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to step 2
 - [ ] Stepper shows steps 1-3 as active
@@ -1990,6 +2024,7 @@ app/(authenticated)/pagos/
 - [ ] Successful submission navigates to step 4
 
 #### Page 4: Response (Respuesta)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all 4 steps as active (blue)
 - [ ] Success icon (green checkmark) displays for success
@@ -2008,6 +2043,7 @@ app/(authenticated)/pagos/
 - [ ] sessionStorage is cleared on finish
 
 ### Error States Testing
+
 - [ ] Empty source account shows error
 - [ ] Empty service shows error
 - [ ] Zero amount shows error
@@ -2018,6 +2054,7 @@ app/(authenticated)/pagos/
 - [ ] Transaction failure displays error result
 
 ### Responsive Testing
+
 - [ ] Desktop (>=1024px): Full layout
 - [ ] Tablet (640-1023px): Adjusted spacing
 - [ ] Mobile (<640px): Stacked layouts
@@ -2026,6 +2063,7 @@ app/(authenticated)/pagos/
 - [ ] Stepper labels visible on all sizes
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all elements
 - [ ] Focus states visible on all interactive elements
 - [ ] Form labels properly associated
@@ -2040,44 +2078,48 @@ app/(authenticated)/pagos/
 ## Design System Values Reference
 
 ### Colors
-| Element | Color | Hex |
-|---------|-------|-----|
-| Card Title | Dark Blue | #004266 |
-| SMS Title | Navy Blue | #1D4E8F |
-| Primary Button | Blue | #007FFF |
-| Link Text | Dark Blue | #004266 |
-| Success Text/Icon | Green | #00A44C |
-| Error Text/Icon | Red | #FF0D00 |
-| Active Stepper | Blue | #007FFF |
-| Inactive Stepper | Gray | #E4E6EA |
-| Stepper Text (Active) | Dark Gray | #4B5563 |
-| Stepper Text (Inactive) | Gray | #6B7280 |
-| Dividers | Light Gray | #E4E6EA |
-| Card Background | White | #FFFFFF |
-| Page Background | Light Blue | #F0F9FF |
+
+| Element                 | Color      | Hex     |
+| ----------------------- | ---------- | ------- |
+| Card Title              | Dark Blue  | #004266 |
+| SMS Title               | Navy Blue  | #1D4E8F |
+| Primary Button          | Blue       | #007FFF |
+| Link Text               | Dark Blue  | #004266 |
+| Success Text/Icon       | Green      | #00A44C |
+| Error Text/Icon         | Red        | #FF0D00 |
+| Active Stepper          | Blue       | #007FFF |
+| Inactive Stepper        | Gray       | #E4E6EA |
+| Stepper Text (Active)   | Dark Gray  | #4B5563 |
+| Stepper Text (Inactive) | Gray       | #6B7280 |
+| Dividers                | Light Gray | #E4E6EA |
+| Card Background         | White      | #FFFFFF |
+| Page Background         | Light Blue | #F0F9FF |
 
 ### Typography
-| Element | Font | Size | Weight |
-|---------|------|------|--------|
-| Page Title | Ubuntu | 20px | Medium |
-| Card Title | Ubuntu | 18px | Bold |
-| SMS Title | Ubuntu | 17px | Bold |
-| Body Text | Ubuntu | 15px | Regular |
-| Label | Ubuntu | 15px | Regular |
-| Value | Ubuntu | 15px | Medium |
-| Amount (Large) | Ubuntu | 18px | Medium |
-| Stepper Label | Ubuntu | 12px | Regular |
-| Stepper Number | Ubuntu | 16px | Bold |
-| Button | Ubuntu | 14-16px | Bold |
-| Success Title | Ubuntu | 22px | Bold |
+
+| Element        | Font   | Size    | Weight  |
+| -------------- | ------ | ------- | ------- |
+| Page Title     | Ubuntu | 20px    | Medium  |
+| Card Title     | Ubuntu | 18px    | Bold    |
+| SMS Title      | Ubuntu | 17px    | Bold    |
+| Body Text      | Ubuntu | 15px    | Regular |
+| Label          | Ubuntu | 15px    | Regular |
+| Value          | Ubuntu | 15px    | Medium  |
+| Amount (Large) | Ubuntu | 18px    | Medium  |
+| Stepper Label  | Ubuntu | 12px    | Regular |
+| Stepper Number | Ubuntu | 16px    | Bold    |
+| Button         | Ubuntu | 14-16px | Bold    |
+| Success Title  | Ubuntu | 22px    | Bold    |
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Form field spacing: `20px` (space-y-5)
 - Stepper connector width: `140px`
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Stepper circles: `9999px` (rounded-full)
 - Inputs: `6px` (rounded-md)
@@ -2088,6 +2130,7 @@ app/(authenticated)/pagos/
 ## Dependencies
 
 ### Existing Components (Reuse)
+
 - `BackButton` atom
 - `Button` atom
 - `Card` atom
@@ -2099,10 +2142,12 @@ app/(authenticated)/pagos/
 - `CaptchaPlaceholder` molecule
 
 ### May Exist from Previous Features
+
 - `Stepper` molecule
 - `ConfirmationRow` molecule (similar to PaymentDetailRow)
 
 ### New for 09f-pagos
+
 - `OtpDigitInput` atom
 - `OtpInput` molecule
 - `PaymentDetailRow` molecule

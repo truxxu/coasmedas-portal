@@ -30,6 +30,7 @@
 The **Transferencias Internas - Entre mis Cuentas** feature allows users to transfer money between their own financial products within Coasmedas. This is one of four internal transfer flows, and is the primary flow to be implemented.
 
 ### Key Characteristics
+
 - **Multi-step flow**: 4 sequential steps with progress tracking
 - **Security**: SMS verification for transaction authorization
 - **Reusability**: Uses existing Stepper component from 09a-pagos
@@ -37,7 +38,9 @@ The **Transferencias Internas - Entre mis Cuentas** feature allows users to tran
 - **Accessibility**: WCAG 2.1 AA compliant
 
 ### Navigation Context
+
 **Sidebar Structure**:
+
 ```
 Transferencias (accordion)
 ├── Internas
@@ -52,6 +55,7 @@ Transferencias (accordion)
 ```
 
 ### User Journey
+
 1. Select "Entre mis cuentas" from flow options
 2. Fill transfer details (source, destination, amount)
 3. Review and confirm transfer details
@@ -63,11 +67,13 @@ Transferencias (accordion)
 ## User Stories
 
 ### US-10.1: View Internal Transfer Options
+
 **As an** authenticated user
 **I want** to see all internal transfer options
 **So that** I can choose the type of transfer I need
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas`
 - [ ] Shows 4 transfer flow options in a 2x2 grid
 - [ ] Each option has title and description
@@ -75,11 +81,13 @@ Transferencias (accordion)
 - [ ] "Entre mis cuentas" navigates to transfer details
 
 ### US-10.2: Enter Transfer Details
+
 **As an** authenticated user
 **I want** to fill in transfer details
 **So that** I can move money between my accounts
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/entre-mis-cuentas`
 - [ ] Stepper shows 4 steps with step 1 active
 - [ ] Source account dropdown shows all user accounts with balances
@@ -89,11 +97,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to flow selection
 
 ### US-10.3: Review and Confirm Transfer
+
 **As an** authenticated user
 **I want** to review my transfer details
 **So that** I can verify the transaction is correct
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/entre-mis-cuentas/confirmacion`
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Shows holder name and masked document
@@ -103,11 +113,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to details
 
 ### US-10.4: Enter SMS Verification Code
+
 **As an** authenticated user
 **I want** to enter the SMS code sent to my phone
 **So that** I can authorize the transfer
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/entre-mis-cuentas/sms`
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6-digit OTP input with auto-advance
@@ -117,11 +129,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to confirmation
 
 ### US-10.5: View Transaction Result
+
 **As an** authenticated user
 **I want** to see the result of my transfer
 **So that** I know if it was successful
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/entre-mis-cuentas/resultado`
 - [ ] Stepper shows all 4 steps completed
 - [ ] Success shows green checkmark icon
@@ -178,6 +192,7 @@ app/(authenticated)/transferencias/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -198,9 +213,9 @@ app/(authenticated)/transferencias/
  */
 export interface TransferAccount {
   id: string;
-  name: string;           // "Cuenta de Ahorros"
-  accountType: string;    // "Ahorros", "Ahorro Programado"
-  productNumber: string;  // "4428" (raw, will be masked)
+  name: string; // "Cuenta de Ahorros"
+  accountType: string; // "Ahorros", "Ahorro Programado"
+  productNumber: string; // "4428" (raw, will be masked)
   balance: number;
 }
 
@@ -209,9 +224,9 @@ export interface TransferAccount {
  */
 export interface DestinationProduct {
   id: string;
-  name: string;           // "Ahorro Programado"
-  productNumber: string;  // "1234" (raw, will be masked)
-  productType: string;    // Type of product
+  name: string; // "Ahorro Programado"
+  productNumber: string; // "1234" (raw, will be masked)
+  productType: string; // Type of product
 }
 
 /**
@@ -228,8 +243,8 @@ export interface TransferDetailsFormData {
  */
 export interface TransferConfirmationData {
   holderName: string;
-  documentNumber: string;   // Masked document number
-  sourceAccount: string;    // "Cuenta de Ahorros (***4428)"
+  documentNumber: string; // Masked document number
+  sourceAccount: string; // "Cuenta de Ahorros (***4428)"
   destinationProduct: string; // "Ahorro Programado (***1234)"
   amount: number;
 }
@@ -245,9 +260,9 @@ export interface SMSVerificationFormData {
  * Step 4: Transaction result
  */
 export interface TransferResult {
-  status: 'success' | 'error';
-  sourceType: string;       // "Cuenta de Ahorros"
-  productNumber: string;    // "Ahorro Programado"
+  status: "success" | "error";
+  sourceType: string; // "Cuenta de Ahorros"
+  productNumber: string; // "Ahorro Programado"
   amountPaid: number;
   transactionCost: number;
   transmissionDate: string;
@@ -287,7 +302,7 @@ export interface InternalTransferOption {
 
 ```typescript
 // Add export
-export * from './transfer';
+export * from "./transfer";
 ```
 
 ---
@@ -301,6 +316,7 @@ export * from './transfer';
 **Location**: `src/molecules/FlowOptionCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface FlowOptionCardProps {
   title: string;
@@ -312,6 +328,7 @@ interface FlowOptionCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -370,6 +387,7 @@ export const FlowOptionCard: React.FC<FlowOptionCardProps> = ({
 **Location**: `src/organisms/InternasFlowGrid.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface InternasFlowGridProps {
   onSelectFlow: (flowId: string) => void;
@@ -378,6 +396,7 @@ interface InternasFlowGridProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -461,6 +480,7 @@ export const InternasFlowGrid: React.FC<InternasFlowGridProps> = ({
 **Location**: `src/organisms/TransferDetailsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransferDetailsCardProps {
   accounts: TransferAccount[];
@@ -477,6 +497,7 @@ interface TransferDetailsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -647,6 +668,7 @@ export const TransferDetailsCard: React.FC<TransferDetailsCardProps> = ({
 **Location**: `src/organisms/TransferConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransferConfirmationCardProps {
   confirmationData: TransferConfirmationData;
@@ -655,6 +677,7 @@ interface TransferConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -738,6 +761,7 @@ export const TransferConfirmationCard: React.FC<TransferConfirmationCardProps> =
 **Purpose**: Specialized result card for transfers with specific fields.
 
 **Props Interface**:
+
 ```typescript
 interface TransferResultCardProps {
   result: TransferResult;
@@ -746,6 +770,7 @@ interface TransferResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -1471,12 +1496,14 @@ export default function ResultadoPage() {
 Use browser sessionStorage to persist data between steps. This is the same approach used in 09a-pagos.
 
 **Storage Keys**:
+
 - `transferSourceId` - Selected source account ID
 - `transferDestinationId` - Selected destination product ID
 - `transferAmount` - Transfer amount (string)
 - `transferConfirmation` - JSON stringified confirmation data
 
 **Lifecycle**:
+
 1. Step 1: Store form data on "Confirmar"
 2. Step 2: Read data, store confirmation on "Confirmar Pago"
 3. Step 3: Read confirmation, verify code
@@ -1489,14 +1516,14 @@ Use browser sessionStorage to persist data between steps. This is the same appro
 ### File: `src/utils/transferHelpers.ts`
 
 ```typescript
-import { TransferAccount } from '@/src/types/transfer';
+import { TransferAccount } from "@/src/types/transfer";
 
 /**
  * Validate if account has sufficient balance for transfer
  */
 export const hasInsufficientBalance = (
   account: TransferAccount,
-  requiredAmount: number
+  requiredAmount: number,
 ): boolean => {
   return account.balance < requiredAmount;
 };
@@ -1507,7 +1534,7 @@ export const hasInsufficientBalance = (
 export const isValidTransferAmount = (
   amount: number,
   minAmount: number = 1,
-  maxAmount: number = 100000000
+  maxAmount: number = 100000000,
 ): boolean => {
   return amount >= minAmount && amount <= maxAmount;
 };
@@ -1520,10 +1547,12 @@ export const formatAccountOption = (
   hideBalance: boolean,
   formatCurrency: (n: number) => string,
   maskCurrency: () => string,
-  maskNumber: (n: string) => string
+  maskNumber: (n: string) => string,
 ): string => {
   const maskedNumber = maskNumber(account.productNumber);
-  const balance = hideBalance ? maskCurrency() : formatCurrency(account.balance);
+  const balance = hideBalance
+    ? maskCurrency()
+    : formatCurrency(account.balance);
   return `${account.name} (${maskedNumber}) - Saldo: ${balance}`;
 };
 
@@ -1531,10 +1560,10 @@ export const formatAccountOption = (
  * Clear all transfer flow data from sessionStorage
  */
 export const clearTransferFlowData = (): void => {
-  sessionStorage.removeItem('transferSourceId');
-  sessionStorage.removeItem('transferDestinationId');
-  sessionStorage.removeItem('transferAmount');
-  sessionStorage.removeItem('transferConfirmation');
+  sessionStorage.removeItem("transferSourceId");
+  sessionStorage.removeItem("transferDestinationId");
+  sessionStorage.removeItem("transferAmount");
+  sessionStorage.removeItem("transferConfirmation");
 };
 
 /**
@@ -1546,14 +1575,14 @@ export const hasRequiredDataForStep = (step: 1 | 2 | 3 | 4): boolean => {
       return true; // No prerequisite data needed
     case 2:
       return !!(
-        sessionStorage.getItem('transferSourceId') &&
-        sessionStorage.getItem('transferDestinationId') &&
-        sessionStorage.getItem('transferAmount')
+        sessionStorage.getItem("transferSourceId") &&
+        sessionStorage.getItem("transferDestinationId") &&
+        sessionStorage.getItem("transferAmount")
       );
     case 3:
-      return !!sessionStorage.getItem('transferConfirmation');
+      return !!sessionStorage.getItem("transferConfirmation");
     case 4:
-      return !!sessionStorage.getItem('transferConfirmation');
+      return !!sessionStorage.getItem("transferConfirmation");
     default:
       return false;
   }
@@ -1573,32 +1602,32 @@ import {
   TransferAccount,
   DestinationProduct,
   TransferResult,
-} from '@/src/types/transfer';
-import { Step } from '@/src/types/stepper';
+} from "@/src/types/transfer";
+import { Step } from "@/src/types/stepper";
 
 /**
  * Mock user accounts for transfer source
  */
 export const mockTransferAccounts: TransferAccount[] = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
-    accountType: 'Ahorros',
-    productNumber: '4428',
+    id: "1",
+    name: "Cuenta de Ahorros",
+    accountType: "Ahorros",
+    productNumber: "4428",
     balance: 8730500,
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
-    accountType: 'Corriente',
-    productNumber: '7891',
+    id: "2",
+    name: "Cuenta Corriente",
+    accountType: "Corriente",
+    productNumber: "7891",
     balance: 5200000,
   },
   {
-    id: '3',
-    name: 'Cuenta Nómina',
-    accountType: 'Nómina',
-    productNumber: '2341',
+    id: "3",
+    name: "Cuenta Nómina",
+    accountType: "Nómina",
+    productNumber: "2341",
     balance: 3450000,
   },
 ];
@@ -1608,28 +1637,28 @@ export const mockTransferAccounts: TransferAccount[] = [
  */
 export const mockDestinationProducts: DestinationProduct[] = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
-    productNumber: '4428',
-    productType: 'Ahorros',
+    id: "1",
+    name: "Cuenta de Ahorros",
+    productNumber: "4428",
+    productType: "Ahorros",
   },
   {
-    id: '4',
-    name: 'Ahorro Programado',
-    productNumber: '1234',
-    productType: 'Ahorro Programado',
+    id: "4",
+    name: "Ahorro Programado",
+    productNumber: "1234",
+    productType: "Ahorro Programado",
   },
   {
-    id: '5',
-    name: 'Ahorro Metas',
-    productNumber: '9876',
-    productType: 'Ahorro',
+    id: "5",
+    name: "Ahorro Metas",
+    productNumber: "9876",
+    productType: "Ahorro",
   },
   {
-    id: '6',
-    name: 'CDAT',
-    productNumber: '5678',
-    productType: 'Inversión',
+    id: "6",
+    name: "CDAT",
+    productNumber: "5678",
+    productType: "Inversión",
   },
 ];
 
@@ -1637,54 +1666,54 @@ export const mockDestinationProducts: DestinationProduct[] = [
  * Mock user data
  */
 export const mockUserData = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234',
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 
 /**
  * Mock transaction result (success)
  */
 export const mockTransferResult: TransferResult = {
-  status: 'success',
-  sourceType: 'Cuenta de Ahorros',
-  productNumber: 'Ahorro Programado',
+  status: "success",
+  sourceType: "Cuenta de Ahorros",
+  productNumber: "Ahorro Programado",
   amountPaid: 50000,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '7:21 pm',
-  approvalNumber: '950606',
-  description: 'Transferencia Exitosa',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "7:21 pm",
+  approvalNumber: "950606",
+  description: "Transferencia Exitosa",
 };
 
 /**
  * Mock transaction result (error)
  */
 export const mockTransferResultError: TransferResult = {
-  status: 'error',
-  sourceType: 'Cuenta de Ahorros',
-  productNumber: 'Ahorro Programado',
+  status: "error",
+  sourceType: "Cuenta de Ahorros",
+  productNumber: "Ahorro Programado",
   amountPaid: 0,
   transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '7:21 pm',
-  approvalNumber: '-',
-  description: 'Fondos insuficientes',
+  transmissionDate: "1 de septiembre de 2025",
+  transactionTime: "7:21 pm",
+  approvalNumber: "-",
+  description: "Fondos insuficientes",
 };
 
 /**
  * Transfer flow steps (reuses structure from pagos)
  */
 export const TRANSFER_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 ```
 
 **Export**: Add to `src/mocks/index.ts`
@@ -1696,7 +1725,7 @@ export const MOCK_VALID_CODE = '123456';
 ### File: `src/schemas/transferSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1: Transfer details validation
@@ -1704,18 +1733,20 @@ import * as yup from 'yup';
 export const transferDetailsSchema = yup.object({
   sourceAccountId: yup
     .string()
-    .required('Por favor selecciona una cuenta origen'),
+    .required("Por favor selecciona una cuenta origen"),
   destinationProductId: yup
     .string()
-    .required('Por favor selecciona un producto destino'),
+    .required("Por favor selecciona un producto destino"),
   amount: yup
     .number()
-    .required('Por favor ingresa un valor a transferir')
-    .positive('El valor debe ser mayor a 0')
-    .max(100000000, 'El valor máximo es $100.000.000'),
+    .required("Por favor ingresa un valor a transferir")
+    .positive("El valor debe ser mayor a 0")
+    .max(100000000, "El valor máximo es $100.000.000"),
 });
 
-export type TransferDetailsFormData = yup.InferType<typeof transferDetailsSchema>;
+export type TransferDetailsFormData = yup.InferType<
+  typeof transferDetailsSchema
+>;
 
 /**
  * Step 3: SMS code verification validation
@@ -1723,12 +1754,14 @@ export type TransferDetailsFormData = yup.InferType<typeof transferDetailsSchema
 export const smsVerificationSchema = yup.object({
   code: yup
     .string()
-    .required('Por favor ingresa el código')
-    .length(6, 'El código debe tener 6 dígitos')
-    .matches(/^\d+$/, 'El código debe contener solo números'),
+    .required("Por favor ingresa el código")
+    .length(6, "El código debe tener 6 dígitos")
+    .matches(/^\d+$/, "El código debe contener solo números"),
 });
 
-export type SMSVerificationFormData = yup.InferType<typeof smsVerificationSchema>;
+export type SMSVerificationFormData = yup.InferType<
+  typeof smsVerificationSchema
+>;
 ```
 
 ---
@@ -1790,6 +1823,7 @@ app/(authenticated)/transferencias/
 ## Implementation Order
 
 ### Phase 1: Foundation (Types & Mock Data)
+
 1. Create type definitions:
    - `src/types/transfer.ts`
    - Update `src/types/index.ts`
@@ -1799,11 +1833,13 @@ app/(authenticated)/transferencias/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 3. Create molecules:
    - `src/molecules/FlowOptionCard.tsx`
    - Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 4. Create organisms:
    - `src/organisms/InternasFlowGrid.tsx`
    - `src/organisms/TransferDetailsCard.tsx`
@@ -1812,11 +1848,13 @@ app/(authenticated)/transferencias/
    - Update `src/organisms/index.ts`
 
 ### Phase 4: Utilities
+
 5. Create utility functions:
    - `src/utils/transferHelpers.ts`
    - Update `src/utils/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/transferencias/internas/page.tsx` (Flow selection)
    - `app/(authenticated)/transferencias/internas/entre-mis-cuentas/page.tsx` (Step 1)
@@ -1825,6 +1863,7 @@ app/(authenticated)/transferencias/
    - `app/(authenticated)/transferencias/internas/entre-mis-cuentas/resultado/page.tsx` (Step 4)
 
 ### Phase 6: Testing & Refinement
+
 7. Manual testing:
    - Test complete flow from selection to result
    - Test back navigation at each step
@@ -1847,6 +1886,7 @@ app/(authenticated)/transferencias/
 ### Manual Testing Checklist
 
 #### Flow Selection Page (`/transferencias/internas`)
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to home
 - [ ] 4 flow options display in grid
@@ -1855,6 +1895,7 @@ app/(authenticated)/transferencias/
 - [ ] Clicking "Entre mis cuentas" navigates to step 1
 
 #### Step 1: Details (`/transferencias/internas/entre-mis-cuentas`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] Source account dropdown populates with mock accounts
@@ -1870,6 +1911,7 @@ app/(authenticated)/transferencias/
 - [ ] "Confirmar" stores data and navigates to step 2
 
 #### Step 2: Confirmation (`/transferencias/internas/entre-mis-cuentas/confirmacion`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Holder name displays correctly
@@ -1882,6 +1924,7 @@ app/(authenticated)/transferencias/
 - [ ] Redirects to step 1 if no session data
 
 #### Step 3: SMS Verification (`/transferencias/internas/entre-mis-cuentas/sms`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6 code input fields render
@@ -1898,6 +1941,7 @@ app/(authenticated)/transferencias/
 - [ ] Redirects to step 1 if no session data
 
 #### Step 4: Result (`/transferencias/internas/entre-mis-cuentas/resultado`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all 4 steps completed
 - [ ] Success checkmark icon displays
@@ -1909,6 +1953,7 @@ app/(authenticated)/transferencias/
 - [ ] Session storage cleared on exit
 
 ### Responsive Testing
+
 - [ ] Desktop (≥1024px): Layout correct, grid 2x2
 - [ ] Tablet (640-1023px): Layout adapts
 - [ ] Mobile (<640px): Single column layout
@@ -1916,6 +1961,7 @@ app/(authenticated)/transferencias/
 - [ ] Code inputs sized for touch on mobile
 
 ### Accessibility Testing
+
 - [ ] Tab navigation through all elements
 - [ ] Focus states visible
 - [ ] Screen reader announces steps
@@ -1928,6 +1974,7 @@ app/(authenticated)/transferencias/
 ## Dependencies
 
 ### Existing Components (from 09a-pagos)
+
 - `StepperCircle` (atom)
 - `StepperConnector` (atom)
 - `CodeInput` (atom)
@@ -1936,6 +1983,7 @@ app/(authenticated)/transferencias/
 - `CodeInputCard` (organism)
 
 ### Existing Components (general)
+
 - `Card` (atom)
 - `Button` (atom)
 - `BackButton` (atom)
@@ -1944,10 +1992,12 @@ app/(authenticated)/transferencias/
 - `HideBalancesToggle` (molecule)
 
 ### Existing Contexts
+
 - `UIContext` - for `hideBalances`
 - `useWelcomeBar` - for welcome bar visibility
 
 ### Existing Utils
+
 - `formatCurrency`
 - `maskCurrency`
 - `maskNumber`

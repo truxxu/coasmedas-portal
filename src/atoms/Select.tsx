@@ -1,4 +1,4 @@
-import { forwardRef, SelectHTMLAttributes } from 'react';
+import { forwardRef, SelectHTMLAttributes } from "react";
 
 export interface SelectOption {
   value: string;
@@ -12,24 +12,20 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ options, error, placeholder, className = '', ...props }, ref) => {
-    const baseStyles = 'h-11 px-3 rounded-[6px] text-base font-normal w-full transition-colors bg-white';
-    const defaultStyles = 'border border-brand-footer-text focus:border-2 focus:border-brand-primary focus:outline-none';
-    const errorStyles = 'border-2 border-red-600';
+  ({ options, error, placeholder, className = "", ...props }, ref) => {
+    const baseStyles =
+      "h-11 px-3 rounded-[6px] text-base font-normal w-full transition-colors bg-white";
+    const defaultStyles =
+      "border border-brand-footer-text focus:border-2 focus:border-brand-primary focus:outline-none";
+    const errorStyles = "border-2 border-red-600";
 
     // Add placeholder text color style - gray when empty, black when selected
-    const textColorStyles = '[&:invalid]:text-brand-gray-high text-black';
+    const textColorStyles = "[&:invalid]:text-brand-gray-high text-black";
 
     const classes = `${baseStyles} ${error ? errorStyles : defaultStyles} ${textColorStyles} ${className}`;
 
     return (
-      <select
-        ref={ref}
-        className={classes}
-        defaultValue=""
-        required
-        {...props}
-      >
+      <select ref={ref} className={classes} defaultValue="" required {...props}>
         {placeholder && (
           <option value="" disabled>
             {placeholder}
@@ -42,7 +38,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         ))}
       </select>
     );
-  }
+  },
 );
 
-Select.displayName = 'Select';
+Select.displayName = "Select";

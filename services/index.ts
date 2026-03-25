@@ -12,7 +12,7 @@ export {
   validateUser,
   register,
   updatePassword,
-} from './auth.service';
+} from "./auth.service";
 
 export {
   getBalances,
@@ -22,7 +22,7 @@ export {
   getProductsInvestments,
   getProductsContributions,
   getProductsProtection,
-} from './products.service';
+} from "./products.service";
 
 export {
   getPaymentProducts,
@@ -30,7 +30,7 @@ export {
   getPaymentSourcesCredits,
   createPaymentTransaction,
   createPayzenTransaction,
-} from './payments.service';
+} from "./payments.service";
 
 export {
   getTransferSourcesSavings,
@@ -48,4 +48,4 @@ export {
   listEntities,
   queryEntityProduct,
   createExternalEntityTransfer,
-} from './transfers.service';
+} from "./transfers.service";

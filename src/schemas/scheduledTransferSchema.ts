@@ -1,13 +1,9 @@
 import * as yup from "yup";
 
 export const scheduledTransferSchema = yup.object({
-  transactionType: yup
-    .string()
-    .required("Seleccione un tipo de transacción"),
+  transactionType: yup.string().required("Seleccione un tipo de transacción"),
 
-  startDate: yup
-    .string()
-    .required("Ingrese la fecha de inicio del pago"),
+  startDate: yup.string().required("Ingrese la fecha de inicio del pago"),
 
   periodicity: yup
     .string()
@@ -45,7 +41,7 @@ export const scheduledTransferSchema = yup.object({
   numberOfPayments: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" || originalValue === undefined ? undefined : value
+      originalValue === "" || originalValue === undefined ? undefined : value,
     )
     .optional()
     .positive("Debe ser un número entero positivo")

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 interface BackButtonProps {
   href?: string;
@@ -8,7 +8,7 @@ interface BackButtonProps {
   className?: string;
 }
 
-export function BackButton({ href, onClick, className = '' }: BackButtonProps) {
+export function BackButton({ href, onClick, className = "" }: BackButtonProps) {
   const baseClasses = `inline-flex items-center justify-center w-6 h-6 text-black hover:opacity-70 transition-opacity cursor-pointer ${className}`;
 
   const arrowIcon = (

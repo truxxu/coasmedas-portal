@@ -9,6 +9,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Feature spec reviewed (spec.md)
 - [x] Design references analyzed (references.md)
 - [x] Figma design reviewed
@@ -18,36 +19,38 @@
 
 **Feature 04-ahorros components are ALREADY IMPLEMENTED**:
 
-| Component | Location | Status |
-|-----------|----------|--------|
-| `CarouselArrow` | `src/atoms/CarouselArrow.tsx` | Ready to reuse |
-| `CarouselDots` | `src/atoms/CarouselDots.tsx` | Ready to reuse |
-| `SavingsProductCard` | `src/molecules/SavingsProductCard.tsx` | Reference for ObligacionProductCard |
-| `ProductCarousel` | `src/organisms/ProductCarousel.tsx` | Reference for ObligacionCarousel |
-| `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse |
-| `DownloadReportsCard` | `src/organisms/DownloadReportsCard.tsx` | Ready to reuse |
-| `Breadcrumbs` | `src/molecules/Breadcrumbs.tsx` | Ready to reuse |
+| Component                | Location                                   | Status                              |
+| ------------------------ | ------------------------------------------ | ----------------------------------- |
+| `CarouselArrow`          | `src/atoms/CarouselArrow.tsx`              | Ready to reuse                      |
+| `CarouselDots`           | `src/atoms/CarouselDots.tsx`               | Ready to reuse                      |
+| `SavingsProductCard`     | `src/molecules/SavingsProductCard.tsx`     | Reference for ObligacionProductCard |
+| `ProductCarousel`        | `src/organisms/ProductCarousel.tsx`        | Reference for ObligacionCarousel    |
+| `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse                      |
+| `DownloadReportsCard`    | `src/organisms/DownloadReportsCard.tsx`    | Ready to reuse                      |
+| `Breadcrumbs`            | `src/molecules/Breadcrumbs.tsx`            | Ready to reuse                      |
 
 **Existing Utilities**:
+
 - `src/utils/carousel.ts` - `calculateTotalPages`, `getVisibleItems`
 - `src/utils/formatCurrency.ts` - `formatCurrency`, `maskCurrency`, `maskNumber`
 - `src/utils/dates.ts` - `generateMonthOptions`, `formatDate`
 
 **Existing Patterns**:
+
 - Ahorros page at `app/(authenticated)/productos/ahorros/page.tsx`
 - WelcomeBar context for page title/back button
 - Sidebar productSubItems array at `src/organisms/Sidebar.tsx:20-26`
 
 ### What Needs to Be Created
 
-| Type | Component | Purpose |
-|------|-----------|---------|
-| Type | `obligaciones.ts` | ObligacionProduct, ObligacionStatus types |
-| Molecule | `ObligacionProductCard` | Extended loan card for carousel |
-| Organism | `ObligacionCarousel` | Carousel using ObligacionProductCard |
-| Mock | `obligaciones.ts` | Mock data for loans |
-| Page | `obligaciones/page.tsx` | Obligaciones page |
-| Update | `Sidebar.tsx` | Add "Obligaciones" to menu |
+| Type     | Component               | Purpose                                   |
+| -------- | ----------------------- | ----------------------------------------- |
+| Type     | `obligaciones.ts`       | ObligacionProduct, ObligacionStatus types |
+| Molecule | `ObligacionProductCard` | Extended loan card for carousel           |
+| Organism | `ObligacionCarousel`    | Carousel using ObligacionProductCard      |
+| Mock     | `obligaciones.ts`       | Mock data for loans                       |
+| Page     | `obligaciones/page.tsx` | Obligaciones page                         |
+| Update   | `Sidebar.tsx`           | Add "Obligaciones" to menu                |
 
 ---
 
@@ -61,7 +64,7 @@
 /**
  * Status of an obligation/loan product
  */
-export type ObligacionStatus = 'al_dia' | 'en_mora';
+export type ObligacionStatus = "al_dia" | "en_mora";
 
 /**
  * Obligation/loan product information for carousel display
@@ -70,12 +73,12 @@ export interface ObligacionProduct {
   id: string;
   title: string;
   productNumber: string;
-  productPrefix?: string;           // e.g., "CR-" for Cupo Rotativo
-  currentBalance: number;           // Saldo a la fecha
+  productPrefix?: string; // e.g., "CR-" for Cupo Rotativo
+  currentBalance: number; // Saldo a la fecha
   status: ObligacionStatus;
-  disbursedAmount: number;          // Valor desembolsado
-  nextPaymentDate: string;          // Próximo pago (ISO date)
-  nextPaymentAmount: number;        // Valor próximo pago
+  disbursedAmount: number; // Valor desembolsado
+  nextPaymentDate: string; // Próximo pago (ISO date)
+  nextPaymentAmount: number; // Valor próximo pago
 }
 
 /**
@@ -89,7 +92,7 @@ export type OnObligacionSelect = (product: ObligacionProduct) => void;
 **File**: `src/types/index.ts` - Add export:
 
 ```typescript
-export * from './obligaciones';
+export * from "./obligaciones";
 ```
 
 ---
@@ -101,6 +104,7 @@ export * from './obligaciones';
 **File**: `src/molecules/ObligacionProductCard.tsx`
 
 This is the key new component. It extends the SavingsProductCard pattern with:
+
 - Different background colors (gray unselected, white selected)
 - Additional info section with divider
 - Three monetary values that respect hideBalances
@@ -225,7 +229,7 @@ export function ObligacionProductCard({
 **File**: `src/molecules/index.ts` - Add export:
 
 ```typescript
-export { ObligacionProductCard } from './ObligacionProductCard';
+export { ObligacionProductCard } from "./ObligacionProductCard";
 ```
 
 ---
@@ -407,7 +411,7 @@ export function ObligacionCarousel({
 **File**: `src/organisms/index.ts` - Add export:
 
 ```typescript
-export { ObligacionCarousel } from './ObligacionCarousel';
+export { ObligacionCarousel } from "./ObligacionCarousel";
 ```
 
 ---
@@ -419,43 +423,43 @@ export { ObligacionCarousel } from './ObligacionCarousel';
 **File**: `src/mocks/obligaciones.ts`
 
 ```typescript
-import { ObligacionProduct } from '@/src/types/obligaciones';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { ObligacionProduct } from "@/src/types/obligaciones";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock loan/credit products for carousel
  */
 export const mockObligacionProducts: ObligacionProduct[] = [
   {
-    id: '1',
-    title: 'Crédito de Libre Inversión',
-    productNumber: '5678',
+    id: "1",
+    title: "Crédito de Libre Inversión",
+    productNumber: "5678",
     currentBalance: 12500000,
-    status: 'al_dia',
+    status: "al_dia",
     disbursedAmount: 20000000,
-    nextPaymentDate: '2025-11-30',
+    nextPaymentDate: "2025-11-30",
     nextPaymentAmount: 850000,
   },
   {
-    id: '2',
-    title: 'Cupo Rotativo Personal',
-    productNumber: '1010',
-    productPrefix: 'CR-',
+    id: "2",
+    title: "Cupo Rotativo Personal",
+    productNumber: "1010",
+    productPrefix: "CR-",
     currentBalance: 3000000,
-    status: 'al_dia',
+    status: "al_dia",
     disbursedAmount: 5000000,
-    nextPaymentDate: '2025-12-20',
+    nextPaymentDate: "2025-12-20",
     nextPaymentAmount: 150000,
   },
   {
-    id: '3',
-    title: 'Crédito de Vivienda',
-    productNumber: '2233',
+    id: "3",
+    title: "Crédito de Vivienda",
+    productNumber: "2233",
     currentBalance: 85000000,
-    status: 'en_mora',
+    status: "en_mora",
     disbursedAmount: 120000000,
-    nextPaymentDate: '2025-11-15',
+    nextPaymentDate: "2025-11-15",
     nextPaymentAmount: 1250000,
   },
 ];
@@ -465,32 +469,33 @@ export const mockObligacionProducts: ObligacionProduct[] = [
  */
 export const mockObligacionesTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-25',
-    description: 'Pago cuota mensual',
+    id: "1",
+    date: "2024-11-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2024-10-25',
-    description: 'Pago cuota mensual',
+    id: "2",
+    date: "2024-10-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '3',
-    date: '2024-09-25',
-    description: 'Pago cuota mensual',
+    id: "3",
+    date: "2024-09-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockObligacionesAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockObligacionesAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Step 4.2: Update Mocks Index
@@ -498,7 +503,7 @@ export const mockObligacionesAvailableMonths: MonthOption[] = generateMonthOptio
 **File**: `src/mocks/index.ts` - Add export:
 
 ```typescript
-export * from './obligaciones';
+export * from "./obligaciones";
 ```
 
 ---
@@ -512,23 +517,25 @@ export * from './obligaciones';
 Locate the `productSubItems` array (around line 20-26) and add "Obligaciones":
 
 **Current**:
+
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
 ];
 ```
 
 **Updated**:
+
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
 ];
 ```
 
@@ -657,6 +664,7 @@ Check all index.ts files have the new exports:
 ### Step 7.2: Testing Checklist
 
 **Functional Tests**:
+
 - [ ] Page loads at `/productos/obligaciones`
 - [ ] First card is selected by default (white bg, blue border)
 - [ ] Unselected cards have gray background (#F3F4F6)
@@ -668,6 +676,7 @@ Check all index.ts files have the new exports:
 - [ ] Sidebar shows "Obligaciones" as active
 
 **Visual Tests**:
+
 - [ ] "Al día" status displays in green (#00A44C)
 - [ ] "En mora" status displays in red
 - [ ] Divider visible between status and additional info
@@ -677,11 +686,13 @@ Check all index.ts files have the new exports:
 - [ ] Cards are wider than Ahorros cards (min-w-[280px])
 
 **Responsive Tests**:
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
 
 **Accessibility Tests**:
+
 - [ ] Keyboard navigation (Tab, Enter, Space)
 - [ ] ARIA labels present on cards
 - [ ] Focus states visible
@@ -692,38 +703,38 @@ Check all index.ts files have the new exports:
 
 ### New Files to Create
 
-| File | Phase | Priority |
-|------|-------|----------|
-| `src/types/obligaciones.ts` | 1 | High |
-| `src/molecules/ObligacionProductCard.tsx` | 2 | High |
-| `src/organisms/ObligacionCarousel.tsx` | 3 | High |
-| `src/mocks/obligaciones.ts` | 4 | High |
-| `app/(authenticated)/productos/obligaciones/page.tsx` | 6 | High |
+| File                                                  | Phase | Priority |
+| ----------------------------------------------------- | ----- | -------- |
+| `src/types/obligaciones.ts`                           | 1     | High     |
+| `src/molecules/ObligacionProductCard.tsx`             | 2     | High     |
+| `src/organisms/ObligacionCarousel.tsx`                | 3     | High     |
+| `src/mocks/obligaciones.ts`                           | 4     | High     |
+| `app/(authenticated)/productos/obligaciones/page.tsx` | 6     | High     |
 
 ### Files to Update
 
-| File | Changes | Phase |
-|------|---------|-------|
-| `src/types/index.ts` | Add obligaciones export | 1 |
-| `src/molecules/index.ts` | Add ObligacionProductCard export | 2 |
-| `src/organisms/index.ts` | Add ObligacionCarousel export | 3 |
-| `src/mocks/index.ts` | Add obligaciones export | 4 |
-| `src/organisms/Sidebar.tsx` | Add "Obligaciones" to productSubItems | 5 |
+| File                        | Changes                               | Phase |
+| --------------------------- | ------------------------------------- | ----- |
+| `src/types/index.ts`        | Add obligaciones export               | 1     |
+| `src/molecules/index.ts`    | Add ObligacionProductCard export      | 2     |
+| `src/organisms/index.ts`    | Add ObligacionCarousel export         | 3     |
+| `src/mocks/index.ts`        | Add obligaciones export               | 4     |
+| `src/organisms/Sidebar.tsx` | Add "Obligaciones" to productSubItems | 5     |
 
 ---
 
 ## Time Estimates
 
-| Phase | Description | Time |
-|-------|-------------|------|
-| Phase 1 | Types | 15 min |
-| Phase 2 | ObligacionProductCard | 1-2 hrs |
-| Phase 3 | ObligacionCarousel | 1-1.5 hrs |
-| Phase 4 | Mock Data | 15 min |
-| Phase 5 | Sidebar Update | 10 min |
-| Phase 6 | Page Assembly | 30-45 min |
-| Phase 7 | Polish & Testing | 30-45 min |
-| **Total** | | **~4-6 hrs (1.5-2 days)** |
+| Phase     | Description           | Time                      |
+| --------- | --------------------- | ------------------------- |
+| Phase 1   | Types                 | 15 min                    |
+| Phase 2   | ObligacionProductCard | 1-2 hrs                   |
+| Phase 3   | ObligacionCarousel    | 1-1.5 hrs                 |
+| Phase 4   | Mock Data             | 15 min                    |
+| Phase 5   | Sidebar Update        | 10 min                    |
+| Phase 6   | Page Assembly         | 30-45 min                 |
+| Phase 7   | Polish & Testing      | 30-45 min                 |
+| **Total** |                       | **~4-6 hrs (1.5-2 days)** |
 
 ---
 
@@ -749,24 +760,25 @@ Phase 7: Polish & Testing
 
 ## Key Differences from Ahorros Implementation
 
-| Aspect | Ahorros | Obligaciones |
-|--------|---------|--------------|
-| Card Component | `SavingsProductCard` | `ObligacionProductCard` |
-| Carousel Component | `ProductCarousel` | `ObligacionCarousel` |
-| Card Min Width | 250px | 280px (wider) |
-| Card Background (unselected) | `#F3F4F6` | `#F3F4F6` (same) |
-| Balance Label | "Saldo Total" | "Saldo a la fecha" |
-| Status Values | activo/bloqueado/inactivo | al_dia/en_mora |
-| Has Account Type | Yes | No |
-| Has Divider | No | Yes |
-| Additional Fields | None | 3 fields below divider |
-| Product Prefix | No | Optional (e.g., "CR-") |
+| Aspect                       | Ahorros                   | Obligaciones            |
+| ---------------------------- | ------------------------- | ----------------------- |
+| Card Component               | `SavingsProductCard`      | `ObligacionProductCard` |
+| Carousel Component           | `ProductCarousel`         | `ObligacionCarousel`    |
+| Card Min Width               | 250px                     | 280px (wider)           |
+| Card Background (unselected) | `#F3F4F6`                 | `#F3F4F6` (same)        |
+| Balance Label                | "Saldo Total"             | "Saldo a la fecha"      |
+| Status Values                | activo/bloqueado/inactivo | al_dia/en_mora          |
+| Has Account Type             | Yes                       | No                      |
+| Has Divider                  | No                        | Yes                     |
+| Additional Fields            | None                      | 3 fields below divider  |
+| Product Prefix               | No                        | Optional (e.g., "CR-")  |
 
 ---
 
 ## Code Reuse Strategy
 
 ### Components Reused Without Changes
+
 - `CarouselArrow` - Navigation arrows
 - `CarouselDots` - Pagination dots
 - `TransactionHistoryCard` - Transaction list
@@ -774,6 +786,7 @@ Phase 7: Polish & Testing
 - `Breadcrumbs` - Navigation breadcrumbs
 
 ### Utilities Reused
+
 - `calculateTotalPages()` - Carousel pagination
 - `getVisibleItems()` - Responsive card count
 - `formatCurrency()` - Currency formatting
@@ -783,6 +796,7 @@ Phase 7: Polish & Testing
 - `generateMonthOptions()` - Month dropdown options
 
 ### Patterns Followed
+
 - WelcomeBar context for page title
 - UIContext for hideBalances
 - Carousel scroll behavior

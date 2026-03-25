@@ -21,7 +21,7 @@ export default function ConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [formData] = useState<UtilityRegistrationForm | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     const storedData = sessionStorage.getItem(FORM_STORAGE_KEY);
     if (!storedData) return null;
     try {
@@ -31,16 +31,15 @@ export default function ConfirmacionPage() {
     }
   });
 
-  const [confirmationData] =
-    useState<UtilityConfirmationData | null>(() => {
-      if (!formData) return null;
-      return {
-        category: formData.categoryName,
-        convenio: formData.convenioName,
-        billNumber: formData.billNumber,
-        alias: formData.alias,
-      };
-    });
+  const [confirmationData] = useState<UtilityConfirmationData | null>(() => {
+    if (!formData) return null;
+    return {
+      category: formData.categoryName,
+      convenio: formData.convenioName,
+      billNumber: formData.billNumber,
+      alias: formData.alias,
+    };
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 

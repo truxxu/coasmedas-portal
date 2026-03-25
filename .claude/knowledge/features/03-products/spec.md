@@ -12,6 +12,7 @@
 The **Products** feature provides authenticated users access to their financial products through a sidebar accordion menu. The initial implementation focuses on the **Aportes** (contributions) page, which displays product information, transaction history, and downloadable reports.
 
 **Key Purpose**:
+
 - Navigate to different product types via sidebar accordion
 - View detailed product information (Aportes-specific)
 - Filter and view transaction history
@@ -22,11 +23,13 @@ The **Products** feature provides authenticated users access to their financial 
 ## User Stories
 
 ### US-03.1: Products Navigation
+
 **As an** authenticated user
 **I want** to access different product pages from the sidebar
 **So that** I can view details for each of my financial products
 
 **Acceptance Criteria**:
+
 - [ ] Clicking "Productos" in sidebar expands accordion menu
 - [ ] Accordion shows: Aportes, Ahorros, Inversiones, Protección
 - [ ] Clicking a sub-item navigates to `/productos/{product-name}`
@@ -34,11 +37,13 @@ The **Products** feature provides authenticated users access to their financial 
 - [ ] Accordion state persists during session
 
 ### US-03.2: Aportes Product Information
+
 **As an** authenticated user
 **I want** to view my Aportes product details
 **So that** I can see my balance, payment deadlines, and status
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/aportes`
 - [ ] Shows plan name and product number (masked)
 - [ ] Shows total balance (respects "Ocultar saldos" toggle)
@@ -48,11 +53,13 @@ The **Products** feature provides authenticated users access to their financial 
 - [ ] "En mora" amounts display in red when > 0
 
 ### US-03.3: Transaction History Filtering
+
 **As an** authenticated user
 **I want** to filter transaction history by date range
 **So that** I can find specific transactions
 
 **Acceptance Criteria**:
+
 - [ ] Date range filter with start and end date inputs
 - [ ] Maximum range limited to 3 months
 - [ ] "Aplicar" button triggers filter
@@ -61,11 +68,13 @@ The **Products** feature provides authenticated users access to their financial 
 - [ ] Shows empty state when no transactions found
 
 ### US-03.4: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements
 **So that** I can keep records of my account activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months
 - [ ] Selecting month triggers PDF download
 - [ ] Shows at least last 12 months
@@ -77,13 +86,13 @@ The **Products** feature provides authenticated users access to their financial 
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
-| `/productos` | Index page (redirects to first product or shows overview) |
-| `/productos/aportes` | Aportes product detail page |
-| `/productos/ahorros` | Ahorros page (future) |
-| `/productos/inversiones` | Inversiones page (future) |
-| `/productos/proteccion` | Protección page (future) |
+| Path                     | Description                                               |
+| ------------------------ | --------------------------------------------------------- |
+| `/productos`             | Index page (redirects to first product or shows overview) |
+| `/productos/aportes`     | Aportes product detail page                               |
+| `/productos/ahorros`     | Ahorros page (future)                                     |
+| `/productos/inversiones` | Inversiones page (future)                                 |
+| `/productos/proteccion`  | Protección page (future)                                  |
 
 ### File Structure
 
@@ -123,15 +132,16 @@ src/
 ### Atoms
 
 #### DateInput
+
 Date input field with calendar icon for date selection.
 
 ```typescript
 interface DateInputProps {
   value?: string;
   onChange: (value: string) => void;
-  placeholder?: string;        // Default: "dd/mm/yyyy"
-  min?: string;                // Minimum selectable date
-  max?: string;                // Maximum selectable date (today)
+  placeholder?: string; // Default: "dd/mm/yyyy"
+  min?: string; // Minimum selectable date
+  max?: string; // Maximum selectable date (today)
   disabled?: boolean;
   error?: string;
   className?: string;
@@ -139,6 +149,7 @@ interface DateInputProps {
 ```
 
 **Styling**:
+
 - Height: `44px` (h-11)
 - Border: `1px solid #B1B1B1`
 - Border radius: `6px`
@@ -147,17 +158,19 @@ interface DateInputProps {
 - Focus: `2px solid #007FFF`
 
 #### BackButton
+
 Arrow button for back navigation.
 
 ```typescript
 interface BackButtonProps {
-  href?: string;               // Navigate to URL
-  onClick?: () => void;        // Or handle click
+  href?: string; // Navigate to URL
+  onClick?: () => void; // Or handle click
   className?: string;
 }
 ```
 
 **Styling**:
+
 - Left-pointing arrow icon
 - Size: `24px`
 - Color: black
@@ -168,47 +181,53 @@ interface BackButtonProps {
 ### Molecules
 
 #### ProductPageHeader
+
 Consistent header for all product pages.
 
 ```typescript
 interface ProductPageHeaderProps {
-  title: string;               // "Aportes"
-  backHref?: string;           // "/home" - where back arrow navigates
-  breadcrumbs: string[];       // ["Inicio", "Productos", "Aportes"]
-  showHideBalances?: boolean;  // Default: true
+  title: string; // "Aportes"
+  backHref?: string; // "/home" - where back arrow navigates
+  breadcrumbs: string[]; // ["Inicio", "Productos", "Aportes"]
+  showHideBalances?: boolean; // Default: true
 }
 ```
 
 **Layout**:
+
 ```
 [←] Aportes                                    [Ocultar saldos toggle]
 Inicio / Productos / Aportes
 ```
 
 **Styling**:
+
 - Title: Ubuntu Medium, 20px, black
 - Breadcrumbs: Ubuntu Regular, 15px, black (last item: Medium)
 - Gap between back arrow and title: 12px
 - Vertical gap to breadcrumbs: 8px
 
 #### Breadcrumbs
+
 Navigation breadcrumb trail.
 
 ```typescript
 interface BreadcrumbsProps {
-  items: string[];             // ["Inicio", "Productos", "Aportes"]
-  separator?: string;          // Default: "/"
+  items: string[]; // ["Inicio", "Productos", "Aportes"]
+  separator?: string; // Default: "/"
   className?: string;
 }
 ```
 
 **Styling**:
+
 - Items separated by " / "
 - All items except last: Regular weight, clickable (future)
 - Last item: Medium weight, not clickable
 - Font: Ubuntu, 15px, black
 
 #### DateRangeFilter
+
 Two date inputs with apply button.
 
 ```typescript
@@ -218,37 +237,41 @@ interface DateRangeFilterProps {
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;
   onApply: () => void;
-  maxRangeMonths?: number;     // Default: 3
-  helperText?: string;         // Override default helper
+  maxRangeMonths?: number; // Default: 3
+  helperText?: string; // Override default helper
   disabled?: boolean;
   className?: string;
 }
 ```
 
 **Layout**:
+
 ```
 Filtrar: [dd/mm/2025 📅] [dd/mm/2025 📅] [Aplicar]
          El filtro de fecha solo permite un rango de los últimos 3 meses.
 ```
 
 **Styling**:
+
 - Label "Filtrar:": Gray #6A717F, 14px
 - Date inputs: See DateInput atom
 - Apply button: Black text, rounded border, 14px medium
 - Helper text: Light gray #9AA1AD, 12px
 
 #### SidebarSubItem
+
 Sub-navigation link for sidebar accordion.
 
 ```typescript
 interface SidebarSubItemProps {
-  label: string;               // "Aportes"
-  href: string;                // "/productos/aportes"
+  label: string; // "Aportes"
+  href: string; // "/productos/aportes"
   isActive?: boolean;
 }
 ```
 
 **Styling**:
+
 - Font: Ubuntu Bold, 15px, white
 - Padding: `8px 16px`
 - Left margin: `32px` (indented from parent)
@@ -260,30 +283,32 @@ interface SidebarSubItemProps {
 ### Organisms
 
 #### TransactionHistoryCard
+
 Reusable card displaying transaction list with date filter.
 
 ```typescript
 interface TransactionHistoryCardProps {
-  title: string;               // "Consulta de Movimientos - Cuenta de Ahorros (***4428)"
-  subtitle?: string;           // "Últimos movimientos registrados."
+  title: string; // "Consulta de Movimientos - Cuenta de Ahorros (***4428)"
+  subtitle?: string; // "Últimos movimientos registrados."
   transactions: Transaction[];
   onFilter: (startDate: string, endDate: string) => void;
-  maxRangeMonths?: number;     // Default: 3
+  maxRangeMonths?: number; // Default: 3
   loading?: boolean;
   className?: string;
 }
 
 interface Transaction {
   id: string;
-  date: string;                // ISO date string
+  date: string; // ISO date string
   description: string;
   amount: number;
-  type: 'credit' | 'debit';
+  type: "credit" | "debit";
   reference?: string;
 }
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Consulta de Movimientos - Cuenta de Ahorros (***4428)           │
@@ -301,16 +326,19 @@ interface Transaction {
 ```
 
 **Empty State**:
+
 - Message: "No se encontraron movimientos en el período seleccionado."
 - Font: Ubuntu Regular, 16px, gray #6A717F
 - Centered in card
 
 **Transaction Item** (when transactions exist):
+
 - Date: 14px, gray
 - Description: 14px, black
 - Amount: 14px, medium, green (credit) or red (debit)
 
 **Styling**:
+
 - White background
 - Border radius: 16px
 - Padding: 24px
@@ -319,27 +347,29 @@ interface Transaction {
 - Divider: 1px solid #E4E6EA
 
 #### DownloadReportsCard
+
 Reusable card for downloading monthly statements.
 
 ```typescript
 interface DownloadReportsCardProps {
-  title?: string;              // Default: "Descargar extractos"
-  description?: string;        // Default: "Selecciona el mes..."
+  title?: string; // Default: "Descargar extractos"
+  description?: string; // Default: "Selecciona el mes..."
   availableMonths: MonthOption[];
   selectedMonth?: string;
   onMonthChange: (month: string) => void;
-  onDownload?: () => void;     // If separate download button needed
+  onDownload?: () => void; // If separate download button needed
   loading?: boolean;
   className?: string;
 }
 
 interface MonthOption {
-  value: string;               // "2025-12"
-  label: string;               // "Diciembre de 2025"
+  value: string; // "2025-12"
+  label: string; // "Diciembre de 2025"
 }
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Descargar extractos                                             │
@@ -354,6 +384,7 @@ interface MonthOption {
 ```
 
 **Styling**:
+
 - White background
 - Border radius: 16px
 - Padding: 24px
@@ -362,14 +393,15 @@ interface MonthOption {
 - Dropdown: Full width, border #B1B1B1, height 44px
 
 #### AportesInfoCard
+
 Product information card specific to Aportes.
 
 ```typescript
 interface AportesInfoCardProps {
-  planName: string;            // "Plan 2 Senior"
-  productNumber: string;       // "***5488"
-  totalBalance: number;        // 890058
-  paymentDeadline: string;     // "15 Nov 2025"
+  planName: string; // "Plan 2 Senior"
+  productNumber: string; // "***5488"
+  totalBalance: number; // 890058
+  paymentDeadline: string; // "15 Nov 2025"
   detalleAportes: {
     vigentes: number;
     enMora: number;
@@ -385,6 +417,7 @@ interface AportesInfoCardProps {
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Plan 2 Senior                                                   │
@@ -399,6 +432,7 @@ interface AportesInfoCardProps {
 ```
 
 **Styling**:
+
 - White background, border radius 16px, padding 24px
 - Plan name: Ubuntu Bold, 20px, navy #194E8D
 - Divider below plan name: 1px solid #E4E6EA
@@ -409,6 +443,7 @@ interface AportesInfoCardProps {
 - "Detalle Aportes/Fondos": Ubuntu Medium, 14px, navy (link style)
 
 **Three-Column Grid**:
+
 - Column 1: General info (40% width)
 - Column 2: Detalle Aportes (30% width)
 - Column 3: Detalle Fondos (30% width)
@@ -463,7 +498,7 @@ The existing `SidebarNavItem` component already supports `children` prop but doe
 
 ```typescript
 // Product types
-export type ProductType = 'aportes' | 'ahorros' | 'inversiones' | 'proteccion';
+export type ProductType = "aportes" | "ahorros" | "inversiones" | "proteccion";
 
 // Aportes-specific types
 export interface AportesProduct {
@@ -487,15 +522,15 @@ export interface Transaction {
   date: string;
   description: string;
   amount: number;
-  type: 'credit' | 'debit';
+  type: "credit" | "debit";
   reference?: string;
   balance?: number;
 }
 
 // Month option for reports
 export interface MonthOption {
-  value: string;  // "2025-12"
-  label: string;  // "Diciembre de 2025"
+  value: string; // "2025-12"
+  label: string; // "Diciembre de 2025"
 }
 
 // Filter state
@@ -517,7 +552,7 @@ export interface DateRangeFilter {
  * @example formatCurrency(890058) => "$ 890.058"
  */
 export function formatCurrency(amount: number): string {
-  return `$ ${amount.toLocaleString('es-CO')}`;
+  return `$ ${amount.toLocaleString("es-CO")}`;
 }
 
 /**
@@ -539,10 +574,10 @@ export function maskNumber(number: string, visibleDigits = 4): string {
  */
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('es-CO', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  return date.toLocaleDateString("es-CO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 }
 
@@ -555,8 +590,11 @@ export function generateMonthOptions(count: number = 12): MonthOption[] {
 
   for (let i = 0; i < count; i++) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    const label = date.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+    const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const label = date.toLocaleDateString("es-CO", {
+      month: "long",
+      year: "numeric",
+    });
     // Capitalize first letter
     const capitalizedLabel = label.charAt(0).toUpperCase() + label.slice(1);
     months.push({ value, label: capitalizedLabel });
@@ -568,7 +606,11 @@ export function generateMonthOptions(count: number = 12): MonthOption[] {
 /**
  * Check if date range is within allowed months
  */
-export function isValidDateRange(startDate: string, endDate: string, maxMonths: number = 3): boolean {
+export function isValidDateRange(
+  startDate: string,
+  endDate: string,
+  maxMonths: number = 3,
+): boolean {
   const start = new Date(startDate);
   const end = new Date(endDate);
   const diffTime = Math.abs(end.getTime() - start.getTime());
@@ -584,23 +626,23 @@ export function isValidDateRange(startDate: string, endDate: string, maxMonths: 
 ### File: `src/mocks/aportes.ts`
 
 ```typescript
-import { AportesProduct, Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { AportesProduct, Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 export const mockAportesData: AportesProduct = {
-  planName: 'Plan 2 Senior',
-  productNumber: '5488',
+  planName: "Plan 2 Senior",
+  productNumber: "5488",
   totalBalance: 890058,
-  paymentDeadline: '2025-11-15',
+  paymentDeadline: "2025-11-15",
   detalleAportes: {
     vigentes: 500058,
     enMora: 0,
-    fechaCubrimiento: '2025-12-31',
+    fechaCubrimiento: "2025-12-31",
   },
   detalleFondos: {
     vigentes: 390000,
     enMora: 0,
-    fechaCubrimiento: '2025-12-31',
+    fechaCubrimiento: "2025-12-31",
   },
 };
 
@@ -678,11 +720,11 @@ export default function AportesPage() {
 
 ### Breakpoints
 
-| Breakpoint | Width | Layout Changes |
-|------------|-------|----------------|
-| Mobile | < 640px | Single column, stacked cards |
-| Tablet | 640-1023px | Two columns for info card |
-| Desktop | ≥ 1024px | Three columns for info card |
+| Breakpoint | Width      | Layout Changes               |
+| ---------- | ---------- | ---------------------------- |
+| Mobile     | < 640px    | Single column, stacked cards |
+| Tablet     | 640-1023px | Two columns for info card    |
+| Desktop    | ≥ 1024px   | Three columns for info card  |
 
 ### AportesInfoCard Responsive
 
@@ -718,7 +760,9 @@ The `hideBalances` state from `UIContext` should mask monetary values:
 const { hideBalances } = useUIContext();
 
 // In components:
-{hideBalances ? '$ ••••••' : formatCurrency(amount)}
+{
+  hideBalances ? "$ ••••••" : formatCurrency(amount);
+}
 ```
 
 ### Sidebar State
@@ -729,7 +773,7 @@ The `sidebarExpanded` state already exists in `UIContext`. Use it for the produc
 const { sidebarExpanded, toggleSidebarItem } = useUIContext();
 
 // Check if products expanded:
-const isProductsExpanded = sidebarExpanded['productos'];
+const isProductsExpanded = sidebarExpanded["productos"];
 ```
 
 ---
@@ -737,6 +781,7 @@ const isProductsExpanded = sidebarExpanded['productos'];
 ## Implementation Checklist
 
 ### Phase 1: Foundation
+
 - [ ] Create `DateInput` atom
 - [ ] Create `BackButton` atom
 - [ ] Create `SidebarSubItem` molecule
@@ -746,22 +791,26 @@ const isProductsExpanded = sidebarExpanded['productos'];
 - [ ] Create `src/utils/dates.ts`
 
 ### Phase 2: Molecules
+
 - [ ] Create `Breadcrumbs` molecule
 - [ ] Create `ProductPageHeader` molecule
 - [ ] Create `DateRangeFilter` molecule
 
 ### Phase 3: Organisms
+
 - [ ] Create `AportesInfoCard` organism
 - [ ] Create `TransactionHistoryCard` organism
 - [ ] Create `DownloadReportsCard` organism
 
 ### Phase 4: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/page.tsx` (index)
 - [ ] Create `app/(authenticated)/productos/aportes/page.tsx`
 - [ ] Create mock data files
 - [ ] Wire up components with mock data
 
 ### Phase 5: Polish
+
 - [ ] Add responsive styles
 - [ ] Add loading states
 - [ ] Add empty states
@@ -774,6 +823,7 @@ const isProductsExpanded = sidebarExpanded['productos'];
 ## Testing Checklist
 
 ### Manual Testing
+
 - [ ] Sidebar accordion expands/collapses
 - [ ] Sub-items navigate correctly
 - [ ] Active state shows on current page
@@ -789,6 +839,7 @@ const isProductsExpanded = sidebarExpanded['productos'];
 - [ ] Responsive layout on mobile/tablet/desktop
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through sidebar
 - [ ] Screen reader announces page structure
 - [ ] Focus states visible
@@ -799,11 +850,13 @@ const isProductsExpanded = sidebarExpanded['productos'];
 ## Dependencies
 
 ### Existing Dependencies (already installed)
+
 - React 19
 - Next.js 16 (App Router)
 - Tailwind CSS v4
 
 ### No New Dependencies Required
+
 - Date inputs use native HTML5 `<input type="date">`
 - No external date picker library needed
 
@@ -813,11 +866,11 @@ const isProductsExpanded = sidebarExpanded['productos'];
 
 This spec uses mock data. Future API integration points:
 
-| Endpoint | Purpose |
-|----------|---------|
-| `GET /balances` | Fetch product balances |
-| `GET /movements` | Fetch transaction history |
-| `GET /reports/{month}` | Download PDF report |
+| Endpoint               | Purpose                   |
+| ---------------------- | ------------------------- |
+| `GET /balances`        | Fetch product balances    |
+| `GET /movements`       | Fetch transaction history |
+| `GET /reports/{month}` | Download PDF report       |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 

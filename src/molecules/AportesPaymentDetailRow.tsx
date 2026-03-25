@@ -1,6 +1,6 @@
-import React from 'react';
-import { AportesValueColor } from '@/src/types/aportes-payment';
-import { maskCurrency } from '@/src/utils';
+import React from "react";
+import { AportesValueColor } from "@/src/types/aportes-payment";
+import { maskCurrency } from "@/src/utils";
 
 interface AportesPaymentDetailRowProps {
   label: string;
@@ -9,17 +9,14 @@ interface AportesPaymentDetailRowProps {
   hideValue?: boolean;
 }
 
-export const AportesPaymentDetailRow: React.FC<AportesPaymentDetailRowProps> = ({
-  label,
-  value,
-  valueColor = 'default',
-  hideValue = false,
-}) => {
+export const AportesPaymentDetailRow: React.FC<
+  AportesPaymentDetailRowProps
+> = ({ label, value, valueColor = "default", hideValue = false }) => {
   const colorClasses: Record<AportesValueColor, string> = {
-    default: 'text-black',
-    red: 'text-brand-error',
-    navy: 'text-brand-navy',
-    green: 'text-brand-success-icon',
+    default: "text-black",
+    red: "text-brand-error",
+    navy: "text-brand-navy",
+    green: "text-brand-success-icon",
   };
 
   return (

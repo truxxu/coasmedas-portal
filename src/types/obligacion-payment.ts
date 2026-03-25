@@ -7,7 +7,7 @@
  */
 export interface ObligacionSourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
   maskedNumber: string;
   balance: number;
@@ -17,7 +17,7 @@ export interface ObligacionSourceAccount {
 /**
  * Payment method type for obligaciones
  */
-export type ObligacionPaymentMethod = 'account' | 'pse';
+export type ObligacionPaymentMethod = "account" | "pse";
 
 /**
  * Loan/credit product for payment selection
@@ -30,7 +30,7 @@ export interface ObligacionPaymentProduct {
   minimumPayment: number;
   paymentDeadline: string;
   fechaApertura: string; // Opening date — API gap: empty until backend provides it
-  status: 'al_dia' | 'en_mora';
+  status: "al_dia" | "en_mora";
   valorEnMora: number; // API gap: no dedicated field in CreditAccountResponse, defaults to 0
 }
 
@@ -72,7 +72,7 @@ export interface ObligacionConfirmationData {
  * Step 4: Obligacion transaction result
  */
 export interface ObligacionTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -101,9 +101,12 @@ export interface ObligacionPaymentFlowState {
 /**
  * Payment type for quick selection
  */
-export type PaymentType = 'minimum' | 'total';
+export type PaymentType = "minimum" | "total";
 
 /**
  * Excess payment option when amount exceeds minimum payment
  */
-export type ExcessPaymentOption = 'proximas_cuotas' | 'reduccion_plazo' | 'reduccion_cuota';
+export type ExcessPaymentOption =
+  | "proximas_cuotas"
+  | "reduccion_plazo"
+  | "reduccion_cuota";

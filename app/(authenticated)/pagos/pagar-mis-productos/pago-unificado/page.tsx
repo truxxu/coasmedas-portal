@@ -9,9 +9,15 @@ import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 import { PaymentAccount, PendingPayments } from "@/src/types/payment";
-import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
+import {
+  getPaymentSourcesSavings,
+  getPaymentProducts,
+} from "@/services/payments.service";
 import { isAuthError } from "@/lib/api/errors";
-import { mapSavingsToPaymentAccount, mapPaymentProductsToPendingPayments } from "@/lib/mappers/payments.mapper";
+import {
+  mapSavingsToPaymentAccount,
+  mapPaymentProductsToPendingPayments,
+} from "@/lib/mappers/payments.mapper";
 import type { SavingsAccountResponse } from "@/types/api/products";
 import type { PaymentProduct } from "@/types/api/payments";
 
@@ -22,14 +28,17 @@ export default function PagoUnificadoPage() {
   const { user } = useUserContext();
 
   const [accounts, setAccounts] = useState<PaymentAccount[]>([]);
-  const [pendingPayments, setPendingPayments] = useState<PendingPayments | null>(null);
+  const [pendingPayments, setPendingPayments] =
+    useState<PendingPayments | null>(null);
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Store raw API data
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
   const [paymentProducts, setPaymentProducts] = useState<PaymentProduct[]>([]);
 
   useEffect(() => {
@@ -92,13 +101,10 @@ export default function PagoUnificadoPage() {
 
     if (!isPSE) {
       const selectedAccount = allAccounts.find(
-        (acc) => acc.id === selectedAccountId
+        (acc) => acc.id === selectedAccountId,
       );
 
-      if (
-        selectedAccount &&
-        selectedAccount.balance < pendingPayments.total
-      ) {
+      if (selectedAccount && selectedAccount.balance < pendingPayments.total) {
         setError("Saldo insuficiente en la cuenta seleccionada");
         return;
       }
@@ -109,13 +115,22 @@ export default function PagoUnificadoPage() {
 
     // Store raw API data for transaction building
     const selectedSavings = savingsApiData.find(
-      (a) => String(a.idCuenta) === String(selectedAccountId)
+      (a) => String(a.idCuenta) === String(selectedAccountId),
     );
     if (selectedSavings) {
-      sessionStorage.setItem("unifiedSourceAccountApi", JSON.stringify(selectedSavings));
+      sessionStorage.setItem(
+        "unifiedSourceAccountApi",
+        JSON.stringify(selectedSavings),
+      );
     }
-    sessionStorage.setItem("unifiedPaymentProducts", JSON.stringify(paymentProducts));
-    sessionStorage.setItem("unifiedPendingPayments", JSON.stringify(pendingPayments));
+    sessionStorage.setItem(
+      "unifiedPaymentProducts",
+      JSON.stringify(paymentProducts),
+    );
+    sessionStorage.setItem(
+      "unifiedPendingPayments",
+      JSON.stringify(pendingPayments),
+    );
 
     router.push("/pagos/pagar-mis-productos/pago-unificado/confirmacion");
   };

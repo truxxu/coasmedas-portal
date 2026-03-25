@@ -9,6 +9,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Feature spec reviewed (spec.md)
 - [x] Design references analyzed (references.md)
 - [x] Figma design reviewed
@@ -18,39 +19,41 @@
 
 **Components from previous features are ALREADY IMPLEMENTED**:
 
-| Component | Location | Status |
-|-----------|----------|--------|
-| `CarouselArrow` | `src/atoms/CarouselArrow.tsx` | Ready to reuse |
-| `CarouselDots` | `src/atoms/CarouselDots.tsx` | Ready to reuse |
-| `SavingsProductCard` | `src/molecules/SavingsProductCard.tsx` | Reference |
-| `ObligacionProductCard` | `src/molecules/ObligacionProductCard.tsx` | Reference |
-| `InversionProductCard` | `src/molecules/InversionProductCard.tsx` | Reference |
-| `ProductCarousel` | `src/organisms/ProductCarousel.tsx` | Reference |
-| `ObligacionCarousel` | `src/organisms/ObligacionCarousel.tsx` | Reference |
-| `InversionCarousel` | `src/organisms/InversionCarousel.tsx` | Reference |
+| Component                | Location                                   | Status         |
+| ------------------------ | ------------------------------------------ | -------------- |
+| `CarouselArrow`          | `src/atoms/CarouselArrow.tsx`              | Ready to reuse |
+| `CarouselDots`           | `src/atoms/CarouselDots.tsx`               | Ready to reuse |
+| `SavingsProductCard`     | `src/molecules/SavingsProductCard.tsx`     | Reference      |
+| `ObligacionProductCard`  | `src/molecules/ObligacionProductCard.tsx`  | Reference      |
+| `InversionProductCard`   | `src/molecules/InversionProductCard.tsx`   | Reference      |
+| `ProductCarousel`        | `src/organisms/ProductCarousel.tsx`        | Reference      |
+| `ObligacionCarousel`     | `src/organisms/ObligacionCarousel.tsx`     | Reference      |
+| `InversionCarousel`      | `src/organisms/InversionCarousel.tsx`      | Reference      |
 | `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse |
-| `DownloadReportsCard` | `src/organisms/DownloadReportsCard.tsx` | Ready to reuse |
-| `Breadcrumbs` | `src/molecules/Breadcrumbs.tsx` | Ready to reuse |
+| `DownloadReportsCard`    | `src/organisms/DownloadReportsCard.tsx`    | Ready to reuse |
+| `Breadcrumbs`            | `src/molecules/Breadcrumbs.tsx`            | Ready to reuse |
 
 **Existing Utilities**:
+
 - `src/utils/carousel.ts` - `calculateTotalPages`, `getVisibleItems`
 - `src/utils/formatCurrency.ts` - `formatCurrency`, `maskCurrency`, `maskNumber`
 - `src/utils/dates.ts` - `generateMonthOptions`, `formatDate`
 
 **Existing Patterns**:
+
 - Inversiones page at `app/(authenticated)/productos/inversiones/page.tsx`
 - WelcomeBar context for page title/back button
 - Sidebar already includes "Protección" in productSubItems
 
 ### What Needs to Be Created
 
-| Type | Component | Purpose |
-|------|-----------|---------|
-| Type | `proteccion.ts` | ProteccionProduct, ProteccionStatus types |
-| Molecule | `ProteccionProductCard` | Insurance card for carousel |
-| Organism | `ProteccionCarousel` | Carousel using ProteccionProductCard |
-| Mock | `proteccion.ts` | Mock data for insurance products |
-| Page | `proteccion/page.tsx` | Protección page |
+| Type     | Component               | Purpose                                   |
+| -------- | ----------------------- | ----------------------------------------- |
+| Type     | `proteccion.ts`         | ProteccionProduct, ProteccionStatus types |
+| Molecule | `ProteccionProductCard` | Insurance card for carousel               |
+| Organism | `ProteccionCarousel`    | Carousel using ProteccionProductCard      |
+| Mock     | `proteccion.ts`         | Mock data for insurance products          |
+| Page     | `proteccion/page.tsx`   | Protección page                           |
 
 ---
 
@@ -58,15 +61,15 @@
 
 **IMPORTANT**: The Protección card is unique among all product cards:
 
-| Aspect | Ahorros/Obligaciones/Inversiones | Protección |
-|--------|----------------------------------|------------|
-| Main Balance | Yes (Saldo Total / Monto) | **NO main balance** |
-| Product Number Format | ***1234 or DTA-***1234 | **No******65-9** |
-| Status Values | activo/bloqueado, al_dia/en_mora | **activo/inactivo/cancelado** |
-| Primary Fields | Balance + details | **Pago Mínimo, Fecha Límite, Pago Total Anual** |
-| Monetary Color | Blue #004680 or Navy #112E7F | **Navy #194E8D** |
-| Detail Divider | Yes | **No** (all fields at same level) |
-| Monetary Values to Mask | 1-3 | **2** (minimumPayment, annualPayment) |
+| Aspect                  | Ahorros/Obligaciones/Inversiones | Protección                                      |
+| ----------------------- | -------------------------------- | ----------------------------------------------- |
+| Main Balance            | Yes (Saldo Total / Monto)        | **NO main balance**                             |
+| Product Number Format   | ***1234 or DTA-***1234           | **No\*\*\*\***65-9\*\*                          |
+| Status Values           | activo/bloqueado, al_dia/en_mora | **activo/inactivo/cancelado**                   |
+| Primary Fields          | Balance + details                | **Pago Mínimo, Fecha Límite, Pago Total Anual** |
+| Monetary Color          | Blue #004680 or Navy #112E7F     | **Navy #194E8D**                                |
+| Detail Divider          | Yes                              | **No** (all fields at same level)               |
+| Monetary Values to Mask | 1-3                              | **2** (minimumPayment, annualPayment)           |
 
 ---
 
@@ -80,19 +83,19 @@
 /**
  * Status of a protection/insurance product
  */
-export type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
+export type ProteccionStatus = "activo" | "inactivo" | "cancelado";
 
 /**
  * Protection/insurance product information for carousel display
  */
 export interface ProteccionProduct {
   id: string;
-  title: string;                    // "Póliza de Vida", "Seguro de Accidentes"
-  productNumber: string;            // "65-9" (will be masked as No******65-9)
+  title: string; // "Póliza de Vida", "Seguro de Accidentes"
+  productNumber: string; // "65-9" (will be masked as No******65-9)
   status: ProteccionStatus;
-  minimumPayment: number;           // Pago Mínimo
-  paymentDeadline: string;          // Fecha Límite de Pago (ISO date)
-  annualPayment: number;            // Pago Total Anual
+  minimumPayment: number; // Pago Mínimo
+  paymentDeadline: string; // Fecha Límite de Pago (ISO date)
+  annualPayment: number; // Pago Total Anual
 }
 
 /**
@@ -106,7 +109,7 @@ export type OnProteccionSelect = (product: ProteccionProduct) => void;
 **File**: `src/types/index.ts` - Add export:
 
 ```typescript
-export * from './proteccion';
+export * from "./proteccion";
 ```
 
 ---
@@ -118,7 +121,8 @@ export * from './proteccion';
 **File**: `src/molecules/ProteccionProductCard.tsx`
 
 This is a UNIQUE card design with NO main balance field:
-- Different product number format (No******65-9)
+
+- Different product number format (No**\*\***65-9)
 - Status with three values (activo/inactivo/cancelado)
 - Three main fields without divider
 - Two monetary values to mask
@@ -241,7 +245,7 @@ export function ProteccionProductCard({
 **File**: `src/molecules/index.ts` - Add export:
 
 ```typescript
-export { ProteccionProductCard } from './ProteccionProductCard';
+export { ProteccionProductCard } from "./ProteccionProductCard";
 ```
 
 ---
@@ -423,7 +427,7 @@ export function ProteccionCarousel({
 **File**: `src/organisms/index.ts` - Add export:
 
 ```typescript
-export { ProteccionCarousel } from './ProteccionCarousel';
+export { ProteccionCarousel } from "./ProteccionCarousel";
 ```
 
 ---
@@ -435,48 +439,48 @@ export { ProteccionCarousel } from './ProteccionCarousel';
 **File**: `src/mocks/proteccion.ts`
 
 ```typescript
-import { ProteccionProduct } from '@/src/types/proteccion';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { ProteccionProduct } from "@/src/types/proteccion";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock insurance/protection products for carousel
  */
 export const mockProteccionProducts: ProteccionProduct[] = [
   {
-    id: '1',
-    title: 'Póliza de Vida',
-    productNumber: '65-9',
-    status: 'activo',
+    id: "1",
+    title: "Póliza de Vida",
+    productNumber: "65-9",
+    status: "activo",
     minimumPayment: 85000,
-    paymentDeadline: '2025-12-31',
+    paymentDeadline: "2025-12-31",
     annualPayment: 1020000,
   },
   {
-    id: '2',
-    title: 'Seguro de Accidentes',
-    productNumber: '12-3',
-    status: 'activo',
+    id: "2",
+    title: "Seguro de Accidentes",
+    productNumber: "12-3",
+    status: "activo",
     minimumPayment: 45000,
-    paymentDeadline: '2025-12-15',
+    paymentDeadline: "2025-12-15",
     annualPayment: 540000,
   },
   {
-    id: '3',
-    title: 'Seguro Exequial',
-    productNumber: '78-4',
-    status: 'inactivo',
+    id: "3",
+    title: "Seguro Exequial",
+    productNumber: "78-4",
+    status: "inactivo",
     minimumPayment: 25000,
-    paymentDeadline: '2025-11-30',
+    paymentDeadline: "2025-11-30",
     annualPayment: 300000,
   },
   {
-    id: '4',
-    title: 'Póliza Hogar',
-    productNumber: '99-1',
-    status: 'cancelado',
+    id: "4",
+    title: "Póliza Hogar",
+    productNumber: "99-1",
+    status: "cancelado",
     minimumPayment: 120000,
-    paymentDeadline: '2025-10-15',
+    paymentDeadline: "2025-10-15",
     annualPayment: 1440000,
   },
 ];
@@ -486,32 +490,33 @@ export const mockProteccionProducts: ProteccionProduct[] = [
  */
 export const mockProteccionTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-01',
-    description: 'Pago prima mensual - Póliza de Vida',
+    id: "1",
+    date: "2024-11-01",
+    description: "Pago prima mensual - Póliza de Vida",
     amount: 85000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2024-10-01',
-    description: 'Pago prima mensual - Póliza de Vida',
+    id: "2",
+    date: "2024-10-01",
+    description: "Pago prima mensual - Póliza de Vida",
     amount: 85000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '3',
-    date: '2024-09-01',
-    description: 'Pago prima mensual - Póliza de Vida',
+    id: "3",
+    date: "2024-09-01",
+    description: "Pago prima mensual - Póliza de Vida",
     amount: 85000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockProteccionAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockProteccionAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Step 4.2: Update Mocks Index
@@ -519,7 +524,7 @@ export const mockProteccionAvailableMonths: MonthOption[] = generateMonthOptions
 **File**: `src/mocks/index.ts` - Add export:
 
 ```typescript
-export * from './proteccion';
+export * from "./proteccion";
 ```
 
 ---
@@ -651,18 +656,20 @@ Check all index.ts files have the new exports:
 ### Step 6.2: Testing Checklist
 
 **Functional Tests**:
+
 - [ ] Page loads at `/productos/proteccion`
 - [ ] First card is selected by default (white bg, blue border)
 - [ ] Unselected cards have gray background (#E4E6EA)
 - [ ] Clicking card changes selection
 - [ ] Transaction title updates on selection
-- [ ] Title uses "No******XX-X" format
+- [ ] Title uses "No**\*\***XX-X" format
 - [ ] Arrow buttons scroll carousel
 - [ ] Dots indicate current page
 - [ ] Hide balances toggle masks the two monetary values (Pago Mínimo, Pago Total Anual)
 - [ ] Sidebar shows "Protección" as active
 
 **Visual Tests**:
+
 - [ ] "Activo" status displays in green (#00A44C)
 - [ ] "Inactivo" status displays in gray (#808284)
 - [ ] "Cancelado" status displays in red
@@ -674,11 +681,13 @@ Check all index.ts files have the new exports:
 - [ ] Dates formatted correctly (e.g., "31 Dic 2025")
 
 **Responsive Tests**:
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
 
 **Accessibility Tests**:
+
 - [ ] Keyboard navigation (Tab, Enter, Space)
 - [ ] ARIA labels present on cards
 - [ ] Focus states visible
@@ -689,36 +698,36 @@ Check all index.ts files have the new exports:
 
 ### New Files to Create
 
-| File | Phase | Priority |
-|------|-------|----------|
-| `src/types/proteccion.ts` | 1 | High |
-| `src/molecules/ProteccionProductCard.tsx` | 2 | High |
-| `src/organisms/ProteccionCarousel.tsx` | 3 | High |
-| `src/mocks/proteccion.ts` | 4 | High |
-| `app/(authenticated)/productos/proteccion/page.tsx` | 5 | High |
+| File                                                | Phase | Priority |
+| --------------------------------------------------- | ----- | -------- |
+| `src/types/proteccion.ts`                           | 1     | High     |
+| `src/molecules/ProteccionProductCard.tsx`           | 2     | High     |
+| `src/organisms/ProteccionCarousel.tsx`              | 3     | High     |
+| `src/mocks/proteccion.ts`                           | 4     | High     |
+| `app/(authenticated)/productos/proteccion/page.tsx` | 5     | High     |
 
 ### Files to Update
 
-| File | Changes | Phase |
-|------|---------|-------|
-| `src/types/index.ts` | Add proteccion export | 1 |
-| `src/molecules/index.ts` | Add ProteccionProductCard export | 2 |
-| `src/organisms/index.ts` | Add ProteccionCarousel export | 3 |
-| `src/mocks/index.ts` | Add proteccion export | 4 |
+| File                     | Changes                          | Phase |
+| ------------------------ | -------------------------------- | ----- |
+| `src/types/index.ts`     | Add proteccion export            | 1     |
+| `src/molecules/index.ts` | Add ProteccionProductCard export | 2     |
+| `src/organisms/index.ts` | Add ProteccionCarousel export    | 3     |
+| `src/mocks/index.ts`     | Add proteccion export            | 4     |
 
 ---
 
 ## Time Estimates
 
-| Phase | Description | Time |
-|-------|-------------|------|
-| Phase 1 | Types | 10 min |
-| Phase 2 | ProteccionProductCard | 1-1.5 hrs |
-| Phase 3 | ProteccionCarousel | 45 min - 1 hr |
-| Phase 4 | Mock Data | 10 min |
-| Phase 5 | Page Assembly | 30 min |
-| Phase 6 | Polish & Testing | 30 min |
-| **Total** | | **~3-4.5 hrs (1-1.5 days)** |
+| Phase     | Description           | Time                        |
+| --------- | --------------------- | --------------------------- |
+| Phase 1   | Types                 | 10 min                      |
+| Phase 2   | ProteccionProductCard | 1-1.5 hrs                   |
+| Phase 3   | ProteccionCarousel    | 45 min - 1 hr               |
+| Phase 4   | Mock Data             | 10 min                      |
+| Phase 5   | Page Assembly         | 30 min                      |
+| Phase 6   | Polish & Testing      | 30 min                      |
+| **Total** |                       | **~3-4.5 hrs (1-1.5 days)** |
 
 ---
 
@@ -742,22 +751,23 @@ Phase 6: Polish & Testing
 
 ## Key Differences from Other Product Implementations
 
-| Aspect | Other Products | Protección |
-|--------|----------------|------------|
-| Main Balance | Yes (prominent) | **NO** |
+| Aspect         | Other Products                       | Protección                            |
+| -------------- | ------------------------------------ | ------------------------------------- |
+| Main Balance   | Yes (prominent)                      | **NO**                                |
 | Card Structure | Balance → Status → Divider → Details | **Title → Number → Status → Details** |
-| Product Number | `***1234` or `PREFIX-***1234` | **`No******XX-X`** |
-| Status Count | 2 (binary) | **3** (activo/inactivo/cancelado) |
-| Inactivo Color | N/A | **Gray #808284** |
-| Monetary Color | Blue #004680 or Navy #112E7F | **Navy #194E8D** |
-| Has Divider | Yes | **No** |
-| Card Height | ~200-250px | **~180px** (no balance, simpler) |
+| Product Number | `***1234` or `PREFIX-***1234`        | **`No\*\*\*\***XX-X`\*\*              |
+| Status Count   | 2 (binary)                           | **3** (activo/inactivo/cancelado)     |
+| Inactivo Color | N/A                                  | **Gray #808284**                      |
+| Monetary Color | Blue #004680 or Navy #112E7F         | **Navy #194E8D**                      |
+| Has Divider    | Yes                                  | **No**                                |
+| Card Height    | ~200-250px                           | **~180px** (no balance, simpler)      |
 
 ---
 
 ## Code Reuse Strategy
 
 ### Components Reused Without Changes
+
 - `CarouselArrow` - Navigation arrows
 - `CarouselDots` - Pagination dots
 - `TransactionHistoryCard` - Transaction list
@@ -765,6 +775,7 @@ Phase 6: Polish & Testing
 - `Breadcrumbs` - Navigation breadcrumbs
 
 ### Utilities Reused
+
 - `calculateTotalPages()` - Carousel pagination
 - `getVisibleItems()` - Responsive card count
 - `formatCurrency()` - Currency formatting
@@ -773,9 +784,11 @@ Phase 6: Polish & Testing
 - `generateMonthOptions()` - Month dropdown options
 
 ### New Utility Function (in component)
-- `maskProteccionNumber()` - Unique "No******XX-X" format
+
+- `maskProteccionNumber()` - Unique "No**\*\***XX-X" format
 
 ### Patterns Followed
+
 - WelcomeBar context for page title
 - UIContext for hideBalances
 - Carousel scroll behavior
@@ -789,11 +802,11 @@ Like Inversiones, there is **no sidebar update needed** because "Protección" is
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },  // Already exists!
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" }, // Already exists!
 ];
 ```
 

@@ -35,12 +35,16 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showPSEOption = true,
 }) => {
-  const accountOptions = useMemo(() => accounts.map((account) => ({
-    value: account.id,
-    label: `${account.name} - Saldo: ${
-      hideBalances ? maskCurrency() : formatCurrency(account.balance)
-    }`,
-  })), [accounts, hideBalances]);
+  const accountOptions = useMemo(
+    () =>
+      accounts.map((account) => ({
+        value: account.id,
+        label: `${account.name} - Saldo: ${
+          hideBalances ? maskCurrency() : formatCurrency(account.balance)
+        }`,
+      })),
+    [accounts, hideBalances],
+  );
 
   return (
     <Card className="space-y-6 p-6 md:p-8">

@@ -1,4 +1,4 @@
-export type AccountType = 'AHORROS' | 'CORRIENTE' | 'CREDITO' | 'INVERSION';
+export type AccountType = "AHORROS" | "CORRIENTE" | "CREDITO" | "INVERSION";
 
 export interface Account {
   accountNumber: string;

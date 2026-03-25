@@ -73,7 +73,9 @@ export function ExcessPaymentRadioGroup({
               <span className="w-2 h-2 rounded-full bg-brand-primary" />
             )}
           </span>
-          <span className="text-[15px] text-brand-text-black">{option.label}</span>
+          <span className="text-[15px] text-brand-text-black">
+            {option.label}
+          </span>
         </label>
       ))}
     </div>

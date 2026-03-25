@@ -4,19 +4,37 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ObligacionDetailsCard, ObligacionPaymentDetailsSection } from "@/src/organisms";
+import {
+  ObligacionDetailsCard,
+  ObligacionPaymentDetailsSection,
+} from "@/src/organisms";
 import { useUIContext } from "@/src/contexts/UIContext";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
-import { PaymentType, ObligacionPaymentMethod, ObligacionSourceAccount, ObligacionPaymentProduct, ExcessPaymentOption } from "@/src/types/obligacion-payment";
+import {
+  PaymentType,
+  ObligacionPaymentMethod,
+  ObligacionSourceAccount,
+  ObligacionPaymentProduct,
+  ExcessPaymentOption,
+} from "@/src/types/obligacion-payment";
 import {
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
 } from "@/src/mocks/mockObligacionPaymentData";
-import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
+import {
+  getPaymentSourcesSavings,
+  getPaymentProducts,
+} from "@/services/payments.service";
 import { getProductsCredits } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
-import { mapSavingsToSourceAccount, mapCreditToObligacionPaymentProduct } from "@/lib/mappers/payments.mapper";
-import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
+import {
+  mapSavingsToSourceAccount,
+  mapCreditToObligacionPaymentProduct,
+} from "@/lib/mappers/payments.mapper";
+import type {
+  SavingsAccountResponse,
+  CreditAccountResponse,
+} from "@/types/api/products";
 import type { PaymentProduct } from "@/types/api/payments";
 
 export default function PagoObligacionesPage() {
@@ -25,23 +43,34 @@ export default function PagoObligacionesPage() {
   const { hideBalances } = useUIContext();
   const { user } = useUserContext();
 
-  const [sourceAccounts, setSourceAccounts] = useState<ObligacionSourceAccount[]>([]);
+  const [sourceAccounts, setSourceAccounts] = useState<
+    ObligacionSourceAccount[]
+  >([]);
   const [products, setProducts] = useState<ObligacionPaymentProduct[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string>("");
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] = useState<ObligacionPaymentMethod>("account");
+  const [paymentMethod, setPaymentMethod] =
+    useState<ObligacionPaymentMethod>("account");
   const [valorAPagar, setValorAPagar] = useState<number>(0);
-  const [activePaymentType, setActivePaymentType] = useState<PaymentType | null>(null);
-  const [excessPaymentOption, setExcessPaymentOption] = useState<ExcessPaymentOption | null>(null);
+  const [activePaymentType, setActivePaymentType] =
+    useState<PaymentType | null>(null);
+  const [excessPaymentOption, setExcessPaymentOption] =
+    useState<ExcessPaymentOption | null>(null);
   const [error, setError] = useState<string>("");
   const [accountError, setAccountError] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Store raw API data for transaction request building
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
-  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
-  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
+  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>(
+    [],
+  );
+  const [paymentProductsData, setPaymentProductsData] = useState<
+    PaymentProduct[]
+  >([]);
 
   useEffect(() => {
     setWelcomeBar({
@@ -74,7 +103,9 @@ export default function PagoObligacionesPage() {
       const mappedAccounts = savingsRes.map(mapSavingsToSourceAccount);
       setSourceAccounts(mappedAccounts);
 
-      const mappedProducts = creditsRes.map(mapCreditToObligacionPaymentProduct);
+      const mappedProducts = creditsRes.map(
+        mapCreditToObligacionPaymentProduct,
+      );
       setProducts(mappedProducts);
     } catch (err) {
       if (isAuthError(err)) {
@@ -92,7 +123,8 @@ export default function PagoObligacionesPage() {
   }, [fetchData]);
 
   const allSourceAccounts = sourceAccounts;
-  const selectedProduct = products.find((p) => p.id === selectedProductId) ?? null;
+  const selectedProduct =
+    products.find((p) => p.id === selectedProductId) ?? null;
 
   const breadcrumbItems = [
     "Inicio",
@@ -112,7 +144,10 @@ export default function PagoObligacionesPage() {
     }
   };
 
-  const handleAccountChange = (accountId: string, method: ObligacionPaymentMethod) => {
+  const handleAccountChange = (
+    accountId: string,
+    method: ObligacionPaymentMethod,
+  ) => {
     setSelectedAccountId(accountId);
     setPaymentMethod(method);
     setAccountError("");
@@ -156,7 +191,7 @@ export default function PagoObligacionesPage() {
 
     if (valorAPagar < selectedProduct.minimumPayment) {
       setError(
-        `El valor minimo de pago es ${selectedProduct.minimumPayment.toLocaleString("es-CO")}`
+        `El valor minimo de pago es ${selectedProduct.minimumPayment.toLocaleString("es-CO")}`,
       );
       return;
     }
@@ -172,7 +207,9 @@ export default function PagoObligacionesPage() {
     }
 
     if (paymentMethod === "account") {
-      const selectedAccount = allSourceAccounts.find((a) => a.id === selectedAccountId);
+      const selectedAccount = allSourceAccounts.find(
+        (a) => a.id === selectedAccountId,
+      );
       if (selectedAccount && valorAPagar > selectedAccount.balance) {
         setAccountError("Saldo insuficiente en la cuenta seleccionada");
         return;
@@ -180,41 +217,65 @@ export default function PagoObligacionesPage() {
     }
 
     const isPSE = paymentMethod === "pse";
-    const selectedAccount = allSourceAccounts.find((a) => a.id === selectedAccountId);
+    const selectedAccount = allSourceAccounts.find(
+      (a) => a.id === selectedAccountId,
+    );
     const sourceAccountDisplay = isPSE
       ? "PSE (Pagos con otras entidades)"
-      : (selectedAccount?.displayName || "");
+      : selectedAccount?.displayName || "";
 
     // Store data in sessionStorage
     sessionStorage.setItem("obligacionPaymentProductId", selectedProductId);
     sessionStorage.setItem("obligacionPaymentValor", valorAPagar.toString());
-    sessionStorage.setItem("obligacionPaymentProduct", JSON.stringify(selectedProduct));
+    sessionStorage.setItem(
+      "obligacionPaymentProduct",
+      JSON.stringify(selectedProduct),
+    );
     sessionStorage.setItem("obligacionPaymentMethod", paymentMethod);
     sessionStorage.setItem("obligacionSourceAccountId", selectedAccountId);
-    sessionStorage.setItem("obligacionSourceAccountDisplay", sourceAccountDisplay);
+    sessionStorage.setItem(
+      "obligacionSourceAccountDisplay",
+      sourceAccountDisplay,
+    );
 
     if (excessPaymentOption) {
-      sessionStorage.setItem("obligacionExcessPaymentOption", excessPaymentOption);
+      sessionStorage.setItem(
+        "obligacionExcessPaymentOption",
+        excessPaymentOption,
+      );
     } else {
       sessionStorage.removeItem("obligacionExcessPaymentOption");
     }
 
     // Store raw API data for transaction request building
-    const selectedSavings = savingsApiData.find((a) => String(a.idCuenta) === String(selectedAccountId));
+    const selectedSavings = savingsApiData.find(
+      (a) => String(a.idCuenta) === String(selectedAccountId),
+    );
     if (selectedSavings) {
-      sessionStorage.setItem("obligacionSourceAccountApi", JSON.stringify(selectedSavings));
+      sessionStorage.setItem(
+        "obligacionSourceAccountApi",
+        JSON.stringify(selectedSavings),
+      );
     }
-    const selectedCredit = creditsApiData.find((c) => String(c.idCuenta) === String(selectedProductId));
+    const selectedCredit = creditsApiData.find(
+      (c) => String(c.idCuenta) === String(selectedProductId),
+    );
     if (selectedCredit) {
-      sessionStorage.setItem("obligacionTargetProductApi", JSON.stringify(selectedCredit));
+      sessionStorage.setItem(
+        "obligacionTargetProductApi",
+        JSON.stringify(selectedCredit),
+      );
     }
 
     // Cross-reference payment products to find tipoProducto for the target
     const matchingProduct = paymentProductsData.find(
-      (p) => String(p.idCuenta) === String(selectedProductId)
+      (p) => String(p.idCuenta) === String(selectedProductId),
     );
     if (matchingProduct) {
-      sessionStorage.setItem("obligacionTargetTipoProducto", matchingProduct.tipoProducto);
+      sessionStorage.setItem(
+        "obligacionTargetTipoProducto",
+        matchingProduct.tipoProducto,
+      );
     }
 
     router.push("/pagos/pagar-mis-productos/obligaciones/confirmacion");
@@ -228,9 +289,10 @@ export default function PagoObligacionesPage() {
     router.push("/pagos/pagar-mis-productos");
   };
 
-  const currentSteps = paymentMethod === "pse"
-    ? OBLIGACION_PAYMENT_STEPS
-    : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
+  const currentSteps =
+    paymentMethod === "pse"
+      ? OBLIGACION_PAYMENT_STEPS
+      : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
 
   if (loadError) {
     return (

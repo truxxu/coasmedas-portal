@@ -54,9 +54,7 @@ export default function RecargarPSEPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Recargar con PSE"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Recargar con PSE"]} />
       </div>
 
       {/* Stepper */}

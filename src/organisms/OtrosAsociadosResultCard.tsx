@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { ConfirmationRow } from '@/src/molecules';
-import { OtrosAsociadosTransactionResult } from '@/src/types';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider } from "@/src/atoms";
+import { ConfirmationRow } from "@/src/molecules";
+import { OtrosAsociadosTransactionResult } from "@/src/types";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface OtrosAsociadosResultCardProps {
   result: OtrosAsociadosTransactionResult;
   hideBalances: boolean;
 }
 
-export const OtrosAsociadosResultCard: React.FC<OtrosAsociadosResultCardProps> = ({
-  result,
-  hideBalances,
-}) => {
+export const OtrosAsociadosResultCard: React.FC<
+  OtrosAsociadosResultCardProps
+> = ({ result, hideBalances }) => {
   const isSuccess = result.success;
 
   return (
@@ -58,24 +57,23 @@ export const OtrosAsociadosResultCard: React.FC<OtrosAsociadosResultCardProps> =
 
       {/* Result Title */}
       <h2 className="text-[22px] font-bold text-brand-navy text-center">
-        {isSuccess ? 'Transacción Exitosa' : 'Transacción Fallida'}
+        {isSuccess ? "Transacción Exitosa" : "Transacción Fallida"}
       </h2>
 
       <Divider />
 
       {/* Transaction Details */}
       <div className="space-y-2">
-        <ConfirmationRow
-          label="Línea crédito:"
-          value={result.creditLine}
-        />
+        <ConfirmationRow label="Línea crédito:" value={result.creditLine} />
         <ConfirmationRow
           label="Número de producto:"
           value={result.productNumber}
         />
         <ConfirmationRow
           label="Valor pagado:"
-          value={hideBalances ? maskCurrency() : formatCurrency(result.amountPaid)}
+          value={
+            hideBalances ? maskCurrency() : formatCurrency(result.amountPaid)
+          }
         />
       </div>
 
@@ -104,7 +102,7 @@ export const OtrosAsociadosResultCard: React.FC<OtrosAsociadosResultCardProps> =
         <ConfirmationRow
           label="Descripción:"
           value={result.description}
-          valueColor={isSuccess ? 'success' : 'error'}
+          valueColor={isSuccess ? "success" : "error"}
         />
       </div>
     </Card>

@@ -8,11 +8,13 @@
 ## Design Resources
 
 ### UI/UX Design
+
 - **Figma Design**: [Prehome Design](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1668-229&t=FmTV0BLrEQnPNsA9-0)
   - Last updated: 2025-11-26
   - Owner: Design Team
 
 ### Design Assets (Local)
+
 - **Prehome Layout**: `attachments/designs/prehome.svg`
   - Full page design/mockup
   - Size: 1.4MB
@@ -28,14 +30,17 @@
 ## Technical Resources
 
 ### Next.js Documentation
+
 - **App Router**: https://nextjs.org/docs/app
 - **Image Optimization**: https://nextjs.org/docs/app/building-your-application/optimizing/images
 
 ### Tailwind CSS
+
 - **Documentation**: https://tailwindcss.com/docs
 - **Tailwind v4**: https://tailwindcss.com/blog/tailwindcss-v4
 
 ### Accessibility
+
 - **WCAG Guidelines**: https://www.w3.org/WAI/WCAG21/quickref/
 - **WebAIM**: https://webaim.org/resources/
 
@@ -53,6 +58,7 @@
 ### Using Design Assets
 
 **Logo Implementation**:
+
 ```typescript
 // src/atoms/Logo.tsx
 import Image from 'next/image';
@@ -72,6 +78,7 @@ export function Logo() {
 ```
 
 **Asset Locations**:
+
 - Copy `logo.svg` to `public/` directory for Next.js Image optimization
 - Keep original in `attachments/designs/` for reference
 

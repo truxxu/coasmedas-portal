@@ -1,4 +1,4 @@
-import type { UserIdentification } from './common';
+import type { UserIdentification } from "./common";
 
 // ─── Request Types ───
 

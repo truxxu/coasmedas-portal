@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 interface CheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
   id?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
@@ -13,7 +13,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   disabled = false,
   id,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }) => {
   return (
     <input
@@ -26,7 +26,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       className={`
         w-4 h-4 rounded border-brand-footer-text
         text-brand-primary focus:ring-brand-primary focus:ring-2
-        ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+        ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
       `}
     />
   );

@@ -1,4 +1,4 @@
-import { MonthOption } from '@/src/types/products';
+import { MonthOption } from "@/src/types/products";
 
 /**
  * Format date for display (Spanish locale)
@@ -6,10 +6,10 @@ import { MonthOption } from '@/src/types/products';
  */
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('es-CO', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  return date.toLocaleDateString("es-CO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 }
 
@@ -19,10 +19,10 @@ export function formatDate(dateString: string): string {
  */
 export function formatDateCapitalized(dateString: string): string {
   const date = new Date(dateString);
-  const formatted = date.toLocaleDateString('es-CO', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  const formatted = date.toLocaleDateString("es-CO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
   // Capitalize the month abbreviation
   return formatted.replace(/\b[a-z]/g, (char) => char.toUpperCase());
@@ -38,8 +38,11 @@ export function generateMonthOptions(count: number = 12): MonthOption[] {
 
   for (let i = 0; i < count; i++) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    const label = date.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+    const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const label = date.toLocaleDateString("es-CO", {
+      month: "long",
+      year: "numeric",
+    });
     // Capitalize first letter
     const capitalizedLabel = label.charAt(0).toUpperCase() + label.slice(1);
     months.push({ value, label: capitalizedLabel });
@@ -51,7 +54,11 @@ export function generateMonthOptions(count: number = 12): MonthOption[] {
 /**
  * Check if date range is within allowed months
  */
-export function isValidDateRange(startDate: string, endDate: string, maxMonths: number = 3): boolean {
+export function isValidDateRange(
+  startDate: string,
+  endDate: string,
+  maxMonths: number = 3,
+): boolean {
   const start = new Date(startDate);
   const end = new Date(endDate);
 
@@ -69,14 +76,14 @@ export function isValidDateRange(startDate: string, endDate: string, maxMonths: 
 export function getDateMonthsAgo(months: number): string {
   const date = new Date();
   date.setMonth(date.getMonth() - months);
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split("T")[0];
 }
 
 /**
  * Get today's date in YYYY-MM-DD format
  */
 export function getTodayDate(): string {
-  return new Date().toISOString().split('T')[0];
+  return new Date().toISOString().split("T")[0];
 }
 
 /**
@@ -86,11 +93,11 @@ export function getTodayDate(): string {
  * @example parseApiTime("142345") => "14:23"
  */
 export function parseApiTime(hhmmss: string | undefined | null): string {
-  if (!hhmmss) return '';
-  const padded = String(hhmmss).padStart(6, '0');
+  if (!hhmmss) return "";
+  const padded = String(hhmmss).padStart(6, "0");
   const hh = padded.slice(0, 2);
   const mm = padded.slice(2, 4);
-  if (isNaN(Number(hh)) || isNaN(Number(mm))) return '';
+  if (isNaN(Number(hh)) || isNaN(Number(mm))) return "";
   return `${hh}:${mm}`;
 }
 
@@ -99,7 +106,7 @@ export function parseApiTime(hhmmss: string | undefined | null): string {
  * @example parseApiDate("20251115") => "2025-11-15"
  */
 export function parseApiDate(yyyymmdd: string): string {
-  if (!yyyymmdd || yyyymmdd.length < 8) return '';
+  if (!yyyymmdd || yyyymmdd.length < 8) return "";
   return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(6, 8)}`;
 }
 
@@ -108,5 +115,5 @@ export function parseApiDate(yyyymmdd: string): string {
  * @example formatApiDate("2025-11-15") => "20251115"
  */
 export function formatApiDate(isoDate: string): string {
-  return isoDate.replace(/-/g, '');
+  return isoDate.replace(/-/g, "");
 }

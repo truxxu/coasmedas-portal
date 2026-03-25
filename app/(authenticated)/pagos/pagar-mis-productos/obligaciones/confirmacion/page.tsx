@@ -17,9 +17,15 @@ import {
   ObligacionPaymentMethod,
 } from "@/src/types/obligacion-payment";
 import { maskNumber } from "@/src/utils";
-import { buildAccountReference, buildCreditTarget } from "@/lib/mappers/payments.mapper";
+import {
+  buildAccountReference,
+  buildCreditTarget,
+} from "@/lib/mappers/payments.mapper";
 import { sendTransactionOtp } from "@/services/auth.service";
-import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
+import type {
+  SavingsAccountResponse,
+  CreditAccountResponse,
+} from "@/types/api/products";
 
 export default function ConfirmacionPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
@@ -29,49 +35,57 @@ export default function ConfirmacionPage() {
 
   const [paymentMethod] = useState<ObligacionPaymentMethod>(() => {
     if (typeof window === "undefined") return "pse";
-    const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
+    const method = sessionStorage.getItem(
+      "obligacionPaymentMethod",
+    ) as ObligacionPaymentMethod;
     return method || "pse";
   });
 
-  const [confirmationData] =
-    useState<ObligacionConfirmationData | null>(() => {
-      if (typeof window === "undefined") return null;
+  const [confirmationData] = useState<ObligacionConfirmationData | null>(() => {
+    if (typeof window === "undefined") return null;
 
-      const productStr = sessionStorage.getItem("obligacionPaymentProduct");
-      const valor = sessionStorage.getItem("obligacionPaymentValor");
-      const method = sessionStorage.getItem("obligacionPaymentMethod") as ObligacionPaymentMethod;
-      const sourceAccountDisplay = sessionStorage.getItem("obligacionSourceAccountDisplay");
+    const productStr = sessionStorage.getItem("obligacionPaymentProduct");
+    const valor = sessionStorage.getItem("obligacionPaymentValor");
+    const method = sessionStorage.getItem(
+      "obligacionPaymentMethod",
+    ) as ObligacionPaymentMethod;
+    const sourceAccountDisplay = sessionStorage.getItem(
+      "obligacionSourceAccountDisplay",
+    );
 
-      if (!productStr || !valor) {
-        return null;
-      }
+    if (!productStr || !valor) {
+      return null;
+    }
 
-      const product: ObligacionPaymentProduct = JSON.parse(productStr);
+    const product: ObligacionPaymentProduct = JSON.parse(productStr);
 
-      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
-      const maskedDoc = user
-        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
-        : "";
+    const userName =
+      user?.fullName ||
+      `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+    const maskedDoc = user
+      ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+      : "";
 
-      const productoADebitar = method === "pse"
+    const productoADebitar =
+      method === "pse"
         ? "PSE (Pagos con otras entidades)"
-        : (sourceAccountDisplay?.split(" - ")[0] || "Cuenta de Ahorros");
+        : sourceAccountDisplay?.split(" - ")[0] || "Cuenta de Ahorros";
 
-      return {
-        titular: userName,
-        documento: maskedDoc,
-        lineaCredito: product.name,
-        fechaApertura: product.fechaApertura,
-        saldoTotal: product.totalBalance,
-        fechaLimitePago: product.paymentDeadline,
-        valorEnMora: product.valorEnMora ?? 0,
-        pagoMinimo: product.minimumPayment,
-        pagoTotal: product.totalBalance,
-        costoTransaccion: 0,
-        productoADebitar,
-        valorAPagar: parseInt(valor, 10),
-      };
-    });
+    return {
+      titular: userName,
+      documento: maskedDoc,
+      lineaCredito: product.name,
+      fechaApertura: product.fechaApertura,
+      saldoTotal: product.totalBalance,
+      fechaLimitePago: product.paymentDeadline,
+      valorEnMora: product.valorEnMora ?? 0,
+      pagoMinimo: product.minimumPayment,
+      pagoTotal: product.totalBalance,
+      costoTransaccion: 0,
+      productoADebitar,
+      valorAPagar: parseInt(valor, 10),
+    };
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -104,22 +118,38 @@ export default function ConfirmacionPage() {
     try {
       sessionStorage.setItem(
         "obligacionPaymentConfirmation",
-        JSON.stringify(confirmationData)
+        JSON.stringify(confirmationData),
       );
 
       // Pre-build transaction request
-      const sourceAccountStr = sessionStorage.getItem("obligacionSourceAccountApi");
-      const targetProductStr = sessionStorage.getItem("obligacionTargetProductApi");
-      const tipoProducto = sessionStorage.getItem("obligacionTargetTipoProducto") || '';
+      const sourceAccountStr = sessionStorage.getItem(
+        "obligacionSourceAccountApi",
+      );
+      const targetProductStr = sessionStorage.getItem(
+        "obligacionTargetProductApi",
+      );
+      const tipoProducto =
+        sessionStorage.getItem("obligacionTargetTipoProducto") || "";
       if (sourceAccountStr && targetProductStr) {
-        const sourceAccount: SavingsAccountResponse = JSON.parse(sourceAccountStr);
-        const targetProduct: CreditAccountResponse = JSON.parse(targetProductStr);
+        const sourceAccount: SavingsAccountResponse =
+          JSON.parse(sourceAccountStr);
+        const targetProduct: CreditAccountResponse =
+          JSON.parse(targetProductStr);
         const txRequest = {
           origen: buildAccountReference(sourceAccount),
-          cuentas: [buildCreditTarget(targetProduct, confirmationData.valorAPagar, tipoProducto)],
+          cuentas: [
+            buildCreditTarget(
+              targetProduct,
+              confirmationData.valorAPagar,
+              tipoProducto,
+            ),
+          ],
           vlrPagoTotal: confirmationData.valorAPagar,
         };
-        sessionStorage.setItem("obligacionTransactionRequest", JSON.stringify(txRequest));
+        sessionStorage.setItem(
+          "obligacionTransactionRequest",
+          JSON.stringify(txRequest),
+        );
       }
 
       if (paymentMethod === "pse") {
@@ -132,7 +162,11 @@ export default function ConfirmacionPage() {
         }
         const { documentType, documentNumber } = user ?? {};
         if (documentType && documentNumber) {
-          await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+          await sendTransactionOtp({
+            documentType,
+            documentNumber,
+            trnType: "PaymentInternal",
+          });
         }
         router.push("/pagos/pagar-mis-productos/obligaciones/codigo-sms");
       }
@@ -154,9 +188,10 @@ export default function ConfirmacionPage() {
     );
   }
 
-  const currentSteps = paymentMethod === "pse"
-    ? OBLIGACION_PAYMENT_STEPS
-    : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
+  const currentSteps =
+    paymentMethod === "pse"
+      ? OBLIGACION_PAYMENT_STEPS
+      : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
 
   return (
     <div className="space-y-6">

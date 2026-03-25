@@ -20,7 +20,10 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Split value into array of digits
-  const digits = value.split("").concat(Array(CODE_LENGTH).fill("")).slice(0, CODE_LENGTH);
+  const digits = value
+    .split("")
+    .concat(Array(CODE_LENGTH).fill(""))
+    .slice(0, CODE_LENGTH);
 
   // Auto-focus first input on mount
   useEffect(() => {
@@ -29,7 +32,10 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
     }
   }, [disabled]);
 
-  const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const newDigit = e.target.value.replace(/\D/g, "").slice(-1);
 
     const newDigits = [...digits];
@@ -43,7 +49,10 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     // Handle backspace
     if (e.key === "Backspace") {
       if (!digits[index] && index > 0) {

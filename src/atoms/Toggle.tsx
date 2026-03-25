@@ -6,7 +6,13 @@ interface ToggleProps {
   labelClassName?: string;
 }
 
-export function Toggle({ checked, onChange, label, className = '', labelClassName = '' }: ToggleProps) {
+export function Toggle({
+  checked,
+  onChange,
+  label,
+  className = "",
+  labelClassName = "",
+}: ToggleProps) {
   return (
     <button
       type="button"
@@ -43,7 +49,11 @@ export function Toggle({ checked, onChange, label, className = '', labelClassNam
           </>
         )}
       </svg>
-      {label && <span className={`text-brand-text-black ${labelClassName}`}>{label}</span>}
+      {label && (
+        <span className={`text-brand-text-black ${labelClassName}`}>
+          {label}
+        </span>
+      )}
     </button>
   );
 }

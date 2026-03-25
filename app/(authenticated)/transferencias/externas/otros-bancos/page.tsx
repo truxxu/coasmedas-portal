@@ -31,7 +31,9 @@ export default function AOtrosBancosPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
 
-  const [sourceAccounts, setSourceAccounts] = useState<ExternalTransferSourceAccount[]>([]);
+  const [sourceAccounts, setSourceAccounts] = useState<
+    ExternalTransferSourceAccount[]
+  >([]);
   const [selectedSourceId, setSelectedSourceId] = useState("");
   const [selectedDestinationId, setSelectedDestinationId] = useState("");
   const [amount, setAmount] = useState("");
@@ -41,8 +43,12 @@ export default function AOtrosBancosPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Raw API data for building transaction request later
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
-  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
+  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>(
+    [],
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -132,8 +138,14 @@ export default function AOtrosBancosPage() {
     sessionStorage.setItem("externalTransferConcept", concept);
 
     // Store raw API data for building transaction request
-    sessionStorage.setItem("externalTransferSavingsApi", JSON.stringify(savingsApiData));
-    sessionStorage.setItem("externalTransferCreditsApi", JSON.stringify(creditsApiData));
+    sessionStorage.setItem(
+      "externalTransferSavingsApi",
+      JSON.stringify(savingsApiData),
+    );
+    sessionStorage.setItem(
+      "externalTransferCreditsApi",
+      JSON.stringify(creditsApiData),
+    );
 
     router.push("/transferencias/externas/otros-bancos/confirmacion");
   };

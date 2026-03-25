@@ -13,6 +13,7 @@
 This implementation plan details the step-by-step process to build the Public Utilities Registration feature. The feature allows users to register their utility services (electricity, water, gas, etc.) before making payments.
 
 ### Flow Summary
+
 1. **Flow Selection Page**: Choose between "Inscribir Servicios" or "Pagar Servicios"
 2. **Registration Form**: Enter city, utility provider, bill number, and alias
 3. **Confirmation Page**: Review and confirm registration data
@@ -25,6 +26,7 @@ This implementation plan details the step-by-step process to build the Public Ut
 Before starting implementation, verify these existing components are available:
 
 ### Existing Components to Reuse
+
 - `BackButton` (atom) - Back navigation
 - `Button` (atom) - Primary/secondary buttons
 - `Card` (atom) - Container cards
@@ -42,9 +44,11 @@ Before starting implementation, verify these existing components are available:
 ### Phase 1: Foundation (Types & Mock Data)
 
 #### Step 1.1: Create Type Definitions
+
 **File**: `src/types/utility-registration.ts`
 
 Create the following types:
+
 - `CityOption` - City dropdown option
 - `ConvenioOption` - Utility provider dropdown option
 - `UtilityRegistrationForm` - Form data structure
@@ -58,9 +62,11 @@ Create the following types:
 ---
 
 #### Step 1.2: Create Mock Data
+
 **File**: `src/mocks/mockUtilityRegistrationData.ts`
 
 Create mock data for:
+
 - `mockCities` - Array of 5 Colombian cities (Cali, Bogota, Medellin, Barranquilla, Cartagena)
 - `mockConvenios` - Array of utility providers filtered by city (18 convenios across cities)
 - `mockRegistrationResultSuccess` - Success response mock
@@ -73,9 +79,11 @@ Create mock data for:
 ### Phase 2: Atoms (New Icons)
 
 #### Step 2.1: Create SuccessIcon
+
 **File**: `src/atoms/SuccessIcon.tsx`
 
 Implementation:
+
 - Green circle border (#009900)
 - White checkmark icon inside
 - Size variants: sm (40px), md (60px), lg (80px)
@@ -85,9 +93,11 @@ Implementation:
 ---
 
 #### Step 2.2: Create ErrorIcon
+
 **File**: `src/atoms/ErrorIcon.tsx`
 
 Implementation:
+
 - Red circle border (#FF0D00)
 - X icon inside
 - Size variants: sm (40px), md (60px), lg (80px)
@@ -97,12 +107,14 @@ Implementation:
 ---
 
 #### Step 2.3: Update Atoms Index
+
 **File**: `src/atoms/index.ts`
 
 Add exports:
+
 ```typescript
-export { SuccessIcon } from './SuccessIcon';
-export { ErrorIcon } from './ErrorIcon';
+export { SuccessIcon } from "./SuccessIcon";
+export { ErrorIcon } from "./ErrorIcon";
 ```
 
 ---
@@ -110,9 +122,11 @@ export { ErrorIcon } from './ErrorIcon';
 ### Phase 3: Molecules (New Components)
 
 #### Step 3.1: Create FlowOptionCard
+
 **File**: `src/molecules/FlowOptionCard.tsx`
 
 Implementation:
+
 - Clickable card for flow selection
 - Props: title, description, onClick, optional icon
 - Styling:
@@ -127,11 +141,13 @@ Implementation:
 ---
 
 #### Step 3.2: Update Molecules Index
+
 **File**: `src/molecules/index.ts`
 
 Add export:
+
 ```typescript
-export { FlowOptionCard } from './FlowOptionCard';
+export { FlowOptionCard } from "./FlowOptionCard";
 ```
 
 Note: `ConfirmationRow` already exists - no need to create.
@@ -141,9 +157,11 @@ Note: `ConfirmationRow` already exists - no need to create.
 ### Phase 4: Organisms (Feature Components)
 
 #### Step 4.1: Create FlowSelectionCard
+
 **File**: `src/organisms/FlowSelectionCard.tsx`
 
 Implementation:
+
 - Card container with header and options grid
 - Header:
   - Title: "Pago de Servicios Publicos" (21px bold, navy)
@@ -157,9 +175,11 @@ Implementation:
 ---
 
 #### Step 4.2: Create UtilityRegistrationForm
+
 **File**: `src/organisms/UtilityRegistrationForm.tsx`
 
 Implementation:
+
 - Form card with 4 fields:
   1. **Ciudad** - Select dropdown (cities)
   2. **Convenio** - Select dropdown (filtered by city, disabled until city selected)
@@ -177,9 +197,11 @@ Implementation:
 ---
 
 #### Step 4.3: Create UtilityConfirmationCard
+
 **File**: `src/organisms/UtilityConfirmationCard.tsx`
 
 Implementation:
+
 - Card with confirmation details display
 - Header:
   - Title: "Confirmar Inscripcion"
@@ -195,9 +217,11 @@ Implementation:
 ---
 
 #### Step 4.4: Create UtilityRegistrationResultCard
+
 **File**: `src/organisms/UtilityRegistrationResultCard.tsx`
 
 Implementation:
+
 - Result display card
 - Success state:
   - Green SuccessIcon
@@ -214,14 +238,16 @@ Implementation:
 ---
 
 #### Step 4.5: Update Organisms Index
+
 **File**: `src/organisms/index.ts`
 
 Add exports:
+
 ```typescript
-export { FlowSelectionCard } from './FlowSelectionCard';
-export { UtilityRegistrationForm } from './UtilityRegistrationForm';
-export { UtilityConfirmationCard } from './UtilityConfirmationCard';
-export { UtilityRegistrationResultCard } from './UtilityRegistrationResultCard';
+export { FlowSelectionCard } from "./FlowSelectionCard";
+export { UtilityRegistrationForm } from "./UtilityRegistrationForm";
+export { UtilityConfirmationCard } from "./UtilityConfirmationCard";
+export { UtilityRegistrationResultCard } from "./UtilityRegistrationResultCard";
 ```
 
 ---
@@ -229,9 +255,11 @@ export { UtilityRegistrationResultCard } from './UtilityRegistrationResultCard';
 ### Phase 5: Pages (Route Implementation)
 
 #### Step 5.1: Create Flow Selection Page
+
 **File**: `app/(authenticated)/pagos/servicios-publicos/page.tsx`
 
 Implementation:
+
 - Use `useWelcomeBar(false)` hook
 - Header: BackButton + "Pagar Servicios Publicos" title
 - Breadcrumbs: Inicio / Pagos / Pagar servicios publicos
@@ -244,9 +272,11 @@ Implementation:
 ---
 
 #### Step 5.2: Create Registration Form Page
+
 **File**: `app/(authenticated)/pagos/servicios-publicos/inscribir/page.tsx`
 
 Implementation:
+
 - State management:
   - formData state with initial empty values
   - errors state for validation
@@ -262,9 +292,11 @@ Implementation:
 ---
 
 #### Step 5.3: Create Confirmation Page
+
 **File**: `app/(authenticated)/pagos/servicios-publicos/inscribir/confirmacion/page.tsx`
 
 Implementation:
+
 - Load formData from sessionStorage (useEffect)
 - Redirect to form if no data
 - Transform formData to confirmationData
@@ -277,9 +309,11 @@ Implementation:
 ---
 
 #### Step 5.4: Create Result Page
+
 **File**: `app/(authenticated)/pagos/servicios-publicos/inscribir/resultado/page.tsx`
 
 Implementation:
+
 - Load result from sessionStorage (useEffect)
 - Redirect to form if no data
 - Display `UtilityRegistrationResultCard`
@@ -295,9 +329,11 @@ Implementation:
 ### Phase 6: Validation Schema (Optional)
 
 #### Step 6.1: Create Validation Schema
+
 **File**: `src/schemas/utilityRegistrationSchemas.ts`
 
 Implementation:
+
 - Yup schema for form validation
 - Fields:
   - cityId: required
@@ -315,21 +351,25 @@ Note: The pages already implement manual validation. This schema is optional for
 ## Implementation Checklist
 
 ### Phase 1: Foundation
+
 - [ ] Create `src/types/utility-registration.ts`
 - [ ] Update `src/types/index.ts`
 - [ ] Create `src/mocks/mockUtilityRegistrationData.ts`
 - [ ] Update `src/mocks/index.ts`
 
 ### Phase 2: Atoms
+
 - [ ] Create `src/atoms/SuccessIcon.tsx`
 - [ ] Create `src/atoms/ErrorIcon.tsx`
 - [ ] Update `src/atoms/index.ts`
 
 ### Phase 3: Molecules
+
 - [ ] Create `src/molecules/FlowOptionCard.tsx`
 - [ ] Update `src/molecules/index.ts`
 
 ### Phase 4: Organisms
+
 - [ ] Create `src/organisms/FlowSelectionCard.tsx`
 - [ ] Create `src/organisms/UtilityRegistrationForm.tsx`
 - [ ] Create `src/organisms/UtilityConfirmationCard.tsx`
@@ -337,12 +377,14 @@ Note: The pages already implement manual validation. This schema is optional for
 - [ ] Update `src/organisms/index.ts`
 
 ### Phase 5: Pages
+
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/inscribir/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/inscribir/confirmacion/page.tsx`
 - [ ] Create `app/(authenticated)/pagos/servicios-publicos/inscribir/resultado/page.tsx`
 
 ### Phase 6: Optional
+
 - [ ] Create `src/schemas/utilityRegistrationSchemas.ts`
 
 ---
@@ -400,6 +442,7 @@ For optimal development flow, create files in this order:
    - Verify sessionStorage is cleared
 
 ### Edge Cases to Test
+
 - Direct navigation to confirmation without form data
 - Direct navigation to result without result data
 - Long alias (>50 characters)
@@ -407,6 +450,7 @@ For optimal development flow, create files in this order:
 - Network error simulation
 
 ### Responsive Testing
+
 - Desktop: 2-column option cards
 - Mobile: Stacked option cards
 - Form layout on all screen sizes
@@ -416,23 +460,25 @@ For optimal development flow, create files in this order:
 ## Dependencies Summary
 
 ### New Files (18 total)
-| File | Type | Location |
-|------|------|----------|
-| utility-registration.ts | Types | src/types/ |
-| mockUtilityRegistrationData.ts | Mocks | src/mocks/ |
-| SuccessIcon.tsx | Atom | src/atoms/ |
-| ErrorIcon.tsx | Atom | src/atoms/ |
-| FlowOptionCard.tsx | Molecule | src/molecules/ |
-| FlowSelectionCard.tsx | Organism | src/organisms/ |
-| UtilityRegistrationForm.tsx | Organism | src/organisms/ |
-| UtilityConfirmationCard.tsx | Organism | src/organisms/ |
-| UtilityRegistrationResultCard.tsx | Organism | src/organisms/ |
-| page.tsx (selection) | Page | app/.../servicios-publicos/ |
-| page.tsx (form) | Page | app/.../inscribir/ |
-| page.tsx (confirmation) | Page | app/.../confirmacion/ |
-| page.tsx (result) | Page | app/.../resultado/ |
+
+| File                              | Type     | Location                    |
+| --------------------------------- | -------- | --------------------------- |
+| utility-registration.ts           | Types    | src/types/                  |
+| mockUtilityRegistrationData.ts    | Mocks    | src/mocks/                  |
+| SuccessIcon.tsx                   | Atom     | src/atoms/                  |
+| ErrorIcon.tsx                     | Atom     | src/atoms/                  |
+| FlowOptionCard.tsx                | Molecule | src/molecules/              |
+| FlowSelectionCard.tsx             | Organism | src/organisms/              |
+| UtilityRegistrationForm.tsx       | Organism | src/organisms/              |
+| UtilityConfirmationCard.tsx       | Organism | src/organisms/              |
+| UtilityRegistrationResultCard.tsx | Organism | src/organisms/              |
+| page.tsx (selection)              | Page     | app/.../servicios-publicos/ |
+| page.tsx (form)                   | Page     | app/.../inscribir/          |
+| page.tsx (confirmation)           | Page     | app/.../confirmacion/       |
+| page.tsx (result)                 | Page     | app/.../resultado/          |
 
 ### Index Updates (4 files)
+
 - src/types/index.ts
 - src/mocks/index.ts
 - src/atoms/index.ts
@@ -440,6 +486,7 @@ For optimal development flow, create files in this order:
 - src/organisms/index.ts
 
 ### Existing Components Used
+
 - BackButton, Button, Card (atoms)
 - Breadcrumbs, ConfirmationRow (molecules)
 - useWelcomeBar (hook)
@@ -449,10 +496,12 @@ For optimal development flow, create files in this order:
 ## Notes
 
 ### SessionStorage Keys
+
 - `utilityRegistrationData` - Form data between form and confirmation
 - `utilityRegistrationResult` - Result data between confirmation and result
 
 ### Navigation Flow
+
 ```
 /pagos/servicios-publicos (Selection)
     |
@@ -466,6 +515,7 @@ For optimal development flow, create files in this order:
 ```
 
 ### Future Features
+
 - Payment flow (`/pagos/servicios-publicos/pagar`)
 - List of registered services
 - Edit/delete registered services

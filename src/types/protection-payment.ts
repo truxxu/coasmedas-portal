@@ -3,7 +3,7 @@
  */
 export interface ProtectionPaymentSourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
   maskedNumber: string;
   balance: number;
@@ -13,7 +13,10 @@ export interface ProtectionPaymentSourceAccount {
 /**
  * Protection product status for payment
  */
-export type ProtectionPaymentProductStatus = 'activo' | 'inactivo' | 'cancelado';
+export type ProtectionPaymentProductStatus =
+  | "activo"
+  | "inactivo"
+  | "cancelado";
 
 /**
  * Protection product for payment selection
@@ -21,7 +24,7 @@ export type ProtectionPaymentProductStatus = 'activo' | 'inactivo' | 'cancelado'
 export interface ProtectionPaymentProduct {
   id: string;
   title: string;
-  productNumber: string;     // "No******65-9"
+  productNumber: string; // "No******65-9"
   nextPaymentAmount: number;
   status: ProtectionPaymentProductStatus;
 }
@@ -29,7 +32,7 @@ export interface ProtectionPaymentProduct {
 /**
  * Payment method type
  */
-export type ProtectionPaymentMethod = 'account' | 'pse';
+export type ProtectionPaymentMethod = "account" | "pse";
 
 /**
  * Step 1 - Payment details form data

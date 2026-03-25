@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ObligacionPaymentProduct } from '@/src/types/obligacion-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { ObligacionPaymentProduct } from "@/src/types/obligacion-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface ObligacionPaymentCardProps {
   product: ObligacionPaymentProduct;
@@ -17,8 +17,11 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
   onClick,
   hideBalances,
 }) => {
-  const statusColor = product.status === 'al_dia' ? 'text-brand-success-icon' : 'text-brand-error';
-  const statusText = product.status === 'al_dia' ? 'Al día' : 'En mora';
+  const statusColor =
+    product.status === "al_dia"
+      ? "text-brand-success-icon"
+      : "text-brand-error";
+  const statusText = product.status === "al_dia" ? "Al día" : "En mora";
 
   return (
     <button
@@ -26,9 +29,10 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
       onClick={onClick}
       className={`
         min-w-[280px] flex-shrink-0 p-4 rounded-lg text-left transition-all
-        ${selected
-          ? 'border-2 border-brand-primary bg-white'
-          : 'border border-brand-border bg-white'
+        ${
+          selected
+            ? "border-2 border-brand-primary bg-white"
+            : "border border-brand-border bg-white"
         }
       `}
       aria-pressed={selected}
@@ -44,9 +48,7 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
       </p>
 
       {/* Balance Label */}
-      <p className="text-[15px] text-black mb-1">
-        Saldo a la fecha
-      </p>
+      <p className="text-[15px] text-black mb-1">Saldo a la fecha</p>
 
       {/* Balance Amount */}
       <p className="text-[25px] font-bold text-black mb-2">
@@ -54,9 +56,7 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
       </p>
 
       {/* Status */}
-      <p className={`text-[15px] font-medium ${statusColor}`}>
-        {statusText}
-      </p>
+      <p className={`text-[15px] font-medium ${statusColor}`}>{statusText}</p>
     </button>
   );
 };

@@ -21,13 +21,15 @@ export default function OtrosAsociadosPagoPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [beneficiary] = useState<RegisteredBeneficiary | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
-    return beneficiaryStr ? JSON.parse(beneficiaryStr) as RegisteredBeneficiary : null;
+    return beneficiaryStr
+      ? (JSON.parse(beneficiaryStr) as RegisteredBeneficiary)
+      : null;
   });
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
   const [products, setProducts] = useState<PayableProduct[]>(
-    mockPayableProducts.map((p) => ({ ...p }))
+    mockPayableProducts.map((p) => ({ ...p })),
   );
   const [error, setError] = useState<string>("");
 
@@ -52,33 +54,36 @@ export default function OtrosAsociadosPagoPage() {
     .reduce((sum, p) => sum + p.amountToPay, 0);
 
   // Determine which stepper to show based on selected funding source
-  const selectedAccount = mockOtrosAsociadosSourceAccounts.find((a) => a.id === selectedAccountId);
-  const paymentSteps = selectedAccount?.sourceType === "pse"
-    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
-    : OTROS_ASOCIADOS_PAYMENT_STEPS;
+  const selectedAccount = mockOtrosAsociadosSourceAccounts.find(
+    (a) => a.id === selectedAccountId,
+  );
+  const paymentSteps =
+    selectedAccount?.sourceType === "pse"
+      ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+      : OTROS_ASOCIADOS_PAYMENT_STEPS;
 
   const handleProductSelectionChange = useCallback(
     (productId: string, selected: boolean) => {
       setProducts((prev) =>
         prev.map((p) =>
-          p.id === productId ? { ...p, isSelected: selected } : p
-        )
+          p.id === productId ? { ...p, isSelected: selected } : p,
+        ),
       );
       setError("");
     },
-    []
+    [],
   );
 
   const handleProductAmountChange = useCallback(
     (productId: string, amount: number) => {
       setProducts((prev) =>
         prev.map((p) =>
-          p.id === productId ? { ...p, amountToPay: amount } : p
-        )
+          p.id === productId ? { ...p, amountToPay: amount } : p,
+        ),
       );
       setError("");
     },
-    []
+    [],
   );
 
   const handleContinue = () => {
@@ -97,24 +102,33 @@ export default function OtrosAsociadosPagoPage() {
     const hasZeroAmount = selectedProducts.some((p) => p.amountToPay <= 0);
     if (hasZeroAmount) {
       setError(
-        "El valor a pagar debe ser mayor a 0 para todos los productos seleccionados"
+        "El valor a pagar debe ser mayor a 0 para todos los productos seleccionados",
       );
       return;
     }
 
-    const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === selectedAccountId);
+    const account = mockOtrosAsociadosSourceAccounts.find(
+      (a) => a.id === selectedAccountId,
+    );
     // Skip balance validation for PSE (paid from external bank)
-    if (account && account.sourceType !== "pse" && totalAmount > account.balance) {
+    if (
+      account &&
+      account.sourceType !== "pse" &&
+      totalAmount > account.balance
+    ) {
       setError("Saldo insuficiente en el origen de fondos seleccionado");
       return;
     }
 
     // Store data in sessionStorage
     sessionStorage.setItem("otrosAsociadosAccountId", selectedAccountId);
-    sessionStorage.setItem("otrosAsociadosSourceType", account?.sourceType || "cuenta");
+    sessionStorage.setItem(
+      "otrosAsociadosSourceType",
+      account?.sourceType || "cuenta",
+    );
     sessionStorage.setItem(
       "otrosAsociadosProducts",
-      JSON.stringify(selectedProducts)
+      JSON.stringify(selectedProducts),
     );
     sessionStorage.setItem("otrosAsociadosTotalAmount", totalAmount.toString());
 

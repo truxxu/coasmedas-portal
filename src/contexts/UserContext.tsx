@@ -1,9 +1,18 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from "react";
 import { User, Session } from "@/src/types";
 import type { LoginResponse } from "@/types/api/auth";
-import { mapLoginResponseToUser, createSession } from "@/lib/mappers/auth.mapper";
+import {
+  mapLoginResponseToUser,
+  createSession,
+} from "@/lib/mappers/auth.mapper";
 import { setToken, clearToken, getToken } from "@/lib/auth/tokens";
 import { setTokenGetter } from "@/lib/api/client";
 import { logoutAction } from "@/app/actions/auth";
@@ -46,7 +55,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ user, session, isAuthenticated, setUser, setSession, login, logout }}
+      value={{
+        user,
+        session,
+        isAuthenticated,
+        setUser,
+        setSession,
+        login,
+        logout,
+      }}
     >
       {children}
     </UserContext.Provider>

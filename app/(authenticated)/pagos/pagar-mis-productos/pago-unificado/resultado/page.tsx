@@ -35,7 +35,8 @@ export default function ResultadoPage() {
         transactionDate: "",
         transactionTime: "",
         approvalNumber: "",
-        description: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+        description:
+          JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
       };
     }
 

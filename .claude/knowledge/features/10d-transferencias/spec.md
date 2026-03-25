@@ -284,6 +284,7 @@ interface AccountTypeRadioGroupProps {
 ```
 
 **Layout:**
+
 - Horizontal flex layout with gap-6 between options
 - Each option: Radio input + label text
 - Radio size: 16px x 16px
@@ -292,6 +293,7 @@ interface AccountTypeRadioGroupProps {
 - Label: 14px, Regular, `#111827`
 
 **Options:**
+
 - `Otro Banco (ACH)` - value: `otro_banco`
 - `Red Coopcentral` - value: `red_coopcentral`
 
@@ -310,10 +312,12 @@ interface HolderTypeRadioGroupProps {
 ```
 
 **Layout:**
+
 - Horizontal flex layout with gap-6 between options
 - Same styling as AccountTypeRadioGroup
 
 **Options:**
+
 - `Persona Natural` - value: `persona_natural`
 - `Persona Juridica` - value: `persona_juridica`
 
@@ -331,6 +335,7 @@ interface BankBadgeProps {
 ```
 
 **Styling:**
+
 - Background: Dark color (varies by bank, default `#1D4E8F`)
 - Text: White, 10px, medium weight
 - Padding: `2px 8px`
@@ -338,6 +343,7 @@ interface BankBadgeProps {
 - Max width: fit-content
 
 **Color Mapping (optional enhancement):**
+
 - Bancolombia: `#FDDA24` (yellow) with black text
 - Davivienda: `#ED1C24` (red)
 - BBVA: `#004481` (dark blue)
@@ -410,6 +416,7 @@ interface AccountRegistrationFormProps {
    - Text Link: "Volver" (below button, centered, `#004266`)
 
 **Card Styling:**
+
 - Background: White `#FFFFFF`
 - Border radius: `16px`
 - Padding: `24px`
@@ -430,17 +437,20 @@ interface RegisteredAccountCardProps {
 ```
 
 **Layout:**
+
 - Horizontal flex container with space-between
 - Left side: Account info (flex column)
 - Right side: Action buttons (flex row, gap-3)
 
 **Left Content:**
+
 1. **Alias** (title): Bold, 18px, navy `#005066`
 2. **Bank Badge**: `BankBadge` component with bank name
-3. **Account Info**: "Ahorros - ****9-01" (14px, Regular, `#58585B`)
+3. **Account Info**: "Ahorros - \*\*\*\*9-01" (14px, Regular, `#58585B`)
 4. **Holder Name**: "MARIA GONZALEZ" (14px, Regular, `#111827`, uppercase)
 
 **Right Actions:**
+
 1. **Edit Button**: Pencil icon
    - Icon size: 20px
    - Color: `#58585B`
@@ -453,6 +463,7 @@ interface RegisteredAccountCardProps {
    - Cursor: pointer
 
 **Card Styling:**
+
 - Background: White `#FFFFFF`
 - Border: `1px solid #E4E6EA`
 - Border radius: `8px`
@@ -474,6 +485,7 @@ interface RegisteredAccountsListProps {
 ```
 
 **Layout:**
+
 1. **Section Title**: "Cuentas Inscritas" (18px, Bold, navy `#005066`)
 2. **List**: Map through accounts, render `RegisteredAccountCard` for each
 3. **Empty State** (when no accounts): "No tienes cuentas inscritas." (centered, gray text)
@@ -496,6 +508,7 @@ interface AccountSuccessModalProps {
 **Content by Type:**
 
 **Register Success:**
+
 - Icon: Green checkmark circle (SuccessIcon, teal `#00AFA9`)
 - Title: "Cuenta Inscrita con Exito" (20px, Bold, navy `#1D4E8F`)
 - Message: "Su cuenta externa ha sido inscrita con exito. Por favor revise en su lista de cuentas inscritas."
@@ -504,6 +517,7 @@ interface AccountSuccessModalProps {
   - Secondary: "Cancelar" (gray `#E4E6EA`, left)
 
 **Edit Success:**
+
 - Icon: Green checkmark circle (SuccessIcon, teal `#00AFA9`)
 - Title: "Cuenta Editada con Exito" (20px, Bold, navy `#1D4E8F`)
 - Message: "Su cuenta externa ha sido editada con exito. Por favor revise en su lista de cuentas inscritas."
@@ -511,6 +525,7 @@ interface AccountSuccessModalProps {
   - Primary only: "Aceptar" (blue `#00B8ED`, centered)
 
 **Modal Styling:**
+
 - Background: White `#FFFFFF`
 - Border radius: `15px`
 - Max width: ~460px
@@ -534,6 +549,7 @@ interface AccountDeleteConfirmModalProps {
 ```
 
 **Content:**
+
 - Title: "Borrar cuenta inscrita" (20px, Bold, navy `#1D4E8F`)
 - Message: "Esta seguro que desea borrar esta cuenta?" (14px, Regular, `#58585B`)
 - Actions:
@@ -541,6 +557,7 @@ interface AccountDeleteConfirmModalProps {
   - Primary: "Aceptar" (blue `#00B8ED`, right)
 
 **Modal Styling:**
+
 - Same as AccountSuccessModal
 
 ---
@@ -608,6 +625,7 @@ Location: `app/(authenticated)/transferencias/inscribir-cuentas/page.tsx`
 ```
 
 **Breadcrumbs:**
+
 ```typescript
 const breadcrumbItems = [
   { label: "Inicio", href: "/home" },
@@ -617,6 +635,7 @@ const breadcrumbItems = [
 ```
 
 **WelcomeBar Configuration:**
+
 ```typescript
 useEffect(() => {
   setWelcomeBarConfig({
@@ -713,20 +732,20 @@ export type AccountRegistrationFormData = yup.InferType<
 
 ### Validation Rules Summary
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| accountType | Required, enum | "Seleccione el tipo de cuenta" |
-| entidadFinanciera | Required if otro_banco | "Seleccione la entidad financiera" |
-| cooperativa | Required if red_coopcentral | "Seleccione la cooperativa" |
-| tipoCuenta | Required, enum | "Seleccione el tipo de cuenta" |
-| numeroCuenta | Required, numeric, 8-20 digits | "Ingrese el numero de cuenta" |
-| tipoTitular | Required, enum | "Seleccione el tipo de titular" |
-| nombreTitular | Required if persona_natural | "Ingrese el nombre del titular" |
-| apellidosTitular | Required if persona_natural | "Ingrese los apellidos del titular" |
-| razonSocial | Required if persona_juridica | "Ingrese la razon social" |
-| tipoDocumento | Required, enum | "Seleccione el tipo de documento" |
-| documentoTitular | Required, numeric, 6-12 digits | "Ingrese el documento del titular" |
-| alias | Required, max 50 chars | "Ingrese un alias para la cuenta" |
+| Field             | Rule                           | Error Message                       |
+| ----------------- | ------------------------------ | ----------------------------------- |
+| accountType       | Required, enum                 | "Seleccione el tipo de cuenta"      |
+| entidadFinanciera | Required if otro_banco         | "Seleccione la entidad financiera"  |
+| cooperativa       | Required if red_coopcentral    | "Seleccione la cooperativa"         |
+| tipoCuenta        | Required, enum                 | "Seleccione el tipo de cuenta"      |
+| numeroCuenta      | Required, numeric, 8-20 digits | "Ingrese el numero de cuenta"       |
+| tipoTitular       | Required, enum                 | "Seleccione el tipo de titular"     |
+| nombreTitular     | Required if persona_natural    | "Ingrese el nombre del titular"     |
+| apellidosTitular  | Required if persona_natural    | "Ingrese los apellidos del titular" |
+| razonSocial       | Required if persona_juridica   | "Ingrese la razon social"           |
+| tipoDocumento     | Required, enum                 | "Seleccione el tipo de documento"   |
+| documentoTitular  | Required, numeric, 6-12 digits | "Ingrese el documento del titular"  |
+| alias             | Required, max 50 chars         | "Ingrese un alias para la cuenta"   |
 
 ### Error Styling
 
@@ -755,6 +774,7 @@ const [pageState, setPageState] = useState<AccountRegistrationPageState>({
 ### User Flows
 
 #### Register New Account
+
 1. User fills out the dynamic form
 2. Form validates on submit
 3. On success: Add account to registeredAccounts list
@@ -763,6 +783,7 @@ const [pageState, setPageState] = useState<AccountRegistrationPageState>({
 6. Modal closes, form resets
 
 #### Edit Existing Account
+
 1. User clicks edit (pencil) icon on a registered account
 2. Page state mode changes to "edit"
 3. Form populates with existing account data
@@ -773,6 +794,7 @@ const [pageState, setPageState] = useState<AccountRegistrationPageState>({
 8. Modal closes, mode resets to "register", form clears
 
 #### Delete Account
+
 1. User clicks delete (trash) icon on a registered account
 2. Page state stores accountToDelete
 3. "Borrar cuenta inscrita" confirmation modal appears
@@ -787,6 +809,7 @@ const [pageState, setPageState] = useState<AccountRegistrationPageState>({
 ### New Components to Export
 
 **Molecules** (`src/molecules/index.ts`):
+
 ```typescript
 export { AccountTypeRadioGroup } from "./AccountTypeRadioGroup";
 export { HolderTypeRadioGroup } from "./HolderTypeRadioGroup";
@@ -794,6 +817,7 @@ export { BankBadge } from "./BankBadge";
 ```
 
 **Organisms** (`src/organisms/index.ts`):
+
 ```typescript
 export { AccountRegistrationForm } from "./AccountRegistrationForm";
 export { RegisteredAccountsList } from "./RegisteredAccountsList";
@@ -803,6 +827,7 @@ export { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 ```
 
 **Types** (`src/types/index.ts`):
+
 ```typescript
 export type {
   AccountBankType,
@@ -820,6 +845,7 @@ export type {
 ```
 
 **Mocks** (`src/mocks/index.ts`):
+
 ```typescript
 export {
   mockRegisteredAccounts,
@@ -836,18 +862,18 @@ export {
 
 The following existing components should be reused:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `BackButton` | atoms | Back navigation arrow |
-| `Breadcrumbs` | molecules | Page navigation trail |
-| `HideBalancesToggle` | molecules | Balance visibility toggle |
-| `Card` | atoms | Container cards |
-| `Button` | atoms | Primary and secondary buttons |
-| `Input` | atoms | Text inputs |
-| `Select` | atoms | Dropdown selects |
-| `Label` | atoms | Form labels |
-| `ErrorMessage` | atoms | Form validation errors |
-| `SuccessIcon` | atoms | Green checkmark icon |
+| Component            | Location  | Usage                         |
+| -------------------- | --------- | ----------------------------- |
+| `BackButton`         | atoms     | Back navigation arrow         |
+| `Breadcrumbs`        | molecules | Page navigation trail         |
+| `HideBalancesToggle` | molecules | Balance visibility toggle     |
+| `Card`               | atoms     | Container cards               |
+| `Button`             | atoms     | Primary and secondary buttons |
+| `Input`              | atoms     | Text inputs                   |
+| `Select`             | atoms     | Dropdown selects              |
+| `Label`              | atoms     | Form labels                   |
+| `ErrorMessage`       | atoms     | Form validation errors        |
+| `SuccessIcon`        | atoms     | Green checkmark icon          |
 
 ---
 
@@ -877,18 +903,21 @@ The following existing components should be reused:
 ## 12. Implementation Checklist
 
 ### Phase 1: Types and Mocks
+
 - [ ] Create `src/types/accountRegistration.ts`
 - [ ] Update `src/types/index.ts`
 - [ ] Create `src/mocks/mockAccountRegistrationData.ts`
 - [ ] Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 - [ ] Create `AccountTypeRadioGroup` molecule
 - [ ] Create `HolderTypeRadioGroup` molecule
 - [ ] Create `BankBadge` molecule
 - [ ] Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 - [ ] Create `AccountRegistrationForm` organism
 - [ ] Create `RegisteredAccountCard` organism
 - [ ] Create `RegisteredAccountsList` organism
@@ -897,6 +926,7 @@ The following existing components should be reused:
 - [ ] Update `src/organisms/index.ts`
 
 ### Phase 4: Page
+
 - [ ] Create `app/(authenticated)/transferencias/inscribir-cuentas/page.tsx`
 
 ---
@@ -904,6 +934,7 @@ The following existing components should be reused:
 ## 13. Testing Scenarios
 
 ### Happy Path - Register
+
 1. Navigate to `/transferencias/inscribir-cuentas`
 2. Select "Otro Banco (ACH)" as account type
 3. Select a bank from dropdown
@@ -920,6 +951,7 @@ The following existing components should be reused:
 14. Verify new account appears in list
 
 ### Happy Path - Edit
+
 1. Click edit icon on existing account
 2. Verify form populates with account data
 3. Modify some fields
@@ -929,23 +961,27 @@ The following existing components should be reused:
 7. Verify account list reflects changes
 
 ### Happy Path - Delete
+
 1. Click delete icon on existing account
 2. Verify confirmation modal appears
 3. Click "Aceptar"
 4. Verify account removed from list
 
 ### Validation Errors
+
 1. Submit form with empty required fields → See error messages
 2. Enter invalid account number (letters) → See validation error
 3. Enter too short document number → See validation error
 
 ### Dynamic Form Behavior
+
 1. Select "Otro Banco" → Verify "Entidad Financiera" dropdown appears
 2. Select "Red Coopcentral" → Verify "Cooperativa" dropdown appears
 3. Select "Persona Natural" → Verify name/lastname fields appear
 4. Select "Persona Juridica" → Verify "Razon Social" field appears
 
 ### Edge Cases
+
 1. Cancel edit mode → Form resets to register mode
 2. Modal close behaviors (backdrop click, Escape key)
 3. Empty accounts list → Show empty state message
@@ -954,13 +990,13 @@ The following existing components should be reused:
 
 ## 14. Design References
 
-| Screen | Figma Node | Description |
-|--------|------------|-------------|
-| Form - Red Coopcentral (Persona Juridica) | `3349-9` | Registration form with Coopcentral selected |
-| Form - Otro Banco ACH (Persona Natural) | `3349-10` | Registration form with Otro Banco selected |
-| Register Success Modal | `810-1632` | Success modal after registration |
-| Edit Success Modal | `3403-511` | Success modal after edit |
-| Delete Confirmation Modal | `3403-915` | Delete confirmation modal |
+| Screen                                    | Figma Node | Description                                 |
+| ----------------------------------------- | ---------- | ------------------------------------------- |
+| Form - Red Coopcentral (Persona Juridica) | `3349-9`   | Registration form with Coopcentral selected |
+| Form - Otro Banco ACH (Persona Natural)   | `3349-10`  | Registration form with Otro Banco selected  |
+| Register Success Modal                    | `810-1632` | Success modal after registration            |
+| Edit Success Modal                        | `3403-511` | Success modal after edit                    |
+| Delete Confirmation Modal                 | `3403-915` | Delete confirmation modal                   |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`
 
@@ -968,21 +1004,21 @@ Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?nod
 
 ## 15. Color Reference
 
-| Color Name | Hex Code | Usage |
-|------------|----------|-------|
-| Primary Navy | `#1D4E8F` | Card titles, modal titles |
-| Dark Navy | `#005066` | Section titles, aliases |
+| Color Name        | Hex Code  | Usage                           |
+| ----------------- | --------- | ------------------------------- |
+| Primary Navy      | `#1D4E8F` | Card titles, modal titles       |
+| Dark Navy         | `#005066` | Section titles, aliases         |
 | Primary Blue/Teal | `#00B8ED` | Primary buttons, selected radio |
-| Text Black | `#111827` | Primary text, labels |
-| Gray High | `#58585B` | Secondary text, descriptions |
-| Gray Medium | `#808284` | Placeholder text |
-| Gray Border | `#B1B1B1` | Input borders, radio borders |
-| Gray Low | `#E4E6EA` | Card borders, secondary buttons |
-| Error Red | `#FF0D00` | Error messages, delete icon |
-| Success Teal | `#00AFA9` | Success icon |
-| White | `#FFFFFF` | Backgrounds, button text |
-| Light Blue BG | `#F0F9FF` | Page background |
-| Link Dark | `#004266` | "Volver" link text |
+| Text Black        | `#111827` | Primary text, labels            |
+| Gray High         | `#58585B` | Secondary text, descriptions    |
+| Gray Medium       | `#808284` | Placeholder text                |
+| Gray Border       | `#B1B1B1` | Input borders, radio borders    |
+| Gray Low          | `#E4E6EA` | Card borders, secondary buttons |
+| Error Red         | `#FF0D00` | Error messages, delete icon     |
+| Success Teal      | `#00AFA9` | Success icon                    |
+| White             | `#FFFFFF` | Backgrounds, button text        |
+| Light Blue BG     | `#F0F9FF` | Page background                 |
+| Link Dark         | `#004266` | "Volver" link text              |
 
 ---
 
@@ -994,6 +1030,7 @@ Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?nod
 - **10c-transferencias**: PSE recharge flow
 
 The registered accounts from this feature (10d) can be used as destinations in:
+
 - Network transfers (Coopcentral) - Feature 10b
 - Future: ACH transfers to other banks
 

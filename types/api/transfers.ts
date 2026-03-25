@@ -1,4 +1,8 @@
-import type { UserIdentification, AccountReference, DocumentType } from './common';
+import type {
+  UserIdentification,
+  AccountReference,
+  DocumentType,
+} from "./common";
 
 // ─── Request Types ───
 

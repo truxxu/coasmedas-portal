@@ -31,15 +31,23 @@ export function UtilityRegistrationForm({
   onBillNumberChange,
   onAliasChange,
 }: UtilityRegistrationFormProps) {
-  const categoryOptions = useMemo(() => categories.map((cat) => ({
-    value: cat.id,
-    label: cat.name,
-  })), [categories]);
+  const categoryOptions = useMemo(
+    () =>
+      categories.map((cat) => ({
+        value: cat.id,
+        label: cat.name,
+      })),
+    [categories],
+  );
 
-  const convenioOptions = useMemo(() => convenios.map((convenio) => ({
-    value: convenio.id,
-    label: convenio.name,
-  })), [convenios]);
+  const convenioOptions = useMemo(
+    () =>
+      convenios.map((convenio) => ({
+        value: convenio.id,
+        label: convenio.name,
+      })),
+    [convenios],
+  );
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const categoryId = e.target.value;

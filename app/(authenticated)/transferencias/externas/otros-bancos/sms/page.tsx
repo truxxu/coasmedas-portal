@@ -46,9 +46,11 @@ export default function SMSVerificationPage() {
       });
 
       // Map and store result for the resultado page
-      const sourceName = sessionStorage.getItem("externalTransferSourceName") || "";
+      const sourceName =
+        sessionStorage.getItem("externalTransferSourceName") || "";
       const destBank = sessionStorage.getItem("externalTransferDestBank") || "";
-      const destAccNum = sessionStorage.getItem("externalTransferDestAccNum") || "";
+      const destAccNum =
+        sessionStorage.getItem("externalTransferDestAccNum") || "";
       const concept = sessionStorage.getItem("externalTransferConcept") || "";
 
       const mappedResult = mapExternalBankTransferResult(result, {
@@ -57,7 +59,10 @@ export default function SMSVerificationPage() {
         destinationAccountNumber: destAccNum,
         concept,
       });
-      sessionStorage.setItem("externalTransferResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "externalTransferResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;

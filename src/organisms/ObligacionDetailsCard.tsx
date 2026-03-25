@@ -16,7 +16,10 @@ interface ObligacionDetailsCardProps {
   selectedProductId: string;
   selectedAccountId: string;
   onProductSelect: (productId: string) => void;
-  onAccountChange: (accountId: string, paymentMethod: ObligacionPaymentMethod) => void;
+  onAccountChange: (
+    accountId: string,
+    paymentMethod: ObligacionPaymentMethod,
+  ) => void;
   onNeedMoreBalance: () => void;
   hideBalances: boolean;
   accountError?: string;
@@ -34,15 +37,20 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
   accountError,
 }) => {
   const getAccountDisplayName = (account: ObligacionSourceAccount): string => {
-    const accountType = account.type === 'ahorros' ? 'Cuenta de Ahorros' : 'Cuenta Corriente';
-    const balance = hideBalances ? maskCurrency() : formatCurrency(account.balance);
+    const accountType =
+      account.type === "ahorros" ? "Cuenta de Ahorros" : "Cuenta Corriente";
+    const balance = hideBalances
+      ? maskCurrency()
+      : formatCurrency(account.balance);
     return `${accountType} - Saldo: ${balance}`;
   };
 
   return (
     <Card className="space-y-6 p-6">
       {/* Title */}
-      <h2 className="text-lg font-bold text-brand-navy">Pago de Obligaciones</h2>
+      <h2 className="text-lg font-bold text-brand-navy">
+        Pago de Obligaciones
+      </h2>
 
       {/* Payment Method Selector */}
       <div className="space-y-2">
@@ -54,13 +62,13 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
             value={selectedAccountId}
             onChange={(e) => {
               const value = e.target.value;
-              const isPSE = value === 'pse';
-              onAccountChange(value, isPSE ? 'pse' : 'account');
+              const isPSE = value === "pse";
+              onAccountChange(value, isPSE ? "pse" : "account");
             }}
             className={`
               flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
               focus:outline-none focus:ring-2 focus:ring-brand-primary
-              ${accountError ? 'border-brand-error' : 'border-brand-footer-text'}
+              ${accountError ? "border-brand-error" : "border-brand-footer-text"}
             `}
           >
             <option value="">Seleccionar cuenta</option>

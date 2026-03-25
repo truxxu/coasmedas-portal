@@ -17,7 +17,9 @@ export default function HomePage() {
   const { user } = useUserContext();
   const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
-  const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(null);
+  const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,7 +76,10 @@ export default function HomePage() {
         loading={loading}
       />
       <QuickAccessGrid />
-      <RecentTransactions transactions={mockConsolidatedTransactions} loading={loading} />
+      <RecentTransactions
+        transactions={mockConsolidatedTransactions}
+        loading={loading}
+      />
     </>
   );
 }

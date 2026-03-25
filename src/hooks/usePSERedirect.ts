@@ -62,7 +62,9 @@ export function usePSERedirect(config: PSERedirectConfig): PSERedirectState {
       if (config.onCreateTransaction) {
         // Real API flow: show first phase, then call API
         setCurrentPhase(0);
-        await new Promise((resolve) => setTimeout(resolve, phases[0]?.duration ?? 2000));
+        await new Promise((resolve) =>
+          setTimeout(resolve, phases[0]?.duration ?? 2000),
+        );
 
         try {
           const paymentUrl = await config.onCreateTransaction();
@@ -75,7 +77,7 @@ export function usePSERedirect(config: PSERedirectConfig): PSERedirectState {
             err instanceof Error ? err.message : "Error al conectar con PSE";
           sessionStorage.setItem(
             "pseTransactionError",
-            JSON.stringify({ error: true, message: errorMessage })
+            JSON.stringify({ error: true, message: errorMessage }),
           );
           router.push(config.errorPath ?? config.successPath);
         }
@@ -83,7 +85,9 @@ export function usePSERedirect(config: PSERedirectConfig): PSERedirectState {
         // Legacy mock flow: run all phases, then redirect internally
         for (let i = 0; i < phases.length; i++) {
           setCurrentPhase(i);
-          await new Promise((resolve) => setTimeout(resolve, phases[i].duration));
+          await new Promise((resolve) =>
+            setTimeout(resolve, phases[i].duration),
+          );
         }
 
         config.onBeforeRedirect?.();

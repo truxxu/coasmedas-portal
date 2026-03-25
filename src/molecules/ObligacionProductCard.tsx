@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useUIContext } from '@/src/contexts';
-import { ObligacionProduct } from '@/src/types';
-import { formatCurrency, maskCurrency, maskNumber } from '@/src/utils';
-import { formatDate } from '@/src/utils/dates';
+import { useUIContext } from "@/src/contexts";
+import { ObligacionProduct } from "@/src/types";
+import { formatCurrency, maskCurrency, maskNumber } from "@/src/utils";
+import { formatDate } from "@/src/utils/dates";
 
 interface ObligacionProductCardProps {
   product: ObligacionProduct;
@@ -16,18 +16,18 @@ export function ObligacionProductCard({
   product,
   isSelected = false,
   onClick,
-  className = '',
+  className = "",
 }: ObligacionProductCardProps) {
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    al_dia: 'text-brand-success-icon',
-    en_mora: 'text-red-600',
+    al_dia: "text-brand-success-icon",
+    en_mora: "text-red-600",
   }[product.status];
 
   const statusLabel = {
-    al_dia: 'Al día',
-    en_mora: 'En mora',
+    al_dia: "Al día",
+    en_mora: "En mora",
   }[product.status];
 
   // Format product number with optional prefix
@@ -42,7 +42,7 @@ export function ObligacionProductCard({
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick?.();
         }
@@ -50,9 +50,10 @@ export function ObligacionProductCard({
       className={`
         rounded-2xl p-5 cursor-pointer min-w-[280px]
         transition-all duration-200
-        ${isSelected
-          ? 'bg-white border-2 border-brand-navy-dark'
-          : 'bg-brand-gray-light border border-brand-border hover:border-brand-footer-text'
+        ${
+          isSelected
+            ? "bg-white border-2 border-brand-navy-dark"
+            : "bg-brand-gray-light border border-brand-border hover:border-brand-footer-text"
         }
         ${className}
       `}
@@ -74,9 +75,7 @@ export function ObligacionProductCard({
       </p>
 
       {/* Status */}
-      <p className={`text-[15px] ${statusColor}`}>
-        {statusLabel}
-      </p>
+      <p className={`text-[15px] ${statusColor}`}>{statusLabel}</p>
 
       {/* Divider */}
       <div className="border-t border-brand-border my-3" />
@@ -85,15 +84,21 @@ export function ObligacionProductCard({
       <div className="space-y-1">
         {/* Valor desembolsado */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Valor desembolsado:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Valor desembolsado:
+          </span>
           <span className="text-[14px] font-medium text-brand-navy-alt">
-            {hideBalances ? maskCurrency() : formatCurrency(product.disbursedAmount)}
+            {hideBalances
+              ? maskCurrency()
+              : formatCurrency(product.disbursedAmount)}
           </span>
         </div>
 
         {/* Próximo pago */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Próximo pago:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Próximo pago:
+          </span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.nextPaymentDate)}
           </span>
@@ -101,9 +106,13 @@ export function ObligacionProductCard({
 
         {/* Valor próximo pago */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Valor próximo pago:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Valor próximo pago:
+          </span>
           <span className="text-[14px] font-medium text-brand-navy-alt">
-            {hideBalances ? maskCurrency() : formatCurrency(product.nextPaymentAmount)}
+            {hideBalances
+              ? maskCurrency()
+              : formatCurrency(product.nextPaymentAmount)}
           </span>
         </div>
       </div>

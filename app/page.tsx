@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 import {
   PrehomeHeader,
   PrehomeHero,
@@ -8,11 +8,12 @@ import {
   PrehomeInfo,
   PrehomeApp,
   PrehomeFooter,
-} from '@/src/organisms';
+} from "@/src/organisms";
 
 export const metadata: Metadata = {
-  title: 'Coasmedas - Portal Transaccional',
-  description: 'La plataforma digital para gestionar tus finanzas y alcanzar tus sueños con seguridad y confianza.',
+  title: "Coasmedas - Portal Transaccional",
+  description:
+    "La plataforma digital para gestionar tus finanzas y alcanzar tus sueños con seguridad y confianza.",
 };
 
 export default function PrehomePage() {

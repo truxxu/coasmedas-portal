@@ -59,9 +59,9 @@ Create new types in `src/types/cupoRotativoTransfer.ts`:
  */
 export interface CupoRotativo {
   id: string;
-  name: string;              // e.g., "Cupo Rotativo Personal"
-  availableAmount: number;   // Available credit amount
-  totalAmount: number;       // Total credit limit
+  name: string; // e.g., "Cupo Rotativo Personal"
+  availableAmount: number; // Available credit amount
+  totalAmount: number; // Total credit limit
 }
 
 /**
@@ -69,9 +69,9 @@ export interface CupoRotativo {
  */
 export interface CupoRotativoDestination {
   id: string;
-  name: string;              // e.g., "Cuenta de Ahorros"
-  maskedNumber: string;      // e.g., "***4428"
-  accountType: string;       // e.g., "Ahorros"
+  name: string; // e.g., "Cuenta de Ahorros"
+  maskedNumber: string; // e.g., "***4428"
+  accountType: string; // e.g., "Ahorros"
 }
 
 /**
@@ -88,9 +88,9 @@ export interface CupoRotativoTransferFormData {
  */
 export interface CupoRotativoConfirmationData {
   holderName: string;
-  documentNumber: string;     // Masked: "CC 1.***.***234"
-  cupoOrigen: string;         // Selected cupo name
-  cuentaDestino: string;      // Destination account display
+  documentNumber: string; // Masked: "CC 1.***.***234"
+  cupoOrigen: string; // Selected cupo name
+  cuentaDestino: string; // Destination account display
   amount: number;
 }
 
@@ -243,6 +243,7 @@ interface CupoRotativoCardProps {
 ```
 
 **Visual Specification:**
+
 - Container: White background, light gray border (`#E4E6EA`), 8px border-radius
 - Padding: 16px
 - Layout: Horizontal flex with radio button on left
@@ -273,6 +274,7 @@ interface CupoRotativoDetailsCardProps {
 ```
 
 **Sections:**
+
 1. **Header**
    - Title: "Transferencias de cupos rotativos a mis cuentas" (18px, Bold, navy)
    - Description: "Utiliza tus cupos rotativos para transferir a tus cuentas activas." (15px, Regular)
@@ -307,6 +309,7 @@ interface CupoRotativoConfirmationCardProps {
 ```
 
 **Layout:**
+
 - Header: "Confirmación de Pago" (18px, Bold, navy)
 - Description text below header
 - Two-column label/value pairs:
@@ -314,7 +317,7 @@ interface CupoRotativoConfirmationCardProps {
   - Documento → CC 1.***.***234
   - ─────────────── (divider)
   - Cupo Origen → Cupo Rotativo Personal
-  - Cuenta Destino → Cuenta de Ahorros (***4428)
+  - Cuenta Destino → Cuenta de Ahorros (\*\*\*4428)
   - ─────────────── (divider)
   - Valor a Transferir → $ 1.000.000 (larger font, 17px)
 
@@ -332,6 +335,7 @@ interface CupoRotativoResultCardProps {
 ```
 
 **Sections:**
+
 1. **Status Icon + Title** (centered)
    - Success: Green checkmark in teal circle + "Transacción Exitosa"
    - Error: Red X in red circle + "Transacción Fallida"
@@ -357,6 +361,7 @@ interface CupoRotativoResultCardProps {
 Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/page.tsx`
 
 **Behavior:**
+
 1. Set WelcomeBar with title "Desde Cupos Rotativos" and back href
 2. Display breadcrumbs: Inicio / Transferencias / Desde Cupos Rotativos
 3. Show Stepper at step 1
@@ -369,6 +374,7 @@ Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/pag
 6. Store selections in sessionStorage and navigate to confirmation
 
 **Session Storage Keys:**
+
 - `cupoRotativoSelectedCupoId`
 - `cupoRotativoDestinationId`
 - `cupoRotativoAmount`
@@ -378,6 +384,7 @@ Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/pag
 Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/confirmacion/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage
 2. If missing data, redirect back to step 1
 3. Display breadcrumbs and Stepper at step 2
@@ -390,6 +397,7 @@ Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/con
 Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/sms/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 3
 3. Reuse existing `CodeInputCard` organism
@@ -404,6 +412,7 @@ Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/sms
 Location: `app/(authenticated)/transferencias/internas/desde-cupos-rotativos/resultado/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 4 (all complete)
 3. Render `CupoRotativoResultCard` with transaction result
@@ -437,20 +446,20 @@ Change the "desde-cupos-rotativos" option from `enabled: false` to `enabled: tru
 
 ### Step 1: Details Form
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Cupo Rotativo | Required | "Por favor selecciona un cupo rotativo." |
-| Destination Account | Required | "Por favor selecciona una cuenta destino." |
-| Amount | Required, > 0 | "Por favor ingresa un valor válido." |
-| Amount | ≤ available | "El valor supera el cupo disponible." |
-| Captcha | Required (future) | "Por favor completa el captcha." |
+| Field               | Rule              | Error Message                              |
+| ------------------- | ----------------- | ------------------------------------------ |
+| Cupo Rotativo       | Required          | "Por favor selecciona un cupo rotativo."   |
+| Destination Account | Required          | "Por favor selecciona una cuenta destino." |
+| Amount              | Required, > 0     | "Por favor ingresa un valor válido."       |
+| Amount              | ≤ available       | "El valor supera el cupo disponible."      |
+| Captcha             | Required (future) | "Por favor completa el captcha."           |
 
 ### Step 3: SMS Verification
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Code | Required, 6 digits | "Por favor ingresa el código completo." |
-| Code | Valid code | "El código ingresado es incorrecto." |
+| Field | Rule               | Error Message                           |
+| ----- | ------------------ | --------------------------------------- |
+| Code  | Required, 6 digits | "Por favor ingresa el código completo." |
+| Code  | Valid code         | "El código ingresado es incorrecto."    |
 
 ---
 
@@ -460,12 +469,12 @@ Change the "desde-cupos-rotativos" option from `enabled: false` to `enabled: tru
 
 All prefixed with `cupoRotativo` to avoid conflicts:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `cupoRotativoSelectedCupoId` | string | Selected cupo rotativo ID |
-| `cupoRotativoDestinationId` | string | Selected destination account ID |
-| `cupoRotativoAmount` | string | Transfer amount (as string) |
-| `cupoRotativoTransferResult` | JSON | Transaction result object |
+| Key                          | Type   | Description                     |
+| ---------------------------- | ------ | ------------------------------- |
+| `cupoRotativoSelectedCupoId` | string | Selected cupo rotativo ID       |
+| `cupoRotativoDestinationId`  | string | Selected destination account ID |
+| `cupoRotativoAmount`         | string | Transfer amount (as string)     |
+| `cupoRotativoTransferResult` | JSON   | Transaction result object       |
 
 ### Flow Navigation
 
@@ -484,11 +493,13 @@ Step 4 → [Finalizar] → Clear sessionStorage → /home
 ### New Components to Export
 
 **Molecules** (`src/molecules/index.ts`):
+
 ```typescript
 export { CupoRotativoCard } from "./CupoRotativoCard";
 ```
 
 **Organisms** (`src/organisms/index.ts`):
+
 ```typescript
 export { CupoRotativoDetailsCard } from "./CupoRotativoDetailsCard";
 export { CupoRotativoConfirmationCard } from "./CupoRotativoConfirmationCard";
@@ -496,6 +507,7 @@ export { CupoRotativoResultCard } from "./CupoRotativoResultCard";
 ```
 
 **Types** (`src/types/index.ts`):
+
 ```typescript
 export type {
   CupoRotativo,
@@ -508,6 +520,7 @@ export type {
 ```
 
 **Mocks** (`src/mocks/index.ts`):
+
 ```typescript
 export {
   mockCuposRotativos,
@@ -525,16 +538,16 @@ export {
 
 The following existing components should be reused:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `Breadcrumbs` | molecules | Page navigation trail |
-| `Stepper` | molecules | 4-step progress indicator |
-| `HideBalancesToggle` | molecules | Balance visibility toggle |
-| `CodeInputCard` | organisms | SMS verification (Step 3) |
-| `CaptchaPlaceholder` | molecules | Captcha placeholder |
-| `Button` | atoms | Primary and secondary buttons |
-| `Card` | atoms | Container cards |
-| `Divider` | atoms | Horizontal separators |
+| Component            | Location  | Usage                         |
+| -------------------- | --------- | ----------------------------- |
+| `Breadcrumbs`        | molecules | Page navigation trail         |
+| `Stepper`            | molecules | 4-step progress indicator     |
+| `HideBalancesToggle` | molecules | Balance visibility toggle     |
+| `CodeInputCard`      | organisms | SMS verification (Step 3)     |
+| `CaptchaPlaceholder` | molecules | Captcha placeholder           |
+| `Button`             | atoms     | Primary and secondary buttons |
+| `Card`               | atoms     | Container cards               |
+| `Divider`            | atoms     | Horizontal separators         |
 
 Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are identical.
 
@@ -554,28 +567,33 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 ## 13. Implementation Checklist
 
 ### Phase 1: Types and Mocks
+
 - [ ] Create `src/types/cupoRotativoTransfer.ts`
 - [ ] Update `src/types/index.ts`
 - [ ] Create `src/mocks/mockCupoRotativoData.ts`
 - [ ] Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 - [ ] Create `CupoRotativoCard` molecule
 - [ ] Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 - [ ] Create `CupoRotativoDetailsCard` organism
 - [ ] Create `CupoRotativoConfirmationCard` organism
 - [ ] Create `CupoRotativoResultCard` organism
 - [ ] Update `src/organisms/index.ts`
 
 ### Phase 4: Pages
+
 - [ ] Create Step 1 page: `desde-cupos-rotativos/page.tsx`
 - [ ] Create Step 2 page: `desde-cupos-rotativos/confirmacion/page.tsx`
 - [ ] Create Step 3 page: `desde-cupos-rotativos/sms/page.tsx`
 - [ ] Create Step 4 page: `desde-cupos-rotativos/resultado/page.tsx`
 
 ### Phase 5: Enable Flow
+
 - [ ] Update `InternasFlowGrid.tsx` to enable the flow option
 
 ---
@@ -583,6 +601,7 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 ## 14. Testing Scenarios
 
 ### Happy Path
+
 1. Select cupo rotativo
 2. Select destination account
 3. Enter valid amount (within available)
@@ -593,6 +612,7 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 8. Click "Finalizar" to return to home
 
 ### Validation Errors
+
 1. No cupo selected → Error message
 2. No destination selected → Error message
 3. Amount = 0 → Error message
@@ -600,6 +620,7 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 5. Invalid SMS code → "El código ingresado es incorrecto."
 
 ### Edge Cases
+
 1. Navigate directly to step 2/3/4 without data → Redirect to step 1
 2. Session timeout during flow → Handle gracefully
 3. Multiple cupos with same name → Distinguish by ID
@@ -609,11 +630,11 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 
 ## 15. Design References
 
-| Step | Figma Node | Description |
-|------|------------|-------------|
-| 1 | `810-128` | Details/Selection form |
-| 2 | `810-126` | Confirmation card |
-| 3 | `810-709` | SMS code input |
-| 4 | `810-950` | Success/error result |
+| Step | Figma Node | Description            |
+| ---- | ---------- | ---------------------- |
+| 1    | `810-128`  | Details/Selection form |
+| 2    | `810-126`  | Confirmation card      |
+| 3    | `810-709`  | SMS code input         |
+| 4    | `810-950`  | Success/error result   |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`

@@ -1,4 +1,4 @@
-import { Footer } from '@/src/molecules';
+import { Footer } from "@/src/molecules";
 
 export function PrehomeFooter() {
   return (

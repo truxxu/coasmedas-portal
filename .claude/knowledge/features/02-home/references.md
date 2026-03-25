@@ -8,6 +8,7 @@
 ## Design Resources
 
 ### UI/UX Design
+
 - **Figma Design - Home Page**: [Home Dashboard](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3018-156)
   - Last updated: 2025-12-16
   - Owner: Design Team
@@ -18,6 +19,7 @@
   - Node ID: `0:1` (Canvas "Diseño Final")
 
 ### Design Assets (Local)
+
 - **Bre-B Logo (White)**: `attachments/designs/Bre-b-logo-blanco.svg`
   - For use on dark/navy backgrounds
   - Format: SVG
@@ -33,6 +35,7 @@
 ### Layout Components (Persistent across all authenticated pages)
 
 #### 1. Sidebar (Left - 268px width)
+
 - **Background**: Navy blue (`#1D4E8F`)
 - **Logo**: Coasmedas logo at top
 - **Navigation Groups** (collapsible with chevron):
@@ -47,6 +50,7 @@
 - **Dividers**: Horizontal lines separating sections
 
 #### 2. Top Header Bar (Right section)
+
 - **User Avatar**: Circle with initials (e.g., "CC" for Camilo Castellanos)
   - Background: Navy blue circle
   - Text: White initials
@@ -58,11 +62,13 @@
   - Cerrar Sesión (Logout)
 
 #### 3. Welcome Bar (Below header, persistent)
+
 - **Left**: "Bienvenido, **Camilo**" (Welcome message with user's first name in bold navy)
   - This text changes to section title when navigating to other sections
 - **Right**: "Ocultar saldos" (Hide balances) toggle with eye icon
 
 #### 4. Session Info Footer (Bottom bar)
+
 - **Left**: "Último ingreso: 25 de Agosto 2026, 08:34 AM"
 - **Center**: "Ingreso actual: 25 de Octubre 2026, 08:34 AM"
 - **Right**: "IP: 1010001010.0201"
@@ -74,9 +80,10 @@
 ## Home Page Specific Content
 
 ### Account Summary Card
+
 - **Background**: White with rounded corners
 - **Title**: "Cuenta de Ahorros" (navy blue, bold)
-- **Subtitle**: "Ahorros ****4428" (gray)
+- **Subtitle**: "Ahorros \*\*\*\*4428" (gray)
 - **Balance Display**:
   - "Saldo disponible" label (gray, small)
   - "$ 8.730.500" (navy blue, large, bold)
@@ -88,6 +95,7 @@
 ### Quick Access Cards Grid (2 rows x 3 columns)
 
 #### Row 1:
+
 1. **Productos** (Products)
    - Icon: Grid/boxes icon
    - Description: "Consulta el detalle, movimientos y extractos de todos tus productos."
@@ -104,6 +112,7 @@
    - Background: White
 
 #### Row 2:
+
 1. **Bre-B** (Featured)
    - Icon: Bre-B logo (white version)
    - Description: "Pagos inmediatos con Llave o QR, gestión de llaves y más."
@@ -121,6 +130,7 @@
    - Background: White
 
 ### Recent Transactions Section
+
 - **Title**: "Últimos Movimientos" (black, bold)
 - **Transaction List Items**:
   - Each item has:
@@ -143,6 +153,7 @@
 ## Design Tokens
 
 ### Colors
+
 - **Sidebar Background**: `#1D4E8F` (Navy Blue)
 - **Content Background**: `#F0F9FF` (Light Blue)
 - **Card Background**: `#FFFFFF` (White)
@@ -156,6 +167,7 @@
 - **Border/Divider**: `#E4E6EA`
 
 ### Typography
+
 - **Font Family**: Ubuntu (Bold, Medium, Regular)
 - **Page Title**: 20px, Medium + Bold (for name)
 - **Card Title**: 19-20px, Bold, Navy
@@ -169,6 +181,7 @@
 - **Sidebar Menu**: 15-16px, Bold, White
 
 ### Spacing
+
 - **Sidebar Width**: 268px
 - **Content Padding**: 32px
 - **Card Padding**: 20-24px
@@ -181,6 +194,7 @@
 ## Component Hierarchy
 
 ### Shared/Layout Components (Organisms)
+
 - `AuthenticatedLayout` - Main layout wrapper for all authenticated pages
   - `Sidebar` - Left navigation sidebar
     - `SidebarLogo` - Logo at top
@@ -196,6 +210,7 @@
   - `SessionFooter` - Bottom session info bar
 
 ### Home Page Specific Components
+
 - `HomePage` - Main page component
   - `AccountSummaryCard` - Primary account display
   - `QuickAccessGrid` - 2x3 grid of feature cards
@@ -209,18 +224,21 @@
 ## Implementation Notes
 
 ### Sidebar Navigation
+
 - Menu items are grouped and expandable
 - Active state: Different background or indicator
 - Chevron rotates on expand/collapse
 - Store expanded state in local state or context
 
 ### User Avatar
+
 - Generate initials from user's first and last name
 - Example: "Camilo Castellanos" → "CC"
 - Background: Navy blue circle
 - Text: White, centered
 
 ### User Dropdown Menu
+
 - Opens on avatar click
 - Options:
   1. **Mis Datos Personales** - Navigate to personal data page
@@ -229,21 +247,25 @@
   4. **Cerrar Sesión** - Logout and redirect to login
 
 ### Hide Balances Toggle
-- When active: Replace amounts with "****" or dots
+
+- When active: Replace amounts with "\*\*\*\*" or dots
 - Store preference in localStorage or user settings
 - Apply to all balance displays on the page
 
 ### Dynamic Page Title
+
 - On Home: "Bienvenido, **{firstName}**"
 - On other sections: Section title (e.g., "Productos", "Pagos")
 - Bold styling for user name or key word
 
 ### Session Information
+
 - Last login: From user session data
 - Current login: Current timestamp
 - IP Address: From session/request
 
 ### Bre-B Card Styling
+
 - Unique purple gradient background
 - White text and logo
 - Use `Bre-b-logo-blanco.svg` for the icon
@@ -253,16 +275,19 @@
 ## Technical Resources
 
 ### Next.js Documentation
+
 - **App Router Layouts**: https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates
 - **Route Groups**: https://nextjs.org/docs/app/building-your-application/routing/route-groups
 
 ### State Management
+
 - Consider React Context for:
   - User session data
   - Sidebar expanded state
   - Hide balances preference
 
 ### Protected Routes
+
 - This page requires authentication
 - Redirect to `/login` if not authenticated
 - Consider middleware for auth protection

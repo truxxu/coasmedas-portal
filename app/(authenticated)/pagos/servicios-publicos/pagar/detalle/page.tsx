@@ -66,12 +66,12 @@ export default function PagarServiciosDetallePage() {
   // Filter convenios by selected category
   const filteredConvenios = useMemo(
     () => mockConvenios.filter((c) => c.categoryId === formData.categoryId),
-    [formData.categoryId]
+    [formData.categoryId],
   );
 
   const handleSourceAccountChange = (
     accountId: string,
-    paymentMethod: UtilityPaymentMethod
+    paymentMethod: UtilityPaymentMethod,
   ) => {
     const isPSE = paymentMethod === "pse";
     const account = mockUtilitySourceAccounts.find((a) => a.id === accountId);
@@ -180,7 +180,7 @@ export default function PagarServiciosDetallePage() {
       formData.paymentMethod === "account"
     ) {
       const selectedAccount = mockUtilitySourceAccounts.find(
-        (a) => a.id === formData.sourceAccountId
+        (a) => a.id === formData.sourceAccountId,
       );
       if (selectedAccount && formData.amount > selectedAccount.balance) {
         newErrors.sourceAccount =

@@ -11,52 +11,52 @@
 
 These endpoints support features already built in the web portal:
 
-| Endpoint | Web Feature | Portal Route |
-|----------|-------------|--------------|
-| `/login` | Authentication | `/login` |
-| `/get-salt` | Login flow | `/login` |
-| `/send-otp` | Login OTP | `/login` |
-| `/balances` | Dashboard | `/home` |
-| `/products/contributions` | Aportes page | `/productos/aportes` |
-| `/products/savings` | Ahorros page | `/productos/ahorros` |
-| `/products/credits` | Obligaciones page | `/productos/obligaciones` |
-| `/products/investments` | Inversiones page | `/productos/inversiones` |
-| `/products/protection` | Proteccion page | `/productos/proteccion` |
-| `/movements` | Transaction history (all products) | `/productos/*` |
-| `/payment/products` | Payment selection | `/pagos/pagar-mis-productos` |
-| `/payment/internal/sources/savings` | Payment source | `/pagos/*/` |
-| `/payment/internal/sources/credits` | Payment source | `/pagos/*/` |
-| `/payment/internal/createTransaction` | Execute payment | `/pagos/*/` |
-| `/payment/payzen/createTransaction` | PSE payment | `/pagos/*/` |
-| `/send-otp/transaction` | Transaction OTP | `/pagos/*, /transferencias/*` |
-| `/transfer/internal/sources/savings` | Transfer source | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/sources/credits` | Transfer source | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/sources/investments` | Transfer source | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/targets/savings` | Transfer destination | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/targets/credits` | Transfer destination | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/targets/investments` | Transfer destination | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/internal/createTransaction` | Execute transfer | `/transferencias/internas/entre-mis-cuentas` |
-| `/transfer/external/listEntities` | Entity list | `/transferencias/internas/cuentas-mi-red` |
-| `/transfer/external/entities/targets/queryProduct` | Validate destination | `/transferencias/internas/cuentas-mi-red` |
-| `/transfer/external/entities/createTransaction` | Execute entity transfer | `/transferencias/internas/cuentas-mi-red` |
+| Endpoint                                           | Web Feature                        | Portal Route                                 |
+| -------------------------------------------------- | ---------------------------------- | -------------------------------------------- |
+| `/login`                                           | Authentication                     | `/login`                                     |
+| `/get-salt`                                        | Login flow                         | `/login`                                     |
+| `/send-otp`                                        | Login OTP                          | `/login`                                     |
+| `/balances`                                        | Dashboard                          | `/home`                                      |
+| `/products/contributions`                          | Aportes page                       | `/productos/aportes`                         |
+| `/products/savings`                                | Ahorros page                       | `/productos/ahorros`                         |
+| `/products/credits`                                | Obligaciones page                  | `/productos/obligaciones`                    |
+| `/products/investments`                            | Inversiones page                   | `/productos/inversiones`                     |
+| `/products/protection`                             | Proteccion page                    | `/productos/proteccion`                      |
+| `/movements`                                       | Transaction history (all products) | `/productos/*`                               |
+| `/payment/products`                                | Payment selection                  | `/pagos/pagar-mis-productos`                 |
+| `/payment/internal/sources/savings`                | Payment source                     | `/pagos/*/`                                  |
+| `/payment/internal/sources/credits`                | Payment source                     | `/pagos/*/`                                  |
+| `/payment/internal/createTransaction`              | Execute payment                    | `/pagos/*/`                                  |
+| `/payment/payzen/createTransaction`                | PSE payment                        | `/pagos/*/`                                  |
+| `/send-otp/transaction`                            | Transaction OTP                    | `/pagos/*, /transferencias/*`                |
+| `/transfer/internal/sources/savings`               | Transfer source                    | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/sources/credits`               | Transfer source                    | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/sources/investments`           | Transfer source                    | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/targets/savings`               | Transfer destination               | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/targets/credits`               | Transfer destination               | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/targets/investments`           | Transfer destination               | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/internal/createTransaction`             | Execute transfer                   | `/transferencias/internas/entre-mis-cuentas` |
+| `/transfer/external/listEntities`                  | Entity list                        | `/transferencias/internas/cuentas-mi-red`    |
+| `/transfer/external/entities/targets/queryProduct` | Validate destination               | `/transferencias/internas/cuentas-mi-red`    |
+| `/transfer/external/entities/createTransaction`    | Execute entity transfer            | `/transferencias/internas/cuentas-mi-red`    |
 
 ### Phase 2: Registration & Account Management
 
-| Endpoint | Web Feature | Notes |
-|----------|-------------|-------|
-| `/userValidation` | User registration | Not yet built in portal |
-| `/register` | User registration | Not yet built in portal |
-| `/update-password` | Password change | Not yet built in portal |
+| Endpoint           | Web Feature       | Notes                   |
+| ------------------ | ----------------- | ----------------------- |
+| `/userValidation`  | User registration | Not yet built in portal |
+| `/register`        | User registration | Not yet built in portal |
+| `/update-password` | Password change   | Not yet built in portal |
 
 ### Phase 3: External Transfers & BRE-B
 
-| Endpoint | Web Feature | Notes |
-|----------|-------------|-------|
-| `/transfer/external/listBanks` | Bank transfers | Not in current portal scope |
-| `/transfer/external/sources/*` | Bank transfer source | Not in current portal scope |
-| `/transfer/external/getTransactionCost` | Transfer cost | Not in current portal scope |
-| `/transfer/external/banks/createTransaction` | Execute bank transfer | Not in current portal scope |
-| `/bre-b/*` (12 endpoints) | BRE-B keys & transfers | Not in current portal scope |
+| Endpoint                                     | Web Feature            | Notes                       |
+| -------------------------------------------- | ---------------------- | --------------------------- |
+| `/transfer/external/listBanks`               | Bank transfers         | Not in current portal scope |
+| `/transfer/external/sources/*`               | Bank transfer source   | Not in current portal scope |
+| `/transfer/external/getTransactionCost`      | Transfer cost          | Not in current portal scope |
+| `/transfer/external/banks/createTransaction` | Execute bank transfer  | Not in current portal scope |
+| `/bre-b/*` (12 endpoints)                    | BRE-B keys & transfers | Not in current portal scope |
 
 ---
 
@@ -82,6 +82,7 @@ Flow:
 
 **Mobile:** Token in React Context (in-memory only)
 **Web recommendation:**
+
 - Store JWT in memory (React Context/state) - same as mobile
 - Do NOT persist to localStorage/cookies (token contains sensitive claims)
 - Handle 107 (unauthorized) by redirecting to login
@@ -90,6 +91,7 @@ Flow:
 ### 2.3 Device Identification (BRE-B only)
 
 BRE-B endpoints require device info. For web:
+
 - `platform`: Use `"web"`
 - `userAgentString`: Use `navigator.userAgent`
 - `trademark`/`model`: Not available, use `"web"` or `"unknown"`
@@ -99,6 +101,7 @@ BRE-B endpoints require device info. For web:
 
 **Mobile:** SMS code input with numeric keyboard
 **Web:**
+
 - Same 6-digit code input
 - Already implemented via `CodeInputCard` + `CodeInputGroup` components
 - `/send-otp` response includes `email` field - consider showing both channels
@@ -107,6 +110,7 @@ BRE-B endpoints require device info. For web:
 
 **Mobile:** Opens WebView to Payzen URL
 **Web:**
+
 - Redirect to `paymentUrl` in a new tab or same window
 - Need a callback/return URL mechanism
 - Currently implemented as `PSELoadingCard` component
@@ -119,6 +123,7 @@ BRE-B endpoints require device info. For web:
 ### 3.1 Centralized API Service
 
 Create a single API service layer (e.g., `src/services/api.ts`) that:
+
 - Sets base URL from environment
 - Adds `Authorization: Bearer` header when token is available
 - Always uses POST method
@@ -135,7 +140,10 @@ interface ApiResponse<T> {
   payload?: T;
 }
 
-async function apiCall<T>(endpoint: string, body: object): Promise<ApiResponse<T>> {
+async function apiCall<T>(
+  endpoint: string,
+  body: object,
+): Promise<ApiResponse<T>> {
   // Centralized POST with auth header, error handling, timeout
 }
 ```
@@ -173,7 +181,7 @@ interface SavingsProduct {
 
 // Normalize on receipt
 function normalizeMoney(value: string | number): number {
-  return typeof value === 'string' ? parseFloat(value) : value;
+  return typeof value === "string" ? parseFloat(value) : value;
 }
 ```
 
@@ -184,6 +192,7 @@ function normalizeMoney(value: string | number): number {
 ### 4.1 `/balances` - Response interpretation
 
 The `/balances` endpoint response structure is unclear between sources. Options:
+
 1. **If flat array:** Parse `producto` field to categorize into product types
 2. **If categorized object:** Use directly
 
@@ -192,6 +201,7 @@ The `/balances` endpoint response structure is unclear between sources. Options:
 ### 4.2 `/payment/payzen/createTransaction` - PSE redirect
 
 Mobile opens WebView. Web needs:
+
 - Window redirect or popup to `paymentUrl`
 - Return URL handling (polling or callback)
 - Consider using `window.open()` for the payment and polling `/bre-b/txs/status` or similar
@@ -199,6 +209,7 @@ Mobile opens WebView. Web needs:
 ### 4.3 BRE-B - Device info
 
 BRE-B endpoints require device info that's naturally available on mobile but not web:
+
 - `platform`: Send `"web"` instead of `"ios"/"android"`
 - `trademark`/`model`: Send browser name/version
 - `ip`: Use server-side detection or public API
@@ -208,11 +219,11 @@ BRE-B endpoints require device info that's naturally available on mobile but not
 
 ## 5. Unused Endpoints Worth Considering for Web
 
-| Endpoint | Potential Web Use |
-|----------|------------------|
-| `/transfer/external/listBanks` | External bank transfers (future feature) |
-| `/transfer/external/banks/createTransaction` | External bank transfers (future feature) |
-| `/bre-b/*` | BRE-B instant transfers (future feature, complex) |
+| Endpoint                                     | Potential Web Use                                 |
+| -------------------------------------------- | ------------------------------------------------- |
+| `/transfer/external/listBanks`               | External bank transfers (future feature)          |
+| `/transfer/external/banks/createTransaction` | External bank transfers (future feature)          |
+| `/bre-b/*`                                   | BRE-B instant transfers (future feature, complex) |
 
 ---
 

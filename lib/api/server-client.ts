@@ -1,13 +1,13 @@
-import axios from 'axios';
-import type { AxiosError } from 'axios';
-import https from 'https';
-import type { ApiResponse } from '@/types/api';
+import axios from "axios";
+import type { AxiosError } from "axios";
+import https from "https";
+import type { ApiResponse } from "@/types/api";
 import {
   responseEnvelopeInterceptor,
   errorResponseInterceptor,
   loggingRequestInterceptor,
   loggingResponseInterceptor,
-} from './interceptors';
+} from "./interceptors";
 
 /**
  * Server-side Axios instance for use in Server Components and Server Actions.
@@ -21,9 +21,9 @@ const serverApiClient = axios.create({
   baseURL: process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 30_000,
   headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
+    "Content-Type": "application/json; charset=UTF-8",
   },
-  ...(process.env.API_ALLOW_SELF_SIGNED === 'true' && {
+  ...(process.env.API_ALLOW_SELF_SIGNED === "true" && {
     httpsAgent: new https.Agent({ rejectUnauthorized: false }),
   }),
 });
@@ -56,17 +56,19 @@ export async function serverApiPost<T>(
   let authToken = token;
 
   if (!authToken) {
-    const { cookies } = await import('next/headers');
+    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
-    authToken = cookieStore.get('auth-token')?.value;
+    authToken = cookieStore.get("auth-token")?.value;
   }
 
   const headers: Record<string, string> = {};
   if (authToken) {
-    headers['Authorization'] = `Bearer ${authToken}`;
+    headers["Authorization"] = `Bearer ${authToken}`;
   }
 
-  const response = await serverApiClient.post<ApiResponse<T>>(endpoint, body, { headers });
+  const response = await serverApiClient.post<ApiResponse<T>>(endpoint, body, {
+    headers,
+  });
   return response.data.payload as T;
 }
 

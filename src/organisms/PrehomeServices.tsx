@@ -1,22 +1,26 @@
-import { ServiceCard } from '@/src/molecules';
+import { ServiceCard } from "@/src/molecules";
 
 export function PrehomeServices() {
   const services = [
     {
-      title: 'Ahorros',
-      description: 'Planea tu futuro con nuestras opciones de ahorro flexibles y rentables.',
+      title: "Ahorros",
+      description:
+        "Planea tu futuro con nuestras opciones de ahorro flexibles y rentables.",
     },
     {
-      title: 'Créditos',
-      description: 'Impulso tus proyectos con créditos a tu medida y tasas preferenciales.',
+      title: "Créditos",
+      description:
+        "Impulso tus proyectos con créditos a tu medida y tasas preferenciales.",
     },
     {
-      title: 'Inversiones',
-      description: 'Haz crecer tu dinero con portafolios de inversión segura y diversificados.',
+      title: "Inversiones",
+      description:
+        "Haz crecer tu dinero con portafolios de inversión segura y diversificados.",
     },
     {
-      title: 'Pagos y Transferencias',
-      description: 'Realiza tus pagos y transferencias de forma rápida y segura.',
+      title: "Pagos y Transferencias",
+      description:
+        "Realiza tus pagos y transferencias de forma rápida y segura.",
     },
   ];
 

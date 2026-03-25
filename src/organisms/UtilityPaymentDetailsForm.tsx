@@ -28,7 +28,7 @@ interface UtilityPaymentDetailsFormProps {
   };
   onSourceAccountChange: (
     accountId: string,
-    paymentMethod: UtilityPaymentMethod
+    paymentMethod: UtilityPaymentMethod,
   ) => void;
   onServiceChange: (serviceId: string) => void;
   // Non-registered service props
@@ -56,28 +56,43 @@ export function UtilityPaymentDetailsForm({
   onReferenceChange,
   onAmountChange,
 }: UtilityPaymentDetailsFormProps) {
-  const accountOptions = useMemo(() => [
-    ...sourceAccounts.map((account) => ({
-      value: account.id,
-      label: account.displayName,
-    })),
-    { value: "pse", label: "PSE (Pagos con otras entidades)" },
-  ], [sourceAccounts]);
+  const accountOptions = useMemo(
+    () => [
+      ...sourceAccounts.map((account) => ({
+        value: account.id,
+        label: account.displayName,
+      })),
+      { value: "pse", label: "PSE (Pagos con otras entidades)" },
+    ],
+    [sourceAccounts],
+  );
 
-  const serviceOptions = useMemo(() => registeredServices.map((service) => ({
-    value: service.id,
-    label: service.displayName,
-  })), [registeredServices]);
+  const serviceOptions = useMemo(
+    () =>
+      registeredServices.map((service) => ({
+        value: service.id,
+        label: service.displayName,
+      })),
+    [registeredServices],
+  );
 
-  const categoryOptions = useMemo(() => categories.map((cat) => ({
-    value: cat.id,
-    label: cat.name,
-  })), [categories]);
+  const categoryOptions = useMemo(
+    () =>
+      categories.map((cat) => ({
+        value: cat.id,
+        label: cat.name,
+      })),
+    [categories],
+  );
 
-  const convenioOptions = useMemo(() => convenios.map((conv) => ({
-    value: conv.id,
-    label: conv.name,
-  })), [convenios]);
+  const convenioOptions = useMemo(
+    () =>
+      convenios.map((conv) => ({
+        value: conv.id,
+        label: conv.name,
+      })),
+    [convenios],
+  );
 
   const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -135,10 +150,13 @@ export function UtilityPaymentDetailsForm({
             aria-label="Tipo de pago"
             className="flex flex-row gap-6"
           >
-            {([
+            {[
               { value: "inscrito" as const, label: "Servicio Inscrito" },
-              { value: "no-inscrito" as const, label: "Otro Servicio (No inscrito)" },
-            ]).map((option) => (
+              {
+                value: "no-inscrito" as const,
+                label: "Otro Servicio (No inscrito)",
+              },
+            ].map((option) => (
               <label
                 key={option.value}
                 className="flex items-center gap-2 cursor-pointer"
@@ -167,7 +185,9 @@ export function UtilityPaymentDetailsForm({
                     <span className="w-2 h-2 rounded-full bg-brand-primary" />
                   )}
                 </span>
-                <span className="text-sm text-brand-text-black">{option.label}</span>
+                <span className="text-sm text-brand-text-black">
+                  {option.label}
+                </span>
               </label>
             ))}
           </div>

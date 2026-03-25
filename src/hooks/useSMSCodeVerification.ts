@@ -39,7 +39,7 @@ export interface SMSCodeVerificationActions {
 }
 
 export function useSMSCodeVerification(
-  config: SMSCodeVerificationConfig
+  config: SMSCodeVerificationConfig,
 ): SMSCodeVerificationState & SMSCodeVerificationActions {
   const router = useRouter();
   const [code, setCode] = useState<string>("");
@@ -117,7 +117,9 @@ export function useSMSCodeVerification(
     } catch (err) {
       config.onError?.(code);
       const message =
-        err instanceof Error ? err.message : "Error al procesar el pago. Por favor intenta nuevamente.";
+        err instanceof Error
+          ? err.message
+          : "Error al procesar el pago. Por favor intenta nuevamente.";
       setError(message);
     } finally {
       setIsLoading(false);

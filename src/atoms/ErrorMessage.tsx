@@ -3,7 +3,7 @@ interface ErrorMessageProps {
   className?: string;
 }
 
-export function ErrorMessage({ message, className = '' }: ErrorMessageProps) {
+export function ErrorMessage({ message, className = "" }: ErrorMessageProps) {
   if (!message) return null;
 
   return (

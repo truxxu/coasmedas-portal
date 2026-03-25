@@ -12,6 +12,7 @@
 Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 
 ### Page Sections (Top to Bottom)
+
 1. **Header** - Logo + "Vinculación Digital" + "Iniciar Sesión" buttons
 2. **Hero Section** - Navy blue background with main headline and 3 CTAs
 3. **Welcome Section** - "Hola, Bienvenido" + "Siempre cercanos" text
@@ -22,6 +23,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 8. **Footer** - Links: "Atención al Usuario", "Descargar Instructivo", "Preguntas Frecuentes"
 
 ### Design Tokens
+
 - **Primary Blue**: `#007FFF`
 - **Navy Blue**: `#1D4E8F`
 - **Text Black**: `#111827`
@@ -32,6 +34,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 - **Font**: Ubuntu (Bold, Medium, Regular)
 
 ### Key UI Elements
+
 - Rounded buttons with shadows: `rounded-[6px] shadow-[0px_2px_5px_0px_rgba(0,0,0,0.1)]`
 - Service cards with gray borders
 - News cards with blue gradient headers
@@ -42,6 +45,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Review Figma design via MCP
 - [ ] Have design assets ready in `.claude/knowledge/features/00-prehome/attachments/designs/`
 - [ ] Confirm development environment is running (`npm run dev`)
@@ -49,6 +53,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
 - [ ] Read [references.md](./references.md) for design guidance
 
 ### Current State
+
 - ✅ Next.js 16 project initialized
 - ✅ Tailwind CSS v4 configured
 - ✅ TypeScript configured
@@ -73,12 +78,12 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
   --foreground: #171717;
 
   /* Coasmedas brand colors */
-  --brand-primary: #007FFF;
-  --brand-navy: #1D4E8F;
-  --brand-border: #E4E6EA;
+  --brand-primary: #007fff;
+  --brand-navy: #1d4e8f;
+  --brand-border: #e4e6ea;
   --brand-text-black: #111827;
-  --brand-gray-high: #58585B;
-  --brand-light-blue: #F0F9FF;
+  --brand-gray-high: #58585b;
+  --brand-light-blue: #f0f9ff;
 }
 
 @theme inline {
@@ -90,7 +95,7 @@ Based on Figma design review (`node-id=1668-229`), the prehome page consists of:
   --color-brand-text-black: var(--brand-text-black);
   --color-brand-gray-high: var(--brand-gray-high);
   --color-brand-light-blue: var(--brand-light-blue);
-  --font-sans: 'Ubuntu', var(--font-geist-sans);
+  --font-sans: "Ubuntu", var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 ```
@@ -110,6 +115,7 @@ Add Ubuntu font import from Google Fonts or local files.
 **File**: `src/atoms/Button.tsx`
 
 Add new variants and sizes to match design:
+
 - `cta` variant - Blue gradient with shadow for main CTAs
 - `outline` variant - White background with border
 - Update text to use Ubuntu Bold font
@@ -121,7 +127,7 @@ Add new variants and sizes to match design:
 ```typescript
 interface CardProps {
   children: ReactNode;
-  variant?: 'default' | 'bordered' | 'news';
+  variant?: "default" | "bordered" | "news";
   className?: string;
 }
 ```
@@ -156,6 +162,7 @@ If using custom icons for service cards.
 **File**: `src/molecules/HeroBanner.tsx`
 
 Navy blue background with:
+
 - Main headline: "Tus metas, nuestro compromiso."
 - Subheadline: "La plataforma digital para gestionar tus finanzas..."
 - Three CTAs: "Abre tu CDT Digital", "Solicita tu Crédito", "Conoce nuestros productos"
@@ -182,6 +189,7 @@ interface ServiceCardProps {
 ```
 
 Service cards with:
+
 - Checkbox icon in top-left corner
 - Title in bold
 - Description in gray
@@ -201,6 +209,7 @@ interface NewsCardProps {
 ```
 
 News cards with:
+
 - Blue gradient header with "Noticia 1" etc.
 - White body with title, description
 - "Leer más" link
@@ -216,6 +225,7 @@ For "Mantén tus datos actualizados" and "Recomendaciones de Seguridad" sections
 **File**: `src/molecules/AppPromoSection.tsx`
 
 Navy background with:
+
 - "Lleva tu APP morem ipsum" headline
 - Description text
 - App Store and Google Play buttons
@@ -226,6 +236,7 @@ Navy background with:
 **File**: `src/molecules/Footer.tsx`
 
 Simple footer with:
+
 - "Atención al Usuario"
 - "Descargar Instructivo"
 - "Preguntas Frecuentes"
@@ -257,6 +268,7 @@ Welcome section with wave background.
 **File**: `src/organisms/PrehomeServices.tsx`
 
 Grid of 4 ServiceCards:
+
 1. Ahorros - "Planea tu futuro con nuestras opciones de ahorro flexibles y rentables."
 2. Créditos - "Impulso tus proyectos con créditos a tu medida y tasas preferenciales."
 3. Inversiones - "Haz crecer tu dinero con portafolios de inversión segura y diversificados."
@@ -273,6 +285,7 @@ Grid of 4 ServiceCards:
 **File**: `src/organisms/PrehomeInfo.tsx`
 
 Two-column layout:
+
 - Left: "Mantén tus datos actualizados" with CTA
 - Right: "Recomendaciones de Seguridad" list
 
@@ -331,6 +344,7 @@ export default function PrehomePage() {
 ### Step 6.1: Download/Export Figma Assets
 
 Using Figma MCP or manual export:
+
 - Wave/curve SVG backgrounds
 - App Store / Google Play badges
 - Phone mockup image
@@ -358,28 +372,35 @@ public/
 Replace all placeholder text with actual content from Figma:
 
 **Hero:**
+
 - "Tus metas, nuestro compromiso."
 - "La plataforma digital para gestionar tus finanzas y alcanzar tus sueños con seguridad y confianza."
 
 **Welcome:**
+
 - "Hola, Bienvenido a tu portal transaccional"
 - "Siempre cercanos"
 
 **Services:**
+
 - Ahorros, Créditos, Inversiones, Pagos y Transferencias
 
 **News:**
+
 - "Mantente Informado"
 - News card content
 
 **Info:**
+
 - "Mantén tus datos actualizados"
 - "Recomendaciones de Seguridad"
 
 **App:**
+
 - "Lleva tu APP morem ipsum"
 
 **Footer:**
+
 - "Atención al Usuario", "Descargar Instructivo", "Preguntas Frecuentes"
 
 ---
@@ -433,24 +454,25 @@ Replace all placeholder text with actual content from Figma:
 
 ## Updated Time Tracking
 
-| Phase | Estimated | Notes |
-|-------|-----------|-------|
-| Phase 1: Design Tokens | 1 hr | |
-| Phase 2: Atoms | 2-3 hrs | |
-| Phase 3: Molecules | 4-5 hrs | |
-| Phase 4: Organisms | 2-3 hrs | |
-| Phase 5: Page Assembly | 1 hr | |
-| Phase 6: Assets | 1-2 hrs | |
-| Phase 7: Content | 1-2 hrs | |
-| Phase 8: Responsive | 2-3 hrs | |
-| Phase 9: Polish | 2-3 hrs | |
-| **Total** | **~20-25 hrs (3-4 days)** | |
+| Phase                  | Estimated                 | Notes |
+| ---------------------- | ------------------------- | ----- |
+| Phase 1: Design Tokens | 1 hr                      |       |
+| Phase 2: Atoms         | 2-3 hrs                   |       |
+| Phase 3: Molecules     | 4-5 hrs                   |       |
+| Phase 4: Organisms     | 2-3 hrs                   |       |
+| Phase 5: Page Assembly | 1 hr                      |       |
+| Phase 6: Assets        | 1-2 hrs                   |       |
+| Phase 7: Content       | 1-2 hrs                   |       |
+| Phase 8: Responsive    | 2-3 hrs                   |       |
+| Phase 9: Polish        | 2-3 hrs                   |       |
+| **Total**              | **~20-25 hrs (3-4 days)** |       |
 
 ---
 
 ## Component Checklist
 
 ### Atoms
+
 - [ ] Button (updated with cta, outline variants)
 - [ ] Logo (existing)
 - [ ] Link (existing)
@@ -458,6 +480,7 @@ Replace all placeholder text with actual content from Figma:
 - [ ] SectionTitle
 
 ### Molecules
+
 - [ ] NavBar (updated)
 - [ ] HeroBanner
 - [ ] WelcomeSection
@@ -468,6 +491,7 @@ Replace all placeholder text with actual content from Figma:
 - [ ] Footer (updated)
 
 ### Organisms
+
 - [ ] PrehomeHeader (updated)
 - [ ] PrehomeHero
 - [ ] PrehomeWelcome
@@ -490,6 +514,7 @@ Replace all placeholder text with actual content from Figma:
 ---
 
 **Key Changes from Original Plan:**
+
 1. More sections identified (8 vs 4 originally)
 2. More complex component hierarchy
 3. Additional design tokens needed

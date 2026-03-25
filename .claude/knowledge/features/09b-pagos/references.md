@@ -2,6 +2,7 @@
 
 **Feature**: Aportes Payment Flow (Pago de Aportes)
 **Figma References**:
+
 - [Step 1 - Details](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3349-2724)
 - [Step 2 - Confirmation](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=618-358)
 - [Step 3 - Code Input](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3349-2280)
@@ -96,6 +97,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 ### UI Elements
 
 #### Account Selector
+
 - **Type**: Select dropdown
 - **Label**: "¿De cuál cuenta quiere pagar?"
 - **Default**: "Cuenta de Ahorros - Saldo: $ 8.730.500"
@@ -103,6 +105,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Chevron**: Dropdown icon on right
 
 #### "Need More Balance" Link
+
 - **Text**: "¿Necesitas más saldo?"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 12px
@@ -110,6 +113,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Action**: Opens transfer/deposit flow (TBD)
 
 #### Payment Breakdown Section
+
 - **Title**: "Detalle del Pago - Plan Senior"
 - **Title Color**: `#1D4E8F` (Navy)
 - **Title Font Size**: 14px, Medium
@@ -117,16 +121,18 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Dividers**: `1px solid #E4E6EA` between sections
 
 #### Payment Detail Rows
-| Label | Value | Value Color |
-|-------|-------|-------------|
-| Aportes Vigentes: | $ 500.058 | Black |
-| Fondo de Solidaridad Vigente: | $ 390.000 | Black |
-| Aportes en Mora: | $ 0 | Red `#E1172B` |
-| Fondo de Solidaridad en Mora: | $ 0 | Red `#E1172B` |
-| Fecha Límite de Pago: | 15 Nov 2024 | Black |
-| Costo de la Transacción: | $ 0 | Black |
+
+| Label                         | Value       | Value Color   |
+| ----------------------------- | ----------- | ------------- |
+| Aportes Vigentes:             | $ 500.058   | Black         |
+| Fondo de Solidaridad Vigente: | $ 390.000   | Black         |
+| Aportes en Mora:              | $ 0         | Red `#E1172B` |
+| Fondo de Solidaridad en Mora: | $ 0         | Red `#E1172B` |
+| Fecha Límite de Pago:         | 15 Nov 2024 | Black         |
+| Costo de la Transacción:      | $ 0         | Black         |
 
 #### Value Input Field
+
 - **Label**: "Valor" (Navy `#1D4E8F`, 14px)
 - **Type**: Currency input
 - **Prefix**: "$" (19px, Bold, Black)
@@ -136,6 +142,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Position**: Right-aligned in card footer area
 
 ### Data Required
+
 - Available accounts with balances
 - Aportes product details:
   - Plan name (e.g., "Plan Senior")
@@ -148,6 +155,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - Default payment value (calculated or user-entered)
 
 ### Interactions
+
 - Account selector dropdown selection
 - "¿Necesitas más saldo?" link navigation
 - Value input editing (currency formatted)
@@ -155,6 +163,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - "Continuar" button: Validate and navigate to Step 2
 
 ### Validations
+
 - Account must be selected
 - Selected account must have sufficient balance for entered value
 - Value must be greater than 0
@@ -206,24 +215,27 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 ### UI Elements
 
 #### Card Title
+
 - **Text**: "Confirmación de Pagos"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 18px, Bold
 
 #### Description Text
+
 - **Text**: "Por favor, verifica que los datos de la transacción sean correctos antes de continuar."
 - **Color**: Black
 - **Font Size**: 15px, Regular
 
 #### Confirmation Detail Rows
-| Label | Value |
-|-------|-------|
-| Titular: | CAMILO ANDRÉS CRUZ |
-| Documento: | CC 1.***.***234 |
-| Producto a Pagar: | Plan Senior |
-| Numero de Producto: | ***5488 |
-| Producto a Debitar: | Cuenta de Ahorros |
-| Valor a Pagar: | 107.058 |
+
+| Label               | Value              |
+| ------------------- | ------------------ |
+| Titular:            | CAMILO ANDRÉS CRUZ |
+| Documento:          | CC 1.***.***234    |
+| Producto a Pagar:   | Plan Senior        |
+| Numero de Producto: | \*\*\*5488         |
+| Producto a Debitar: | Cuenta de Ahorros  |
+| Valor a Pagar:      | 107.058            |
 
 - **Label Font**: 15px, Regular, Black
 - **Value Font**: 15px, Medium, Black
@@ -231,12 +243,14 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Divider**: After Documento row
 
 #### Primary Button
+
 - **Text**: "Guardar Cambios" (Note: Should semantically be "Confirmar Pago")
 - **Style**: Blue gradient `#007FFF`, white text
 - **Border Radius**: `6px`
 - **Shadow**: `0px 2px 4px rgba(0,0,0,0.1)`
 
 ### Data Required (from Step 1)
+
 - Titular (user name)
 - Documento (masked document number)
 - Producto a Pagar (plan name)
@@ -245,6 +259,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - Valor a Pagar (payment amount)
 
 ### Interactions
+
 - "Volver" link: Navigate back to Step 1
 - "Guardar Cambios" button: Submit confirmation, send SMS code, navigate to Step 3
 
@@ -292,12 +307,14 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 ### UI Elements
 
 #### Card Title
+
 - **Text**: "Código Enviado a tu Teléfono"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 17px, Bold
 - **Alignment**: Center
 
 #### Description Text
+
 - **Text**: "Ingresa la clave de 6 dígitos enviada a tu dispositivo para autorizar la transacción"
 - **Color**: Black
 - **Font Size**: 15px, Regular
@@ -305,6 +322,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Max Width**: Contained within card
 
 #### Code Input Group
+
 - **Digits**: 6 individual input fields
 - **Size**: Each input approximately `48px × 56px`
 - **Border**: `1px solid #B1B1B1`
@@ -317,32 +335,38 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
   - Paste support (distribute digits)
 
 #### Resend Section
+
 - **Container**: Horizontal layout with underline
 - **Question Text**: "¿No recibiste la clave?" (15px, Regular, Black)
 - **Link Text**: "Reenviar" (15px, Medium, Navy `#1D4E8F`)
 - **Underline**: Decorative line below both texts
 
 #### Primary Button
+
 - **Text**: "Pagar"
 - **Style**: Blue gradient `#007FFF`, white text
 - **Border Radius**: `6px`
 
 ### Data Required
+
 - Transaction ID (from Step 2)
 - Phone number hint (masked, optional display)
 
 ### Interactions
+
 - 6-digit code input with auto-advance
 - "Reenviar" link: Request new SMS code (with cooldown)
 - "Volver" link: Navigate back to Step 2
 - "Pagar" button: Validate code, process payment, navigate to Step 4
 
 ### Validations
+
 - Code must be exactly 6 digits
 - All inputs must be filled
 - Code must match sent SMS (API validation)
 
 ### Error States
+
 - Invalid code: Highlight inputs in red, show error message
 - Expired code: Prompt to resend
 - Max attempts exceeded: Show error, require new flow start
@@ -396,6 +420,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 ### UI Elements
 
 #### Success Icon
+
 - **Type**: Circle with checkmark
 - **Size**: Large (approximately `60px × 60px`)
 - **Circle**: Green border `#00A44C`
@@ -403,28 +428,32 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - **Position**: Centered above title
 
 #### Result Title
+
 - **Text**: "Transacción Exitosa"
 - **Color**: `#1D4E8F` (Navy)
 - **Font Size**: 22px, Bold
 - **Alignment**: Center
 
 #### Transaction Detail Rows - Section 1
-| Label | Value | Value Style |
-|-------|-------|-------------|
-| Línea crédito: | Plan Senior | Black |
-| Número de producto: | ***5488 | Black |
-| Valor pagado: | $ 107.058 | Navy `#1D4E8F`, 18px |
-| Costo transacción: | $ 0 | Black |
+
+| Label               | Value       | Value Style          |
+| ------------------- | ----------- | -------------------- |
+| Línea crédito:      | Plan Senior | Black                |
+| Número de producto: | \*\*\*5488  | Black                |
+| Valor pagado:       | $ 107.058   | Navy `#1D4E8F`, 18px |
+| Costo transacción:  | $ 0         | Black                |
 
 #### Transaction Detail Rows - Section 2
-| Label | Value | Value Style |
-|-------|-------|-------------|
-| Fecha de Transmisión: | 3 de septiembre de 2025 | Black |
-| Hora de Transacción: | 10:21 pm | Black |
-| Número de Aprobación: | 463342 | Black |
-| Descripción: | Exitosa | Green `#00A44C` |
+
+| Label                 | Value                   | Value Style     |
+| --------------------- | ----------------------- | --------------- |
+| Fecha de Transmisión: | 3 de septiembre de 2025 | Black           |
+| Hora de Transacción:  | 10:21 pm                | Black           |
+| Número de Aprobación: | 463342                  | Black           |
+| Descripción:          | Exitosa                 | Green `#00A44C` |
 
 #### Action Buttons
+
 - **"Imprimir/Guardar"**:
   - Variant: Outline
   - Border: `1px solid #1D4E8F`
@@ -439,6 +468,7 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
   - Border Radius: `6px`
 
 ### Data Required (from API response)
+
 - Transaction status (success/error)
 - Línea crédito (plan name)
 - Número de producto (masked)
@@ -450,10 +480,12 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 - Descripción (status description)
 
 ### Interactions
+
 - "Imprimir/Guardar" button: Generate PDF with transaction details
 - "Finalizar" button: Navigate to Pagos menu or Home
 
 ### States
+
 - **Success**: Green checkmark, "Transacción Exitosa", green description
 - **Error**: Red X icon, "Transacción Fallida", red description
 
@@ -464,16 +496,19 @@ The **Pago de Aportes** (Aportes Payment) flow allows users to pay their pending
 The following components should be reused from the Pago Unificado flow:
 
 ### Atoms
+
 - `StepperCircle` - Individual step indicator
 - `StepperConnector` - Line connecting circles
 - `CodeInput` - Single digit input field
 
 ### Molecules
+
 - `Stepper` - Multi-step progress indicator (4 steps)
 - `CodeInputGroup` - Group of 6 CodeInput fields
 - `TransactionDetailRow` - Key-value pair display
 
 ### Organisms (may need adaptation)
+
 - `CodeInputCard` - Card for SMS verification step
 - `TransactionResultCard` - Card for result display
 
@@ -484,6 +519,7 @@ The following components should be reused from the Pago Unificado flow:
 ### Molecules
 
 #### `AportesPaymentDetailRow`
+
 - **Purpose**: Display payment breakdown item with optional colored value
 - **Layout**: Label (left) + Amount (right)
 - **Props**:
@@ -492,6 +528,7 @@ The following components should be reused from the Pago Unificado flow:
   - `valueColor?: 'default' | 'red' | 'navy' | 'green'`
 
 #### `CurrencyInput`
+
 - **Purpose**: Editable currency input field with peso prefix
 - **Layout**: "$" prefix + editable input
 - **Border**: Navy `#1D4E8F` when focused
@@ -503,6 +540,7 @@ The following components should be reused from the Pago Unificado flow:
 ### Organisms
 
 #### `AportesDetailsCard`
+
 - **Purpose**: Main card for Step 1 - Payment details
 - **Components**:
   - Card container (white, rounded-2xl)
@@ -514,6 +552,7 @@ The following components should be reused from the Pago Unificado flow:
   - Value input section (CurrencyInput)
 
 #### `AportesConfirmationCard`
+
 - **Purpose**: Main card for Step 2 - Confirmation
 - **Components**:
   - Card container
@@ -527,6 +566,7 @@ The following components should be reused from the Pago Unificado flow:
 ## Form Data Structures
 
 ### Step 1 Data (Details)
+
 ```typescript
 interface AportesPaymentDetailsData {
   selectedAccountId: string;
@@ -543,6 +583,7 @@ interface AportesPaymentDetailsData {
 ```
 
 ### Step 2 Data (Confirmation)
+
 ```typescript
 interface AportesConfirmationData {
   titular: string;
@@ -555,6 +596,7 @@ interface AportesConfirmationData {
 ```
 
 ### Step 3 Data (Verification)
+
 ```typescript
 interface CodeVerificationData {
   code: string; // 6 digits
@@ -563,9 +605,10 @@ interface CodeVerificationData {
 ```
 
 ### Step 4 Data (Result)
+
 ```typescript
 interface AportesTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -582,6 +625,7 @@ interface AportesTransactionResult {
 ## State Management
 
 ### Flow State
+
 ```typescript
 interface AportesPaymentFlowState {
   currentStep: 1 | 2 | 3 | 4;
@@ -593,6 +637,7 @@ interface AportesPaymentFlowState {
 ```
 
 ### Navigation Between Steps
+
 - Use Next.js routing for each step
 - Store form data in Context or URL state
 - Prevent direct access to later steps without completing previous steps
@@ -603,6 +648,7 @@ interface AportesPaymentFlowState {
 ## Design System Values
 
 ### Colors
+
 - **Primary Blue**: `#007FFF` (stepper active, primary buttons)
 - **Navy**: `#1D4E8F` (text, labels, titles, value input border)
 - **Text Black**: `#111827` (primary text)
@@ -615,6 +661,7 @@ interface AportesPaymentFlowState {
 - **White**: `#FFFFFF` (cards)
 
 ### Typography
+
 - **Page Title**: 20px, Medium, Black
 - **Card Title**: 18px, Bold, Navy
 - **Section Subtitle**: 14px, Medium, Navy
@@ -626,12 +673,14 @@ interface AportesPaymentFlowState {
 - **Button Text**: 14-16px, Bold
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Row spacing: `16px` (space-y-4)
 - Button gap: `16px` (gap-4)
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Inputs: `6px` (rounded-md)
 - Buttons: `6px` (rounded-md)
@@ -642,58 +691,62 @@ interface AportesPaymentFlowState {
 ## Mock Data Requirements
 
 ### Mock Accounts
+
 ```typescript
 const mockAccounts = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
+    id: "1",
+    name: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428'
+    number: "****4428",
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
+    id: "2",
+    name: "Cuenta Corriente",
     balance: 5200000,
-    number: '****7891'
-  }
+    number: "****7891",
+  },
 ];
 ```
 
 ### Mock Aportes Data
+
 ```typescript
 const mockAportesPaymentData = {
-  planName: 'Plan Senior',
-  productNumber: '***5488',
+  planName: "Plan Senior",
+  productNumber: "***5488",
   aportesVigentes: 500058,
   fondoSolidaridadVigente: 390000,
   aportesEnMora: 0,
   fondoSolidaridadEnMora: 0,
-  fechaLimitePago: '15 Nov 2024',
+  fechaLimitePago: "15 Nov 2024",
   costoTransaccion: 0,
-  valorAPagar: 107058
+  valorAPagar: 107058,
 };
 ```
 
 ### Mock User Data
+
 ```typescript
 const mockUser = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234'
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 ```
 
 ### Mock Transaction Result
+
 ```typescript
 const mockAportesTransactionResult = {
-  status: 'success',
-  lineaCredito: 'Plan Senior',
-  numeroProducto: '***5488',
+  status: "success",
+  lineaCredito: "Plan Senior",
+  numeroProducto: "***5488",
   valorPagado: 107058,
   costoTransaccion: 0,
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '463342',
-  descripcion: 'Exitosa'
+  fechaTransmision: "3 de septiembre de 2025",
+  horaTransaccion: "10:21 pm",
+  numeroAprobacion: "463342",
+  descripcion: "Exitosa",
 };
 ```
 
@@ -701,12 +754,12 @@ const mockAportesTransactionResult = {
 
 ## Routes Summary
 
-| Step | Route | Purpose |
-|------|-------|---------|
-| 1 | `/pagos/pago-aportes` | Payment details & amount input |
-| 2 | `/pagos/pago-aportes/confirmacion` | Review and confirm |
-| 3 | `/pagos/pago-aportes/verificacion` | SMS code verification |
-| 4 | `/pagos/pago-aportes/resultado` | Transaction result |
+| Step | Route                              | Purpose                        |
+| ---- | ---------------------------------- | ------------------------------ |
+| 1    | `/pagos/pago-aportes`              | Payment details & amount input |
+| 2    | `/pagos/pago-aportes/confirmacion` | Review and confirm             |
+| 3    | `/pagos/pago-aportes/verificacion` | SMS code verification          |
+| 4    | `/pagos/pago-aportes/resultado`    | Transaction result             |
 
 ---
 
@@ -739,14 +792,14 @@ PagoAportesPage
 
 ## Differences from Pago Unificado (09a-pagos)
 
-| Aspect | Pago Unificado | Pago de Aportes |
-|--------|----------------|-----------------|
-| Payment Scope | All products combined | Single Aportes product |
-| Step 1 Display | Summary totals only | Full breakdown with mora details |
-| Step 1 Input | No editable amount | Editable value input field |
-| Confirmation Details | Multiple products | Single product details |
-| Result Details | Generic transaction info | Aportes-specific fields |
-| Route | `/pagos/pago-unificado` | `/pagos/pago-aportes` |
+| Aspect               | Pago Unificado           | Pago de Aportes                  |
+| -------------------- | ------------------------ | -------------------------------- |
+| Payment Scope        | All products combined    | Single Aportes product           |
+| Step 1 Display       | Summary totals only      | Full breakdown with mora details |
+| Step 1 Input         | No editable amount       | Editable value input field       |
+| Confirmation Details | Multiple products        | Single product details           |
+| Result Details       | Generic transaction info | Aportes-specific fields          |
+| Route                | `/pagos/pago-unificado`  | `/pagos/pago-aportes`            |
 
 ---
 

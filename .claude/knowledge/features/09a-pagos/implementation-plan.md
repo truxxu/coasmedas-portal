@@ -61,34 +61,40 @@ Before starting implementation, verify:
 ## Implementation Phases
 
 ### Phase 1: Foundation (1-2 hours)
+
 - Create type definitions
 - Create mock data
 - Set up file structure
 
 ### Phase 2: Atoms (1-2 hours)
+
 - Build StepperCircle component
 - Build StepperConnector component
 - Build CodeInput component
 
 ### Phase 3: Molecules (2-3 hours)
+
 - Build Stepper component
 - Build PaymentSummaryRow component
 - Build CodeInputGroup component
 - Build TransactionDetailRow component
 
 ### Phase 4: Organisms (2-3 hours)
+
 - Build PaymentDetailsCard component
 - Build PaymentConfirmationCard component
 - Build CodeInputCard component
 - Build TransactionResultCard component
 
 ### Phase 5: Pages (2-3 hours)
+
 - Create Step 1 page (Details)
 - Create Step 2 page (Confirmation)
 - Create Step 3 page (Code Input)
 - Create Step 4 page (Result)
 
 ### Phase 6: Testing & Refinement (1-2 hours)
+
 - Manual testing of complete flow
 - Responsive testing
 - Accessibility testing
@@ -108,6 +114,7 @@ Before starting implementation, verify:
 **Task**: Create TypeScript interfaces for payment flow
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 106-181
 ```
@@ -115,6 +122,7 @@ Before starting implementation, verify:
 **Reference**: spec.md lines 104-181
 
 **Acceptance Criteria**:
+
 - [ ] File created at `src/types/payment.ts`
 - [ ] All 7 interfaces defined:
   - PaymentAccount
@@ -136,6 +144,7 @@ Before starting implementation, verify:
 **Task**: Create TypeScript interfaces for stepper component
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 186-223
 ```
@@ -143,6 +152,7 @@ Before starting implementation, verify:
 **Reference**: spec.md lines 184-223
 
 **Acceptance Criteria**:
+
 - [ ] File created at `src/types/stepper.ts`
 - [ ] All 4 types/interfaces defined:
   - Step interface
@@ -162,13 +172,15 @@ Before starting implementation, verify:
 **Task**: Export new type definitions
 
 **Implementation**:
+
 ```typescript
 // Add to existing exports:
-export * from './payment';
-export * from './stepper';
+export * from "./payment";
+export * from "./stepper";
 ```
 
 **Acceptance Criteria**:
+
 - [ ] New exports added
 - [ ] No duplicate exports
 - [ ] No TypeScript errors
@@ -182,6 +194,7 @@ export * from './stepper';
 **Task**: Create mock data for development and testing
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1715-1802
 ```
@@ -189,6 +202,7 @@ export * from './stepper';
 **Reference**: spec.md lines 1713-1802
 
 **Acceptance Criteria**:
+
 - [ ] File created at `src/mocks/mockPaymentData.ts`
 - [ ] All mock data objects created:
   - mockPaymentAccounts (array with 3 accounts)
@@ -210,12 +224,14 @@ export * from './stepper';
 **Task**: Export new mock data
 
 **Implementation**:
+
 ```typescript
 // Add to existing exports:
-export * from './mockPaymentData';
+export * from "./mockPaymentData";
 ```
 
 **Acceptance Criteria**:
+
 - [ ] New export added
 - [ ] No duplicate exports
 - [ ] No TypeScript errors
@@ -229,6 +245,7 @@ export * from './mockPaymentData';
 **Task**: Create helper functions for payment logic
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1670-1706
 ```
@@ -236,6 +253,7 @@ export * from './mockPaymentData';
 **Reference**: spec.md lines 1668-1706
 
 **Acceptance Criteria**:
+
 - [ ] File created at `src/utils/paymentHelpers.ts`
 - [ ] All 4 functions implemented:
   - hasInsufficientBalance
@@ -258,6 +276,7 @@ export * from './mockPaymentData';
 **Task**: Build individual step indicator for the stepper
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 246-308
 ```
@@ -265,11 +284,13 @@ export * from './mockPaymentData';
 **Reference**: spec.md lines 231-310
 
 **Visual States**:
+
 - **Pending**: Gray border, white background, gray number/label
 - **Active**: Blue border, blue background, white number, blue bold label
 - **Completed**: Blue border, blue background, white checkmark icon, blue label
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/atoms/StepperCircle.tsx`
 - [ ] Accepts props: stepNumber, label, status
 - [ ] Renders circle with correct size (40px × 40px)
@@ -290,6 +311,7 @@ export * from './mockPaymentData';
 **Task**: Build connecting line between stepper circles
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 327-343
 ```
@@ -297,6 +319,7 @@ export * from './mockPaymentData';
 **Reference**: spec.md lines 314-345
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/atoms/StepperConnector.tsx`
 - [ ] Accepts prop: isActive (boolean)
 - [ ] Renders horizontal line (height: 2px)
@@ -315,6 +338,7 @@ export * from './mockPaymentData';
 **Task**: Build single digit input field for SMS code
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 368-424
 ```
@@ -322,6 +346,7 @@ export * from './mockPaymentData';
 **Reference**: spec.md lines 349-426
 
 **Features**:
+
 - Single digit numeric input
 - Auto-advance on input
 - Backspace navigation
@@ -330,6 +355,7 @@ export * from './mockPaymentData';
 - Disabled state
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/atoms/CodeInput.tsx`
 - [ ] Accepts all required props (value, onChange, onKeyDown, onFocus, etc.)
 - [ ] Input styled correctly (48px × 56px)
@@ -351,14 +377,16 @@ export * from './mockPaymentData';
 **Task**: Export new atom components
 
 **Implementation**:
+
 ```typescript
 // Add to existing exports:
-export { StepperCircle } from './StepperCircle';
-export { StepperConnector } from './StepperConnector';
-export { CodeInput } from './CodeInput';
+export { StepperCircle } from "./StepperCircle";
+export { StepperConnector } from "./StepperConnector";
+export { CodeInput } from "./CodeInput";
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All 3 new components exported
 - [ ] Exports are named exports
 - [ ] No duplicate exports
@@ -375,6 +403,7 @@ export { CodeInput } from './CodeInput';
 **Task**: Build multi-step progress indicator
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 447-493
 ```
@@ -382,6 +411,7 @@ export { CodeInput } from './CodeInput';
 **Reference**: spec.md lines 432-495
 
 **Features**:
+
 - Displays 4 steps horizontally
 - Shows current step as active
 - Shows previous steps as completed
@@ -389,6 +419,7 @@ export { CodeInput } from './CodeInput';
 - Responsive layout
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/molecules/Stepper.tsx`
 - [ ] Accepts props: currentStep, steps, className
 - [ ] Imports StepperCircle and StepperConnector from atoms
@@ -409,6 +440,7 @@ export { CodeInput } from './CodeInput';
 **Task**: Build payment breakdown row
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 515-548
 ```
@@ -416,10 +448,12 @@ export { CodeInput } from './CodeInput';
 **Reference**: spec.md lines 499-550
 
 **Variants**:
+
 - **default**: Normal row with regular font
 - **total**: Bold text with top border/margin
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/molecules/PaymentSummaryRow.tsx`
 - [ ] Accepts props: label, amount, variant, hideAmount
 - [ ] Imports formatCurrency and maskCurrency from utils
@@ -439,6 +473,7 @@ export { CodeInput } from './CodeInput';
 **Task**: Build 6-digit code input group
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 570-661
 ```
@@ -446,6 +481,7 @@ export { CodeInput } from './CodeInput';
 **Reference**: spec.md lines 554-663
 
 **Features**:
+
 - 6 individual code inputs
 - Auto-focus first input on mount
 - Auto-advance on digit entry
@@ -454,6 +490,7 @@ export { CodeInput } from './CodeInput';
 - Paste support (distributes digits)
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/molecules/CodeInputGroup.tsx`
 - [ ] Accepts props: value, onChange, hasError, disabled
 - [ ] Imports CodeInput from atoms
@@ -478,6 +515,7 @@ export { CodeInput } from './CodeInput';
 **Task**: Build key-value row for transaction details
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 682-710
 ```
@@ -485,11 +523,13 @@ export { CodeInput } from './CodeInput';
 **Reference**: spec.md lines 667-712
 
 **Features**:
+
 - Label on left (gray)
 - Value on right (black)
 - Color variants for success/error
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/molecules/TransactionDetailRow.tsx`
 - [ ] Accepts props: label, value, valueColor
 - [ ] Default value color is black
@@ -509,15 +549,17 @@ export { CodeInput } from './CodeInput';
 **Task**: Export new molecule components
 
 **Implementation**:
+
 ```typescript
 // Add to existing exports:
-export { Stepper } from './Stepper';
-export { PaymentSummaryRow } from './PaymentSummaryRow';
-export { CodeInputGroup } from './CodeInputGroup';
-export { TransactionDetailRow } from './TransactionDetailRow';
+export { Stepper } from "./Stepper";
+export { PaymentSummaryRow } from "./PaymentSummaryRow";
+export { CodeInputGroup } from "./CodeInputGroup";
+export { TransactionDetailRow } from "./TransactionDetailRow";
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All 4 new components exported
 - [ ] Exports are named exports
 - [ ] No duplicate exports
@@ -534,6 +576,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Task**: Build main card for Step 1 (payment details)
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 736-832
 ```
@@ -541,6 +584,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Reference**: spec.md lines 718-834
 
 **Features**:
+
 - Card with title and description
 - Account selector dropdown
 - "¿Necesitas más saldo?" link
@@ -548,6 +592,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 - Hide balances support
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/organisms/PaymentDetailsCard.tsx`
 - [ ] Accepts all required props
 - [ ] Imports Card from atoms
@@ -572,6 +617,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Task**: Build main card for Step 2 (confirmation)
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 852-940
 ```
@@ -579,12 +625,14 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Reference**: spec.md lines 838-942
 
 **Features**:
+
 - Card with title and description
 - User info section (titular, documento)
 - Payment summary section
 - Transaction detail rows
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/organisms/PaymentConfirmationCard.tsx`
 - [ ] Accepts props: confirmationData, hideBalances
 - [ ] Imports Card from atoms
@@ -608,6 +656,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Task**: Build main card for Step 3 (SMS code input)
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 965-1034
 ```
@@ -615,12 +664,14 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Reference**: spec.md lines 946-1036
 
 **Features**:
+
 - Centered card with title
 - CodeInputGroup
 - Error message display
 - Resend code link
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/organisms/CodeInputCard.tsx`
 - [ ] Accepts all required props
 - [ ] Imports Card and ErrorMessage from atoms
@@ -643,6 +694,7 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Task**: Build main card for Step 4 (transaction result)
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1053-1139
 ```
@@ -650,11 +702,13 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Reference**: spec.md lines 1040-1141
 
 **Features**:
+
 - Success/error icon
 - Title based on status
 - Transaction details
 
 **Acceptance Criteria**:
+
 - [ ] Component created at `src/organisms/TransactionResultCard.tsx`
 - [ ] Accepts prop: result (TransactionResult)
 - [ ] Imports Card from atoms
@@ -677,15 +731,17 @@ export { TransactionDetailRow } from './TransactionDetailRow';
 **Task**: Export new organism components
 
 **Implementation**:
+
 ```typescript
 // Add to existing exports:
-export { PaymentDetailsCard } from './PaymentDetailsCard';
-export { PaymentConfirmationCard } from './PaymentConfirmationCard';
-export { CodeInputCard } from './CodeInputCard';
-export { TransactionResultCard } from './TransactionResultCard';
+export { PaymentDetailsCard } from "./PaymentDetailsCard";
+export { PaymentConfirmationCard } from "./PaymentConfirmationCard";
+export { CodeInputCard } from "./CodeInputCard";
+export { TransactionResultCard } from "./TransactionResultCard";
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All 4 new components exported
 - [ ] Exports are named exports
 - [ ] No duplicate exports
@@ -700,6 +756,7 @@ export { TransactionResultCard } from './TransactionResultCard';
 **Task**: Create route folders for payment flow
 
 **Directories to create**:
+
 ```
 app/(authenticated)/pagos/pago-unificado/
 app/(authenticated)/pagos/pago-unificado/confirmacion/
@@ -708,6 +765,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All 4 directories created
 - [ ] Nested correctly under `app/(authenticated)/pagos/`
 - [ ] Directory names match specification
@@ -721,6 +779,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Create payment details page
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1152-1243
 ```
@@ -728,12 +787,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Reference**: spec.md lines 1147-1244
 
 **Features**:
+
 - Account selection
 - Payment summary
 - Balance validation
 - Navigation to step 2
 
 **Acceptance Criteria**:
+
 - [ ] Page created at correct path
 - [ ] 'use client' directive at top
 - [ ] useWelcomeBar(false) called
@@ -760,6 +821,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Create payment confirmation page
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1253-1357
 ```
@@ -767,11 +829,13 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Reference**: spec.md lines 1248-1358
 
 **Features**:
+
 - Display confirmation data
 - Read-only summary
 - Navigation to step 3
 
 **Acceptance Criteria**:
+
 - [ ] Page created at correct path
 - [ ] 'use client' directive at top
 - [ ] useWelcomeBar(false) called
@@ -799,6 +863,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Create SMS code verification page
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1367-1475
 ```
@@ -806,6 +871,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Reference**: spec.md lines 1362-1476
 
 **Features**:
+
 - 6-digit code input
 - Code validation
 - Resend functionality
@@ -813,6 +879,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - Navigation to step 4
 
 **Acceptance Criteria**:
+
 - [ ] Page created at correct path
 - [ ] 'use client' directive at top
 - [ ] useWelcomeBar(false) called
@@ -844,6 +911,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Create transaction result page
 
 **Implementation**:
+
 ```typescript
 // Copy implementation from spec.md line 1485-1558
 ```
@@ -851,12 +919,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Reference**: spec.md lines 1480-1559
 
 **Features**:
+
 - Transaction result display
 - Print/save functionality
 - Clean up sessionStorage
 - Navigate back to payments
 
 **Acceptance Criteria**:
+
 - [ ] Page created at correct path
 - [ ] 'use client' directive at top
 - [ ] useWelcomeBar(false) called
@@ -883,6 +953,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Test Cases**:
 
 #### Test Case 1: Happy Path
+
 1. Navigate to `/pagos/pago-unificado`
 2. Select account with sufficient balance
 3. Click "Continuar"
@@ -895,34 +966,40 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 10. Verify navigation to /pagos
 
 **Acceptance Criteria**:
+
 - [ ] Flow completes without errors
 - [ ] Stepper updates correctly at each step
 - [ ] Data persists between steps
 - [ ] SessionStorage cleaned up at the end
 
 #### Test Case 2: Insufficient Balance
+
 1. Navigate to Step 1
 2. Select account with balance < total payment
 3. Click "Continuar"
 4. Verify error message appears
 
 **Acceptance Criteria**:
+
 - [ ] Error message displays
 - [ ] Navigation blocked
 - [ ] User remains on Step 1
 
 #### Test Case 3: Invalid Code
+
 1. Complete Step 1 and Step 2
 2. Enter incorrect code (not "123456")
 3. Click "Pagar"
 4. Verify error message appears
 
 **Acceptance Criteria**:
+
 - [ ] Error message displays
 - [ ] Code inputs highlighted in red
 - [ ] User remains on Step 3
 
 #### Test Case 4: Back Navigation
+
 1. Complete Step 1
 2. Click "Volver" on Step 2
 3. Verify return to Step 1 with data preserved
@@ -932,11 +1009,13 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 7. Verify return to Step 2
 
 **Acceptance Criteria**:
+
 - [ ] Back navigation works
 - [ ] Data preserved when going back
 - [ ] Stepper updates correctly
 
 #### Test Case 5: Direct URL Access
+
 1. Directly navigate to `/pagos/pago-unificado/confirmacion`
 2. Verify redirect to Step 1
 3. Directly navigate to `/pagos/pago-unificado/verificacion`
@@ -945,6 +1024,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 6. Verify appropriate handling
 
 **Acceptance Criteria**:
+
 - [ ] Protected routes redirect correctly
 - [ ] No crashes on direct access
 - [ ] User cannot skip steps
@@ -958,6 +1038,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Components to Test**:
 
 #### Stepper Component
+
 - [ ] All 4 steps render
 - [ ] Pending state: gray circle, white bg, gray label
 - [ ] Active state: blue circle, blue bg, white number, blue bold label
@@ -967,6 +1048,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] Responsive on mobile
 
 #### CodeInputGroup
+
 - [ ] 6 inputs render
 - [ ] First input auto-focuses
 - [ ] Typing advances to next
@@ -977,12 +1059,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] Focus state shows blue ring
 
 #### Payment Cards
+
 - [ ] PaymentDetailsCard: title, description, dropdown, breakdown
 - [ ] PaymentConfirmationCard: user info, payment summary
 - [ ] CodeInputCard: title, inputs, resend link
 - [ ] TransactionResultCard: icon, title, details
 
 **Acceptance Criteria**:
+
 - [ ] All components match Figma design
 - [ ] Colors match design system
 - [ ] Spacing matches specifications
@@ -996,6 +1080,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Test layout on different screen sizes
 
 **Breakpoints**:
+
 - Desktop: ≥1024px
 - Tablet: 640px - 1023px
 - Mobile: <640px
@@ -1003,6 +1088,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Test Cases**:
 
 #### Desktop (≥1024px)
+
 - [ ] Full sidebar visible
 - [ ] Stepper horizontal layout
 - [ ] Cards max-width 800px, centered
@@ -1010,12 +1096,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] Code inputs full size
 
 #### Tablet (640px - 1023px)
+
 - [ ] Collapsed sidebar
 - [ ] Stepper horizontal (smaller spacing)
 - [ ] Cards full width with padding
 - [ ] Buttons adapt
 
 #### Mobile (<640px)
+
 - [ ] Mobile sidebar (toggle)
 - [ ] Stepper remains horizontal (compact)
 - [ ] Code inputs smaller (if needed)
@@ -1023,6 +1111,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] Touch targets adequate (min 44px)
 
 **Acceptance Criteria**:
+
 - [ ] Layout adapts correctly at all breakpoints
 - [ ] No horizontal scroll
 - [ ] All interactive elements accessible
@@ -1038,6 +1127,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Tests**:
 
 #### Keyboard Navigation
+
 - [ ] Tab through all steps (visual only)
 - [ ] Tab through form fields
 - [ ] Tab through buttons
@@ -1046,12 +1136,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] No keyboard traps
 
 #### Focus States
+
 - [ ] All interactive elements show focus
 - [ ] Focus indicators visible (blue ring)
 - [ ] Focus order logical
 - [ ] Skip to content (if applicable)
 
 #### Screen Reader
+
 - [ ] Stepper announces current step
 - [ ] Step labels read correctly
 - [ ] Form fields have labels
@@ -1060,12 +1152,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] ARIA attributes present
 
 #### Color Contrast
+
 - [ ] Text meets 4.5:1 ratio
 - [ ] Large text meets 3:1 ratio
 - [ ] UI components meet 3:1 ratio
 - [ ] Focus indicators meet 3:1 ratio
 
 **Acceptance Criteria**:
+
 - [ ] All tests pass
 - [ ] No accessibility errors
 - [ ] Keyboard navigation smooth
@@ -1098,8 +1192,9 @@ app/(authenticated)/pagos/pago-unificado/resultado/
    - [ ] Verify now visible
 
 **Acceptance Criteria**:
+
 - [ ] Hide balances state persists across steps
-- [ ] Mask shows "$ ****" format
+- [ ] Mask shows "$ \*\*\*\*" format
 - [ ] Toggle works from TopBar
 - [ ] No layout shift when toggling
 
@@ -1112,6 +1207,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Test Cases**:
 
 #### Page Refresh
+
 1. Start flow on Step 1
 2. Select account, click Continue
 3. On Step 2, refresh page
@@ -1120,6 +1216,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Expected**: Data should persist via sessionStorage
 
 #### Session Timeout (Mock)
+
 1. Complete Step 1
 2. Clear sessionStorage manually
 3. Try to continue to Step 2
@@ -1128,6 +1225,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Expected**: Redirect to Step 1 with clean state
 
 #### Invalid State
+
 1. Manually set invalid accountId in sessionStorage
 2. Navigate to Step 2
 3. Verify graceful handling
@@ -1135,6 +1233,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Expected**: Redirect to Step 1 or show error
 
 #### Resend Code
+
 1. Reach Step 3
 2. Click "Reenviar"
 3. Verify button disabled
@@ -1144,12 +1243,14 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Expected**: Countdown works, button re-enables
 
 #### Code Auto-Submit
+
 1. Type 6th digit in code input
 2. Verify no auto-submit (user must click "Pagar")
 
 **Expected**: User controls submission
 
 **Acceptance Criteria**:
+
 - [ ] All edge cases handled gracefully
 - [ ] No crashes or white screens
 - [ ] Appropriate error messages
@@ -1162,6 +1263,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 **Task**: Address any issues found during testing
 
 **Checklist**:
+
 - [ ] Fix visual inconsistencies
 - [ ] Fix navigation bugs
 - [ ] Fix validation issues
@@ -1174,6 +1276,7 @@ app/(authenticated)/pagos/pago-unificado/resultado/
 - [ ] Add any missing error handling
 
 **Acceptance Criteria**:
+
 - [ ] All identified bugs fixed
 - [ ] Code is clean and well-formatted
 - [ ] No console errors or warnings
@@ -1293,11 +1396,13 @@ Manually test complete flow as described in Phase 6.
 ### Development Environment
 
 1. **Implement in feature branch**:
+
    ```bash
    git checkout -b feature/09a-pagos-pago-unificado
    ```
 
 2. **Commit frequently** with clear messages:
+
    ```bash
    git commit -m "feat(09a-pagos): add payment type definitions"
    git commit -m "feat(09a-pagos): add StepperCircle atom component"
@@ -1461,6 +1566,7 @@ This implementation plan provides a structured approach to building the Pago Uni
 **Dependencies**: None (uses existing infrastructure)
 
 **Key Deliverables**:
+
 - 15 new components
 - 4 new pages
 - Complete payment flow

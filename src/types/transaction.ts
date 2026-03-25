@@ -1,4 +1,4 @@
-export type TransactionType = 'DEBITO' | 'CREDITO';
+export type TransactionType = "DEBITO" | "CREDITO";
 
 export interface Transaction {
   id: string;

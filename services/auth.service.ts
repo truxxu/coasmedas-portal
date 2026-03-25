@@ -9,7 +9,7 @@
  * @see /docs/CONSOLIDATED_API_REFERENCE.md#3-password-management
  */
 
-import { apiPost } from '@/lib/api/client';
+import { apiPost } from "@/lib/api/client";
 import type {
   GetSaltRequest,
   GetSaltResponse,
@@ -24,7 +24,7 @@ import type {
   RegisterResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
-} from '@/types/api/auth';
+} from "@/types/api/auth";
 
 // ─── Authentication ───
 
@@ -35,8 +35,10 @@ import type {
  * @auth None
  * @status ✅ Used in mobile
  */
-export async function getSalt(params: GetSaltRequest): Promise<GetSaltResponse> {
-  return apiPost<GetSaltResponse>('/get-salt', params);
+export async function getSalt(
+  params: GetSaltRequest,
+): Promise<GetSaltResponse> {
+  return apiPost<GetSaltResponse>("/get-salt", params);
 }
 
 /**
@@ -46,8 +48,10 @@ export async function getSalt(params: GetSaltRequest): Promise<GetSaltResponse> 
  * @auth None
  * @status ✅ Used in mobile
  */
-export async function sendOtp(params: SendOtpRequest): Promise<SendOtpResponse> {
-  return apiPost<SendOtpResponse>('/send-otp', params);
+export async function sendOtp(
+  params: SendOtpRequest,
+): Promise<SendOtpResponse> {
+  return apiPost<SendOtpResponse>("/send-otp", params);
 }
 
 /**
@@ -59,7 +63,7 @@ export async function sendOtp(params: SendOtpRequest): Promise<SendOtpResponse> 
  * @status ✅ Used in mobile
  */
 export async function login(params: LoginRequest): Promise<LoginResponse> {
-  return apiPost<LoginResponse>('/login', params);
+  return apiPost<LoginResponse>("/login", params);
 }
 
 /**
@@ -72,7 +76,7 @@ export async function login(params: LoginRequest): Promise<LoginResponse> {
 export async function sendTransactionOtp(
   params: SendTransactionOtpRequest,
 ): Promise<SendTransactionOtpResponse> {
-  return apiPost<SendTransactionOtpResponse>('/send-otp/transaction', params);
+  return apiPost<SendTransactionOtpResponse>("/send-otp/transaction", params);
 }
 
 // ─── Registration ───
@@ -85,8 +89,10 @@ export async function sendTransactionOtp(
  * @auth None
  * @status ✅ Used in mobile
  */
-export async function validateUser(params: UserValidationRequest): Promise<void> {
-  await apiPost<void>('/userValidation', params);
+export async function validateUser(
+  params: UserValidationRequest,
+): Promise<void> {
+  await apiPost<void>("/userValidation", params);
 }
 
 /**
@@ -98,8 +104,10 @@ export async function validateUser(params: UserValidationRequest): Promise<void>
  * @auth None
  * @status ✅ Used in mobile
  */
-export async function register(params: RegisterRequest): Promise<RegisterResponse> {
-  return apiPost<RegisterResponse>('/register', params);
+export async function register(
+  params: RegisterRequest,
+): Promise<RegisterResponse> {
+  return apiPost<RegisterResponse>("/register", params);
 }
 
 // ─── Password Management ───
@@ -114,5 +122,5 @@ export async function register(params: RegisterRequest): Promise<RegisterRespons
 export async function updatePassword(
   params: UpdatePasswordRequest,
 ): Promise<UpdatePasswordResponse> {
-  return apiPost<UpdatePasswordResponse>('/update-password', params);
+  return apiPost<UpdatePasswordResponse>("/update-password", params);
 }

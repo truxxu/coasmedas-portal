@@ -1,4 +1,4 @@
-import type { DocumentType, UserIdentification } from './common';
+import type { DocumentType, UserIdentification } from "./common";
 
 // ─── /get-salt ───
 
@@ -40,7 +40,11 @@ export interface LoginResponse {
 // ─── /send-otp/transaction ───
 
 export interface SendTransactionOtpRequest extends UserIdentification {
-  trnType: 'PaymentInternal' | 'TransferInternal' | 'TransferExternalBanks' | 'TransferExternalEntities';
+  trnType:
+    | "PaymentInternal"
+    | "TransferInternal"
+    | "TransferExternalBanks"
+    | "TransferExternalEntities";
 }
 
 export interface SendTransactionOtpResponse {

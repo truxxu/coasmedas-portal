@@ -47,7 +47,8 @@ export default function SMSVerificationPage() {
 
       // Map and store result for the resultado page
       const sourceName = sessionStorage.getItem("transferSourceName") || "";
-      const destinationName = sessionStorage.getItem("transferDestinationName") || "";
+      const destinationName =
+        sessionStorage.getItem("transferDestinationName") || "";
       const mappedResult = mapTransferResult(result, {
         sourceType: sourceName,
         productNumber: destinationName,

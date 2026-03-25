@@ -10,12 +10,12 @@ The "Cuentas de mi Red Coopcentral" transfer flow allows users to transfer money
 
 ## Figma Design References
 
-| Screen                   | Node ID   | URL                                                                                           |
-| ------------------------ | --------- | --------------------------------------------------------------------------------------------- |
-| Step 1: Details          | 842-11    | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-11)      |
-| Step 2: Confirmation     | 842-594   | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-594)     |
-| Step 3: SMS Verification | (existing)| Uses existing OTP verification page                                                           |
-| Step 4: Result           | 842-1052  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-1052)    |
+| Screen                   | Node ID    | URL                                                                                        |
+| ------------------------ | ---------- | ------------------------------------------------------------------------------------------ |
+| Step 1: Details          | 842-11     | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-11)   |
+| Step 2: Confirmation     | 842-594    | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-594)  |
+| Step 3: SMS Verification | (existing) | Uses existing OTP verification page                                                        |
+| Step 4: Result           | 842-1052   | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=842-1052) |
 
 ---
 
@@ -135,19 +135,19 @@ The flow uses a 4-step stepper with the following labels:
 
 ### Transfer Details Summary
 
-| Label               | Value Example          | Styling                           |
-| ------------------- | ---------------------- | --------------------------------- |
-| Nombre Titular:     | CAMILO ANDRÉS CRUZ     | Right aligned, regular            |
-| Documento Titular:  | CC 1.***.***. 231      | Right aligned, masked             |
-| Producto a Debitar: | Cuenta de Ahorros      | Right aligned, regular            |
-| --- (divider)       | ---                    | Line separator `#E4E6EA`          |
-| Titular Destino:    | PEDRO PEREZ            | Right aligned, regular            |
-| Banco Destino:      | Coopcentral            | Right aligned, regular            |
-| Tipo de Cuenta:     | Ahorros                | Right aligned, regular            |
-| Cuenta Destino:     | 123.-456789-01         | Right aligned, regular            |
-| Valor a Transferir: | $ 200.000              | Right aligned, bold, 18px         |
-| --- (divider)       | ---                    | Line separator `#E4E6EA`          |
-| Concepto:           | Clases mensuales       | Right aligned, regular            |
+| Label               | Value Example      | Styling                   |
+| ------------------- | ------------------ | ------------------------- |
+| Nombre Titular:     | CAMILO ANDRÉS CRUZ | Right aligned, regular    |
+| Documento Titular:  | CC 1.**_._**. 231  | Right aligned, masked     |
+| Producto a Debitar: | Cuenta de Ahorros  | Right aligned, regular    |
+| --- (divider)       | ---                | Line separator `#E4E6EA`  |
+| Titular Destino:    | PEDRO PEREZ        | Right aligned, regular    |
+| Banco Destino:      | Coopcentral        | Right aligned, regular    |
+| Tipo de Cuenta:     | Ahorros            | Right aligned, regular    |
+| Cuenta Destino:     | 123.-456789-01     | Right aligned, regular    |
+| Valor a Transferir: | $ 200.000          | Right aligned, bold, 18px |
+| --- (divider)       | ---                | Line separator `#E4E6EA`  |
+| Concepto:           | Clases mensuales   | Right aligned, regular    |
 
 ### Summary Row Styling
 
@@ -209,19 +209,19 @@ Uses the existing OTP verification component (`CodeInputCard`).
 
 ### Transaction Details Summary
 
-| Label                 | Value Example            | Styling                           |
-| --------------------- | ------------------------ | --------------------------------- |
-| Cuenta Origen:        | Cuenta de Ahorros        | Right aligned, regular            |
-| Banco Destino:        | Coopcentral              | Right aligned, regular            |
-| Cuenta Destino:       | 123-456789-01            | Right aligned, regular            |
-| Valor Transferido:    | $200.000                 | Right aligned, bold, 18px         |
-| Concepto:             | Clases mensuales         | Right aligned, regular            |
-| Costo Transacción:    | $ 0                      | Right aligned, regular            |
-| --- (divider)         | ---                      | Line separator `#E4E6EA`          |
-| Fecha de Transacción: | 5 de Enero de 2025       | Right aligned, regular            |
-| Hora de Transacción:  | 03:02 p.m.               | Right aligned, regular            |
-| Número de Aprobación: | 251606                   | Right aligned, regular            |
-| Descripción:          | Transferencia Exitosa    | Right aligned, green `#00A44C`    |
+| Label                 | Value Example         | Styling                        |
+| --------------------- | --------------------- | ------------------------------ |
+| Cuenta Origen:        | Cuenta de Ahorros     | Right aligned, regular         |
+| Banco Destino:        | Coopcentral           | Right aligned, regular         |
+| Cuenta Destino:       | 123-456789-01         | Right aligned, regular         |
+| Valor Transferido:    | $200.000              | Right aligned, bold, 18px      |
+| Concepto:             | Clases mensuales      | Right aligned, regular         |
+| Costo Transacción:    | $ 0                   | Right aligned, regular         |
+| --- (divider)         | ---                   | Line separator `#E4E6EA`       |
+| Fecha de Transacción: | 5 de Enero de 2025    | Right aligned, regular         |
+| Hora de Transacción:  | 03:02 p.m.            | Right aligned, regular         |
+| Número de Aprobación: | 251606                | Right aligned, regular         |
+| Descripción:          | Transferencia Exitosa | Right aligned, green `#00A44C` |
 
 ### Summary Row Styling
 

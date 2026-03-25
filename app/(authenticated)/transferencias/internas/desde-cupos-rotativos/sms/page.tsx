@@ -82,12 +82,14 @@ export default function SMSVerificationPage() {
       if (code === CUPO_ROTATIVO_MOCK_VALID_CODE) {
         // Build result from stored data
         const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
-        const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
+        const destinationId = sessionStorage.getItem(
+          "cupoRotativoDestinationId",
+        );
         const amount = sessionStorage.getItem("cupoRotativoAmount");
 
         const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
         const selectedDestination = mockCupoRotativoDestinations.find(
-          (d) => d.id === destinationId
+          (d) => d.id === destinationId,
         );
 
         const result: CupoRotativoTransferResult = {
@@ -101,7 +103,7 @@ export default function SMSVerificationPage() {
 
         sessionStorage.setItem(
           "cupoRotativoTransferResult",
-          JSON.stringify(result)
+          JSON.stringify(result),
         );
 
         router.push("/transferencias/internas/desde-cupos-rotativos/resultado");
@@ -112,7 +114,7 @@ export default function SMSVerificationPage() {
       // Store error result
       sessionStorage.setItem(
         "cupoRotativoTransferResult",
-        JSON.stringify(mockCupoRotativoResultError)
+        JSON.stringify(mockCupoRotativoResultError),
       );
       router.push("/transferencias/internas/desde-cupos-rotativos/resultado");
     } finally {

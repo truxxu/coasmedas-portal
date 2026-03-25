@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface StepperConnectorProps {
   isActive: boolean;
@@ -9,7 +9,7 @@ export const StepperConnector: React.FC<StepperConnectorProps> = ({
 }) => {
   return (
     <div
-      className={`h-1 w-full rounded-full ${isActive ? 'bg-brand-primary' : 'bg-brand-border'}`}
+      className={`h-1 w-full rounded-full ${isActive ? "bg-brand-primary" : "bg-brand-border"}`}
       role="presentation"
     />
   );

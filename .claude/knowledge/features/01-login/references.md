@@ -8,6 +8,7 @@
 ## Design Resources
 
 ### UI/UX Design
+
 - **Figma Login Design**: [Login Page](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1409-787&t=m9MCv7YKAd0nQVyS-0)
   - Node ID: 1409-787
   - File Key: zuAxL3sGgRg5IWt5OKQ70x
@@ -15,6 +16,7 @@
   - Owner: Design Team
 
 ### Design System Reference
+
 - **Prehome Design Tokens**: See [../00-prehome/references.md](../00-prehome/references.md) for shared brand colors and typography
 
 ---
@@ -22,26 +24,29 @@
 ## Visual Design Summary
 
 ### Layout
+
 - Navy blue full-screen background (`#1D4E8F`)
 - Centered white card with rounded corners (~24px radius)
 - Card width: ~360px max-width
-- Vertical layout: Logo ’ Header ’ Form ’ Actions ’ Footer
+- Vertical layout: Logo ï¿½ Header ï¿½ Form ï¿½ Actions ï¿½ Footer
 
 ### Key Components
+
 1. **Logo Section** - Coasmedas logo with tagline
-2. **Header** - "Iniciar sesión" title + instructions
+2. **Header** - "Iniciar sesiï¿½n" title + instructions
 3. **Form Fields**:
    - Tipo de documento (dropdown)
-   - Número de documento (text input)
-   - Contraseña (password input)
+   - Nï¿½mero de documento (text input)
+   - Contraseï¿½a (password input)
 4. **Terms & Conditions** - Checkbox acceptance text
 5. **CAPTCHA Placeholder** - Gray box for validation
 6. **Submit Button** - "Ingresar" button (disabled state shown)
-7. **Forgot Password Link** - "¿Olvidaste tu contraseña?"
+7. **Forgot Password Link** - "ï¿½Olvidaste tu contraseï¿½a?"
 8. **App Promotion** - "Lleva a Coas en tu bolsillo" + store badges
-9. **Help Section** - "¿Necesitas ayuda?" + contact link
+9. **Help Section** - "ï¿½Necesitas ayuda?" + contact link
 
 ### Color Palette
+
 - **Primary Blue**: `#007FFF` - Active buttons, CTAs
 - **Navy Blue**: `#1D4E8F` - Background, links
 - **Text Black**: `#111827` - Headings
@@ -52,6 +57,7 @@
 - **White**: `#FFFFFF` - Card background
 
 ### Typography
+
 - **Font**: Ubuntu (Regular 400, Medium 500, Bold 700)
 - **Heading**: Ubuntu Bold, 20px, #111827
 - **Labels**: Ubuntu Medium, 14.5px, #58585B
@@ -60,6 +66,7 @@
 - **Links**: Ubuntu Medium, 14px, #1D4E8F
 
 ### Form Specifications
+
 - **Input Height**: ~44px (touch-friendly)
 - **Border Radius**: 6px
 - **Border**: 1px solid #B1B1B1
@@ -71,18 +78,21 @@
 ## Technical Resources
 
 ### Libraries
+
 - **React Hook Form**: https://react-hook-form.com - Form state management
 - **Yup**: https://github.com/jquense/yup - Validation schemas
 - **Ubuntu Font**: Already integrated in project
 
 ### Design Patterns
+
 - **Form Validation**: See `.claude/coding-standards.md` (Forms section)
 - **Atomic Design**: Follow existing component hierarchy
 
 ---
 
 ## Related Features
-- **Prehome** (00-prehome) - Contains "Iniciar Sesión" navigation link
+
+- **Prehome** (00-prehome) - Contains "Iniciar Sesiï¿½n" navigation link
 - **Dashboard** (future) - Destination after successful login
 - **Registration** (future) - Alternative auth flow
 - **Forgot Password** (future) - Linked from login form
@@ -90,6 +100,7 @@
 ---
 
 ## Notes
+
 - Design shows disabled button state (light blue)
 - CAPTCHA integration placeholder shown
 - No password visibility toggle shown in design

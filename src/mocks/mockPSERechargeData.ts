@@ -1,4 +1,7 @@
-import type { PSERechargeDestination, PSERechargeResult } from "@/src/types/pseRecharge";
+import type {
+  PSERechargeDestination,
+  PSERechargeResult,
+} from "@/src/types/pseRecharge";
 
 /**
  * Mock destination accounts with balance

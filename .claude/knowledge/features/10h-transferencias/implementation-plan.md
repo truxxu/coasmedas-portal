@@ -13,6 +13,7 @@ Implement the "Programar Transferencias" feature under `/transferencias/programa
 **Create**: `src/types/scheduledTransfer.ts`
 
 Define 7 interfaces/types:
+
 - `TransactionTypeOption` — value, label
 - `Periodicity` — union type: `"unica" | "mensual" | "quincenal"`
 - `PeriodicityOption` — value (Periodicity), label
@@ -30,6 +31,7 @@ Define 7 interfaces/types:
 **Create**: `src/schemas/scheduledTransferSchema.ts`
 
 Key validation rules:
+
 - `transactionType`: Required
 - `startDate`: Required
 - `periodicity`: Required, oneOf `["unica", "mensual", "quincenal"]`
@@ -50,6 +52,7 @@ Export inferred type: `ScheduledTransferFormValues`
 **Create**: `src/mocks/mockScheduledTransferData.ts`
 
 Contents:
+
 - `TRANSACTION_TYPE_OPTIONS` — 3 options: "Transferencia a otros bancos", "Transferencia a mi red", "Pago de Obligación"
 - `PERIODICITY_OPTIONS` — 3 options: "Única vez", "Mensual", "Quincenal"
 - `mockScheduleSourceAccounts` — 1 savings account (balance: 8,730,500)
@@ -65,6 +68,7 @@ Contents:
 **Modify**: `src/mocks/index.ts`
 
 Add exports:
+
 ```typescript
 export {
   TRANSACTION_TYPE_OPTIONS,
@@ -84,6 +88,7 @@ export {
 **Clone from**: `InternasFlowGrid.tsx` / `ExternasFlowGrid.tsx` pattern
 
 **Props interface:**
+
 ```typescript
 interface ScheduleTransferSelectionCardProps {
   onSelectOption: (option: "nuevo" | "historial") => void;
@@ -91,16 +96,19 @@ interface ScheduleTransferSelectionCardProps {
 ```
 
 **Layout:**
+
 - White card container with `rounded-2xl p-8 shadow-sm`
 - Centered header: title "Programación de Pagos y Transferencias" (24px, medium, navy) + description paragraph
 - 2-column grid (`grid grid-cols-1 md:grid-cols-2 gap-4`) with 2 `FlowOptionCard` components
 
 **Card 1**: "Programa Nuevo Pago/Transferencia"
+
 - Custom inline SVG circle with "+" icon (40×40, stroke `#005066`)
 - Description: "Crea una nueva programación para tus pagos o transferencias"
 - onClick: `onSelectOption("nuevo")`
 
 **Card 2**: "Ver Pagos Programados"
+
 - No custom icon (use default FlowOptionCard)
 - Description: "Consulta, edita o elimina tus programaciones existentes."
 - onClick: `onSelectOption("historial")`
@@ -112,6 +120,7 @@ interface ScheduleTransferSelectionCardProps {
 **Create**: `src/organisms/ScheduleTransferForm.tsx`
 
 **Props interface:**
+
 ```typescript
 interface ScheduleTransferFormProps {
   sourceAccounts: ScheduleSourceAccount[];
@@ -123,6 +132,7 @@ interface ScheduleTransferFormProps {
 ```
 
 **Key implementation details:**
+
 - Uses `useForm<ScheduledTransferFormValues>` with `yupResolver(scheduledTransferSchema)`
 - Watches `periodicity` field → derives `isRecurring` boolean
 - Conditional rendering: when `isRecurring`, show source account, destination account, and amount fields between transaction type and date fields
@@ -132,14 +142,16 @@ interface ScheduleTransferFormProps {
 - "Programar" button disabled when `formState.isValid` is false
 
 **Form field order (always visible):**
+
 1. Tipo de Transacción (SelectField)
-2. *[Conditional: Cuenta Origen, Cuenta Externa Inscrita, Monto — only when recurring]*
+2. _[Conditional: Cuenta Origen, Cuenta Externa Inscrita, Monto — only when recurring]_
 3. Fecha de Inicio del Pago (DateInput)
 4. Periodicidad (SelectField)
 5. Número de Pagos (FormField, optional)
 6. Concepto o Descripción (FormField)
 
 **Button styling:**
+
 - Enabled: `bg-[#00B8ED] text-white rounded-md shadow-sm px-7 py-2 text-sm font-bold`
 - Disabled: `bg-[#8FE6FF] text-white rounded-md px-7 py-2 text-sm font-bold cursor-not-allowed`
 
@@ -154,6 +166,7 @@ interface ScheduleTransferFormProps {
 **Clone from**: `AccountSuccessModal.tsx` pattern
 
 **Props interface:**
+
 ```typescript
 interface ScheduleSuccessModalProps {
   isOpen: boolean;
@@ -162,6 +175,7 @@ interface ScheduleSuccessModalProps {
 ```
 
 **Implementation:**
+
 - Backdrop: `fixed inset-0 z-50 flex items-center justify-center` with `bg-black/50` overlay
 - Modal container: `relative bg-white rounded-[15px] p-8 max-w-md w-full mx-4`
 - Title: "Programación Nueva" (20px, bold, navy `#005066`, centered)
@@ -178,6 +192,7 @@ interface ScheduleSuccessModalProps {
 **Create**: `src/organisms/ScheduledTransfersTable.tsx`
 
 **Props interface:**
+
 ```typescript
 interface ScheduledTransfersTableProps {
   transfers: ScheduledTransfer[];
@@ -190,12 +205,14 @@ interface ScheduledTransfersTableProps {
 ```
 
 **Layout:**
+
 - Card container with `space-y-6 p-8`
 - Header: title "Historial de Pagos Programados" (left) + export buttons (right)
 - Export buttons: "Exportar PDF" and "Exportar Excel" with small inline SVG icons, `text-[13.7px] font-medium text-black`
 - Responsive table wrapped in `overflow-x-auto`
 
 **Table structure:**
+
 - 8 columns: TIPO, ORIGEN, DESTINO, PRÓXIMA EJECUCIÓN, PERIODICIDAD, MONTO, ESTADO, ACCIONES
 - Header: `text-[15px] font-normal text-black`, transparent background, bottom border
 - Rows: `text-[13.7px] text-black`, separated by `1px solid #E4E6EA`
@@ -214,6 +231,7 @@ interface ScheduledTransfersTableProps {
 **Modify**: `src/organisms/index.ts`
 
 Add 4 new exports:
+
 ```typescript
 export { ScheduleTransferSelectionCard } from "./ScheduleTransferSelectionCard";
 export { ScheduleTransferForm } from "./ScheduleTransferForm";
@@ -232,6 +250,7 @@ export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
 **Component name:** `ProgramarTransferenciasPage`
 
 **Key details:**
+
 - `"use client"` component
 - WelcomeBar title: `"Programar Transferencias"`, backHref: `"/transferencias"`
 - Breadcrumbs: `["Inicio", "Transferencias", "Programar Transferencias"]`
@@ -248,6 +267,7 @@ export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
 **Component name:** `ProgramarNuevoPage`
 
 **Key details:**
+
 - `"use client"` component
 - WelcomeBar title: `"Programar Nuevo"`, backHref: `"/transferencias/programar"`
 - Breadcrumbs: `["Inicio", "Programación", "Programar Nuevo"]` (note: "Programación" not "Transferencias")
@@ -268,6 +288,7 @@ export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
 **Component name:** `HistorialProgramacionPage`
 
 **Key details:**
+
 - `"use client"` component
 - WelcomeBar title: `"Historial"`, backHref: `"/transferencias/programar"`
 - Breadcrumbs: `["Inicio", "Programación", "Historial"]` (note: "Programación" not "Transferencias")
@@ -281,20 +302,20 @@ export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
 
 ## Summary Checklist
 
-| Step | Action | Files |
-|------|--------|-------|
-| 1 | Create types | Create `src/types/scheduledTransfer.ts` |
-| 2 | Create schema | Create `src/schemas/scheduledTransferSchema.ts` |
-| 3 | Create mocks | Create `src/mocks/mockScheduledTransferData.ts` |
-| 4 | Update mock index | Modify `src/mocks/index.ts` |
-| 5 | Create selection card organism | Create `src/organisms/ScheduleTransferSelectionCard.tsx` |
-| 6 | Create form organism | Create `src/organisms/ScheduleTransferForm.tsx` |
-| 7 | Create success modal organism | Create `src/organisms/ScheduleSuccessModal.tsx` |
-| 8 | Create history table organism | Create `src/organisms/ScheduledTransfersTable.tsx` |
-| 9 | Update organism index | Modify `src/organisms/index.ts` |
-| 10 | Create selection page | Create `app/.../programar/page.tsx` |
-| 11 | Create form page | Create `app/.../programar/nuevo/page.tsx` |
-| 12 | Create history page | Create `app/.../programar/historial/page.tsx` |
+| Step | Action                         | Files                                                    |
+| ---- | ------------------------------ | -------------------------------------------------------- |
+| 1    | Create types                   | Create `src/types/scheduledTransfer.ts`                  |
+| 2    | Create schema                  | Create `src/schemas/scheduledTransferSchema.ts`          |
+| 3    | Create mocks                   | Create `src/mocks/mockScheduledTransferData.ts`          |
+| 4    | Update mock index              | Modify `src/mocks/index.ts`                              |
+| 5    | Create selection card organism | Create `src/organisms/ScheduleTransferSelectionCard.tsx` |
+| 6    | Create form organism           | Create `src/organisms/ScheduleTransferForm.tsx`          |
+| 7    | Create success modal organism  | Create `src/organisms/ScheduleSuccessModal.tsx`          |
+| 8    | Create history table organism  | Create `src/organisms/ScheduledTransfersTable.tsx`       |
+| 9    | Update organism index          | Modify `src/organisms/index.ts`                          |
+| 10   | Create selection page          | Create `app/.../programar/page.tsx`                      |
+| 11   | Create form page               | Create `app/.../programar/nuevo/page.tsx`                |
+| 12   | Create history page            | Create `app/.../programar/historial/page.tsx`            |
 
 **Total**: 10 new files created, 2 existing files modified (2 index updates)
 
@@ -321,6 +342,7 @@ The key interaction on the form page is **conditional field rendering** based on
 ### Periodicity = "unica" (default)
 
 Fields shown in order:
+
 1. Tipo de Transacción (select)
 2. Fecha de Inicio del Pago (date)
 3. Periodicidad (select — "Única vez")
@@ -330,6 +352,7 @@ Fields shown in order:
 ### Periodicity = "mensual" or "quincenal"
 
 Fields shown in order:
+
 1. Tipo de Transacción (select)
 2. Cuenta Origen (select — with balance display)
 3. Cuenta Externa Inscrita (select)
@@ -340,6 +363,7 @@ Fields shown in order:
 8. Concepto o Descripción (input)
 
 **Transition behavior:**
+
 - When periodicity changes from "unica" to recurring, additional fields (Cuenta Origen, Cuenta Externa, Monto) appear between transaction type and date fields
 - When periodicity changes from recurring to "unica", clear additional field values using `setValue("sourceAccountId", "")`, etc.
 - Use `watch("periodicity")` to derive `isRecurring` boolean
@@ -348,16 +372,16 @@ Fields shown in order:
 
 ## Validation Rules
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Tipo de Transacción | Required | "Seleccione un tipo de transacción" |
-| Fecha de Inicio | Required, format dd/mm/aaaa | "Ingrese la fecha de inicio del pago" |
-| Periodicidad | Required | "Seleccione la periodicidad" |
-| Cuenta Origen | Required when recurring | "Seleccione una cuenta origen" |
-| Cuenta Externa | Required when recurring | "Seleccione una cuenta destino" |
-| Monto | Required when recurring, > 0 | "Ingrese el monto a transferir" / "El monto debe ser mayor a 0" |
-| Número de Pagos | Optional, positive integer if provided | "Debe ser un número entero positivo" |
-| Concepto | Optional, max 100 chars | "El concepto no puede exceder 100 caracteres" |
+| Field               | Rule                                   | Error Message                                                   |
+| ------------------- | -------------------------------------- | --------------------------------------------------------------- |
+| Tipo de Transacción | Required                               | "Seleccione un tipo de transacción"                             |
+| Fecha de Inicio     | Required, format dd/mm/aaaa            | "Ingrese la fecha de inicio del pago"                           |
+| Periodicidad        | Required                               | "Seleccione la periodicidad"                                    |
+| Cuenta Origen       | Required when recurring                | "Seleccione una cuenta origen"                                  |
+| Cuenta Externa      | Required when recurring                | "Seleccione una cuenta destino"                                 |
+| Monto               | Required when recurring, > 0           | "Ingrese el monto a transferir" / "El monto debe ser mayor a 0" |
+| Número de Pagos     | Optional, positive integer if provided | "Debe ser un número entero positivo"                            |
+| Concepto            | Optional, max 100 chars                | "El concepto no puede exceder 100 caracteres"                   |
 
 ---
 

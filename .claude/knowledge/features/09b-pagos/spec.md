@@ -29,6 +29,7 @@
 The **Pago de Aportes** feature allows users to pay their pending aportes (contributions) to their specific plan (e.g., "Plan Senior"). This is a single-product payment flow within the "Pagar mis Productos" section.
 
 ### Key Characteristics
+
 - **Multi-step flow**: 4 sequential steps with progress tracking
 - **Single product**: Focuses on Aportes product only
 - **Editable amount**: Users can modify the payment amount
@@ -37,19 +38,21 @@ The **Pago de Aportes** feature allows users to pay their pending aportes (contr
 - **Reusability**: Reuses Stepper and code verification components from 09a-pagos
 
 ### User Journey
+
 1. View aportes breakdown, select account, and enter payment amount
 2. Review and confirm payment details
 3. Enter 6-digit SMS security code
 4. View transaction result with option to print/save
 
 ### Key Differences from Pago Unificado (09a)
-| Aspect | Pago Unificado (09a) | Pago de Aportes (09b) |
-|--------|----------------------|----------------------|
-| Scope | All products combined | Single Aportes product |
-| Step 1 | Summary totals only | Full breakdown with mora |
-| Amount Input | Fixed total | Editable amount field |
-| Confirmation | Multiple products | Single product details |
-| Result | Generic info | Aportes-specific fields |
+
+| Aspect       | Pago Unificado (09a)  | Pago de Aportes (09b)    |
+| ------------ | --------------------- | ------------------------ |
+| Scope        | All products combined | Single Aportes product   |
+| Step 1       | Summary totals only   | Full breakdown with mora |
+| Amount Input | Fixed total           | Editable amount field    |
+| Confirmation | Multiple products     | Single product details   |
+| Result       | Generic info          | Aportes-specific fields  |
 
 ---
 
@@ -94,6 +97,7 @@ app/(authenticated)/pagos/pago-aportes/
 ```
 
 ### Reused Components from 09a-pagos
+
 - `StepperCircle` - Individual step indicator
 - `StepperConnector` - Connector line
 - `Stepper` - Multi-step progress indicator
@@ -104,6 +108,7 @@ app/(authenticated)/pagos/pago-aportes/
 - `TransactionResultCard` - Step 4 main card (with adaptation)
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -156,7 +161,7 @@ export interface AportesConfirmationData {
  * Step 4: Aportes transaction result
  */
 export interface AportesTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -185,7 +190,7 @@ export interface AportesPaymentFlowState {
 /**
  * Value color options for detail rows
  */
-export type AportesValueColor = 'default' | 'red' | 'navy' | 'green';
+export type AportesValueColor = "default" | "red" | "navy" | "green";
 ```
 
 ---
@@ -199,6 +204,7 @@ export type AportesValueColor = 'default' | 'red' | 'navy' | 'green';
 **Location**: `src/atoms/CurrencyInput.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface CurrencyInputProps {
   value: number;
@@ -211,6 +217,7 @@ interface CurrencyInputProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -305,16 +312,18 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
 **Location**: `src/molecules/AportesPaymentDetailRow.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface AportesPaymentDetailRowProps {
   label: string;
   value: string;
-  valueColor?: 'default' | 'red' | 'navy' | 'green';
+  valueColor?: "default" | "red" | "navy" | "green";
   hideValue?: boolean;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { maskCurrency } from '@/src/utils';
@@ -361,6 +370,7 @@ export const AportesPaymentDetailRow: React.FC<AportesPaymentDetailRowProps> = (
 **Location**: `src/organisms/AportesDetailsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface AportesDetailsCardProps {
   accounts: PaymentAccount[];
@@ -375,6 +385,7 @@ interface AportesDetailsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -538,6 +549,7 @@ export const AportesDetailsCard: React.FC<AportesDetailsCardProps> = ({
 **Location**: `src/organisms/AportesConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface AportesConfirmationCardProps {
   confirmationData: AportesConfirmationData;
@@ -546,6 +558,7 @@ interface AportesConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -635,6 +648,7 @@ export const AportesConfirmationCard: React.FC<AportesConfirmationCardProps> = (
 **Location**: `src/organisms/AportesTransactionResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface AportesTransactionResultCardProps {
   result: AportesTransactionResult;
@@ -643,6 +657,7 @@ interface AportesTransactionResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -1236,28 +1251,28 @@ export default function ResultadoPage() {
 ### File: `src/mocks/mockAportesPaymentData.ts`
 
 ```typescript
-import { PaymentAccount } from '@/src/types/payment';
-import { Step } from '@/src/types/stepper';
+import { PaymentAccount } from "@/src/types/payment";
+import { Step } from "@/src/types/stepper";
 import {
   AportesPaymentBreakdown,
   AportesTransactionResult,
-} from '@/src/types/aportes-payment';
+} from "@/src/types/aportes-payment";
 
 /**
  * Mock payment accounts (reuse from 09a)
  */
 export const mockPaymentAccounts: PaymentAccount[] = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
+    id: "1",
+    name: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428',
+    number: "****4428",
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
+    id: "2",
+    name: "Cuenta Corriente",
     balance: 5200000,
-    number: '****7891',
+    number: "****7891",
   },
 ];
 
@@ -1265,21 +1280,21 @@ export const mockPaymentAccounts: PaymentAccount[] = [
  * Mock user data
  */
 export const mockUserData = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234',
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 
 /**
  * Mock aportes payment breakdown
  */
 export const mockAportesPaymentBreakdown: AportesPaymentBreakdown = {
-  planName: 'Plan Senior',
-  productNumber: '***5488',
+  planName: "Plan Senior",
+  productNumber: "***5488",
   aportesVigentes: 500058,
   fondoSolidaridadVigente: 390000,
   aportesEnMora: 0,
   fondoSolidaridadEnMora: 0,
-  fechaLimitePago: '15 Nov 2024',
+  fechaLimitePago: "15 Nov 2024",
   costoTransaccion: 0,
 };
 
@@ -1287,46 +1302,46 @@ export const mockAportesPaymentBreakdown: AportesPaymentBreakdown = {
  * Mock aportes transaction result (success)
  */
 export const mockAportesTransactionResult: AportesTransactionResult = {
-  status: 'success',
-  lineaCredito: 'Plan Senior',
-  numeroProducto: '***5488',
+  status: "success",
+  lineaCredito: "Plan Senior",
+  numeroProducto: "***5488",
   valorPagado: 107058,
   costoTransaccion: 0,
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '463342',
-  descripcion: 'Exitosa',
+  fechaTransmision: "3 de septiembre de 2025",
+  horaTransaccion: "10:21 pm",
+  numeroAprobacion: "463342",
+  descripcion: "Exitosa",
 };
 
 /**
  * Mock aportes transaction result (error)
  */
 export const mockAportesTransactionResultError: AportesTransactionResult = {
-  status: 'error',
-  lineaCredito: 'Plan Senior',
-  numeroProducto: '***5488',
+  status: "error",
+  lineaCredito: "Plan Senior",
+  numeroProducto: "***5488",
   valorPagado: 0,
   costoTransaccion: 0,
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '-',
-  descripcion: 'Fondos insuficientes',
+  fechaTransmision: "3 de septiembre de 2025",
+  horaTransaccion: "10:21 pm",
+  numeroAprobacion: "-",
+  descripcion: "Fondos insuficientes",
 };
 
 /**
  * Aportes payment flow steps
  */
 export const APORTES_PAYMENT_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 ```
 
 **Export**: Add to `src/mocks/index.ts`
@@ -1338,20 +1353,18 @@ export const MOCK_VALID_CODE = '123456';
 ### File: `src/schemas/aportesPaymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1: Aportes payment details validation
  */
 export const aportesPaymentDetailsSchema = yup.object({
-  selectedAccountId: yup
-    .string()
-    .required('Por favor selecciona una cuenta'),
+  selectedAccountId: yup.string().required("Por favor selecciona una cuenta"),
   valorAPagar: yup
     .number()
-    .required('Por favor ingresa un valor')
-    .positive('El valor debe ser mayor a 0')
-    .integer('El valor debe ser un número entero'),
+    .required("Por favor ingresa un valor")
+    .positive("El valor debe ser mayor a 0")
+    .integer("El valor debe ser un número entero"),
 });
 
 export type AportesPaymentDetailsFormData = yup.InferType<
@@ -1364,12 +1377,14 @@ export type AportesPaymentDetailsFormData = yup.InferType<
 export const codeVerificationSchema = yup.object({
   code: yup
     .string()
-    .required('Por favor ingresa el código')
-    .length(6, 'El código debe tener 6 dígitos')
-    .matches(/^\d+$/, 'El código debe contener solo números'),
+    .required("Por favor ingresa el código")
+    .length(6, "El código debe tener 6 dígitos")
+    .matches(/^\d+$/, "El código debe contener solo números"),
 });
 
-export type CodeVerificationFormData = yup.InferType<typeof codeVerificationSchema>;
+export type CodeVerificationFormData = yup.InferType<
+  typeof codeVerificationSchema
+>;
 ```
 
 ---
@@ -1424,6 +1439,7 @@ app/(authenticated)/pagos/pago-aportes/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/aportes-payment.ts`
    - Update `src/types/index.ts`
@@ -1433,16 +1449,19 @@ app/(authenticated)/pagos/pago-aportes/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Atoms
+
 3. Create atoms:
    - `src/atoms/CurrencyInput.tsx`
    - Update `src/atoms/index.ts`
 
 ### Phase 3: Molecules
+
 4. Create molecules:
    - `src/molecules/AportesPaymentDetailRow.tsx`
    - Update `src/molecules/index.ts`
 
 ### Phase 4: Organisms
+
 5. Create organisms:
    - `src/organisms/AportesDetailsCard.tsx`
    - `src/organisms/AportesConfirmationCard.tsx`
@@ -1450,6 +1469,7 @@ app/(authenticated)/pagos/pago-aportes/
    - Update `src/organisms/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/pagos/pago-aportes/page.tsx` (Step 1)
    - `app/(authenticated)/pagos/pago-aportes/confirmacion/page.tsx` (Step 2)
@@ -1457,10 +1477,12 @@ app/(authenticated)/pagos/pago-aportes/
    - `app/(authenticated)/pagos/pago-aportes/resultado/page.tsx` (Step 4)
 
 ### Phase 6: Validation Schemas (Optional)
+
 7. Create validation schemas:
    - `src/schemas/aportesPaymentSchemas.ts`
 
 ### Phase 7: Testing & Refinement
+
 8. Manual testing of complete flow
 9. Edge case testing
 10. Responsive testing
@@ -1473,6 +1495,7 @@ app/(authenticated)/pagos/pago-aportes/
 ### Manual Testing Checklist
 
 #### Step 1: Details
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] Account dropdown populates correctly
@@ -1489,6 +1512,7 @@ app/(authenticated)/pagos/pago-aportes/
 - [ ] "Continuar" navigates to step 2 with valid data
 
 #### Step 2: Confirmation
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] User name and masked document display
@@ -1499,6 +1523,7 @@ app/(authenticated)/pagos/pago-aportes/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 3: Verification
+
 - [ ] Page renders correctly (reuses CodeInputCard from 09a)
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6 code inputs render and work correctly
@@ -1510,6 +1535,7 @@ app/(authenticated)/pagos/pago-aportes/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 4: Result
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all steps completed
 - [ ] Success icon and title show correctly
@@ -1521,12 +1547,14 @@ app/(authenticated)/pagos/pago-aportes/
 - [ ] sessionStorage is cleared on finish
 
 ### Responsive Testing
+
 - [ ] Desktop: Layout correct
 - [ ] Tablet: Layout adapts
 - [ ] Mobile: Stacked layout works
 - [ ] Currency input usable on mobile
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works
 - [ ] Focus states visible
 - [ ] Screen reader announces correctly
@@ -1538,6 +1566,7 @@ app/(authenticated)/pagos/pago-aportes/
 ## Dependencies
 
 ### Reused from 09a-pagos
+
 - `Stepper` molecule
 - `CodeInput` atom
 - `CodeInputGroup` molecule
@@ -1547,6 +1576,7 @@ app/(authenticated)/pagos/pago-aportes/
 - Payment account type
 
 ### New for 09b-pagos
+
 - `CurrencyInput` atom
 - `AportesPaymentDetailRow` molecule
 - `AportesDetailsCard` organism
@@ -1559,20 +1589,24 @@ app/(authenticated)/pagos/pago-aportes/
 ## Notes & Considerations
 
 ### Component Reuse
+
 - Leverage Stepper, CodeInputGroup, and CodeInputCard from 09a
 - If those don't exist yet, implement them as part of this feature
 - Ensure components are properly exported for reuse
 
 ### Mora Display
+
 - Always show mora amounts in red (`#E1172B`)
 - Even when value is 0, show in red to indicate the category
 
 ### Value Input
+
 - Allow free editing of payment amount
 - Format with Colombian thousand separators (.)
 - Consider adding min/max validation based on available balance
 
 ### Session Storage Keys
+
 - Use distinct keys to avoid conflicts with 09a:
   - `aportesPaymentAccountId`
   - `aportesPaymentValor`
@@ -1580,11 +1614,13 @@ app/(authenticated)/pagos/pago-aportes/
   - `aportesPaymentConfirmation`
 
 ### Error States
+
 - Handle insufficient balance
 - Handle invalid code (max 3 attempts recommended)
 - Handle network errors gracefully
 
 ### Security
+
 - SMS code verification is mock for now
 - In production, implement proper 2FA
 - Add rate limiting for code attempts

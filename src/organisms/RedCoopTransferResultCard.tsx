@@ -164,7 +164,8 @@ export function RedCoopTransferResultCard({
         /* Error State */
         <div className="text-center py-4">
           <p className="text-[15px] text-brand-text-black">
-            {result.errorMessage || "Ha ocurrido un error al procesar la transferencia."}
+            {result.errorMessage ||
+              "Ha ocurrido un error al procesar la transferencia."}
           </p>
         </div>
       )}

@@ -21,7 +21,9 @@ interface ObligacionPaymentDetailsSectionProps {
   hideBalances: boolean;
 }
 
-export const ObligacionPaymentDetailsSection: React.FC<ObligacionPaymentDetailsSectionProps> = ({
+export const ObligacionPaymentDetailsSection: React.FC<
+  ObligacionPaymentDetailsSectionProps
+> = ({
   selectedProduct,
   valorAPagar,
   activePaymentType,
@@ -36,9 +38,7 @@ export const ObligacionPaymentDetailsSection: React.FC<ObligacionPaymentDetailsS
   return (
     <Card className="space-y-4 p-6">
       {/* Header */}
-      <h3 className="text-sm font-medium text-brand-navy">
-        Detalle del Pago
-      </h3>
+      <h3 className="text-sm font-medium text-brand-navy">Detalle del Pago</h3>
 
       <Divider />
 
@@ -81,9 +81,7 @@ export const ObligacionPaymentDetailsSection: React.FC<ObligacionPaymentDetailsS
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-[15px] text-black">
-            Fecha Límite de Pago:
-          </span>
+          <span className="text-[15px] text-black">Fecha Límite de Pago:</span>
           <span className="text-[15px] font-medium text-black">
             {selectedProduct.paymentDeadline}
           </span>
@@ -94,9 +92,7 @@ export const ObligacionPaymentDetailsSection: React.FC<ObligacionPaymentDetailsS
 
       {/* Transaction Cost */}
       <div className="flex justify-between items-center">
-        <span className="text-[15px] text-black">
-          Costo de la Transacción:
-        </span>
+        <span className="text-[15px] text-black">Costo de la Transacción:</span>
         <span className="text-[15px] font-medium text-black">$ 0</span>
       </div>
 
@@ -130,7 +126,8 @@ export const ObligacionPaymentDetailsSection: React.FC<ObligacionPaymentDetailsS
       {showExcessOptions && (
         <div className="space-y-4">
           <InfoBox variant="warning">
-            Has ingresado un valor superior al pago mínimo. Selecciona cómo deseas aplicar el excedente
+            Has ingresado un valor superior al pago mínimo. Selecciona cómo
+            deseas aplicar el excedente
           </InfoBox>
           <ExcessPaymentRadioGroup
             value={excessPaymentOption}

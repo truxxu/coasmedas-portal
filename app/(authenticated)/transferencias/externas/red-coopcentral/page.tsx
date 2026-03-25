@@ -31,7 +31,9 @@ export default function RedCoopcentalPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
 
-  const [sourceAccounts, setSourceAccounts] = useState<RedCoopSourceAccount[]>([]);
+  const [sourceAccounts, setSourceAccounts] = useState<RedCoopSourceAccount[]>(
+    [],
+  );
   const [selectedSourceId, setSelectedSourceId] = useState("");
   const [selectedDestinationId, setSelectedDestinationId] = useState("");
   const [amount, setAmount] = useState("");
@@ -41,8 +43,12 @@ export default function RedCoopcentalPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Raw API data for building transaction request later
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
-  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
+  const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>(
+    [],
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -132,8 +138,14 @@ export default function RedCoopcentalPage() {
     sessionStorage.setItem("redCoopTransferConcept", concept);
 
     // Store raw API data for building transaction request
-    sessionStorage.setItem("redCoopTransferSavingsApi", JSON.stringify(savingsApiData));
-    sessionStorage.setItem("redCoopTransferCreditsApi", JSON.stringify(creditsApiData));
+    sessionStorage.setItem(
+      "redCoopTransferSavingsApi",
+      JSON.stringify(savingsApiData),
+    );
+    sessionStorage.setItem(
+      "redCoopTransferCreditsApi",
+      JSON.stringify(creditsApiData),
+    );
 
     router.push("/transferencias/externas/red-coopcentral/confirmacion");
   };

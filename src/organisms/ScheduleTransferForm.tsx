@@ -140,7 +140,9 @@ export function ScheduleTransferForm({
           </Label>
           <DateInput
             {...register("startDate")}
-            onChange={(value) => setValue("startDate", value, { shouldValidate: true })}
+            onChange={(value) =>
+              setValue("startDate", value, { shouldValidate: true })
+            }
             value={watch("startDate")}
             error={errors.startDate?.message}
             className="w-full"

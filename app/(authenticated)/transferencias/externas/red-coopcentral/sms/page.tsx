@@ -46,9 +46,11 @@ export default function RedCoopSMSPage() {
       });
 
       // Map and store result for the resultado page
-      const sourceName = sessionStorage.getItem("redCoopTransferSourceName") || "";
+      const sourceName =
+        sessionStorage.getItem("redCoopTransferSourceName") || "";
       const destBank = sessionStorage.getItem("redCoopTransferDestBank") || "";
-      const destAccNum = sessionStorage.getItem("redCoopTransferDestAccNum") || "";
+      const destAccNum =
+        sessionStorage.getItem("redCoopTransferDestAccNum") || "";
       const concept = sessionStorage.getItem("redCoopTransferConcept") || "";
 
       const mappedResult = mapExternalEntityTransferResult(result, {
@@ -57,7 +59,10 @@ export default function RedCoopSMSPage() {
         destinationAccountNumber: destAccNum,
         concept,
       });
-      sessionStorage.setItem("redCoopTransferResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "redCoopTransferResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;

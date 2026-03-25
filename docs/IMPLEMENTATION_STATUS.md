@@ -90,6 +90,7 @@
 These endpoints are **needed by the portal UI** but do **not exist** in the backend API documentation.
 
 ### High Priority (blocking UI features)
+
 - [ ] `POST /reports/download` - Descarga de extractos mensuales (5 product pages)
 - [ ] `POST /utilities/companies` - Listar empresas de servicios públicos
 - [ ] `POST /utilities/register` - Inscribir servicio público
@@ -107,6 +108,7 @@ These endpoints are **needed by the portal UI** but do **not exist** in the back
 - [ ] `POST /accounts/inscribed/delete` - Eliminar cuenta inscrita
 
 ### Medium Priority
+
 - [ ] `POST /transactions/receipt` - Descarga de comprobante de transacción
 - [ ] `POST /user/profile` - Consultar perfil completo del usuario
 - [ ] `POST /user/update` - Actualizar datos de perfil
@@ -119,29 +121,29 @@ These endpoints are **needed by the portal UI** but do **not exist** in the back
 
 ## Summary
 
-| Domain | Total | Implemented | Remaining |
-|--------|-------|-------------|-----------|
-| Authentication | 4 | 4 | 0 |
-| Registration | 2 | 2 | 0 |
-| Password | 1 | 1 | 0 |
-| Products | 7 | 7 | 0 |
-| Payments | 5 | 5 | 0 |
-| Internal Transfers | 7 | 7 | 0 |
-| External Transfers (Banks) | 5 | 5 | 0 |
-| External Transfers (Entities) | 3 | 3 | 0 |
-| BRE-B | 12 | 0 | 12 |
-| **Subtotal (existing API)** | **46** | **34** | **12** |
+| Domain                        | Total  | Implemented | Remaining |
+| ----------------------------- | ------ | ----------- | --------- |
+| Authentication                | 4      | 4           | 0         |
+| Registration                  | 2      | 2           | 0         |
+| Password                      | 1      | 1           | 0         |
+| Products                      | 7      | 7           | 0         |
+| Payments                      | 5      | 5           | 0         |
+| Internal Transfers            | 7      | 7           | 0         |
+| External Transfers (Banks)    | 5      | 5           | 0         |
+| External Transfers (Entities) | 3      | 3           | 0         |
+| BRE-B                         | 12     | 0           | 12        |
+| **Subtotal (existing API)**   | **46** | **34**      | **12**    |
 
 ### Missing from Backend API
 
-| Domain | Endpoints Needed | Priority |
-|--------|-----------------|----------|
-| Reportes/Extractos | 1 | Alta |
-| Servicios Públicos | 6 | Alta |
-| Beneficiarios | 4 | Alta |
-| Cuentas Inscritas (CRUD) | 4 | Alta |
-| Comprobantes | 1 | Media |
-| Perfil de Usuario | 2 | Media |
-| Sesión (Refresh Token) | 1 | Media |
-| Estado PSE | 1 | Media |
-| **Total sin API** | **20** | - |
+| Domain                   | Endpoints Needed | Priority |
+| ------------------------ | ---------------- | -------- |
+| Reportes/Extractos       | 1                | Alta     |
+| Servicios Públicos       | 6                | Alta     |
+| Beneficiarios            | 4                | Alta     |
+| Cuentas Inscritas (CRUD) | 4                | Alta     |
+| Comprobantes             | 1                | Media    |
+| Perfil de Usuario        | 2                | Media    |
+| Sesión (Refresh Token)   | 1                | Media    |
+| Estado PSE               | 1                | Media    |
+| **Total sin API**        | **20**           | -        |

@@ -20,7 +20,7 @@ export default function PagarServiciosCodigoSmsPage() {
 
   const handleSuccess = () => {
     const confirmationStr = sessionStorage.getItem(
-      "utilityPaymentConfirmation"
+      "utilityPaymentConfirmation",
     );
     if (confirmationStr) {
       const confirmation = JSON.parse(confirmationStr);
@@ -32,7 +32,7 @@ export default function PagarServiciosCodigoSmsPage() {
     } else {
       sessionStorage.setItem(
         "utilityPaymentResult",
-        JSON.stringify(mockUtilityPaymentResult)
+        JSON.stringify(mockUtilityPaymentResult),
       );
     }
   };
@@ -40,7 +40,7 @@ export default function PagarServiciosCodigoSmsPage() {
   const handleError = () => {
     sessionStorage.setItem(
       "utilityPaymentResult",
-      JSON.stringify(mockUtilityPaymentResultError)
+      JSON.stringify(mockUtilityPaymentResultError),
     );
   };
 

@@ -1,13 +1,13 @@
-import axios from 'axios';
-import type { AxiosError } from 'axios';
-import type { ApiResponse } from '@/types/api';
+import axios from "axios";
+import type { AxiosError } from "axios";
+import type { ApiResponse } from "@/types/api";
 import {
   createAuthRequestInterceptor,
   responseEnvelopeInterceptor,
   errorResponseInterceptor,
   loggingRequestInterceptor,
   loggingResponseInterceptor,
-} from './interceptors';
+} from "./interceptors";
 
 let tokenGetter: () => string | null = () => null;
 
@@ -32,13 +32,15 @@ const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 30_000,
   headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
+    "Content-Type": "application/json; charset=UTF-8",
   },
 });
 
 // Request interceptors
 apiClient.interceptors.request.use(loggingRequestInterceptor);
-apiClient.interceptors.request.use(createAuthRequestInterceptor(() => tokenGetter()));
+apiClient.interceptors.request.use(
+  createAuthRequestInterceptor(() => tokenGetter()),
+);
 
 // Response interceptors
 apiClient.interceptors.response.use(loggingResponseInterceptor);
@@ -56,7 +58,10 @@ apiClient.interceptors.response.use(
  * @param body - Request payload
  * @returns The `payload` field from the API response envelope
  */
-export async function apiPost<T>(endpoint: string, body: object = {}): Promise<T> {
+export async function apiPost<T>(
+  endpoint: string,
+  body: object = {},
+): Promise<T> {
   const response = await apiClient.post<ApiResponse<T>>(endpoint, body);
   return response.data.payload as T;
 }

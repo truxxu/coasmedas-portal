@@ -14,7 +14,10 @@ import {
 import { maskNumber } from "@/src/utils";
 import { sendTransactionOtp } from "@/services/auth.service";
 import { getExternalSourceInfo } from "@/lib/mappers/externalTransfers.mapper";
-import type { SavingsAccountResponse, CreditAccountResponse } from "@/types/api/products";
+import type {
+  SavingsAccountResponse,
+  CreditAccountResponse,
+} from "@/types/api/products";
 
 export default function RedCoopConfirmacionPage() {
   const router = useRouter();
@@ -49,7 +52,11 @@ export default function RedCoopConfirmacionPage() {
       const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
       const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
 
-      const sourceInfo = getExternalSourceInfo(savingsData, creditsData, sourceId);
+      const sourceInfo = getExternalSourceInfo(
+        savingsData,
+        creditsData,
+        sourceId,
+      );
       if (!sourceInfo) return null;
 
       // Destination still uses mock data (inscribed accounts API missing)
@@ -71,14 +78,22 @@ export default function RedCoopConfirmacionPage() {
         },
         valorTransferencia: Number(amount),
       };
-      sessionStorage.setItem("redCoopTransferTxRequest", JSON.stringify(txRequest));
+      sessionStorage.setItem(
+        "redCoopTransferTxRequest",
+        JSON.stringify(txRequest),
+      );
 
       // Store context for result mapping
       sessionStorage.setItem("redCoopTransferSourceName", sourceInfo.name);
       sessionStorage.setItem("redCoopTransferDestBank", destination.bankName);
-      sessionStorage.setItem("redCoopTransferDestAccNum", destination.accountNumber);
+      sessionStorage.setItem(
+        "redCoopTransferDestAccNum",
+        destination.accountNumber,
+      );
 
-      const userName = user?.fullName || `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const userName =
+        user?.fullName ||
+        `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
       const maskedDoc = user
         ? `${user.documentType} ${maskNumber(user.documentNumber)}`
         : "";

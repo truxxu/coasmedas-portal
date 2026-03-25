@@ -25,7 +25,7 @@ export default function OtrosAsociadosPage() {
     // Store selected beneficiary in sessionStorage
     sessionStorage.setItem(
       "otrosAsociadosBeneficiary",
-      JSON.stringify(beneficiary)
+      JSON.stringify(beneficiary),
     );
 
     // Navigate to payment flow

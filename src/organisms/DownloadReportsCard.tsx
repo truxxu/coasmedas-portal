@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { Card } from '@/src/atoms';
-import { Select } from '@/src/atoms';
-import { MonthOption } from '@/src/types/products';
+import { useMemo } from "react";
+import { Card } from "@/src/atoms";
+import { Select } from "@/src/atoms";
+import { MonthOption } from "@/src/types/products";
 
 interface DownloadReportsCardProps {
   title?: string;
@@ -17,18 +17,22 @@ interface DownloadReportsCardProps {
 }
 
 export function DownloadReportsCard({
-  title = 'Descargar extractos',
-  description = 'Selecciona el mes que deseas consultar para descargar tu extracto en formato PDF.',
+  title = "Descargar extractos",
+  description = "Selecciona el mes que deseas consultar para descargar tu extracto en formato PDF.",
   availableMonths,
   selectedMonth,
   onMonthChange,
   loading = false,
-  className = '',
+  className = "",
 }: DownloadReportsCardProps) {
-  const selectOptions = useMemo(() => availableMonths.map((month) => ({
-    value: month.value,
-    label: month.label,
-  })), [availableMonths]);
+  const selectOptions = useMemo(
+    () =>
+      availableMonths.map((month) => ({
+        value: month.value,
+        label: month.label,
+      })),
+    [availableMonths],
+  );
 
   return (
     <Card className={`p-6 rounded-2xl ${className}`}>

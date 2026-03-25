@@ -9,6 +9,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Feature spec reviewed (spec.md)
 - [x] Design references analyzed (references.md)
 - [x] Figma design reviewed
@@ -18,39 +19,41 @@
 
 **Feature 03-products components are ALREADY IMPLEMENTED**:
 
-| Component | Location | Status |
-|-----------|----------|--------|
+| Component                | Location         | Status         |
+| ------------------------ | ---------------- | -------------- |
 | `TransactionHistoryCard` | `src/organisms/` | Ready to reuse |
-| `DownloadReportsCard` | `src/organisms/` | Ready to reuse |
-| `AportesInfoCard` | `src/organisms/` | For reference |
-| `Breadcrumbs` | `src/molecules/` | Ready to reuse |
-| `DateRangeFilter` | `src/molecules/` | Ready to reuse |
-| `SidebarSubItem` | `src/molecules/` | Ready to reuse |
-| `BackButton` | `src/atoms/` | Ready to reuse |
-| `DateInput` | `src/atoms/` | Ready to reuse |
+| `DownloadReportsCard`    | `src/organisms/` | Ready to reuse |
+| `AportesInfoCard`        | `src/organisms/` | For reference  |
+| `Breadcrumbs`            | `src/molecules/` | Ready to reuse |
+| `DateRangeFilter`        | `src/molecules/` | Ready to reuse |
+| `SidebarSubItem`         | `src/molecules/` | Ready to reuse |
+| `BackButton`             | `src/atoms/`     | Ready to reuse |
+| `DateInput`              | `src/atoms/`     | Ready to reuse |
 
 **Existing Types and Utils**:
+
 - `src/types/products.ts` - Transaction, MonthOption types
 - `src/utils/dates.ts` - generateMonthOptions, formatDate
 - `src/utils/formatCurrency.ts` - formatCurrency, maskCurrency, maskNumber
 - `src/mocks/aportes.ts` - Mock data pattern reference
 
 **Existing Routes**:
+
 - `/productos` - Products index (redirects)
 - `/productos/aportes` - Aportes page (implemented)
 
 ### What Needs to Be Created
 
-| Type | Component | Purpose |
-|------|-----------|---------|
-| Atom | `CarouselArrow` | Navigation arrows |
-| Atom | `CarouselDots` | Pagination dots |
+| Type     | Component            | Purpose                   |
+| -------- | -------------------- | ------------------------- |
+| Atom     | `CarouselArrow`      | Navigation arrows         |
+| Atom     | `CarouselDots`       | Pagination dots           |
 | Molecule | `SavingsProductCard` | Product card for carousel |
-| Organism | `ProductCarousel` | Reusable carousel |
-| Type | `savings.ts` | Savings types |
-| Util | `carousel.ts` | Carousel helpers |
-| Mock | `ahorros.ts` | Ahorros mock data |
-| Page | `ahorros/page.tsx` | Ahorros page |
+| Organism | `ProductCarousel`    | Reusable carousel         |
+| Type     | `savings.ts`         | Savings types             |
+| Util     | `carousel.ts`        | Carousel helpers          |
+| Mock     | `ahorros.ts`         | Ahorros mock data         |
+| Page     | `ahorros/page.tsx`   | Ahorros page              |
 
 ---
 
@@ -64,7 +67,7 @@
 /**
  * Status of a savings product
  */
-export type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
+export type SavingsStatus = "activo" | "bloqueado" | "inactivo";
 
 /**
  * Savings product information for carousel display
@@ -100,7 +103,7 @@ export type OnProductSelect = (product: SavingsProduct) => void;
 **File**: `src/types/index.ts` - Add export:
 
 ```typescript
-export * from './savings';
+export * from "./savings";
 ```
 
 ### Step 1.3: Create Carousel Utilities
@@ -111,7 +114,10 @@ export * from './savings';
 /**
  * Calculate total pages for carousel pagination
  */
-export function calculateTotalPages(totalItems: number, visibleItems: number): number {
+export function calculateTotalPages(
+  totalItems: number,
+  visibleItems: number,
+): number {
   if (visibleItems <= 0) return 0;
   return Math.ceil(totalItems / visibleItems);
 }
@@ -122,7 +128,7 @@ export function calculateTotalPages(totalItems: number, visibleItems: number): n
 export function getCurrentPage(
   scrollLeft: number,
   cardWidth: number,
-  gap: number
+  gap: number,
 ): number {
   const itemWidth = cardWidth + gap;
   if (itemWidth <= 0) return 0;
@@ -135,7 +141,7 @@ export function getCurrentPage(
 export function getScrollPositionForPage(
   page: number,
   cardWidth: number,
-  gap: number
+  gap: number,
 ): number {
   return page * (cardWidth + gap);
 }
@@ -144,9 +150,9 @@ export function getScrollPositionForPage(
  * Get number of visible items based on container width
  */
 export function getVisibleItems(containerWidth: number): number {
-  if (containerWidth < 640) return 1;      // Mobile
-  if (containerWidth < 1024) return 2;     // Tablet
-  return 3;                                 // Desktop
+  if (containerWidth < 640) return 1; // Mobile
+  if (containerWidth < 1024) return 2; // Tablet
+  return 3; // Desktop
 }
 ```
 
@@ -155,7 +161,7 @@ export function getVisibleItems(containerWidth: number): number {
 **File**: `src/utils/index.ts` - Add export:
 
 ```typescript
-export * from './carousel';
+export * from "./carousel";
 ```
 
 ---
@@ -267,8 +273,8 @@ export function CarouselDots({
 **File**: `src/atoms/index.ts` - Add exports:
 
 ```typescript
-export { CarouselArrow } from './CarouselArrow';
-export { CarouselDots } from './CarouselDots';
+export { CarouselArrow } from "./CarouselArrow";
+export { CarouselDots } from "./CarouselDots";
 ```
 
 ---
@@ -370,7 +376,7 @@ export function SavingsProductCard({
 **File**: `src/molecules/index.ts` - Add export:
 
 ```typescript
-export { SavingsProductCard } from './SavingsProductCard';
+export { SavingsProductCard } from "./SavingsProductCard";
 ```
 
 ---
@@ -550,7 +556,7 @@ export function ProductCarousel({
 **File**: `src/organisms/index.ts` - Add export:
 
 ```typescript
-export { ProductCarousel } from './ProductCarousel';
+export { ProductCarousel } from "./ProductCarousel";
 ```
 
 ---
@@ -562,37 +568,37 @@ export { ProductCarousel } from './ProductCarousel';
 **File**: `src/mocks/ahorros.ts`
 
 ```typescript
-import { SavingsProduct } from '@/src/types/savings';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { SavingsProduct } from "@/src/types/savings";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock savings products for carousel
  */
 export const mockSavingsProducts: SavingsProduct[] = [
   {
-    id: '1',
-    title: 'Cuenta de Ahorros',
-    accountType: 'Ahorros',
-    productNumber: '4428',
+    id: "1",
+    title: "Cuenta de Ahorros",
+    accountType: "Ahorros",
+    productNumber: "4428",
     balance: 8730500,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Ahorro Programado',
-    accountType: 'Ahorro Programado',
-    productNumber: '1234',
+    id: "2",
+    title: "Ahorro Programado",
+    accountType: "Ahorro Programado",
+    productNumber: "1234",
     balance: 2500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '3',
-    title: 'Ahorro Metas',
-    accountType: 'Ahorro',
-    productNumber: '9876',
+    id: "3",
+    title: "Ahorro Metas",
+    accountType: "Ahorro",
+    productNumber: "9876",
     balance: 1200000,
-    status: 'bloqueado',
+    status: "bloqueado",
   },
 ];
 
@@ -601,32 +607,33 @@ export const mockSavingsProducts: SavingsProduct[] = [
  */
 export const mockAhorrosTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-20',
-    description: 'Abono mensual',
+    id: "1",
+    date: "2024-11-20",
+    description: "Abono mensual",
     amount: 20000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '2',
-    date: '2024-11-15',
-    description: 'Transferencia recibida',
+    id: "2",
+    date: "2024-11-15",
+    description: "Transferencia recibida",
     amount: 150000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '3',
-    date: '2024-11-10',
-    description: 'Retiro cajero',
+    id: "3",
+    date: "2024-11-10",
+    description: "Retiro cajero",
     amount: 50000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockAhorrosAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockAhorrosAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Step 5.2: Update Mocks Index
@@ -634,7 +641,7 @@ export const mockAhorrosAvailableMonths: MonthOption[] = generateMonthOptions(12
 **File**: `src/mocks/index.ts` - Add export:
 
 ```typescript
-export * from './ahorros';
+export * from "./ahorros";
 ```
 
 ---
@@ -769,6 +776,7 @@ Check all index.ts files have the new exports:
 ### Step 7.3: Testing Checklist
 
 **Functional Tests**:
+
 - [ ] Page loads at `/productos/ahorros`
 - [ ] First card is selected by default
 - [ ] Clicking card changes selection
@@ -780,11 +788,13 @@ Check all index.ts files have the new exports:
 - [ ] Month dropdown shows options
 
 **Responsive Tests**:
+
 - [ ] Mobile (1 card): Swipe navigation works
 - [ ] Tablet (2 cards): Arrows visible, work correctly
 - [ ] Desktop (3 cards): All cards visible initially
 
 **Accessibility Tests**:
+
 - [ ] Keyboard navigation (Tab, Enter, Space)
 - [ ] ARIA labels present
 - [ ] Focus states visible
@@ -795,43 +805,43 @@ Check all index.ts files have the new exports:
 
 ### New Files to Create
 
-| File | Phase |
-|------|-------|
-| `src/types/savings.ts` | 1 |
-| `src/utils/carousel.ts` | 1 |
-| `src/atoms/CarouselArrow.tsx` | 2 |
-| `src/atoms/CarouselDots.tsx` | 2 |
-| `src/molecules/SavingsProductCard.tsx` | 3 |
-| `src/organisms/ProductCarousel.tsx` | 4 |
-| `src/mocks/ahorros.ts` | 5 |
-| `app/(authenticated)/productos/ahorros/page.tsx` | 6 |
+| File                                             | Phase |
+| ------------------------------------------------ | ----- |
+| `src/types/savings.ts`                           | 1     |
+| `src/utils/carousel.ts`                          | 1     |
+| `src/atoms/CarouselArrow.tsx`                    | 2     |
+| `src/atoms/CarouselDots.tsx`                     | 2     |
+| `src/molecules/SavingsProductCard.tsx`           | 3     |
+| `src/organisms/ProductCarousel.tsx`              | 4     |
+| `src/mocks/ahorros.ts`                           | 5     |
+| `app/(authenticated)/productos/ahorros/page.tsx` | 6     |
 
 ### Files to Update
 
-| File | Changes |
-|------|---------|
-| `src/types/index.ts` | Add savings export |
-| `src/utils/index.ts` | Add carousel export |
-| `src/atoms/index.ts` | Add CarouselArrow, CarouselDots |
-| `src/molecules/index.ts` | Add SavingsProductCard |
-| `src/organisms/index.ts` | Add ProductCarousel |
-| `src/mocks/index.ts` | Add ahorros export |
-| `app/globals.css` | Add scrollbar-hide (if needed) |
+| File                     | Changes                         |
+| ------------------------ | ------------------------------- |
+| `src/types/index.ts`     | Add savings export              |
+| `src/utils/index.ts`     | Add carousel export             |
+| `src/atoms/index.ts`     | Add CarouselArrow, CarouselDots |
+| `src/molecules/index.ts` | Add SavingsProductCard          |
+| `src/organisms/index.ts` | Add ProductCarousel             |
+| `src/mocks/index.ts`     | Add ahorros export              |
+| `app/globals.css`        | Add scrollbar-hide (if needed)  |
 
 ---
 
 ## Time Estimates
 
-| Phase | Description | Time |
-|-------|-------------|------|
-| Phase 1 | Types and Utilities | 30 min |
-| Phase 2 | Carousel Atoms | 1-2 hrs |
-| Phase 3 | SavingsProductCard | 1-2 hrs |
-| Phase 4 | ProductCarousel | 2-3 hrs |
-| Phase 5 | Mock Data | 15 min |
-| Phase 6 | Ahorros Page | 1 hr |
-| Phase 7 | Polish & Testing | 1-2 hrs |
-| **Total** | | **~8-12 hrs (2-3 days)** |
+| Phase     | Description         | Time                     |
+| --------- | ------------------- | ------------------------ |
+| Phase 1   | Types and Utilities | 30 min                   |
+| Phase 2   | Carousel Atoms      | 1-2 hrs                  |
+| Phase 3   | SavingsProductCard  | 1-2 hrs                  |
+| Phase 4   | ProductCarousel     | 2-3 hrs                  |
+| Phase 5   | Mock Data           | 15 min                   |
+| Phase 6   | Ahorros Page        | 1 hr                     |
+| Phase 7   | Polish & Testing    | 1-2 hrs                  |
+| **Total** |                     | **~8-12 hrs (2-3 days)** |
 
 ---
 

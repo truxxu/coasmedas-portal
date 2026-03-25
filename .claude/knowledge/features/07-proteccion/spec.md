@@ -12,6 +12,7 @@
 The **Protección** (Protection/Insurance) feature provides authenticated users access to their insurance policies and protection products through a horizontally scrollable carousel. Unlike other product pages, the Protección cards do NOT display a main balance field but instead show payment-related information.
 
 **Key Purpose**:
+
 - View all insurance/protection products in a scrollable carousel
 - See detailed payment information (minimum payment, payment deadline, annual payment)
 - Select a product to see its transaction history
@@ -19,6 +20,7 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 - Download monthly PDF reports/statements
 
 **Key Differences from Other Product Pages**:
+
 - **No main balance field** - Unlike Ahorros, Obligaciones, and Inversiones
 - **Unique product number format** - Uses "No" prefix (e.g., `No******65-9`)
 - **Different status values** - activo/inactivo/cancelado
@@ -30,11 +32,13 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 ## User Stories
 
 ### US-07.1: View Protection Products Carousel
+
 **As an** authenticated user
 **I want** to see all my insurance/protection products in a carousel
 **So that** I can quickly overview all my policies
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/proteccion`
 - [ ] Carousel shows all user's protection/insurance products
 - [ ] First product is selected by default (white background, blue border)
@@ -45,11 +49,13 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 - [ ] Responsive: 1 card on mobile, 2 on tablet, 3 on desktop
 
 ### US-07.2: Select Protection Product
+
 **As an** authenticated user
 **I want** to select a protection product from the carousel
 **So that** I can view its transaction history and details
 
 **Acceptance Criteria**:
+
 - [ ] Clicking a card selects it (shows white background, blue border)
 - [ ] Only one card can be selected at a time
 - [ ] Previously selected card reverts to gray background
@@ -58,13 +64,15 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 - [ ] Selection persists during page session
 
 ### US-07.3: View Protection Product Card Information
+
 **As an** authenticated user
 **I want** to see detailed information on each protection product card
 **So that** I can understand my policy status and payment requirements
 
 **Acceptance Criteria**:
+
 - [ ] Card shows product title (e.g., "Seguro de Vida Grupo Deudores")
-- [ ] Card shows masked product number with "No" prefix (e.g., "No******65-9")
+- [ ] Card shows masked product number with "No" prefix (e.g., "No**\*\***65-9")
 - [ ] Card shows status: "Activo" (green), "Inactivo" (red), or "Cancelado" (red)
 - [ ] Card shows horizontal divider separating main info from details
 - [ ] Card shows "Pago Mínimo" (minimum payment) in navy blue
@@ -73,11 +81,13 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 - [ ] All monetary values respect "Ocultar saldos" toggle
 
 ### US-07.4: Transaction History for Selected Product
+
 **As an** authenticated user
 **I want** to filter and view transaction history for my selected protection product
 **So that** I can track my payment activity
 
 **Acceptance Criteria**:
+
 - [ ] Transaction history updates when different product is selected
 - [ ] Title dynamically shows selected product name and number
 - [ ] Date range filter with start and end date inputs
@@ -87,11 +97,13 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 - [ ] Shows empty state when no transactions found
 
 ### US-07.5: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements for my protection products
 **So that** I can keep records of my payment activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months (last 12 months)
 - [ ] Selecting month triggers PDF download
 - [ ] Clear description of functionality
@@ -102,8 +114,8 @@ The **Protección** (Protection/Insurance) feature provides authenticated users 
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
+| Path                    | Description                                    |
+| ----------------------- | ---------------------------------------------- |
 | `/productos/proteccion` | Protección (Insurance/Protection) product page |
 
 ### File Structure
@@ -132,14 +144,14 @@ src/
 
 The following components will be **reused** from previous features:
 
-| Component | Source | Purpose |
-|-----------|--------|---------|
-| `TransactionHistoryCard` | 03-products | Transaction list with date filter |
-| `DownloadReportsCard` | 03-products | Monthly report download |
-| `Breadcrumbs` | 03-products | Breadcrumb navigation |
-| `CarouselArrow` | 04-ahorros | Carousel navigation arrows |
-| `CarouselDots` | 04-ahorros | Carousel pagination dots |
-| Carousel utilities | 04-ahorros | `calculateTotalPages`, `getVisibleItems` |
+| Component                | Source      | Purpose                                  |
+| ------------------------ | ----------- | ---------------------------------------- |
+| `TransactionHistoryCard` | 03-products | Transaction list with date filter        |
+| `DownloadReportsCard`    | 03-products | Monthly report download                  |
+| `Breadcrumbs`            | 03-products | Breadcrumb navigation                    |
+| `CarouselArrow`          | 04-ahorros  | Carousel navigation arrows               |
+| `CarouselDots`           | 04-ahorros  | Carousel pagination dots                 |
+| Carousel utilities       | 04-ahorros  | `calculateTotalPages`, `getVisibleItems` |
 
 ### Sidebar Navigation
 
@@ -147,11 +159,11 @@ Protección is already included in the Products accordion menu (no update requir
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },  // Already exists
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" }, // Already exists
 ];
 ```
 
@@ -162,6 +174,7 @@ const productSubItems = [
 ### Molecules
 
 #### ProteccionProductCard
+
 Individual protection/insurance card for the carousel.
 
 ```typescript
@@ -174,18 +187,19 @@ interface ProteccionProductCardProps {
 
 interface ProteccionProduct {
   id: string;
-  title: string;                    // "Seguro de Vida Grupo Deudores"
-  productNumber: string;            // "65-9" (will be masked as No******65-9)
-  status: ProteccionStatus;         // 'activo' | 'inactivo' | 'cancelado'
-  minimumPayment: number;           // 150000 (Pago Mínimo)
-  paymentDeadline: string;          // "2025-11-30" ISO date (Fecha Límite de Pago)
-  annualPayment: number;            // 1800000 (Pago Total Anual)
+  title: string; // "Seguro de Vida Grupo Deudores"
+  productNumber: string; // "65-9" (will be masked as No******65-9)
+  status: ProteccionStatus; // 'activo' | 'inactivo' | 'cancelado'
+  minimumPayment: number; // 150000 (Pago Mínimo)
+  paymentDeadline: string; // "2025-11-30" ISO date (Fecha Límite de Pago)
+  annualPayment: number; // 1800000 (Pago Total Anual)
 }
 
-type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
+type ProteccionStatus = "activo" | "inactivo" | "cancelado";
 ```
 
 **Layout** (NO main balance field):
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Seguro de Vida Grupo Deudores                   │
@@ -199,6 +213,7 @@ type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
 ```
 
 **Styling**:
+
 - Width: `280px` minimum
 - Height: Auto (~200px due to no balance field)
 - Border radius: `16px`
@@ -207,15 +222,18 @@ type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
 - Transition: `all 0.2s ease`
 
 **Selected State**:
+
 - Background: `#FFFFFF` (white)
 - Border: `2px solid #194E8D` (navy blue)
 
 **Unselected State**:
+
 - Background: `#E4E6EA` (gray - same as Inversiones)
 - Border: `1px solid #E4E6EA` (gray)
 - Hover: Border `#B1B1B1`
 
 **Internal Divider**:
+
 - Position: Between status and additional info
 - Style: `1px solid #E4E6EA` (selected) or `1px solid #B1B1B1` (unselected)
 - Margin: `12px 0`
@@ -233,15 +251,21 @@ type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
 | Detail Value (date) | Ubuntu | 14px | Medium | Black |
 
 **Hide Balances Integration**:
+
 ```typescript
 const { hideBalances } = useUIContext();
 
 // Mask monetary values only (not the date)
-{hideBalances ? maskCurrency() : formatCurrency(product.minimumPayment)}
-{hideBalances ? maskCurrency() : formatCurrency(product.annualPayment)}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.minimumPayment);
+}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.annualPayment);
+}
 ```
 
 **Tailwind Classes**:
+
 ```css
 /* Base card */
 bg-[#E4E6EA] rounded-2xl p-5 cursor-pointer min-w-[280px]
@@ -276,25 +300,28 @@ text-[14px] font-medium text-black
 ### Organisms
 
 #### ProteccionCarousel
+
 Carousel component specifically for protection/insurance product cards.
 
 ```typescript
 interface ProteccionCarouselProps {
-  title: string;                                    // "Resumen de Pólizas y Seguros"
-  products: ProteccionProduct[];                    // Array of protection products
-  selectedProductId?: string;                       // ID of selected product
+  title: string; // "Resumen de Pólizas y Seguros"
+  products: ProteccionProduct[]; // Array of protection products
+  selectedProductId?: string; // ID of selected product
   onProductSelect: (product: ProteccionProduct) => void;
   className?: string;
 }
 ```
 
 **Implementation Notes**:
+
 - Reuses `CarouselArrow` and `CarouselDots` atoms from 04-ahorros
 - Reuses carousel utilities (`calculateTotalPages`, `getVisibleItems`)
 - Uses `ProteccionProductCard` for card rendering
 - Same scroll behavior, responsive breakpoints, and accessibility features as other carousels
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Resumen de Pólizas y Seguros                                                │
@@ -312,6 +339,7 @@ interface ProteccionCarouselProps {
 ```
 
 **Styling**:
+
 - Container: `bg-white rounded-2xl p-6`
 - Title: `text-[20px] font-bold text-[#194E8D] mb-4`
 - Cards container: `flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide`
@@ -334,7 +362,7 @@ interface ProteccionCarouselProps {
 /**
  * Status of a protection/insurance product
  */
-export type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
+export type ProteccionStatus = "activo" | "inactivo" | "cancelado";
 
 /**
  * Protection/insurance product information for carousel display
@@ -342,11 +370,11 @@ export type ProteccionStatus = 'activo' | 'inactivo' | 'cancelado';
 export interface ProteccionProduct {
   id: string;
   title: string;
-  productNumber: string;           // e.g., "65-9" (will be masked as No******65-9)
+  productNumber: string; // e.g., "65-9" (will be masked as No******65-9)
   status: ProteccionStatus;
-  minimumPayment: number;          // Pago Mínimo
-  paymentDeadline: string;         // Fecha Límite de Pago (ISO date)
-  annualPayment: number;           // Pago Total Anual
+  minimumPayment: number; // Pago Mínimo
+  paymentDeadline: string; // Fecha Límite de Pago (ISO date)
+  annualPayment: number; // Pago Total Anual
 }
 
 /**
@@ -359,7 +387,7 @@ export type OnProteccionSelect = (product: ProteccionProduct) => void;
 
 ```typescript
 // Add export
-export * from './proteccion';
+export * from "./proteccion";
 ```
 
 ---
@@ -391,39 +419,39 @@ Ensure the function is exported if it's in a separate file, or verify the format
 ### File: `src/mocks/proteccion.ts`
 
 ```typescript
-import { ProteccionProduct } from '@/src/types/proteccion';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { ProteccionProduct } from "@/src/types/proteccion";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock protection/insurance products for carousel
  */
 export const mockProteccionProducts: ProteccionProduct[] = [
   {
-    id: '1',
-    title: 'Seguro de Vida Grupo Deudores',
-    productNumber: '65-9',
-    status: 'activo',
+    id: "1",
+    title: "Seguro de Vida Grupo Deudores",
+    productNumber: "65-9",
+    status: "activo",
     minimumPayment: 150000,
-    paymentDeadline: '2025-11-30',
+    paymentDeadline: "2025-11-30",
     annualPayment: 1800000,
   },
   {
-    id: '2',
-    title: 'Póliza Exequial Familiar',
-    productNumber: '12-3',
-    status: 'activo',
+    id: "2",
+    title: "Póliza Exequial Familiar",
+    productNumber: "12-3",
+    status: "activo",
     minimumPayment: 55000,
-    paymentDeadline: '2025-11-25',
+    paymentDeadline: "2025-11-25",
     annualPayment: 660000,
   },
   {
-    id: '3',
-    title: 'Seguro de Accidentes Personales',
-    productNumber: '78-4',
-    status: 'inactivo',
+    id: "3",
+    title: "Seguro de Accidentes Personales",
+    productNumber: "78-4",
+    status: "inactivo",
     minimumPayment: 85000,
-    paymentDeadline: '2025-10-15',
+    paymentDeadline: "2025-10-15",
     annualPayment: 1020000,
   },
 ];
@@ -433,38 +461,39 @@ export const mockProteccionProducts: ProteccionProduct[] = [
  */
 export const mockProteccionTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-20',
-    description: 'Pago prima mensual',
+    id: "1",
+    date: "2024-11-20",
+    description: "Pago prima mensual",
     amount: 150000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2024-10-20',
-    description: 'Pago prima mensual',
+    id: "2",
+    date: "2024-10-20",
+    description: "Pago prima mensual",
     amount: 150000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '3',
-    date: '2024-09-20',
-    description: 'Pago prima mensual',
+    id: "3",
+    date: "2024-09-20",
+    description: "Pago prima mensual",
     amount: 150000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockProteccionAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockProteccionAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './proteccion';
+export * from "./proteccion";
 // ... other exports
 ```
 
@@ -579,11 +608,11 @@ export default function ProteccionPage() {
 
 ### Carousel Responsive Behavior
 
-| Breakpoint | Visible Cards | Arrow Position | Dots |
-|------------|---------------|----------------|------|
-| Mobile (<640px) | 1 | Hidden (swipe) | Show |
-| Tablet (640-1023px) | 2 | Show | Show |
-| Desktop (>=1024px) | 3 | Show | Show |
+| Breakpoint          | Visible Cards | Arrow Position | Dots |
+| ------------------- | ------------- | -------------- | ---- |
+| Mobile (<640px)     | 1             | Hidden (swipe) | Show |
+| Tablet (640-1023px) | 2             | Show           | Show |
+| Desktop (>=1024px)  | 3             | Show           | Show |
 
 ### Card Responsive Adjustments
 
@@ -648,15 +677,16 @@ For screen readers, the status should be clearly communicated:
 
 ```typescript
 const statusAnnouncement = {
-  activo: 'Estado: Activo',
-  inactivo: 'Estado: Inactivo - póliza suspendida',
-  cancelado: 'Estado: Cancelado - póliza terminada',
+  activo: "Estado: Activo",
+  inactivo: "Estado: Inactivo - póliza suspendida",
+  cancelado: "Estado: Cancelado - póliza terminada",
 }[product.status];
 ```
 
 ### Color Contrast
 
 All text colors meet WCAG AA standards:
+
 - Green status (#00A44C) on white/gray background
 - Red status (#FF0000) on white/gray background
 - Navy values (#194E8D) on white/gray background
@@ -692,7 +722,7 @@ The sidebar should highlight "Protección" when on `/productos/proteccion`:
 ```typescript
 // In Sidebar.tsx - handled by pathname check
 const pathname = usePathname();
-const isProteccionActive = pathname === '/productos/proteccion';
+const isProteccionActive = pathname === "/productos/proteccion";
 ```
 
 ---
@@ -700,12 +730,14 @@ const isProteccionActive = pathname === '/productos/proteccion';
 ## Implementation Checklist
 
 ### Phase 1: Types and Utilities
+
 - [ ] Create `src/types/proteccion.ts`
 - [ ] Add `maskProteccionNumber` to `src/utils/formatCurrency.ts`
 - [ ] Update `src/types/index.ts` exports
 - [ ] Update `src/utils/index.ts` exports (if needed)
 
 ### Phase 2: Molecule - ProteccionProductCard
+
 - [ ] Create `src/molecules/ProteccionProductCard.tsx`
 - [ ] Implement selected/unselected visual states (NO balance field)
 - [ ] Add divider and detail info section
@@ -714,6 +746,7 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Update `src/molecules/index.ts` exports
 
 ### Phase 3: Organism - ProteccionCarousel
+
 - [ ] Create `src/organisms/ProteccionCarousel.tsx`
 - [ ] Reuse `CarouselArrow` and `CarouselDots` from atoms
 - [ ] Reuse carousel utilities from `src/utils/carousel.ts`
@@ -724,10 +757,12 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Update `src/organisms/index.ts` exports
 
 ### Phase 4: Mock Data
+
 - [ ] Create `src/mocks/proteccion.ts`
 - [ ] Update `src/mocks/index.ts` exports
 
 ### Phase 5: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/proteccion/page.tsx`
 - [ ] Wire up carousel with mock data
 - [ ] Reuse `TransactionHistoryCard` from 03-products
@@ -735,6 +770,7 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Connect selection logic to transaction history title
 
 ### Phase 6: Polish
+
 - [ ] Add responsive styles for all breakpoints
 - [ ] Add hover/focus states
 - [ ] Add loading state for carousel
@@ -747,12 +783,13 @@ const isProteccionActive = pathname === '/productos/proteccion';
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] Page loads at `/productos/proteccion`
 - [ ] First product is selected by default (white bg, blue border)
 - [ ] Unselected products have gray background (#E4E6EA)
 - [ ] Clicking a card selects it
 - [ ] Only one card selected at a time
-- [ ] Transaction history title updates on selection with No****** format
+- [ ] Transaction history title updates on selection with No**\*\*** format
 - [ ] Left arrow scrolls carousel left
 - [ ] Right arrow scrolls carousel right
 - [ ] Dots indicate current position
@@ -763,6 +800,7 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] "Ocultar saldos" masks BOTH monetary values (minimumPayment, annualPayment)
 
 ### Visual Testing
+
 - [ ] Selected card: White background, navy blue border (#194E8D)
 - [ ] Unselected card: Gray background (#E4E6EA), gray border
 - [ ] "Activo" status displays in green (#00A44C)
@@ -772,10 +810,11 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Monetary values in navy blue (#194E8D)
 - [ ] Date values in black
 - [ ] Detail labels in gray (#636363)
-- [ ] Product number format: No******XX-X
+- [ ] Product number format: No**\*\***XX-X
 - [ ] **NO main balance field displayed** (key difference)
 
 ### Responsive Testing
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
@@ -784,6 +823,7 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Gap between cards is consistent (20px)
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through carousel
 - [ ] Arrow keys move between cards
 - [ ] Enter/Space selects card
@@ -793,6 +833,7 @@ const isProteccionActive = pathname === '/productos/proteccion';
 - [ ] Color contrast passes WCAG AA
 
 ### Integration Testing
+
 - [ ] Page loads at `/productos/proteccion`
 - [ ] Sidebar shows "Protección" as active
 - [ ] Back button navigates to `/home`
@@ -824,11 +865,11 @@ const isProteccionActive = pathname === '/productos/proteccion';
 
 When connecting to the backend API:
 
-| Endpoint | Purpose | When Called |
-|----------|---------|-------------|
-| `GET /balances?type=proteccion` | Fetch protection products | Page load |
-| `GET /movements?productId={id}` | Fetch transactions | Product selection |
-| `GET /reports/{productId}/{month}` | Download PDF | Month selection |
+| Endpoint                           | Purpose                   | When Called       |
+| ---------------------------------- | ------------------------- | ----------------- |
+| `GET /balances?type=proteccion`    | Fetch protection products | Page load         |
+| `GET /movements?productId={id}`    | Fetch transactions        | Product selection |
+| `GET /reports/{productId}/{month}` | Download PDF              | Month selection   |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 
@@ -846,16 +887,16 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 
 ## Comparison with Other Product Cards
 
-| Aspect | Ahorros | Obligaciones | Inversiones | Protección |
-|--------|---------|--------------|-------------|------------|
-| Card Component | `SavingsProductCard` | `ObligacionProductCard` | `InversionProductCard` | `ProteccionProductCard` |
-| Has Balance | Yes | Yes | Yes | **No** |
-| Balance Label | "Saldo Total" | "Saldo a la fecha" | "Monto del CDAT" | N/A |
-| Status Values | activo/bloqueado | al_dia/en_mora | activo/vencido | activo/inactivo/cancelado |
-| Detail Fields | 0 | 3 | 4 | 3 |
-| Number Format | ***1234 | ***1234 or CR-***1234 | DTA-***123 | No******65-9 |
-| Money Color | Navy #112E7F | Blue #004680 | Navy #112E7F | Navy #194E8D |
-| Unselected BG | White | #F3F4F6 | #E4E6EA | #E4E6EA |
+| Aspect         | Ahorros              | Obligaciones            | Inversiones            | Protección                |
+| -------------- | -------------------- | ----------------------- | ---------------------- | ------------------------- |
+| Card Component | `SavingsProductCard` | `ObligacionProductCard` | `InversionProductCard` | `ProteccionProductCard`   |
+| Has Balance    | Yes                  | Yes                     | Yes                    | **No**                    |
+| Balance Label  | "Saldo Total"        | "Saldo a la fecha"      | "Monto del CDAT"       | N/A                       |
+| Status Values  | activo/bloqueado     | al_dia/en_mora          | activo/vencido         | activo/inactivo/cancelado |
+| Detail Fields  | 0                    | 3                       | 4                      | 3                         |
+| Number Format  | \*\*\*1234           | ***1234 or CR-***1234   | DTA-\*\*\*123          | No**\*\***65-9            |
+| Money Color    | Navy #112E7F         | Blue #004680            | Navy #112E7F           | Navy #194E8D              |
+| Unselected BG  | White                | #F3F4F6                 | #E4E6EA                | #E4E6EA                   |
 
 ---
 
@@ -866,7 +907,7 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 Unlike ALL other product cards (Ahorros, Obligaciones, Inversiones), the Protección card does NOT have a main balance field. The card shows:
 
 - Title
-- Product number (with No****** prefix)
+- Product number (with No**\*\*** prefix)
 - Status
 - Divider
 - Three detail fields (two monetary, one date)
@@ -880,6 +921,7 @@ Unlike ALL other product cards (Ahorros, Obligaciones, Inversiones), the Protecc
 ### 3. Two Monetary Values to Mask
 
 When `hideBalances` is enabled, mask:
+
 - Pago Mínimo (minimum payment)
 - Pago Total Anual (annual payment)
 

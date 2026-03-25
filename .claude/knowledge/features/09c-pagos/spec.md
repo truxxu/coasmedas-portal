@@ -29,6 +29,7 @@
 The **Pago de Obligaciones** feature allows users to pay their loans and credit products (e.g., "Crédito de Inversión", "Tarjeta de Crédito") via PSE (external bank payment). This flow is accessible from "Pagos > Pagar mis Productos > Obligaciones".
 
 ### Key Characteristics
+
 - **Multi-step flow**: 4 sequential steps with progress tracking
 - **Product selection**: Users select which loan/credit to pay
 - **Payment flexibility**: Quick buttons for minimum or total payment
@@ -36,6 +37,7 @@ The **Pago de Obligaciones** feature allows users to pay their loans and credit 
 - **Reusability**: Reuses Stepper and PSE loading components from 09a-pagos
 
 ### User Journey
+
 1. Select loan/credit product, configure payment amount
 2. Review and confirm payment details
 3. Wait for PSE connection (loading screen)
@@ -43,15 +45,15 @@ The **Pago de Obligaciones** feature allows users to pay their loans and credit 
 
 ### Key Differences from Other Payment Flows
 
-| Aspect | Pago Unificado (09a) | Pago de Aportes (09b) | Pago de Obligaciones (09c) |
-|--------|----------------------|----------------------|---------------------------|
-| Scope | All products combined | Single Aportes product | Single selected loan/credit |
-| Step 1 | Summary totals only | Aportes breakdown | Product cards + payment options |
-| Product Selection | None (all included) | No selection | Select from available products |
-| Payment Method | Account selection | Account selection | PSE only |
-| Amount Input | Fixed total | Editable amount | Quick buttons (Min/Total) + editable |
-| Step 3 | SMS verification | SMS verification | PSE loading screen |
-| Result Fields | Generic info | Aportes-specific | Obligaciones-specific (Abono Excedente) |
+| Aspect            | Pago Unificado (09a)  | Pago de Aportes (09b)  | Pago de Obligaciones (09c)              |
+| ----------------- | --------------------- | ---------------------- | --------------------------------------- |
+| Scope             | All products combined | Single Aportes product | Single selected loan/credit             |
+| Step 1            | Summary totals only   | Aportes breakdown      | Product cards + payment options         |
+| Product Selection | None (all included)   | No selection           | Select from available products          |
+| Payment Method    | Account selection     | Account selection      | PSE only                                |
+| Amount Input      | Fixed total           | Editable amount        | Quick buttons (Min/Total) + editable    |
+| Step 3            | SMS verification      | SMS verification       | PSE loading screen                      |
+| Result Fields     | Generic info          | Aportes-specific       | Obligaciones-specific (Abono Excedente) |
 
 ---
 
@@ -97,6 +99,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 ```
 
 ### Reused Components from 09a-pagos
+
 - `StepperCircle` - Individual step indicator
 - `StepperConnector` - Connector line
 - `Stepper` - Multi-step progress indicator
@@ -104,9 +107,11 @@ app/(authenticated)/pagos/pago-obligaciones/
 - `PSELoadingCard` - Loading card for PSE connection
 
 ### Reused Components from 09b-pagos
+
 - `CurrencyInput` - Editable currency input field
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -131,14 +136,14 @@ export interface ObligacionPaymentProduct {
   totalBalance: number;
   minimumPayment: number;
   paymentDeadline: string;
-  status: 'al_dia' | 'en_mora';
+  status: "al_dia" | "en_mora";
 }
 
 /**
  * Step 1: Obligacion payment details form data
  */
 export interface ObligacionPaymentDetailsData {
-  paymentMethod: 'PSE';
+  paymentMethod: "PSE";
   selectedProductId: string;
   selectedProduct: ObligacionPaymentProduct;
   valorAPagar: number; // User-entered/selected amount
@@ -161,7 +166,7 @@ export interface ObligacionConfirmationData {
  * Step 4: Obligacion transaction result
  */
 export interface ObligacionTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -190,7 +195,7 @@ export interface ObligacionPaymentFlowState {
 /**
  * Payment type for quick selection
  */
-export type PaymentType = 'minimum' | 'total';
+export type PaymentType = "minimum" | "total";
 ```
 
 ---
@@ -204,6 +209,7 @@ export type PaymentType = 'minimum' | 'total';
 **Location**: `src/molecules/ObligacionPaymentCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ObligacionPaymentCardProps {
   product: ObligacionPaymentProduct;
@@ -214,6 +220,7 @@ interface ObligacionPaymentCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -288,6 +295,7 @@ export const ObligacionPaymentCard: React.FC<ObligacionPaymentCardProps> = ({
 **Location**: `src/molecules/PaymentTypeButton.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PaymentTypeButtonProps {
   label: string;
@@ -297,6 +305,7 @@ interface PaymentTypeButtonProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -341,6 +350,7 @@ export const PaymentTypeButton: React.FC<PaymentTypeButtonProps> = ({
 **Location**: `src/organisms/ObligacionDetailsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ObligacionDetailsCardProps {
   products: ObligacionPaymentProduct[];
@@ -356,6 +366,7 @@ interface ObligacionDetailsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -531,6 +542,7 @@ export const ObligacionDetailsCard: React.FC<ObligacionDetailsCardProps> = ({
 **Location**: `src/organisms/ObligacionConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ObligacionConfirmationCardProps {
   confirmationData: ObligacionConfirmationData;
@@ -539,6 +551,7 @@ interface ObligacionConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -630,6 +643,7 @@ export const ObligacionConfirmationCard: React.FC<ObligacionConfirmationCardProp
 **Note**: This component may already exist from 09a-pagos. If not, create it.
 
 **Props Interface**:
+
 ```typescript
 interface PSELoadingCardProps {
   message?: string;
@@ -637,6 +651,7 @@ interface PSELoadingCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -684,6 +699,7 @@ export const PSELoadingCard: React.FC<PSELoadingCardProps> = ({
 **Location**: `src/organisms/ObligacionResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ObligacionResultCardProps {
   result: ObligacionTransactionResult;
@@ -692,6 +708,7 @@ interface ObligacionResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -1293,12 +1310,14 @@ export default function ResultadoPage() {
 ### SessionStorage Keys
 
 Use distinct keys to avoid conflicts with other payment flows:
+
 - `obligacionPaymentProductId` - Selected product ID
 - `obligacionPaymentValor` - Payment amount
 - `obligacionPaymentProduct` - Full product object (JSON)
 - `obligacionPaymentConfirmation` - Confirmation data (JSON)
 
 ### Navigation Between Steps
+
 - Use Next.js routing for each step
 - Store form data in sessionStorage
 - Prevent direct access to later steps without completing previous steps
@@ -1311,33 +1330,33 @@ Use distinct keys to avoid conflicts with other payment flows:
 ### File: `src/mocks/mockObligacionPaymentData.ts`
 
 ```typescript
-import { Step } from '@/src/types/stepper';
+import { Step } from "@/src/types/stepper";
 import {
   ObligacionPaymentProduct,
   ObligacionTransactionResult,
-} from '@/src/types/obligacion-payment';
+} from "@/src/types/obligacion-payment";
 
 /**
  * Mock obligacion products for payment
  */
 export const mockObligacionProducts: ObligacionPaymentProduct[] = [
   {
-    id: '1',
-    name: 'Crédito de Inversión',
-    productNumber: '***5678',
+    id: "1",
+    name: "Crédito de Inversión",
+    productNumber: "***5678",
     totalBalance: 12500000,
     minimumPayment: 850000,
-    paymentDeadline: '15 Nov 2024',
-    status: 'al_dia',
+    paymentDeadline: "15 Nov 2024",
+    status: "al_dia",
   },
   {
-    id: '2',
-    name: 'Tarjeta de Crédito',
-    productNumber: '***1111',
+    id: "2",
+    name: "Tarjeta de Crédito",
+    productNumber: "***1111",
     totalBalance: 1800000,
     minimumPayment: 180000,
-    paymentDeadline: '20 Nov 2024',
-    status: 'al_dia',
+    paymentDeadline: "20 Nov 2024",
+    status: "al_dia",
   },
 ];
 
@@ -1345,50 +1364,51 @@ export const mockObligacionProducts: ObligacionPaymentProduct[] = [
  * Mock user data
  */
 export const mockUserData = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234',
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 
 /**
  * Mock obligacion transaction result (success)
  */
 export const mockObligacionTransactionResult: ObligacionTransactionResult = {
-  status: 'success',
-  lineaCredito: 'Crédito Libre Inversión',
-  numeroProducto: '***5488',
+  status: "success",
+  lineaCredito: "Crédito Libre Inversión",
+  numeroProducto: "***5488",
   valorPagado: 850000,
   costoTransaccion: 0,
-  abonoExcedente: 'Reducción de Cuota',
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '463342',
-  descripcion: 'Exitosa',
+  abonoExcedente: "Reducción de Cuota",
+  fechaTransmision: "3 de septiembre de 2025",
+  horaTransaccion: "10:21 pm",
+  numeroAprobacion: "463342",
+  descripcion: "Exitosa",
 };
 
 /**
  * Mock obligacion transaction result (error)
  */
-export const mockObligacionTransactionResultError: ObligacionTransactionResult = {
-  status: 'error',
-  lineaCredito: 'Crédito Libre Inversión',
-  numeroProducto: '***5488',
-  valorPagado: 0,
-  costoTransaccion: 0,
-  abonoExcedente: '-',
-  fechaTransmision: '3 de septiembre de 2025',
-  horaTransaccion: '10:21 pm',
-  numeroAprobacion: '-',
-  descripcion: 'Error en la conexión con PSE',
-};
+export const mockObligacionTransactionResultError: ObligacionTransactionResult =
+  {
+    status: "error",
+    lineaCredito: "Crédito Libre Inversión",
+    numeroProducto: "***5488",
+    valorPagado: 0,
+    costoTransaccion: 0,
+    abonoExcedente: "-",
+    fechaTransmision: "3 de septiembre de 2025",
+    horaTransaccion: "10:21 pm",
+    numeroAprobacion: "-",
+    descripcion: "Error en la conexión con PSE",
+  };
 
 /**
  * Obligacion payment flow steps
  */
 export const OBLIGACION_PAYMENT_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'Conectando a PSE' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "Conectando a PSE" },
+  { number: 4, label: "Finalización" },
 ];
 ```
 
@@ -1401,20 +1421,18 @@ export const OBLIGACION_PAYMENT_STEPS: Step[] = [
 ### File: `src/schemas/obligacionPaymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1: Obligacion payment details validation
  */
 export const obligacionPaymentDetailsSchema = yup.object({
-  selectedProductId: yup
-    .string()
-    .required('Por favor selecciona un producto'),
+  selectedProductId: yup.string().required("Por favor selecciona un producto"),
   valorAPagar: yup
     .number()
-    .required('Por favor ingresa un valor')
-    .positive('El valor debe ser mayor a 0')
-    .integer('El valor debe ser un número entero'),
+    .required("Por favor ingresa un valor")
+    .positive("El valor debe ser mayor a 0")
+    .integer("El valor debe ser un número entero"),
 });
 
 export type ObligacionPaymentDetailsFormData = yup.InferType<
@@ -1427,16 +1445,16 @@ export type ObligacionPaymentDetailsFormData = yup.InferType<
 export const validatePaymentAmount = (
   valor: number,
   minimumPayment: number,
-  totalBalance: number
+  totalBalance: number,
 ): string | null => {
   if (valor <= 0) {
-    return 'El valor a pagar debe ser mayor a 0';
+    return "El valor a pagar debe ser mayor a 0";
   }
   if (valor < minimumPayment) {
     return `El valor mínimo de pago es ${minimumPayment}`;
   }
   if (valor > totalBalance) {
-    return 'El valor no puede exceder el saldo total';
+    return "El valor no puede exceder el saldo total";
   }
   return null;
 };
@@ -1495,6 +1513,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/obligacion-payment.ts`
    - Update `src/types/index.ts`
@@ -1504,12 +1523,14 @@ app/(authenticated)/pagos/pago-obligaciones/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 3. Create molecules:
    - `src/molecules/ObligacionPaymentCard.tsx`
    - `src/molecules/PaymentTypeButton.tsx`
    - Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 4. Create organisms:
    - `src/organisms/ObligacionDetailsCard.tsx`
    - `src/organisms/ObligacionConfirmationCard.tsx`
@@ -1518,6 +1539,7 @@ app/(authenticated)/pagos/pago-obligaciones/
    - Update `src/organisms/index.ts`
 
 ### Phase 4: Pages
+
 5. Create pages in order:
    - `app/(authenticated)/pagos/pago-obligaciones/page.tsx` (Step 1)
    - `app/(authenticated)/pagos/pago-obligaciones/confirmacion/page.tsx` (Step 2)
@@ -1525,10 +1547,12 @@ app/(authenticated)/pagos/pago-obligaciones/
    - `app/(authenticated)/pagos/pago-obligaciones/resultado/page.tsx` (Step 4)
 
 ### Phase 5: Validation Schemas (Optional)
+
 6. Create validation schemas:
    - `src/schemas/obligacionPaymentSchemas.ts`
 
 ### Phase 6: Testing & Refinement
+
 7. Manual testing of complete flow
 8. Edge case testing
 9. Responsive testing
@@ -1541,6 +1565,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 ### Manual Testing Checklist
 
 #### Step 1: Details
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] PSE dropdown shows correct option (disabled)
@@ -1562,6 +1587,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 - [ ] "Continuar" navigates to step 2 with valid data
 
 #### Step 2: Confirmation
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] User name and masked document display
@@ -1574,6 +1600,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 3: PSE Loading
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] Loading spinner animates
@@ -1583,6 +1610,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 4: Result
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all steps completed
 - [ ] Success icon and title show correctly
@@ -1600,12 +1628,14 @@ app/(authenticated)/pagos/pago-obligaciones/
 - [ ] sessionStorage is cleared on finish
 
 ### Error States Testing
+
 - [ ] Error state result card shows correctly
 - [ ] Error icon (red X) displays
 - [ ] "Transacción Fallida" title shows
 - [ ] Description shows in red for error
 
 ### Responsive Testing
+
 - [ ] Desktop: Layout correct, cards side by side
 - [ ] Tablet: Layout adapts, cards may stack
 - [ ] Mobile: Stacked layout works
@@ -1613,6 +1643,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 - [ ] Stepper labels visible on all breakpoints
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all interactive elements
 - [ ] Product cards are keyboard accessible
 - [ ] Focus states visible
@@ -1626,6 +1657,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 ## Dependencies
 
 ### Reused from 09a-pagos
+
 - `StepperCircle` atom
 - `StepperConnector` atom
 - `Stepper` molecule
@@ -1634,9 +1666,11 @@ app/(authenticated)/pagos/pago-obligaciones/
 - Step types and interfaces
 
 ### Reused from 09b-pagos
+
 - `CurrencyInput` atom
 
 ### New for 09c-pagos
+
 - `ObligacionPaymentCard` molecule
 - `PaymentTypeButton` molecule
 - `ObligacionDetailsCard` organism
@@ -1650,31 +1684,37 @@ app/(authenticated)/pagos/pago-obligaciones/
 ## Notes & Considerations
 
 ### Component Reuse
+
 - Leverage Stepper from 09a-pagos
 - Leverage CurrencyInput from 09b-pagos
 - PSELoadingCard may need to be created if not already in 09a
 
 ### Product Selection
+
 - Only one product can be selected at a time
 - Selection updates the payment details section
 - Payment amount defaults to minimum when product changes
 
 ### Payment Type Buttons
+
 - "Pago Mínimo" sets value to minimum payment
 - "Pago Total" sets value to total balance
 - Manual editing clears the active button state
 
 ### PSE Integration
+
 - Step 3 is mock/simulation for now
 - In production, would redirect to external PSE gateway
 - Would handle PSE callback to determine success/failure
 
 ### Abono Excedente
+
 - Shows how excess payment is applied
 - Options: "Reducción de Cuota", "Reducción de Plazo", etc.
 - Currently hardcoded in mock data
 
 ### Session Storage Keys
+
 - Use distinct keys to avoid conflicts with 09a and 09b:
   - `obligacionPaymentProductId`
   - `obligacionPaymentValor`
@@ -1682,12 +1722,14 @@ app/(authenticated)/pagos/pago-obligaciones/
   - `obligacionPaymentConfirmation`
 
 ### Error Handling
+
 - Handle invalid product selection
 - Handle amount below minimum
 - Handle amount above total balance
 - Handle PSE connection errors gracefully
 
 ### Security
+
 - PSE handles actual payment security
 - No SMS verification needed (PSE has its own)
 - In production, implement proper PSE integration
@@ -1707,6 +1749,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 ## Design System Values Reference
 
 ### Colors
+
 - **Primary Blue**: `#007FFF` - Stepper active, primary buttons, selected card border
 - **Navy**: `#1D4E8F` - Text, labels, titles
 - **Text Black**: `#111827` - Primary text
@@ -1719,6 +1762,7 @@ app/(authenticated)/pagos/pago-obligaciones/
 - **Gray Medium**: `#808284` - Pending stepper state
 
 ### Typography
+
 - **Page Title**: 20px, Medium, Black
 - **Card Title**: 18px, Bold, Navy
 - **Section Subtitle**: 14px, Medium, Navy
@@ -1729,11 +1773,13 @@ app/(authenticated)/pagos/pago-obligaciones/
 - **Payment Type Button**: 10px, Medium
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Product cards gap: `16px` (gap-4)
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Product cards: `8px` (rounded-lg)
 - Payment type buttons: `9px`

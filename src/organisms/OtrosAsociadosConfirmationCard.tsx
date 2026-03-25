@@ -1,20 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { ConfirmationRow } from '@/src/molecules';
-import { OtrosAsociadosConfirmationData } from '@/src/types';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider } from "@/src/atoms";
+import { ConfirmationRow } from "@/src/molecules";
+import { OtrosAsociadosConfirmationData } from "@/src/types";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface OtrosAsociadosConfirmationCardProps {
   confirmationData: OtrosAsociadosConfirmationData;
   hideBalances: boolean;
 }
 
-export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmationCardProps> = ({
-  confirmationData,
-  hideBalances,
-}) => {
+export const OtrosAsociadosConfirmationCard: React.FC<
+  OtrosAsociadosConfirmationCardProps
+> = ({ confirmationData, hideBalances }) => {
   return (
     <Card className="p-6 space-y-6">
       {/* Title */}
@@ -24,7 +23,8 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
 
       {/* Description */}
       <p className="text-[15px] text-black">
-        Por favor, verifica que los datos de la transacción sean correctos antes de continuar.
+        Por favor, verifica que los datos de la transacción sean correctos antes
+        de continuar.
       </p>
 
       {/* Payer Info Section */}
@@ -56,7 +56,9 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
             <ConfirmationRow
               key={index}
               label={`${product.name}:`}
-              value={hideBalances ? maskCurrency() : formatCurrency(product.amount)}
+              value={
+                hideBalances ? maskCurrency() : formatCurrency(product.amount)
+              }
             />
           ))}
         </div>
@@ -68,7 +70,9 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
       <div className="flex justify-between items-center">
         <span className="text-[15px] font-bold text-black">Valor Total:</span>
         <span className="text-lg font-bold text-black">
-          {hideBalances ? maskCurrency() : formatCurrency(confirmationData.totalAmount)}
+          {hideBalances
+            ? maskCurrency()
+            : formatCurrency(confirmationData.totalAmount)}
         </span>
       </div>
     </Card>

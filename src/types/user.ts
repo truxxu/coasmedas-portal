@@ -1,7 +1,7 @@
 export interface User {
   firstName: string;
   lastName: string;
-  documentType: 'CC' | 'CE' | 'NIT' | 'TI' | 'PA';
+  documentType: "CC" | "CE" | "NIT" | "TI" | "PA";
   documentNumber: string;
   email: string;
   fullName?: string;

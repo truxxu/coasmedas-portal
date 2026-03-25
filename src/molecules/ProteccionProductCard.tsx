@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useUIContext } from '@/src/contexts';
-import { ProteccionProduct } from '@/src/types';
-import { formatCurrency, maskCurrency, formatDate } from '@/src/utils';
+import { useUIContext } from "@/src/contexts";
+import { ProteccionProduct } from "@/src/types";
+import { formatCurrency, maskCurrency, formatDate } from "@/src/utils";
 
 interface ProteccionProductCardProps {
   product: ProteccionProduct;
@@ -23,20 +23,20 @@ export function ProteccionProductCard({
   product,
   isSelected = false,
   onClick,
-  className = '',
+  className = "",
 }: ProteccionProductCardProps) {
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: 'text-brand-success-icon',
-    inactivo: 'text-brand-gray-medium',
-    cancelado: 'text-red-600',
+    activo: "text-brand-success-icon",
+    inactivo: "text-brand-gray-medium",
+    cancelado: "text-red-600",
   }[product.status];
 
   const statusLabel = {
-    activo: 'Activo',
-    inactivo: 'Inactivo',
-    cancelado: 'Cancelado',
+    activo: "Activo",
+    inactivo: "Inactivo",
+    cancelado: "Cancelado",
   }[product.status];
 
   // Format product number with "No" prefix
@@ -49,7 +49,7 @@ export function ProteccionProductCard({
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick?.();
         }
@@ -57,9 +57,10 @@ export function ProteccionProductCard({
       className={`
         rounded-2xl p-5 cursor-pointer min-w-[280px]
         transition-all duration-200
-        ${isSelected
-          ? 'bg-white border-2 border-brand-navy-dark'
-          : 'bg-brand-border border border-brand-border hover:border-brand-footer-text'
+        ${
+          isSelected
+            ? "bg-white border-2 border-brand-navy-dark"
+            : "bg-brand-border border border-brand-border hover:border-brand-footer-text"
         }
         ${className}
       `}
@@ -75,23 +76,27 @@ export function ProteccionProductCard({
       </p>
 
       {/* Status */}
-      <p className={`text-[15px] mb-4 ${statusColor}`}>
-        {statusLabel}
-      </p>
+      <p className={`text-[15px] mb-4 ${statusColor}`}>{statusLabel}</p>
 
       {/* Insurance Details Section - NO divider, all at same level */}
       <div className="space-y-2">
         {/* Pago Mínimo */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Pago Mínimo:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Pago Mínimo:
+          </span>
           <span className="text-[14px] font-medium text-brand-navy-dark">
-            {hideBalances ? maskCurrency() : formatCurrency(product.minimumPayment)}
+            {hideBalances
+              ? maskCurrency()
+              : formatCurrency(product.minimumPayment)}
           </span>
         </div>
 
         {/* Fecha Límite de Pago */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Fecha Límite de Pago:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Fecha Límite de Pago:
+          </span>
           <span className="text-[14px] font-medium text-black">
             {formatDate(product.paymentDeadline)}
           </span>
@@ -99,9 +104,13 @@ export function ProteccionProductCard({
 
         {/* Pago Total Anual */}
         <div className="flex justify-between">
-          <span className="text-[14px] text-brand-gray-muted">Pago Total Anual:</span>
+          <span className="text-[14px] text-brand-gray-muted">
+            Pago Total Anual:
+          </span>
           <span className="text-[14px] font-medium text-brand-navy-dark">
-            {hideBalances ? maskCurrency() : formatCurrency(product.annualPayment)}
+            {hideBalances
+              ? maskCurrency()
+              : formatCurrency(product.annualPayment)}
           </span>
         </div>
       </div>

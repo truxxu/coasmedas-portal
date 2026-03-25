@@ -68,7 +68,9 @@ export const ObligacionConfirmationCard: React.FC<
           </span>
         </div>
         <div className="flex justify-between py-2">
-          <span className="text-[15px] text-gray-700">Fecha Límite de Pago:</span>
+          <span className="text-[15px] text-gray-700">
+            Fecha Límite de Pago:
+          </span>
           <span className="text-[15px] font-medium text-black">
             {confirmationData.fechaLimitePago}
           </span>

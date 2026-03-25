@@ -1,4 +1,4 @@
-import { WelcomeSection } from '@/src/molecules';
+import { WelcomeSection } from "@/src/molecules";
 
 export function PrehomeWelcome() {
   return (

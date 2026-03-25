@@ -34,7 +34,7 @@ export function AccountSuccessModal({
       // Focus trap
       if (e.key === "Tab" && modalRef.current) {
         const focusableElements = modalRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
         const firstElement = focusableElements[0] as HTMLElement;
         const lastElement = focusableElements[
@@ -70,7 +70,9 @@ export function AccountSuccessModal({
   if (!isOpen) return null;
 
   const title =
-    type === "register" ? "Cuenta Inscrita con Exito" : "Cuenta Editada con Exito";
+    type === "register"
+      ? "Cuenta Inscrita con Exito"
+      : "Cuenta Editada con Exito";
   const message =
     type === "register"
       ? "Su cuenta externa ha sido inscrita con exito. Por favor revise en su lista de cuentas inscritas."

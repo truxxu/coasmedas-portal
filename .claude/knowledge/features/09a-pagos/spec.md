@@ -29,6 +29,7 @@
 The **Pago Unificado** feature allows users to pay all pending minimum payments across multiple products (Aportes, Obligaciones, Protección) in a single consolidated transaction.
 
 ### Key Characteristics
+
 - **Multi-step flow**: 4 sequential steps with progress tracking
 - **Security**: SMS verification for transaction authorization
 - **Reusability**: Stepper component reusable across other flows
@@ -36,6 +37,7 @@ The **Pago Unificado** feature allows users to pay all pending minimum payments 
 - **Accessibility**: WCAG 2.1 AA compliant
 
 ### User Journey
+
 1. View payment summary and select payment source account
 2. Review and confirm payment details
 3. Enter 6-digit SMS security code
@@ -90,6 +92,7 @@ app/(authenticated)/pagos/pago-unificado/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -156,7 +159,7 @@ export interface CodeVerificationFormData {
  * Step 4: Transaction result
  */
 export interface TransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   transactionCost: number;
   transactionDate: string;
   transactionTime: string;
@@ -194,7 +197,7 @@ export interface Step {
 /**
  * Step status
  */
-export type StepStatus = 'pending' | 'active' | 'completed';
+export type StepStatus = "pending" | "active" | "completed";
 
 /**
  * Stepper props
@@ -233,15 +236,17 @@ export interface StepperConnectorProps {
 **Location**: `src/atoms/StepperCircle.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface StepperCircleProps {
   stepNumber: number;
   label: string;
-  status: 'pending' | 'active' | 'completed';
+  status: "pending" | "active" | "completed";
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -316,6 +321,7 @@ export const StepperCircle: React.FC<StepperCircleProps> = ({
 **Location**: `src/atoms/StepperConnector.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface StepperConnectorProps {
   isActive: boolean;
@@ -323,6 +329,7 @@ interface StepperConnectorProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -351,6 +358,7 @@ export const StepperConnector: React.FC<StepperConnectorProps> = ({
 **Location**: `src/atoms/CodeInput.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface CodeInputProps {
   value: string;
@@ -364,6 +372,7 @@ interface CodeInputProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -434,6 +443,7 @@ export const CodeInput: React.FC<CodeInputProps> = ({
 **Location**: `src/molecules/Stepper.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface StepperProps {
   currentStep: number;
@@ -443,6 +453,7 @@ interface StepperProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { StepperCircle, StepperConnector } from '@/src/atoms';
@@ -501,16 +512,18 @@ export const Stepper: React.FC<StepperProps> = ({
 **Location**: `src/molecules/PaymentSummaryRow.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PaymentSummaryRowProps {
   label: string;
   amount: number;
-  variant?: 'default' | 'total';
+  variant?: "default" | "total";
   hideAmount?: boolean;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { formatCurrency, maskCurrency } from '@/src/utils';
@@ -556,6 +569,7 @@ export const PaymentSummaryRow: React.FC<PaymentSummaryRowProps> = ({
 **Location**: `src/molecules/CodeInputGroup.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface CodeInputGroupProps {
   value: string;
@@ -566,6 +580,7 @@ interface CodeInputGroupProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React, { useRef, useEffect } from 'react';
 import { CodeInput } from '@/src/atoms';
@@ -669,15 +684,17 @@ export const CodeInputGroup: React.FC<CodeInputGroupProps> = ({
 **Location**: `src/molecules/TransactionDetailRow.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransactionDetailRowProps {
   label: string;
   value: string | number;
-  valueColor?: 'default' | 'success' | 'error';
+  valueColor?: "default" | "success" | "error";
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -720,6 +737,7 @@ export const TransactionDetailRow: React.FC<TransactionDetailRowProps> = ({
 **Location**: `src/organisms/PaymentDetailsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PaymentDetailsCardProps {
   accounts: PaymentAccount[];
@@ -732,6 +750,7 @@ interface PaymentDetailsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -840,6 +859,7 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
 **Location**: `src/organisms/PaymentConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PaymentConfirmationCardProps {
   confirmationData: PaymentConfirmationData;
@@ -848,6 +868,7 @@ interface PaymentConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -948,6 +969,7 @@ export const PaymentConfirmationCard: React.FC<PaymentConfirmationCardProps> = (
 **Location**: `src/organisms/CodeInputCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface CodeInputCardProps {
   code: string;
@@ -961,6 +983,7 @@ interface CodeInputCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -1042,6 +1065,7 @@ export const CodeInputCard: React.FC<CodeInputCardProps> = ({
 **Location**: `src/organisms/TransactionResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransactionResultCardProps {
   result: TransactionResult;
@@ -1049,6 +1073,7 @@ interface TransactionResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -1567,12 +1592,14 @@ export default function ResultadoPage() {
 Use browser sessionStorage to persist data between steps. This is simple and works well for this linear flow.
 
 **Pros**:
+
 - Simple implementation
 - No additional dependencies
 - Data persists on page refresh
 - Automatically cleared on browser close
 
 **Cons**:
+
 - Not suitable for complex state management
 - Data not shareable across tabs
 
@@ -1667,14 +1694,14 @@ export const usePaymentFlow = () => {
 ### File: `src/utils/paymentHelpers.ts`
 
 ```typescript
-import { PaymentAccount } from '@/src/types/payment';
+import { PaymentAccount } from "@/src/types/payment";
 
 /**
  * Validate if account has sufficient balance for payment
  */
 export const hasInsufficientBalance = (
   account: PaymentAccount,
-  requiredAmount: number
+  requiredAmount: number,
 ): boolean => {
   return account.balance < requiredAmount;
 };
@@ -1683,7 +1710,7 @@ export const hasInsufficientBalance = (
  * Format verification code (add spaces every 3 digits)
  */
 export const formatVerificationCode = (code: string): string => {
-  return code.replace(/(.{3})/g, '$1 ').trim();
+  return code.replace(/(.{3})/g, "$1 ").trim();
 };
 
 /**
@@ -1699,7 +1726,7 @@ export const generateMockSMSCode = (): string => {
 export const calculateTotalPayment = (
   aportes: number,
   obligaciones: number,
-  proteccion: number
+  proteccion: number,
 ): number => {
   return aportes + obligaciones + proteccion;
 };
@@ -1715,31 +1742,31 @@ export const calculateTotalPayment = (
 import {
   PaymentAccount,
   PendingPayments,
-  TransactionResult
-} from '@/src/types/payment';
-import { Step } from '@/src/types/stepper';
+  TransactionResult,
+} from "@/src/types/payment";
+import { Step } from "@/src/types/stepper";
 
 /**
  * Mock payment accounts
  */
 export const mockPaymentAccounts: PaymentAccount[] = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
+    id: "1",
+    name: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428',
+    number: "****4428",
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
+    id: "2",
+    name: "Cuenta Corriente",
     balance: 5200000,
-    number: '****7891',
+    number: "****7891",
   },
   {
-    id: '3',
-    name: 'Cuenta Nómina',
+    id: "3",
+    name: "Cuenta Nómina",
     balance: 3450000,
-    number: '****2341',
+    number: "****2341",
   },
 ];
 
@@ -1757,48 +1784,48 @@ export const mockPendingPayments: PendingPayments = {
  * Mock user data
  */
 export const mockUserData = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234',
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 
 /**
  * Mock transaction result (success)
  */
 export const mockTransactionResult: TransactionResult = {
-  status: 'success',
+  status: "success",
   transactionCost: 0,
-  transactionDate: '19 de diciembre de 2025',
-  transactionTime: '11:04 a.m',
-  approvalNumber: '102450',
-  description: 'Exitosa',
+  transactionDate: "19 de diciembre de 2025",
+  transactionTime: "11:04 a.m",
+  approvalNumber: "102450",
+  description: "Exitosa",
 };
 
 /**
  * Mock transaction result (error)
  */
 export const mockTransactionResultError: TransactionResult = {
-  status: 'error',
+  status: "error",
   transactionCost: 0,
-  transactionDate: '19 de diciembre de 2025',
-  transactionTime: '11:04 a.m',
-  approvalNumber: '-',
-  description: 'Fondos insuficientes',
+  transactionDate: "19 de diciembre de 2025",
+  transactionTime: "11:04 a.m",
+  approvalNumber: "-",
+  description: "Fondos insuficientes",
 };
 
 /**
  * Payment flow steps
  */
 export const PAYMENT_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 ```
 
 **Export**: Add to `src/mocks/index.ts`
@@ -1810,15 +1837,13 @@ export const MOCK_VALID_CODE = '123456';
 ### File: `src/schemas/paymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1: Payment details validation
  */
 export const paymentDetailsSchema = yup.object({
-  selectedAccountId: yup
-    .string()
-    .required('Por favor selecciona una cuenta'),
+  selectedAccountId: yup.string().required("Por favor selecciona una cuenta"),
 });
 
 export type PaymentDetailsFormData = yup.InferType<typeof paymentDetailsSchema>;
@@ -1829,12 +1854,14 @@ export type PaymentDetailsFormData = yup.InferType<typeof paymentDetailsSchema>;
 export const codeVerificationSchema = yup.object({
   code: yup
     .string()
-    .required('Por favor ingresa el código')
-    .length(6, 'El código debe tener 6 dígitos')
-    .matches(/^\d+$/, 'El código debe contener solo números'),
+    .required("Por favor ingresa el código")
+    .length(6, "El código debe tener 6 dígitos")
+    .matches(/^\d+$/, "El código debe contener solo números"),
 });
 
-export type CodeVerificationFormData = yup.InferType<typeof codeVerificationSchema>;
+export type CodeVerificationFormData = yup.InferType<
+  typeof codeVerificationSchema
+>;
 ```
 
 ---
@@ -1903,6 +1930,7 @@ app/(authenticated)/pagos/pago-unificado/
 ## Implementation Order
 
 ### Phase 1: Foundation (Atoms & Types)
+
 1. Create type definitions:
    - `src/types/payment.ts`
    - `src/types/stepper.ts`
@@ -1919,6 +1947,7 @@ app/(authenticated)/pagos/pago-unificado/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 4. Create molecules:
    - `src/molecules/Stepper.tsx` (uses StepperCircle, StepperConnector)
    - `src/molecules/PaymentSummaryRow.tsx`
@@ -1927,6 +1956,7 @@ app/(authenticated)/pagos/pago-unificado/
    - Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 5. Create organisms:
    - `src/organisms/PaymentDetailsCard.tsx` (uses PaymentSummaryRow)
    - `src/organisms/PaymentConfirmationCard.tsx` (uses TransactionDetailRow)
@@ -1935,11 +1965,13 @@ app/(authenticated)/pagos/pago-unificado/
    - Update `src/organisms/index.ts`
 
 ### Phase 4: Utilities
+
 6. Create utility functions:
    - `src/utils/paymentHelpers.ts`
    - Update `src/utils/index.ts`
 
 ### Phase 5: Pages
+
 7. Create pages in order:
    - `app/(authenticated)/pagos/pago-unificado/page.tsx` (Step 1)
    - `app/(authenticated)/pagos/pago-unificado/confirmacion/page.tsx` (Step 2)
@@ -1947,6 +1979,7 @@ app/(authenticated)/pagos/pago-unificado/
    - `app/(authenticated)/pagos/pago-unificado/resultado/page.tsx` (Step 4)
 
 ### Phase 6: Testing & Refinement
+
 8. Manual testing:
    - Test complete flow from Step 1 to Step 4
    - Test back navigation
@@ -1962,6 +1995,7 @@ app/(authenticated)/pagos/pago-unificado/
    - Page refresh behavior
 
 ### Phase 7: Future Enhancements (Post-MVP)
+
 10. Optional improvements:
     - Add PaymentFlowContext for better state management
     - Add validation schemas with yup
@@ -1978,6 +2012,7 @@ app/(authenticated)/pagos/pago-unificado/
 ### Manual Testing Checklist
 
 #### Step 1: Details
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] Account dropdown populates with mock accounts
@@ -1991,6 +2026,7 @@ app/(authenticated)/pagos/pago-unificado/
 - [ ] "Continuar" button navigates to step 2 with valid data
 
 #### Step 2: Confirmation
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 as active, step 1 as completed
 - [ ] User name and masked document display
@@ -2002,6 +2038,7 @@ app/(authenticated)/pagos/pago-unificado/
 - [ ] Redirects to step 1 if no data in sessionStorage
 
 #### Step 3: Verification
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 3 as active, steps 1-2 completed
 - [ ] 6 code input fields render
@@ -2019,6 +2056,7 @@ app/(authenticated)/pagos/pago-unificado/
 - [ ] Redirects to step 1 if no data in sessionStorage
 
 #### Step 4: Result
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all steps completed
 - [ ] Success icon shows for successful transaction
@@ -2031,6 +2069,7 @@ app/(authenticated)/pagos/pago-unificado/
 - [ ] Redirects appropriately if accessed directly
 
 ### Responsive Testing
+
 - [ ] Desktop (≥1024px): Layout correct
 - [ ] Tablet (640-1023px): Layout adapts
 - [ ] Mobile (<640px): Stacked layout works
@@ -2038,6 +2077,7 @@ app/(authenticated)/pagos/pago-unificado/
 - [ ] Code inputs sized appropriately on mobile
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all interactive elements
 - [ ] Focus states visible
 - [ ] Screen reader announces steps
@@ -2050,6 +2090,7 @@ app/(authenticated)/pagos/pago-unificado/
 ## Dependencies
 
 ### Existing
+
 - React 19
 - Next.js 16
 - TypeScript
@@ -2061,6 +2102,7 @@ app/(authenticated)/pagos/pago-unificado/
 - Existing utils (formatCurrency, maskCurrency)
 
 ### New (None required)
+
 All functionality can be implemented with existing dependencies.
 
 ---
@@ -2068,6 +2110,7 @@ All functionality can be implemented with existing dependencies.
 ## Notes & Considerations
 
 ### Security
+
 - SMS code verification is mock for now
 - In production, implement proper 2FA
 - Add rate limiting for code attempts
@@ -2075,19 +2118,23 @@ All functionality can be implemented with existing dependencies.
 - Encrypt sensitive data in sessionStorage
 
 ### Performance
+
 - Components are lightweight
 - No heavy computations
 - SessionStorage is fast
 - Consider lazy loading for future API calls
 
 ### Accessibility
+
 - All interactive elements are keyboard accessible
 - Focus management in code inputs
 - ARIA labels for screen readers
 - Color contrast meets WCAG AA standards
 
 ### Future API Integration
+
 When integrating with backend:
+
 1. Replace mock data with API calls
 2. Add loading states during API calls
 3. Add error handling for network failures
@@ -2098,6 +2145,7 @@ When integrating with backend:
 8. Add transaction receipt generation
 
 ### Browser Compatibility
+
 - Modern browsers (Chrome, Firefox, Safari, Edge)
 - ES2017+ features used
 - CSS Grid and Flexbox

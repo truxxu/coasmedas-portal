@@ -9,6 +9,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Feature spec reviewed (spec.md)
 - [x] Design references analyzed (references.md)
 - [x] Figma design reviewed
@@ -18,37 +19,39 @@
 
 **Feature 04-ahorros and 05-obligaciones components are ALREADY IMPLEMENTED**:
 
-| Component | Location | Status |
-|-----------|----------|--------|
-| `CarouselArrow` | `src/atoms/CarouselArrow.tsx` | Ready to reuse |
-| `CarouselDots` | `src/atoms/CarouselDots.tsx` | Ready to reuse |
-| `SavingsProductCard` | `src/molecules/SavingsProductCard.tsx` | Reference |
-| `ObligacionProductCard` | `src/molecules/ObligacionProductCard.tsx` | Reference (closest pattern) |
-| `ProductCarousel` | `src/organisms/ProductCarousel.tsx` | Reference |
-| `ObligacionCarousel` | `src/organisms/ObligacionCarousel.tsx` | Reference (closest pattern) |
-| `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse |
-| `DownloadReportsCard` | `src/organisms/DownloadReportsCard.tsx` | Ready to reuse |
-| `Breadcrumbs` | `src/molecules/Breadcrumbs.tsx` | Ready to reuse |
+| Component                | Location                                   | Status                      |
+| ------------------------ | ------------------------------------------ | --------------------------- |
+| `CarouselArrow`          | `src/atoms/CarouselArrow.tsx`              | Ready to reuse              |
+| `CarouselDots`           | `src/atoms/CarouselDots.tsx`               | Ready to reuse              |
+| `SavingsProductCard`     | `src/molecules/SavingsProductCard.tsx`     | Reference                   |
+| `ObligacionProductCard`  | `src/molecules/ObligacionProductCard.tsx`  | Reference (closest pattern) |
+| `ProductCarousel`        | `src/organisms/ProductCarousel.tsx`        | Reference                   |
+| `ObligacionCarousel`     | `src/organisms/ObligacionCarousel.tsx`     | Reference (closest pattern) |
+| `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse              |
+| `DownloadReportsCard`    | `src/organisms/DownloadReportsCard.tsx`    | Ready to reuse              |
+| `Breadcrumbs`            | `src/molecules/Breadcrumbs.tsx`            | Ready to reuse              |
 
 **Existing Utilities**:
+
 - `src/utils/carousel.ts` - `calculateTotalPages`, `getVisibleItems`
 - `src/utils/formatCurrency.ts` - `formatCurrency`, `maskCurrency`, `maskNumber`
 - `src/utils/dates.ts` - `generateMonthOptions`, `formatDate`
 
 **Existing Patterns**:
+
 - Obligaciones page at `app/(authenticated)/productos/obligaciones/page.tsx` (closest reference)
 - WelcomeBar context for page title/back button
 - Sidebar already includes "Inversiones" in productSubItems
 
 ### What Needs to Be Created
 
-| Type | Component | Purpose |
-|------|-----------|---------|
-| Type | `inversiones.ts` | InversionProduct, InversionStatus types |
-| Molecule | `InversionProductCard` | Investment card for carousel |
-| Organism | `InversionCarousel` | Carousel using InversionProductCard |
-| Mock | `inversiones.ts` | Mock data for investments |
-| Page | `inversiones/page.tsx` | Inversiones page |
+| Type     | Component              | Purpose                                 |
+| -------- | ---------------------- | --------------------------------------- |
+| Type     | `inversiones.ts`       | InversionProduct, InversionStatus types |
+| Molecule | `InversionProductCard` | Investment card for carousel            |
+| Organism | `InversionCarousel`    | Carousel using InversionProductCard     |
+| Mock     | `inversiones.ts`       | Mock data for investments               |
+| Page     | `inversiones/page.tsx` | Inversiones page                        |
 
 ---
 
@@ -62,7 +65,7 @@
 /**
  * Status of an investment product (CDAT)
  */
-export type InversionStatus = 'activo' | 'vencido';
+export type InversionStatus = "activo" | "vencido";
 
 /**
  * Investment/CDAT product information for carousel display
@@ -71,13 +74,13 @@ export interface InversionProduct {
   id: string;
   title: string;
   productNumber: string;
-  productPrefix?: string;           // e.g., "DTA-" for CDATs
-  amount: number;                   // Monto del CDAT
+  productPrefix?: string; // e.g., "DTA-" for CDATs
+  amount: number; // Monto del CDAT
   status: InversionStatus;
-  interestRate: string;             // Tasa E.A. (e.g., "12.5% E.A")
-  termDays: number;                 // Plazo in days (e.g., 180)
-  creationDate: string;             // F. Creacion (ISO date)
-  maturityDate: string;             // F. Vencimiento (ISO date)
+  interestRate: string; // Tasa E.A. (e.g., "12.5% E.A")
+  termDays: number; // Plazo in days (e.g., 180)
+  creationDate: string; // F. Creacion (ISO date)
+  maturityDate: string; // F. Vencimiento (ISO date)
 }
 
 /**
@@ -91,7 +94,7 @@ export type OnInversionSelect = (product: InversionProduct) => void;
 **File**: `src/types/index.ts` - Add export:
 
 ```typescript
-export * from './inversiones';
+export * from "./inversiones";
 ```
 
 ---
@@ -103,6 +106,7 @@ export * from './inversiones';
 **File**: `src/molecules/InversionProductCard.tsx`
 
 This follows the ObligacionProductCard pattern but with investment-specific fields:
+
 - Different amount label ("Monto del CDAT")
 - Investment details: Tasa E.A., Plazo, F. Creacion, F. Vencimiento
 - Different status values (activo/vencido)
@@ -239,7 +243,7 @@ export function InversionProductCard({
 **File**: `src/molecules/index.ts` - Add export:
 
 ```typescript
-export { InversionProductCard } from './InversionProductCard';
+export { InversionProductCard } from "./InversionProductCard";
 ```
 
 ---
@@ -421,7 +425,7 @@ export function InversionCarousel({
 **File**: `src/organisms/index.ts` - Add export:
 
 ```typescript
-export { InversionCarousel } from './InversionCarousel';
+export { InversionCarousel } from "./InversionCarousel";
 ```
 
 ---
@@ -433,49 +437,49 @@ export { InversionCarousel } from './InversionCarousel';
 **File**: `src/mocks/inversiones.ts`
 
 ```typescript
-import { InversionProduct } from '@/src/types/inversiones';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { InversionProduct } from "@/src/types/inversiones";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock CDAT investment products for carousel
  */
 export const mockInversionProducts: InversionProduct[] = [
   {
-    id: '1',
-    title: 'CDTA Tradicional',
-    productNumber: '123',
-    productPrefix: 'DTA-',
+    id: "1",
+    title: "CDTA Tradicional",
+    productNumber: "123",
+    productPrefix: "DTA-",
     amount: 25000000,
-    status: 'activo',
-    interestRate: '12.5% E.A',
+    status: "activo",
+    interestRate: "12.5% E.A",
     termDays: 180,
-    creationDate: '2025-08-15',
-    maturityDate: '2026-02-11',
+    creationDate: "2025-08-15",
+    maturityDate: "2026-02-11",
   },
   {
-    id: '2',
-    title: 'CDTA Plus',
-    productNumber: '456',
-    productPrefix: 'DTA-',
+    id: "2",
+    title: "CDTA Plus",
+    productNumber: "456",
+    productPrefix: "DTA-",
     amount: 50000000,
-    status: 'activo',
-    interestRate: '13.0% E.A',
+    status: "activo",
+    interestRate: "13.0% E.A",
     termDays: 360,
-    creationDate: '2025-10-01',
-    maturityDate: '2026-09-26',
+    creationDate: "2025-10-01",
+    maturityDate: "2026-09-26",
   },
   {
-    id: '3',
-    title: 'CDTA Flexible',
-    productNumber: '789',
-    productPrefix: 'DTA-',
+    id: "3",
+    title: "CDTA Flexible",
+    productNumber: "789",
+    productPrefix: "DTA-",
     amount: 15000000,
-    status: 'vencido',
-    interestRate: '11.0% E.A',
+    status: "vencido",
+    interestRate: "11.0% E.A",
     termDays: 90,
-    creationDate: '2025-06-01',
-    maturityDate: '2025-08-30',
+    creationDate: "2025-06-01",
+    maturityDate: "2025-08-30",
   },
 ];
 
@@ -484,25 +488,26 @@ export const mockInversionProducts: InversionProduct[] = [
  */
 export const mockInversionesTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2025-08-15',
-    description: 'Apertura CDAT',
+    id: "1",
+    date: "2025-08-15",
+    description: "Apertura CDAT",
     amount: 25000000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2025-11-15',
-    description: 'Liquidacion intereses',
+    id: "2",
+    date: "2025-11-15",
+    description: "Liquidacion intereses",
     amount: 937500,
-    type: 'credit',
+    type: "credit",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockInversionesAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockInversionesAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Step 4.2: Update Mocks Index
@@ -510,7 +515,7 @@ export const mockInversionesAvailableMonths: MonthOption[] = generateMonthOption
 **File**: `src/mocks/index.ts` - Add export:
 
 ```typescript
-export * from './inversiones';
+export * from "./inversiones";
 ```
 
 ---
@@ -637,6 +642,7 @@ Check all index.ts files have the new exports:
 ### Step 6.2: Testing Checklist
 
 **Functional Tests**:
+
 - [ ] Page loads at `/productos/inversiones`
 - [ ] First card is selected by default (white bg, blue border)
 - [ ] Unselected cards have gray background (#E4E6EA)
@@ -649,6 +655,7 @@ Check all index.ts files have the new exports:
 - [ ] Sidebar shows "Inversiones" as active
 
 **Visual Tests**:
+
 - [ ] "Activo" status displays in green (#00A44C)
 - [ ] "Vencido" status displays in red
 - [ ] Divider visible between status and investment details
@@ -660,11 +667,13 @@ Check all index.ts files have the new exports:
 - [ ] Dates formatted correctly (e.g., "15 Ago 2025")
 
 **Responsive Tests**:
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
 
 **Accessibility Tests**:
+
 - [ ] Keyboard navigation (Tab, Enter, Space)
 - [ ] ARIA labels present on cards
 - [ ] Focus states visible
@@ -675,36 +684,36 @@ Check all index.ts files have the new exports:
 
 ### New Files to Create
 
-| File | Phase | Priority |
-|------|-------|----------|
-| `src/types/inversiones.ts` | 1 | High |
-| `src/molecules/InversionProductCard.tsx` | 2 | High |
-| `src/organisms/InversionCarousel.tsx` | 3 | High |
-| `src/mocks/inversiones.ts` | 4 | High |
-| `app/(authenticated)/productos/inversiones/page.tsx` | 5 | High |
+| File                                                 | Phase | Priority |
+| ---------------------------------------------------- | ----- | -------- |
+| `src/types/inversiones.ts`                           | 1     | High     |
+| `src/molecules/InversionProductCard.tsx`             | 2     | High     |
+| `src/organisms/InversionCarousel.tsx`                | 3     | High     |
+| `src/mocks/inversiones.ts`                           | 4     | High     |
+| `app/(authenticated)/productos/inversiones/page.tsx` | 5     | High     |
 
 ### Files to Update
 
-| File | Changes | Phase |
-|------|---------|-------|
-| `src/types/index.ts` | Add inversiones export | 1 |
-| `src/molecules/index.ts` | Add InversionProductCard export | 2 |
-| `src/organisms/index.ts` | Add InversionCarousel export | 3 |
-| `src/mocks/index.ts` | Add inversiones export | 4 |
+| File                     | Changes                         | Phase |
+| ------------------------ | ------------------------------- | ----- |
+| `src/types/index.ts`     | Add inversiones export          | 1     |
+| `src/molecules/index.ts` | Add InversionProductCard export | 2     |
+| `src/organisms/index.ts` | Add InversionCarousel export    | 3     |
+| `src/mocks/index.ts`     | Add inversiones export          | 4     |
 
 ---
 
 ## Time Estimates
 
-| Phase | Description | Time |
-|-------|-------------|------|
-| Phase 1 | Types | 10 min |
-| Phase 2 | InversionProductCard | 1-1.5 hrs |
-| Phase 3 | InversionCarousel | 45 min - 1 hr |
-| Phase 4 | Mock Data | 10 min |
-| Phase 5 | Page Assembly | 30 min |
-| Phase 6 | Polish & Testing | 30 min |
-| **Total** | | **~3-4.5 hrs (1-1.5 days)** |
+| Phase     | Description          | Time                        |
+| --------- | -------------------- | --------------------------- |
+| Phase 1   | Types                | 10 min                      |
+| Phase 2   | InversionProductCard | 1-1.5 hrs                   |
+| Phase 3   | InversionCarousel    | 45 min - 1 hr               |
+| Phase 4   | Mock Data            | 10 min                      |
+| Phase 5   | Page Assembly        | 30 min                      |
+| Phase 6   | Polish & Testing     | 30 min                      |
+| **Total** |                      | **~3-4.5 hrs (1-1.5 days)** |
 
 ---
 
@@ -728,24 +737,25 @@ Phase 6: Polish & Testing
 
 ## Key Differences from Obligaciones Implementation
 
-| Aspect | Obligaciones (05) | Inversiones (06) |
-|--------|-------------------|------------------|
-| Card Component | `ObligacionProductCard` | `InversionProductCard` |
-| Carousel Component | `ObligacionCarousel` | `InversionCarousel` |
-| Amount Label | "Saldo a la fecha" | "Monto del CDAT" |
-| Amount Color | Navy #112E7F | Blue #004680 |
-| Status Values | al_dia/en_mora | activo/vencido |
-| Unselected BG | #F3F4F6 | #E4E6EA |
-| Detail Fields | 3 (disbursed, next payment date/amount) | 4 (rate, term, creation/maturity dates) |
-| Monetary Values | 3 to mask | 1 to mask (simpler) |
-| Product Prefix | Optional "CR-" | "DTA-" |
-| Transaction Prefix | Same as product | "CDAT-" (different!) |
+| Aspect             | Obligaciones (05)                       | Inversiones (06)                        |
+| ------------------ | --------------------------------------- | --------------------------------------- |
+| Card Component     | `ObligacionProductCard`                 | `InversionProductCard`                  |
+| Carousel Component | `ObligacionCarousel`                    | `InversionCarousel`                     |
+| Amount Label       | "Saldo a la fecha"                      | "Monto del CDAT"                        |
+| Amount Color       | Navy #112E7F                            | Blue #004680                            |
+| Status Values      | al_dia/en_mora                          | activo/vencido                          |
+| Unselected BG      | #F3F4F6                                 | #E4E6EA                                 |
+| Detail Fields      | 3 (disbursed, next payment date/amount) | 4 (rate, term, creation/maturity dates) |
+| Monetary Values    | 3 to mask                               | 1 to mask (simpler)                     |
+| Product Prefix     | Optional "CR-"                          | "DTA-"                                  |
+| Transaction Prefix | Same as product                         | "CDAT-" (different!)                    |
 
 ---
 
 ## Code Reuse Strategy
 
 ### Components Reused Without Changes
+
 - `CarouselArrow` - Navigation arrows
 - `CarouselDots` - Pagination dots
 - `TransactionHistoryCard` - Transaction list
@@ -753,6 +763,7 @@ Phase 6: Polish & Testing
 - `Breadcrumbs` - Navigation breadcrumbs
 
 ### Utilities Reused
+
 - `calculateTotalPages()` - Carousel pagination
 - `getVisibleItems()` - Responsive card count
 - `formatCurrency()` - Currency formatting
@@ -762,6 +773,7 @@ Phase 6: Polish & Testing
 - `generateMonthOptions()` - Month dropdown options
 
 ### Patterns Followed
+
 - WelcomeBar context for page title
 - UIContext for hideBalances
 - Carousel scroll behavior
@@ -783,6 +795,7 @@ F. Vencimiento:  11 Feb 2025
 ### Product Number vs Transaction Title Prefixes
 
 **Important distinction:**
+
 - **Card display**: Uses "DTA-" prefix -> `DTA-******123`
 - **Transaction title**: Uses "CDAT-" prefix -> `CDAT-*****123`
 
@@ -807,7 +820,7 @@ const displayTerm = `${product.termDays} dias`;
 Interest rate is stored as a string and displayed as-is from the backend:
 
 ```typescript
-product.interestRate  // "12.5% E.A"
+product.interestRate; // "12.5% E.A"
 // No formatting needed, just display directly
 ```
 
@@ -819,11 +832,11 @@ Unlike Obligaciones, there is **no sidebar update needed** because "Inversiones"
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },  // Already exists!
-  { label: 'Proteccion', href: '/productos/proteccion' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" }, // Already exists!
+  { label: "Proteccion", href: "/productos/proteccion" },
 ];
 ```
 

@@ -45,16 +45,25 @@ export default function VerificacionAportesPage() {
       });
       // Map and store result for the resultado page
       const breakdownStr = sessionStorage.getItem("aportesPaymentBreakdown");
-      const breakdown: AportesPaymentBreakdown | null = breakdownStr ? JSON.parse(breakdownStr) : null;
+      const breakdown: AportesPaymentBreakdown | null = breakdownStr
+        ? JSON.parse(breakdownStr)
+        : null;
       const mappedResult = mapResultToAportes(result, {
         lineaCredito: breakdown?.planName ?? "Aportes",
         numeroProducto: breakdown?.productNumber ?? "",
       });
-      sessionStorage.setItem("aportesPaymentResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "aportesPaymentResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;
-      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+      await sendTransactionOtp({
+        documentType,
+        documentNumber,
+        trnType: "PaymentInternal",
+      });
     },
   });
 

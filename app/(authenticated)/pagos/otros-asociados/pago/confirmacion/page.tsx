@@ -25,15 +25,19 @@ export default function OtrosAsociadosConfirmacionPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [sourceType] = useState<FundingSourceType>(() => {
-    if (typeof window === 'undefined') return "cuenta";
-    const stored = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
+    if (typeof window === "undefined") return "cuenta";
+    const stored = sessionStorage.getItem(
+      "otrosAsociadosSourceType",
+    ) as FundingSourceType | null;
     return stored || "cuenta";
   });
 
-  const [confirmationData] =
-    useState<OtrosAsociadosConfirmationData | null>(() => {
-      if (typeof window === 'undefined') return null;
-      const beneficiaryStr = sessionStorage.getItem("otrosAsociadosBeneficiary");
+  const [confirmationData] = useState<OtrosAsociadosConfirmationData | null>(
+    () => {
+      if (typeof window === "undefined") return null;
+      const beneficiaryStr = sessionStorage.getItem(
+        "otrosAsociadosBeneficiary",
+      );
       const accountId = sessionStorage.getItem("otrosAsociadosAccountId");
       const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
       const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
@@ -44,7 +48,9 @@ export default function OtrosAsociadosConfirmacionPage() {
 
       const beneficiary: RegisteredBeneficiary = JSON.parse(beneficiaryStr);
       const products: PayableProduct[] = JSON.parse(productsStr);
-      const account = mockOtrosAsociadosSourceAccounts.find((a) => a.id === accountId);
+      const account = mockOtrosAsociadosSourceAccounts.find(
+        (a) => a.id === accountId,
+      );
 
       if (!account) {
         return null;
@@ -61,12 +67,14 @@ export default function OtrosAsociadosConfirmacionPage() {
         })),
         totalAmount: parseInt(totalAmount, 10),
       };
-    });
+    },
+  );
 
   // Determine which stepper to use based on funding source
-  const paymentSteps = sourceType === "pse"
-    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
-    : OTROS_ASOCIADOS_PAYMENT_STEPS;
+  const paymentSteps =
+    sourceType === "pse"
+      ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+      : OTROS_ASOCIADOS_PAYMENT_STEPS;
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
@@ -88,7 +96,7 @@ export default function OtrosAsociadosConfirmacionPage() {
     if (confirmationData) {
       sessionStorage.setItem(
         "otrosAsociadosConfirmation",
-        JSON.stringify(confirmationData)
+        JSON.stringify(confirmationData),
       );
     }
 

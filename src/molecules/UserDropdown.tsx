@@ -1,22 +1,37 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { useUserContext } from '@/src/contexts';
+import Link from "next/link";
+import Image from "next/image";
+import { useUserContext } from "@/src/contexts";
 
 interface DropdownOption {
   id: string;
   label: string;
   icon: string;
   href?: string;
-  action?: 'logout';
+  action?: "logout";
 }
 
 const dropdownOptions: DropdownOption[] = [
-  { id: 'datos', label: 'Mis Datos Personales', icon: '/icons/profile.svg', href: '/perfil/datos' },
-  { id: 'clave', label: 'Cambiar Clave del Portal', icon: '/icons/key.svg', href: '/perfil/cambiar-clave' },
-  { id: 'ayuda', label: 'Ayuda', icon: '/icons/help.svg', href: '/ayuda' },
-  { id: 'logout', label: 'Cerrar Sesión', icon: '/icons/logout.svg', action: 'logout' },
+  {
+    id: "datos",
+    label: "Mis Datos Personales",
+    icon: "/icons/profile.svg",
+    href: "/perfil/datos",
+  },
+  {
+    id: "clave",
+    label: "Cambiar Clave del Portal",
+    icon: "/icons/key.svg",
+    href: "/perfil/cambiar-clave",
+  },
+  { id: "ayuda", label: "Ayuda", icon: "/icons/help.svg", href: "/ayuda" },
+  {
+    id: "logout",
+    label: "Cerrar Sesión",
+    icon: "/icons/logout.svg",
+    action: "logout",
+  },
 ];
 
 interface UserDropdownProps {
@@ -30,16 +45,18 @@ export function UserDropdown({ isOpen, onClose }: UserDropdownProps) {
   if (!isOpen) return null;
 
   const handleOptionClick = async (option: DropdownOption) => {
-    if (option.action === 'logout') {
+    if (option.action === "logout") {
       await logout();
-      window.location.replace('/login');
+      window.location.replace("/login");
       return;
     }
     onClose();
   };
 
-  const fullName = user ? `${user.firstName} ${user.lastName}`.toUpperCase() : '';
-  const email = user?.email || '';
+  const fullName = user
+    ? `${user.firstName} ${user.lastName}`.toUpperCase()
+    : "";
+  const email = user?.email || "";
 
   return (
     <>

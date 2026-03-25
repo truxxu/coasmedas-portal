@@ -1,4 +1,4 @@
-import { AppPromoSection } from '@/src/molecules';
+import { AppPromoSection } from "@/src/molecules";
 
 export function PrehomeApp() {
   return (

@@ -11,6 +11,7 @@
 ## Prerequisites
 
 Before starting implementation, ensure:
+
 - [ ] Feature 10a-10c transferencias features are implemented
 - [ ] Review existing transfer components in `src/organisms/`
 - [ ] Review modal patterns from utility and payment flows
@@ -24,6 +25,7 @@ Before starting implementation, ensure:
 **File**: `src/types/accountRegistration.ts`
 
 Create the following types:
+
 - `AccountBankType` - Union type: `"otro_banco" | "red_coopcentral"`
 - `HolderType` - Union type: `"persona_natural" | "persona_juridica"`
 - `AccountType` - Union type: `"ahorros" | "corriente"`
@@ -47,6 +49,7 @@ Add exports for all new types from `accountRegistration.ts`.
 **File**: `src/mocks/mockAccountRegistrationData.ts`
 
 Create mock data:
+
 - `mockRegisteredAccounts` - Array of 4 pre-registered accounts
 - `mockBanks` - Array of 8 Colombian bank options
 - `mockCooperativas` - Array of 5 cooperativa options
@@ -64,6 +67,7 @@ Add exports for all new mock data.
 **File**: `src/schemas/accountRegistrationSchema.ts`
 
 Create Yup validation schema with:
+
 - Conditional validation for `entidadFinanciera` (required if `accountType === "otro_banco"`)
 - Conditional validation for `cooperativa` (required if `accountType === "red_coopcentral"`)
 - Conditional validation for `nombreTitular` and `apellidosTitular` (required if `tipoTitular === "persona_natural"`)
@@ -81,6 +85,7 @@ Create Yup validation schema with:
 **File**: `src/molecules/AccountTypeRadioGroup.tsx`
 
 Props:
+
 ```typescript
 interface AccountTypeRadioGroupProps {
   value: "otro_banco" | "red_coopcentral";
@@ -90,6 +95,7 @@ interface AccountTypeRadioGroupProps {
 ```
 
 Implementation details:
+
 - Horizontal flex layout with `gap-6`
 - Two radio options: "Otro Banco (ACH)" and "Red Coopcentral"
 - Radio size: 16px x 16px
@@ -104,6 +110,7 @@ Implementation details:
 **File**: `src/molecules/HolderTypeRadioGroup.tsx`
 
 Props:
+
 ```typescript
 interface HolderTypeRadioGroupProps {
   value: "persona_natural" | "persona_juridica";
@@ -113,6 +120,7 @@ interface HolderTypeRadioGroupProps {
 ```
 
 Implementation details:
+
 - Same styling as AccountTypeRadioGroup
 - Two options: "Persona Natural" and "Persona Juridica"
 - Same accessibility requirements
@@ -122,6 +130,7 @@ Implementation details:
 **File**: `src/molecules/BankBadge.tsx`
 
 Props:
+
 ```typescript
 interface BankBadgeProps {
   bankName: string;
@@ -130,6 +139,7 @@ interface BankBadgeProps {
 ```
 
 Implementation details:
+
 - Background: Dark color (default `#1D4E8F`)
 - Text: White, 10px, medium weight
 - Padding: `2px 8px`
@@ -142,6 +152,7 @@ Implementation details:
 **File**: `src/molecules/index.ts`
 
 Add exports:
+
 ```typescript
 export { AccountTypeRadioGroup } from "./AccountTypeRadioGroup";
 export { HolderTypeRadioGroup } from "./HolderTypeRadioGroup";
@@ -157,6 +168,7 @@ export { BankBadge } from "./BankBadge";
 **File**: `src/organisms/RegisteredAccountCard.tsx`
 
 Props:
+
 ```typescript
 interface RegisteredAccountCardProps {
   account: RegisteredAccount;
@@ -166,11 +178,12 @@ interface RegisteredAccountCardProps {
 ```
 
 Implementation details:
+
 - Horizontal flex layout with `space-between`
 - Left side (flex column):
   - Alias: Bold, 18px, `#005066`
   - BankBadge component
-  - Account info: "Ahorros - ****9-01" (14px, `#58585B`)
+  - Account info: "Ahorros - \*\*\*\*9-01" (14px, `#58585B`)
   - Holder name: uppercase (14px, `#111827`)
 - Right side (flex row, gap-3):
   - Edit button: Pencil icon (20px, `#58585B`, hover `#1D4E8F`)
@@ -186,6 +199,7 @@ Implementation details:
 **File**: `src/organisms/RegisteredAccountsList.tsx`
 
 Props:
+
 ```typescript
 interface RegisteredAccountsListProps {
   accounts: RegisteredAccount[];
@@ -195,6 +209,7 @@ interface RegisteredAccountsListProps {
 ```
 
 Implementation details:
+
 - Section title: "Cuentas Inscritas" (18px, Bold, `#005066`)
 - Map accounts to RegisteredAccountCard components
 - Empty state: "No tienes cuentas inscritas." (centered, gray)
@@ -205,6 +220,7 @@ Implementation details:
 **File**: `src/organisms/AccountRegistrationForm.tsx`
 
 Props:
+
 ```typescript
 interface AccountRegistrationFormProps {
   mode: "register" | "edit";
@@ -219,6 +235,7 @@ interface AccountRegistrationFormProps {
 ```
 
 Implementation details:
+
 - Use `react-hook-form` with `yupResolver`
 - Card container with title and description
 - Watch `accountType` field for conditional bank/cooperativa rendering
@@ -241,6 +258,7 @@ Implementation details:
 **File**: `src/organisms/AccountSuccessModal.tsx`
 
 Props:
+
 ```typescript
 interface AccountSuccessModalProps {
   isOpen: boolean;
@@ -251,6 +269,7 @@ interface AccountSuccessModalProps {
 ```
 
 Implementation details:
+
 - Modal container (backdrop, centered, max-width ~460px)
 - Content by type:
   - Register: SuccessIcon, "Cuenta Inscrita con Exito", two buttons
@@ -269,6 +288,7 @@ Implementation details:
 **File**: `src/organisms/AccountDeleteConfirmModal.tsx`
 
 Props:
+
 ```typescript
 interface AccountDeleteConfirmModalProps {
   isOpen: boolean;
@@ -278,6 +298,7 @@ interface AccountDeleteConfirmModalProps {
 ```
 
 Implementation details:
+
 - Same modal container styling as AccountSuccessModal
 - Title: "Borrar cuenta inscrita"
 - Message: "Esta seguro que desea borrar esta cuenta?"
@@ -289,6 +310,7 @@ Implementation details:
 **File**: `src/organisms/index.ts`
 
 Add exports:
+
 ```typescript
 export { AccountRegistrationForm } from "./AccountRegistrationForm";
 export { RegisteredAccountsList } from "./RegisteredAccountsList";
@@ -308,6 +330,7 @@ export { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 Implementation details:
 
 **Page State**:
+
 ```typescript
 const [pageState, setPageState] = useState<AccountRegistrationPageState>({
   mode: "register",
@@ -321,6 +344,7 @@ const [pageState, setPageState] = useState<AccountRegistrationPageState>({
 ```
 
 **WelcomeBar Configuration**:
+
 ```typescript
 useEffect(() => {
   setWelcomeBarConfig({
@@ -331,6 +355,7 @@ useEffect(() => {
 ```
 
 **Layout Structure**:
+
 1. Header section:
    - BackButton (navigates to `/transferencias/internas`)
    - Page title: "Inscribir Cuentas"
@@ -344,6 +369,7 @@ useEffect(() => {
    - AccountDeleteConfirmModal
 
 **Event Handlers**:
+
 - `handleFormSubmit` - Add/update account, show success modal
 - `handleEdit` - Set mode to "edit", populate form with account data
 - `handleCancelEdit` - Reset mode to "register", clear form
@@ -354,6 +380,7 @@ useEffect(() => {
 - `handleSuccessModalSecondary` - Close modal
 
 **Responsive Design**:
+
 - On mobile: Stack form and list vertically (`grid-cols-1`)
 - On desktop: Side-by-side layout (`lg:grid-cols-2`)
 
@@ -362,18 +389,21 @@ useEffect(() => {
 ## Verification Checklist
 
 ### Phase 1 Verification
+
 - [ ] Types compile without errors
 - [ ] Types are properly exported from index
 - [ ] Mock data matches type definitions
 - [ ] Validation schema handles all conditional fields
 
 ### Phase 2 Verification
+
 - [ ] Radio groups render correctly with both options
 - [ ] Radio selection triggers onChange callback
 - [ ] BankBadge renders with correct colors
 - [ ] All molecules exported from index
 
 ### Phase 3 Verification
+
 - [ ] RegisteredAccountCard displays all account info
 - [ ] Edit/Delete buttons trigger callbacks with correct accountId
 - [ ] RegisteredAccountsList handles empty state
@@ -385,6 +415,7 @@ useEffect(() => {
 - [ ] Escape key closes modals
 
 ### Phase 4 Verification
+
 - [ ] Page renders with form and list side by side (desktop)
 - [ ] Page renders with form and list stacked (mobile)
 - [ ] Register flow works end-to-end
@@ -399,6 +430,7 @@ useEffect(() => {
 ## Testing Scenarios
 
 ### Happy Path - Register
+
 1. Navigate to `/transferencias/inscribir-cuentas`
 2. Select "Otro Banco (ACH)"
 3. Select bank from dropdown
@@ -415,6 +447,7 @@ useEffect(() => {
 14. Verify new account appears in list
 
 ### Happy Path - Edit
+
 1. Click edit (pencil) icon on existing account
 2. Verify form populates with account data
 3. Change alias
@@ -424,24 +457,28 @@ useEffect(() => {
 7. Verify account list shows updated alias
 
 ### Happy Path - Delete
+
 1. Click delete (trash) icon on existing account
 2. Verify confirmation modal appears
 3. Click "Aceptar"
 4. Verify account removed from list
 
 ### Validation Errors
+
 1. Submit form with empty required fields
 2. Verify error messages appear
 3. Enter letters in account number field
 4. Verify numeric validation error
 
 ### Dynamic Form Behavior
+
 1. Toggle between "Otro Banco" and "Red Coopcentral"
 2. Verify correct dropdown appears
 3. Toggle between "Persona Natural" and "Persona Juridica"
 4. Verify correct name fields appear
 
 ### Edge Cases
+
 1. Cancel edit mode - verify form resets
 2. Register with Red Coopcentral + Persona Juridica
 3. Test modal close via backdrop click
@@ -453,26 +490,28 @@ useEffect(() => {
 ## File Summary
 
 ### New Files
-| File | Type | Description |
-|------|------|-------------|
-| `src/types/accountRegistration.ts` | Types | All type definitions |
-| `src/mocks/mockAccountRegistrationData.ts` | Mocks | Mock data for development |
-| `src/schemas/accountRegistrationSchema.ts` | Schema | Yup validation schema |
-| `src/molecules/AccountTypeRadioGroup.tsx` | Molecule | Account type radio selector |
-| `src/molecules/HolderTypeRadioGroup.tsx` | Molecule | Holder type radio selector |
-| `src/molecules/BankBadge.tsx` | Molecule | Bank name badge |
-| `src/organisms/AccountRegistrationForm.tsx` | Organism | Dynamic registration form |
-| `src/organisms/RegisteredAccountCard.tsx` | Organism | Single registered account card |
-| `src/organisms/RegisteredAccountsList.tsx` | Organism | List of registered accounts |
-| `src/organisms/AccountSuccessModal.tsx` | Organism | Success modal (register/edit) |
-| `src/organisms/AccountDeleteConfirmModal.tsx` | Organism | Delete confirmation modal |
-| `app/(authenticated)/transferencias/inscribir-cuentas/page.tsx` | Page | Main page |
+
+| File                                                            | Type     | Description                    |
+| --------------------------------------------------------------- | -------- | ------------------------------ |
+| `src/types/accountRegistration.ts`                              | Types    | All type definitions           |
+| `src/mocks/mockAccountRegistrationData.ts`                      | Mocks    | Mock data for development      |
+| `src/schemas/accountRegistrationSchema.ts`                      | Schema   | Yup validation schema          |
+| `src/molecules/AccountTypeRadioGroup.tsx`                       | Molecule | Account type radio selector    |
+| `src/molecules/HolderTypeRadioGroup.tsx`                        | Molecule | Holder type radio selector     |
+| `src/molecules/BankBadge.tsx`                                   | Molecule | Bank name badge                |
+| `src/organisms/AccountRegistrationForm.tsx`                     | Organism | Dynamic registration form      |
+| `src/organisms/RegisteredAccountCard.tsx`                       | Organism | Single registered account card |
+| `src/organisms/RegisteredAccountsList.tsx`                      | Organism | List of registered accounts    |
+| `src/organisms/AccountSuccessModal.tsx`                         | Organism | Success modal (register/edit)  |
+| `src/organisms/AccountDeleteConfirmModal.tsx`                   | Organism | Delete confirmation modal      |
+| `app/(authenticated)/transferencias/inscribir-cuentas/page.tsx` | Page     | Main page                      |
 
 ### Modified Files
-| File | Change |
-|------|--------|
-| `src/types/index.ts` | Add exports |
-| `src/mocks/index.ts` | Add exports |
+
+| File                     | Change      |
+| ------------------------ | ----------- |
+| `src/types/index.ts`     | Add exports |
+| `src/mocks/index.ts`     | Add exports |
 | `src/molecules/index.ts` | Add exports |
 | `src/organisms/index.ts` | Add exports |
 
@@ -481,6 +520,7 @@ useEffect(() => {
 ## Dependencies
 
 ### Existing Dependencies (already installed)
+
 - `react-hook-form` - Form state management
 - `yup` - Schema validation
 - `@hookform/resolvers` - Yup resolver for react-hook-form

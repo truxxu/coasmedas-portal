@@ -47,20 +47,23 @@ export default function InscribirServiciosPage() {
   }, [formData.categoryId]);
 
   // Handle category change - reset convenio when category changes
-  const handleCategoryChange = useCallback((categoryId: string, categoryName: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      categoryId,
-      categoryName,
-      convenioId: "",
-      convenioName: "",
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      categoryId: undefined,
-      convenioId: undefined,
-    }));
-  }, []);
+  const handleCategoryChange = useCallback(
+    (categoryId: string, categoryName: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        categoryId,
+        categoryName,
+        convenioId: "",
+        convenioName: "",
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        categoryId: undefined,
+        convenioId: undefined,
+      }));
+    },
+    [],
+  );
 
   // Handle convenio change
   const handleConvenioChange = useCallback(
@@ -72,7 +75,7 @@ export default function InscribirServiciosPage() {
       }));
       setErrors((prev) => ({ ...prev, convenioId: undefined }));
     },
-    []
+    [],
   );
 
   // Handle bill number change

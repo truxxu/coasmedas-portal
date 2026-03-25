@@ -18,7 +18,7 @@ export const Stepper: React.FC<StepperProps> = ({
   className = "",
 }) => {
   const getStepStatus = (
-    stepNumber: number
+    stepNumber: number,
   ): "pending" | "active" | "completed" => {
     if (stepNumber < currentStep) return "completed";
     if (stepNumber === currentStep) return "active";

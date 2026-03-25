@@ -1,4 +1,4 @@
-import { InfoCard } from '@/src/molecules';
+import { InfoCard } from "@/src/molecules";
 
 export function PrehomeInfo() {
   return (
@@ -11,14 +11,13 @@ export function PrehomeInfo() {
           buttonHref="/actualizar-datos"
         />
 
-        <InfoCard
-          title="Recomendaciones de Seguridad"
-          description=""
-        >
+        <InfoCard title="Recomendaciones de Seguridad" description="">
           <ul className="space-y-3 text-sm text-black">
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed.</span>
+              <span>
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed.
+              </span>
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
@@ -26,11 +25,15 @@ export function PrehomeInfo() {
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span>Tincidunt ut laoreet dolore magna aliquam erat volutpat.</span>
+              <span>
+                Tincidunt ut laoreet dolore magna aliquam erat volutpat.
+              </span>
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span>Ut wisi enim ad minim veniam, quis laoreet exerci tation.</span>
+              <span>
+                Ut wisi enim ad minim veniam, quis laoreet exerci tation.
+              </span>
             </li>
           </ul>
         </InfoCard>

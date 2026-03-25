@@ -14,13 +14,13 @@ The "Programar Transferencias" feature allows users to schedule recurring or one
 
 ## Figma Design References
 
-| Screen                      | Node ID   | URL                                                                                              |
-| --------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
-| Selection Page              | 1032:2    | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1032-2)       |
-| Form (Unique transfer)      | 1033:112  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-112)     |
-| Form (Monthly transfer)     | 1033:227  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-227)     |
-| Confirmation Modal          | 1033:354  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-354)     |
-| History (Active Transfers)  | 1033:488  | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-488)     |
+| Screen                     | Node ID  | URL                                                                                        |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| Selection Page             | 1032:2   | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1032-2)   |
+| Form (Unique transfer)     | 1033:112 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-112) |
+| Form (Monthly transfer)    | 1033:227 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-227) |
+| Confirmation Modal         | 1033:354 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-354) |
+| History (Active Transfers) | 1033:488 | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1033-488) |
 
 ---
 
@@ -44,17 +44,20 @@ The "Programar Transferencias" feature allows users to schedule recurring or one
 Two clickable cards displayed in a horizontal grid:
 
 #### Card 1: Programa Nuevo Pago/Transferencia
+
 - **Icon**: Circle with "+" icon (left side of card)
 - **Title**: "Programa Nuevo Pago/Transferencia" (18px, bold, navy `#005066`)
 - **Description**: "Crea una nueva programación para tus pagos o transferencias" (14px, regular, `#6B6B6B`)
 - **Action**: Navigates to `/transferencias/programar/nuevo`
 
 #### Card 2: Ver Pagos Programados
+
 - **Title**: "Ver Pagos Programados" (18px, bold, navy `#005066`)
 - **Description**: "Consulta, edita o elimina tus programaciones existentes." (14px, regular, `#6B6B6B`)
 - **Action**: Navigates to `/transferencias/programar/historial`
 
 ### Card Styling
+
 - White background, rounded corners (`16px`)
 - Border: `1px solid #E4E6EA`
 - Padding: `24px`
@@ -82,34 +85,34 @@ The form fields change dynamically based on the selected **Periodicidad** (perio
 
 #### Base Fields (Always Shown)
 
-| Field                    | Type            | Label                                                  | Notes                                          |
-| ------------------------ | --------------- | ------------------------------------------------------ | ---------------------------------------------- |
-| Tipo de Transacción      | Select/Dropdown | "Tipo de Transacción"                                  | Placeholder: "Seleccione..."                   |
-| Fecha de Inicio del Pago | DateInput       | "Fecha de Inicio del Pago"                             | Format: dd/mm/aaaa, calendar icon on right     |
-| Periodicidad             | Select/Dropdown | "Periodicidad"                                         | Options: "Única vez", "Mensual", "Quincenal"   |
+| Field                    | Type            | Label                      | Notes                                        |
+| ------------------------ | --------------- | -------------------------- | -------------------------------------------- |
+| Tipo de Transacción      | Select/Dropdown | "Tipo de Transacción"      | Placeholder: "Seleccione..."                 |
+| Fecha de Inicio del Pago | DateInput       | "Fecha de Inicio del Pago" | Format: dd/mm/aaaa, calendar icon on right   |
+| Periodicidad             | Select/Dropdown | "Periodicidad"             | Options: "Única vez", "Mensual", "Quincenal" |
 
 #### When Periodicidad = "Única vez" (Default State)
 
 Shows base fields plus:
 
-| Field                    | Type      | Label                                                  | Notes                                          |
-| ------------------------ | --------- | ------------------------------------------------------ | ---------------------------------------------- |
-| Número de Pagos          | Input     | "Número de Pagos (dejar en blanco para indefinido)"    | Placeholder: "Ej: 12"                          |
-| Concepto o Descripción   | Input     | "Concepto o Descripción"                               | Text input                                     |
+| Field                  | Type  | Label                                               | Notes                 |
+| ---------------------- | ----- | --------------------------------------------------- | --------------------- |
+| Número de Pagos        | Input | "Número de Pagos (dejar en blanco para indefinido)" | Placeholder: "Ej: 12" |
+| Concepto o Descripción | Input | "Concepto o Descripción"                            | Text input            |
 
 #### When Periodicidad = "Mensual" or "Quincenal"
 
 Shows base fields plus additional fields for the specific transfer configuration:
 
-| Field                    | Type            | Label                                                  | Notes                                          |
-| ------------------------ | --------------- | ------------------------------------------------------ | ---------------------------------------------- |
-| Cuenta Origen            | Select/Dropdown | "Cuenta Origen"                                        | Shows account with balance (e.g., "Cuenta de Ahorros - Saldos: $ 8.730.500") |
-| Cuenta Externa Inscrita  | Select/Dropdown | "Cuenta Externa Inscrita"                              | Shows registered external accounts (e.g., "Cuenta Mamá (***6745)") |
-| Monto                    | Input           | "Monto"                                                | Numeric, e.g., "200.000"                       |
-| Fecha de Inicio del Pago | DateInput       | "Fecha de Inicio del Pago"                             | Format: dd/mm/aaaa, calendar icon              |
-| Periodicidad             | Select/Dropdown | "Periodicidad"                                         | Already selected "Mensual"                     |
-| Número de Pagos          | Input           | "Número de Pagos (dejar en blanco para indefinido)"    | e.g., "5"                                      |
-| Concepto o Descripción   | Input           | "Concepto o Descripción"                               | e.g., "Única vez" (text content, not the periodicity) |
+| Field                    | Type            | Label                                               | Notes                                                                        |
+| ------------------------ | --------------- | --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Cuenta Origen            | Select/Dropdown | "Cuenta Origen"                                     | Shows account with balance (e.g., "Cuenta de Ahorros - Saldos: $ 8.730.500") |
+| Cuenta Externa Inscrita  | Select/Dropdown | "Cuenta Externa Inscrita"                           | Shows registered external accounts (e.g., "Cuenta Mamá (\*\*\*6745)")        |
+| Monto                    | Input           | "Monto"                                             | Numeric, e.g., "200.000"                                                     |
+| Fecha de Inicio del Pago | DateInput       | "Fecha de Inicio del Pago"                          | Format: dd/mm/aaaa, calendar icon                                            |
+| Periodicidad             | Select/Dropdown | "Periodicidad"                                      | Already selected "Mensual"                                                   |
+| Número de Pagos          | Input           | "Número de Pagos (dejar en blanco para indefinido)" | e.g., "5"                                                                    |
+| Concepto o Descripción   | Input           | "Concepto o Descripción"                            | e.g., "Única vez" (text content, not the periodicity)                        |
 
 #### Transaction Type Options
 
@@ -172,41 +175,45 @@ Two buttons aligned to the right of the card title:
 
 ### Data Table
 
-| Column Header     | Width    | Notes                                                     |
-| ----------------- | -------- | --------------------------------------------------------- |
-| TIPO              | ~15%     | Transfer type (e.g., "Pago de Obligación")                |
-| ORIGEN            | ~10%     | Origin description                                        |
-| DESTINO           | ~18%     | Destination name (e.g., "Crédito de Libre Inversión")     |
-| PRÓXIMA EJECICIÓN | ~13%     | Next execution date (e.g., "30 Nov 2025")                 |
-| PERIODICIDAD      | ~12%     | Frequency (e.g., "Única vez", "Quincenal", "Mensual")     |
-| MONTO             | ~10%     | Amount (e.g., "$ 850.000")                                |
-| ESTADO            | ~10%     | Status badge                                              |
-| ACCIONES          | ~10%     | Action links                                              |
+| Column Header     | Width | Notes                                                 |
+| ----------------- | ----- | ----------------------------------------------------- |
+| TIPO              | ~15%  | Transfer type (e.g., "Pago de Obligación")            |
+| ORIGEN            | ~10%  | Origin description                                    |
+| DESTINO           | ~18%  | Destination name (e.g., "Crédito de Libre Inversión") |
+| PRÓXIMA EJECICIÓN | ~13%  | Next execution date (e.g., "30 Nov 2025")             |
+| PERIODICIDAD      | ~12%  | Frequency (e.g., "Única vez", "Quincenal", "Mensual") |
+| MONTO             | ~10%  | Amount (e.g., "$ 850.000")                            |
+| ESTADO            | ~10%  | Status badge                                          |
+| ACCIONES          | ~10%  | Action links                                          |
 
 #### Table Header Styling
+
 - Text: `15px`, regular, black
 - Background: Light beige/cream `#FFFEF2` (same as page background)
 - Bottom border separating header from rows
 
 #### Table Row Styling
+
 - Text: `13.7px`, regular, black
 - Rows separated by `1px solid #E4E6EA` dividers
 - Alternating or consistent white background
 
 #### Status Badges
+
 - **"2/12"**: Green text `#003500`, indicates progress (2 of 12 payments completed)
 - **"Activa"**: Green text `#003500`, indicates active scheduled transfer
 
 #### Actions Column
+
 - **"Eliminar"**: Red text (`red`), `13.7px`, regular — clickable link to delete the scheduled transfer
 
 ### Sample Data Rows
 
-| TIPO                            | ORIGEN | DESTINO                      | PRÓXIMA EJECICIÓN | PERIODICIDAD | MONTO       | ESTADO | ACCIONES |
-| ------------------------------- | ------ | ---------------------------- | ------------------ | ------------ | ----------- | ------ | -------- |
-| Pago de Obligación              | —      | Crédito de Libre Inversión   | 30 Nov 2025        | Única vez    | $ 850.000   | 2/12   | Eliminar |
-| Transferencia a mi red          | —      | MARÍA FERENANDA GONZALEZ     | 15 Nov 2025        | Quincenal    | $ 200.000   | Activa | Eliminar |
-| Transferencia a otros bancos    | —      | Valeria Alvarado             | 20 Sept 2025       | Mensual      | $ 200.000   | Activa | Eliminar |
+| TIPO                         | ORIGEN | DESTINO                    | PRÓXIMA EJECICIÓN | PERIODICIDAD | MONTO     | ESTADO | ACCIONES |
+| ---------------------------- | ------ | -------------------------- | ----------------- | ------------ | --------- | ------ | -------- |
+| Pago de Obligación           | —      | Crédito de Libre Inversión | 30 Nov 2025       | Única vez    | $ 850.000 | 2/12   | Eliminar |
+| Transferencia a mi red       | —      | MARÍA FERENANDA GONZALEZ   | 15 Nov 2025       | Quincenal    | $ 200.000 | Activa | Eliminar |
+| Transferencia a otros bancos | —      | Valeria Alvarado           | 20 Sept 2025      | Mensual      | $ 200.000 | Activa | Eliminar |
 
 ### Actions (Bottom)
 
@@ -232,27 +239,27 @@ app/(authenticated)/transferencias/
 
 ### New Organisms
 
-| Component                          | Purpose                                                         |
-| ---------------------------------- | --------------------------------------------------------------- |
-| `ScheduleTransferSelectionCard`    | Two-option card grid for selection page                         |
-| `ScheduleTransferForm`            | Dynamic form for scheduling transfers (fields change by periodicity) |
-| `ScheduleSuccessModal`            | Success modal after scheduling                                  |
-| `ScheduledTransfersTable`         | Table displaying scheduled transfers history                    |
+| Component                       | Purpose                                                              |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `ScheduleTransferSelectionCard` | Two-option card grid for selection page                              |
+| `ScheduleTransferForm`          | Dynamic form for scheduling transfers (fields change by periodicity) |
+| `ScheduleSuccessModal`          | Success modal after scheduling                                       |
+| `ScheduledTransfersTable`       | Table displaying scheduled transfers history                         |
 
 ### Existing Components to Reuse
 
-| Component              | Usage                                           |
-| ---------------------- | ----------------------------------------------- |
-| `BackButton`           | Back arrow navigation                           |
-| `Breadcrumbs`          | Navigation trail                                |
-| `HideBalancesToggle`   | Top right balance visibility toggle             |
-| `Card`                 | Container cards                                 |
+| Component                | Usage                                                 |
+| ------------------------ | ----------------------------------------------------- |
+| `BackButton`             | Back arrow navigation                                 |
+| `Breadcrumbs`            | Navigation trail                                      |
+| `HideBalancesToggle`     | Top right balance visibility toggle                   |
+| `Card`                   | Container cards                                       |
 | `Select` / `SelectField` | Dropdowns for transaction type, periodicity, accounts |
-| `Input` / `FormField`  | Text inputs for amount, concept, number of payments |
-| `DateInput`            | Date picker for start date                      |
-| `Button`               | Primary/secondary action buttons                |
-| `FlowOptionCard`       | Option cards in selection page (or custom)       |
-| `SectionTitle`         | Section headings                                |
+| `Input` / `FormField`    | Text inputs for amount, concept, number of payments   |
+| `DateInput`              | Date picker for start date                            |
+| `Button`                 | Primary/secondary action buttons                      |
+| `FlowOptionCard`         | Option cards in selection page (or custom)            |
+| `SectionTitle`           | Section headings                                      |
 
 ---
 
@@ -314,16 +321,16 @@ interface PeriodicityOption {
 
 ### Form Validation (Programar Nuevo)
 
-| Field               | Rule                                                      |
-| ------------------- | --------------------------------------------------------- |
-| Tipo de Transacción | Required                                                  |
-| Fecha de Inicio     | Required, must be future date, format dd/mm/aaaa          |
-| Periodicidad        | Required                                                  |
-| Cuenta Origen       | Required (when periodicity is mensual/quincenal)          |
-| Cuenta Externa      | Required (when periodicity is mensual/quincenal)          |
-| Monto               | Required (when periodicity is mensual/quincenal), > 0     |
-| Número de Pagos     | Optional, if provided must be positive integer            |
-| Concepto            | Optional, max 100 characters                              |
+| Field               | Rule                                                  |
+| ------------------- | ----------------------------------------------------- |
+| Tipo de Transacción | Required                                              |
+| Fecha de Inicio     | Required, must be future date, format dd/mm/aaaa      |
+| Periodicidad        | Required                                              |
+| Cuenta Origen       | Required (when periodicity is mensual/quincenal)      |
+| Cuenta Externa      | Required (when periodicity is mensual/quincenal)      |
+| Monto               | Required (when periodicity is mensual/quincenal), > 0 |
+| Número de Pagos     | Optional, if provided must be positive integer        |
+| Concepto            | Optional, max 100 characters                          |
 
 ---
 
@@ -332,6 +339,7 @@ interface PeriodicityOption {
 Form state is managed locally with `react-hook-form`. No sessionStorage needed since there is no multi-page step flow — the form is a single page with a modal confirmation.
 
 ### Modal State
+
 - `showSuccessModal: boolean` — toggled on successful form submission
 
 ---
@@ -341,7 +349,10 @@ Form state is managed locally with `react-hook-form`. No sessionStorage needed s
 ```typescript
 // Transaction type options
 export const TRANSACTION_TYPE_OPTIONS: TransactionTypeOption[] = [
-  { value: "transferencia-otros-bancos", label: "Transferencia a otros bancos" },
+  {
+    value: "transferencia-otros-bancos",
+    label: "Transferencia a otros bancos",
+  },
   { value: "transferencia-mi-red", label: "Transferencia a mi red" },
   { value: "pago-obligacion", label: "Pago de Obligación" },
 ];
@@ -447,7 +458,9 @@ export const mockScheduledTransfers: ScheduledTransfer[] = [
 The key interaction on the form page is the **conditional field rendering** based on periodicity:
 
 ### Periodicity = "Única vez"
+
 Fields shown:
+
 1. Tipo de Transacción (select)
 2. Fecha de Inicio del Pago (date)
 3. Periodicidad (select — selected "Única vez")
@@ -455,7 +468,9 @@ Fields shown:
 5. Concepto o Descripción (input)
 
 ### Periodicity = "Mensual" or "Quincenal"
+
 Fields shown:
+
 1. Tipo de Transacción (select)
 2. Cuenta Origen (select — with balance)
 3. Cuenta Externa Inscrita (select)

@@ -57,7 +57,9 @@ export function ObligacionInfoCard({
           </p>
         </div>
         <div>
-          <p className="text-[14px] text-brand-gray-medium mb-1">Fecha Límite</p>
+          <p className="text-[14px] text-brand-gray-medium mb-1">
+            Fecha Límite
+          </p>
           <p className="text-[14px] text-brand-text-black">{fechaLimite}</p>
         </div>
         <div>
@@ -69,7 +71,9 @@ export function ObligacionInfoCard({
 
         {/* Row 2 */}
         <div>
-          <p className="text-[14px] text-brand-gray-medium mb-1">Días de Mora</p>
+          <p className="text-[14px] text-brand-gray-medium mb-1">
+            Días de Mora
+          </p>
           <p className="text-[14px] text-brand-text-black">{diasMora}</p>
         </div>
         <div>
@@ -82,13 +86,17 @@ export function ObligacionInfoCard({
           <p className="text-[14px] text-brand-gray-medium mb-1">
             No. Transacciones
           </p>
-          <p className="text-[14px] text-brand-text-black">{numTransacciones}</p>
+          <p className="text-[14px] text-brand-text-black">
+            {numTransacciones}
+          </p>
         </div>
         <div>
           <p className="text-[14px] text-brand-gray-medium mb-1">
             Último Movimiento
           </p>
-          <p className="text-[14px] text-brand-text-black">{ultimoMovimiento}</p>
+          <p className="text-[14px] text-brand-text-black">
+            {ultimoMovimiento}
+          </p>
         </div>
       </div>
     </Card>

@@ -34,13 +34,7 @@ export function ScheduleTransferSelectionCard({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle
-                cx="20"
-                cy="20"
-                r="19"
-                stroke="#005066"
-                strokeWidth="2"
-              />
+              <circle cx="20" cy="20" r="19" stroke="#005066" strokeWidth="2" />
               <path
                 d="M20 12V28M12 20H28"
                 stroke="#005066"

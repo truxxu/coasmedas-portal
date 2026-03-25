@@ -34,7 +34,9 @@ export default function ObligacionCodigoSmsPage() {
     successPath: "/pagos/pagar-mis-productos/obligaciones/resultado",
     onSubmit: async (otp) => {
       if (!documentType || !documentNumber) throw new Error("Sesion no valida");
-      const txRequestStr = sessionStorage.getItem("obligacionTransactionRequest");
+      const txRequestStr = sessionStorage.getItem(
+        "obligacionTransactionRequest",
+      );
       if (!txRequestStr) throw new Error("Datos de transaccion no encontrados");
       const txRequest = JSON.parse(txRequestStr);
       const result = await createPaymentTransaction({
@@ -45,16 +47,25 @@ export default function ObligacionCodigoSmsPage() {
       });
       // Map and store result
       const productStr = sessionStorage.getItem("obligacionPaymentProduct");
-      const product: ObligacionPaymentProduct | null = productStr ? JSON.parse(productStr) : null;
+      const product: ObligacionPaymentProduct | null = productStr
+        ? JSON.parse(productStr)
+        : null;
       const mappedResult = mapResultToObligacion(result, {
         lineaCredito: product?.name ?? "Obligacion",
         numeroProducto: product?.productNumber ?? "",
       });
-      sessionStorage.setItem("obligacionPaymentResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "obligacionPaymentResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;
-      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+      await sendTransactionOtp({
+        documentType,
+        documentNumber,
+        trnType: "PaymentInternal",
+      });
     },
   });
 

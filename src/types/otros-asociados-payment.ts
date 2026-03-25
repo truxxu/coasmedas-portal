@@ -7,9 +7,9 @@
  */
 export interface RegisteredBeneficiary {
   id: string;
-  fullName: string;        // "MARÍA FERNANDA GONZALEZ"
-  alias: string;           // "Mamá"
-  documentNumber: string;  // masked: "***3040"
+  fullName: string; // "MARÍA FERNANDA GONZALEZ"
+  alias: string; // "Mamá"
+  documentNumber: string; // masked: "***3040"
 }
 
 /**
@@ -17,28 +17,28 @@ export interface RegisteredBeneficiary {
  */
 export interface PayableProduct {
   id: string;
-  name: string;              // "Plan Senior", "Crédito de Libre Inversión"
-  productNumber: string;     // masked: "***5488"
-  minimumPayment: number | null;  // null = "N/A"
-  totalPayment: number | null;    // null = "Indefinido"
-  amountToPay: number;       // user input
+  name: string; // "Plan Senior", "Crédito de Libre Inversión"
+  productNumber: string; // masked: "***5488"
+  minimumPayment: number | null; // null = "N/A"
+  totalPayment: number | null; // null = "Indefinido"
+  amountToPay: number; // user input
   isSelected: boolean;
 }
 
 /**
  * Source type for payment funding
  */
-export type FundingSourceType = 'cuenta' | 'pse';
+export type FundingSourceType = "cuenta" | "pse";
 
 /**
  * Source account for payment
  */
 export interface OtrosAsociadosSourceAccount {
   id: string;
-  type: string;              // "Cuenta de Ahorros", "Aportes"
-  balance: number;           // 8730500
-  number: string;            // masked "****4428"
-  sourceType: FundingSourceType;  // 'aportes' = no SMS, 'cuenta' = SMS required
+  type: string; // "Cuenta de Ahorros", "Aportes"
+  balance: number; // 8730500
+  number: string; // masked "****4428"
+  sourceType: FundingSourceType; // 'aportes' = no SMS, 'cuenta' = SMS required
 }
 
 /**
@@ -57,8 +57,8 @@ export interface OtrosAsociadosDetailsData {
  */
 export interface OtrosAsociadosConfirmationData {
   titular: string;
-  documento: string;           // Masked
-  productoADebitar: string;    // "Cuenta de Ahorro"
+  documento: string; // Masked
+  productoADebitar: string; // "Cuenta de Ahorro"
   beneficiaryName: string;
   products: Array<{
     name: string;
@@ -79,7 +79,7 @@ export interface OtrosAsociadosTransactionResult {
   transmissionDate: string;
   transactionTime: string;
   approvalNumber: string;
-  description: 'Exitosa' | 'Fallida' | 'Pendiente';
+  description: "Exitosa" | "Fallida" | "Pendiente";
 }
 
 /**

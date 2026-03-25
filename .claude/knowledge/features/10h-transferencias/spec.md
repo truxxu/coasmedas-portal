@@ -12,26 +12,26 @@ Implement the "Programar Transferencias" feature under `/transferencias/programa
 
 ### New Files to Create (in order)
 
-| # | File | Type | Description |
-|---|------|------|-------------|
-| 1 | `src/types/scheduledTransfer.ts` | Types | All TypeScript interfaces for scheduled transfers |
-| 2 | `src/schemas/scheduledTransferSchema.ts` | Schema | Yup validation schema for the schedule form |
-| 3 | `src/mocks/mockScheduledTransferData.ts` | Mocks | Mock data, options, and constants |
-| 4 | `src/organisms/ScheduleTransferSelectionCard.tsx` | Organism | Two-option card grid for selection page |
-| 5 | `src/organisms/ScheduleTransferForm.tsx` | Organism | Dynamic form for scheduling transfers |
-| 6 | `src/organisms/ScheduleSuccessModal.tsx` | Organism | Success modal after scheduling |
-| 7 | `src/organisms/ScheduledTransfersTable.tsx` | Organism | Table displaying scheduled transfers history |
-| 8 | `app/(authenticated)/transferencias/programar/page.tsx` | Page | Selection page |
-| 9 | `app/(authenticated)/transferencias/programar/nuevo/page.tsx` | Page | New schedule form page |
-| 10 | `app/(authenticated)/transferencias/programar/historial/page.tsx` | Page | History table page |
+| #   | File                                                              | Type     | Description                                       |
+| --- | ----------------------------------------------------------------- | -------- | ------------------------------------------------- |
+| 1   | `src/types/scheduledTransfer.ts`                                  | Types    | All TypeScript interfaces for scheduled transfers |
+| 2   | `src/schemas/scheduledTransferSchema.ts`                          | Schema   | Yup validation schema for the schedule form       |
+| 3   | `src/mocks/mockScheduledTransferData.ts`                          | Mocks    | Mock data, options, and constants                 |
+| 4   | `src/organisms/ScheduleTransferSelectionCard.tsx`                 | Organism | Two-option card grid for selection page           |
+| 5   | `src/organisms/ScheduleTransferForm.tsx`                          | Organism | Dynamic form for scheduling transfers             |
+| 6   | `src/organisms/ScheduleSuccessModal.tsx`                          | Organism | Success modal after scheduling                    |
+| 7   | `src/organisms/ScheduledTransfersTable.tsx`                       | Organism | Table displaying scheduled transfers history      |
+| 8   | `app/(authenticated)/transferencias/programar/page.tsx`           | Page     | Selection page                                    |
+| 9   | `app/(authenticated)/transferencias/programar/nuevo/page.tsx`     | Page     | New schedule form page                            |
+| 10  | `app/(authenticated)/transferencias/programar/historial/page.tsx` | Page     | History table page                                |
 
 ### Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/organisms/index.ts` | Export 4 new organism components |
-| `src/mocks/index.ts` | Export new mock data |
-| `src/types/index.ts` (if exists) | Export new types |
+| File                             | Change                           |
+| -------------------------------- | -------------------------------- |
+| `src/organisms/index.ts`         | Export 4 new organism components |
+| `src/mocks/index.ts`             | Export new mock data             |
+| `src/types/index.ts` (if exists) | Export new types                 |
 
 ---
 
@@ -119,44 +119,34 @@ Use yup with conditional validation based on periodicity.
 import * as yup from "yup";
 
 export const scheduledTransferSchema = yup.object({
-  transactionType: yup
-    .string()
-    .required("Seleccione un tipo de transaccion"),
-  startDate: yup
-    .string()
-    .required("Ingrese la fecha de inicio del pago"),
+  transactionType: yup.string().required("Seleccione un tipo de transaccion"),
+  startDate: yup.string().required("Ingrese la fecha de inicio del pago"),
   periodicity: yup
     .string()
     .oneOf(["unica", "mensual", "quincenal"])
     .required("Seleccione la periodicidad"),
-  sourceAccountId: yup
-    .string()
-    .when("periodicity", {
-      is: (val: string) => val === "mensual" || val === "quincenal",
-      then: (schema) => schema.required("Seleccione una cuenta origen"),
-      otherwise: (schema) => schema.optional(),
-    }),
-  destinationAccountId: yup
-    .string()
-    .when("periodicity", {
-      is: (val: string) => val === "mensual" || val === "quincenal",
-      then: (schema) => schema.required("Seleccione una cuenta destino"),
-      otherwise: (schema) => schema.optional(),
-    }),
-  amount: yup
-    .string()
-    .when("periodicity", {
-      is: (val: string) => val === "mensual" || val === "quincenal",
-      then: (schema) =>
-        schema
-          .required("Ingrese el monto a transferir")
-          .test("positive", "El monto debe ser mayor a 0", (val) => {
-            if (!val) return false;
-            const num = Number(val.replace(/\./g, ""));
-            return num > 0;
-          }),
-      otherwise: (schema) => schema.optional(),
-    }),
+  sourceAccountId: yup.string().when("periodicity", {
+    is: (val: string) => val === "mensual" || val === "quincenal",
+    then: (schema) => schema.required("Seleccione una cuenta origen"),
+    otherwise: (schema) => schema.optional(),
+  }),
+  destinationAccountId: yup.string().when("periodicity", {
+    is: (val: string) => val === "mensual" || val === "quincenal",
+    then: (schema) => schema.required("Seleccione una cuenta destino"),
+    otherwise: (schema) => schema.optional(),
+  }),
+  amount: yup.string().when("periodicity", {
+    is: (val: string) => val === "mensual" || val === "quincenal",
+    then: (schema) =>
+      schema
+        .required("Ingrese el monto a transferir")
+        .test("positive", "El monto debe ser mayor a 0", (val) => {
+          if (!val) return false;
+          const num = Number(val.replace(/\./g, ""));
+          return num > 0;
+        }),
+    otherwise: (schema) => schema.optional(),
+  }),
   numberOfPayments: yup
     .string()
     .optional()
@@ -193,7 +183,10 @@ import type {
  * Transaction type options
  */
 export const TRANSACTION_TYPE_OPTIONS: TransactionTypeOption[] = [
-  { value: "transferencia-otros-bancos", label: "Transferencia a otros bancos" },
+  {
+    value: "transferencia-otros-bancos",
+    label: "Transferencia a otros bancos",
+  },
   { value: "transferencia-mi-red", label: "Transferencia a mi red" },
   { value: "pago-obligacion", label: "Pago de Obligacion" },
 ];
@@ -324,7 +317,12 @@ interface ScheduleTransferSelectionCardProps {
 const PlusCircleIcon = () => (
   <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
     <circle cx="20" cy="20" r="19" stroke="#005066" strokeWidth="2" />
-    <path d="M20 12V28M12 20H28" stroke="#005066" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M20 12V28M12 20H28"
+      stroke="#005066"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 ```
@@ -400,6 +398,7 @@ interface ScheduleTransferFormProps {
 ```
 
 **Key behavior:**
+
 - When periodicity changes from recurring to "unica", clear `sourceAccountId`, `destinationAccountId`, and `amount` fields using `reset` or `setValue`
 - The `DateInput` should use format `dd/mm/aaaa` with a calendar icon
 - Amount field uses standard `FormField` input (not the bottom-border `CurrencyInput` style)
@@ -407,6 +406,7 @@ interface ScheduleTransferFormProps {
 
 **Button styling override:**
 The "Programar" button has a custom disabled style. Apply via className or conditional styling:
+
 - Enabled: `bg-[#00B8ED] text-white rounded-md shadow-sm px-7 py-2 text-sm font-bold`
 - Disabled: `bg-[#8FE6FF] text-white rounded-md px-7 py-2 text-sm font-bold cursor-not-allowed`
 
@@ -437,6 +437,7 @@ Follow the `AccountSuccessModal.tsx` pattern with these specifics:
 - **Accessibility**: `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus trap, escape key closes
 
 **Focus management:**
+
 - On open: focus the "Aceptar" button
 - Trap focus within modal
 - On escape: call `onAccept`
@@ -471,13 +472,17 @@ interface ScheduledTransfersTableProps {
       Historial de Pagos Programados
     </h3>
     <div className="flex items-center gap-4">
-      <button onClick={onExportPDF}
-        className="flex items-center gap-1 text-[13.7px] font-medium text-black hover:underline">
+      <button
+        onClick={onExportPDF}
+        className="flex items-center gap-1 text-[13.7px] font-medium text-black hover:underline"
+      >
         {/* Download/document icon */}
         Exportar PDF
       </button>
-      <button onClick={onExportExcel}
-        className="flex items-center gap-1 text-[13.7px] font-medium text-black hover:underline">
+      <button
+        onClick={onExportExcel}
+        className="flex items-center gap-1 text-[13.7px] font-medium text-black hover:underline"
+      >
         {/* Spreadsheet icon */}
         Exportar Excel
       </button>
@@ -489,28 +494,56 @@ interface ScheduledTransfersTableProps {
     <table className="w-full">
       <thead>
         <tr className="border-b border-gray-200">
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">TIPO</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">ORIGEN</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">DESTINO</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">PROXIMA EJECUCION</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">PERIODICIDAD</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">MONTO</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">ESTADO</th>
-          <th className="text-left text-[15px] font-normal text-black py-3 px-2">ACCIONES</th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            TIPO
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            ORIGEN
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            DESTINO
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            PROXIMA EJECUCION
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            PERIODICIDAD
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            MONTO
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            ESTADO
+          </th>
+          <th className="text-left text-[15px] font-normal text-black py-3 px-2">
+            ACCIONES
+          </th>
         </tr>
       </thead>
       <tbody>
         {transfers.map((transfer) => (
           <tr key={transfer.id} className="border-b border-[#E4E6EA]">
-            <td className="text-[13.7px] text-black py-3 px-2">{transfer.type}</td>
-            <td className="text-[13.7px] text-black py-3 px-2">{transfer.origin || "—"}</td>
-            <td className="text-[13.7px] text-black py-3 px-2">{transfer.destination}</td>
-            <td className="text-[13.7px] text-black py-3 px-2">{transfer.nextExecutionDate}</td>
-            <td className="text-[13.7px] text-black py-3 px-2">{transfer.periodicity}</td>
+            <td className="text-[13.7px] text-black py-3 px-2">
+              {transfer.type}
+            </td>
+            <td className="text-[13.7px] text-black py-3 px-2">
+              {transfer.origin || "—"}
+            </td>
+            <td className="text-[13.7px] text-black py-3 px-2">
+              {transfer.destination}
+            </td>
+            <td className="text-[13.7px] text-black py-3 px-2">
+              {transfer.nextExecutionDate}
+            </td>
+            <td className="text-[13.7px] text-black py-3 px-2">
+              {transfer.periodicity}
+            </td>
             <td className="text-[13.7px] text-black py-3 px-2">
               {hideBalances ? maskCurrency() : formatCurrency(transfer.amount)}
             </td>
-            <td className="text-[13.7px] text-[#003500] py-3 px-2">{transfer.status}</td>
+            <td className="text-[13.7px] text-[#003500] py-3 px-2">
+              {transfer.status}
+            </td>
             <td className="py-3 px-2">
               <button
                 onClick={() => onDelete(transfer.id)}
@@ -528,8 +561,10 @@ interface ScheduledTransfersTableProps {
 
   {/* Back link */}
   <div className="pt-4">
-    <button onClick={onBack}
-      className="text-sm font-medium text-[#004266] hover:underline">
+    <button
+      onClick={onBack}
+      className="text-sm font-medium text-[#004266] hover:underline"
+    >
       Volver
     </button>
   </div>
@@ -537,18 +572,22 @@ interface ScheduledTransfersTableProps {
 ```
 
 **Table header styling:**
+
 - Background: transparent (inherits page background `#FFFEF2`)
 - Text: `15px`, normal weight, black
 - Bottom border separating header from body rows
 
 **Status column:**
+
 - Green text `#003500` for both progress indicators (e.g., "2/12") and "Activa" status
 
 **Export buttons:**
+
 - Presentational only — `onExportPDF` and `onExportExcel` callbacks are no-ops for now
 - Include small inline SVG icons (download icon for PDF, spreadsheet icon for Excel)
 
 **Empty state:**
+
 - When `transfers.length === 0`, show centered text: "No hay pagos programados"
 
 ---
@@ -692,6 +731,7 @@ export default function ProgramarNuevoPage() {
 ```
 
 **Key notes:**
+
 - Breadcrumbs use "Programacion" (not "Transferencias") per the design reference
 - No stepper is used — this is a single-page form, not a multi-step flow
 - The success modal appears after form submission
@@ -721,7 +761,9 @@ export default function HistorialProgramacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBarConfig, clearWelcomeBar } = useWelcomeBar();
-  const [transfers, setTransfers] = useState<ScheduledTransfer[]>(mockScheduledTransfers);
+  const [transfers, setTransfers] = useState<ScheduledTransfer[]>(
+    mockScheduledTransfers,
+  );
 
   useEffect(() => {
     setWelcomeBarConfig({
@@ -778,6 +820,7 @@ export default function HistorialProgramacionPage() {
 ```
 
 **Key notes:**
+
 - Breadcrumbs use "Programacion" (not "Transferencias") per the design reference
 - Delete action removes transfer from local state (mock behavior)
 - Export buttons are no-ops — just log to console
@@ -835,6 +878,7 @@ The key interaction on the form page is **conditional field rendering** based on
 ### Periodicity = "unica" (default)
 
 Fields shown in order:
+
 1. Tipo de Transaccion (select)
 2. Fecha de Inicio del Pago (date)
 3. Periodicidad (select — "Unica vez")
@@ -844,6 +888,7 @@ Fields shown in order:
 ### Periodicity = "mensual" or "quincenal"
 
 Fields shown in order:
+
 1. Tipo de Transaccion (select)
 2. Cuenta Origen (select — with balance display)
 3. Cuenta Externa Inscrita (select)
@@ -854,6 +899,7 @@ Fields shown in order:
 8. Concepto o Descripcion (input)
 
 **Transition behavior:**
+
 - When periodicity changes from "unica" to recurring, the additional fields (Cuenta Origen, Cuenta Externa, Monto) appear between the transaction type and date fields
 - When periodicity changes from recurring to "unica", clear the additional field values using `setValue("sourceAccountId", "")`, etc.
 - Use `watch("periodicity")` to derive `isRecurring` boolean
@@ -862,16 +908,16 @@ Fields shown in order:
 
 ## Validation Rules
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Tipo de Transaccion | Required | "Seleccione un tipo de transaccion" |
-| Fecha de Inicio | Required, format dd/mm/aaaa | "Ingrese la fecha de inicio del pago" |
-| Periodicidad | Required | "Seleccione la periodicidad" |
-| Cuenta Origen | Required when recurring | "Seleccione una cuenta origen" |
-| Cuenta Externa | Required when recurring | "Seleccione una cuenta destino" |
-| Monto | Required when recurring, > 0 | "Ingrese el monto a transferir" / "El monto debe ser mayor a 0" |
-| Numero de Pagos | Optional, positive integer if provided | "Debe ser un numero entero positivo" |
-| Concepto | Optional, max 100 chars | "El concepto no puede exceder 100 caracteres" |
+| Field               | Rule                                   | Error Message                                                   |
+| ------------------- | -------------------------------------- | --------------------------------------------------------------- |
+| Tipo de Transaccion | Required                               | "Seleccione un tipo de transaccion"                             |
+| Fecha de Inicio     | Required, format dd/mm/aaaa            | "Ingrese la fecha de inicio del pago"                           |
+| Periodicidad        | Required                               | "Seleccione la periodicidad"                                    |
+| Cuenta Origen       | Required when recurring                | "Seleccione una cuenta origen"                                  |
+| Cuenta Externa      | Required when recurring                | "Seleccione una cuenta destino"                                 |
+| Monto               | Required when recurring, > 0           | "Ingrese el monto a transferir" / "El monto debe ser mayor a 0" |
+| Numero de Pagos     | Optional, positive integer if provided | "Debe ser un numero entero positivo"                            |
+| Concepto            | Optional, max 100 chars                | "El concepto no puede exceder 100 caracteres"                   |
 
 ---
 

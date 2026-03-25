@@ -8,7 +8,7 @@
  * @see /services/_template.ts for implementation patterns
  */
 
-import { apiPost } from '@/lib/api/client';
+import { apiPost } from "@/lib/api/client";
 import type {
   PaymentProductsRequest,
   PaymentProduct,
@@ -17,11 +17,11 @@ import type {
   PaymentTransactionResult,
   CreatePayzenTransactionRequest,
   PayzenTransactionResult,
-} from '@/types/api/payments';
+} from "@/types/api/payments";
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
-} from '@/types/api/products';
+} from "@/types/api/products";
 
 // ─── Payment Products ───
 
@@ -32,8 +32,10 @@ import type {
  * @auth JWT
  * @status ✅ Used in mobile (payment selection)
  */
-export async function getPaymentProducts(params: PaymentProductsRequest): Promise<PaymentProduct[]> {
-  return apiPost<PaymentProduct[]>('/payment/products', params);
+export async function getPaymentProducts(
+  params: PaymentProductsRequest,
+): Promise<PaymentProduct[]> {
+  return apiPost<PaymentProduct[]>("/payment/products", params);
 }
 
 // ─── Payment Sources ───
@@ -46,8 +48,13 @@ export async function getPaymentProducts(params: PaymentProductsRequest): Promis
  * @auth JWT
  * @status ✅ Used in mobile (payment source selection)
  */
-export async function getPaymentSourcesSavings(params: PaymentSourcesRequest): Promise<SavingsAccountResponse[]> {
-  return apiPost<SavingsAccountResponse[]>('/payment/internal/sources/savings', params);
+export async function getPaymentSourcesSavings(
+  params: PaymentSourcesRequest,
+): Promise<SavingsAccountResponse[]> {
+  return apiPost<SavingsAccountResponse[]>(
+    "/payment/internal/sources/savings",
+    params,
+  );
 }
 
 /**
@@ -58,8 +65,13 @@ export async function getPaymentSourcesSavings(params: PaymentSourcesRequest): P
  * @auth JWT
  * @status ✅ Used in mobile (payment source selection)
  */
-export async function getPaymentSourcesCredits(params: PaymentSourcesRequest): Promise<CreditAccountResponse[]> {
-  return apiPost<CreditAccountResponse[]>('/payment/internal/sources/credits', params);
+export async function getPaymentSourcesCredits(
+  params: PaymentSourcesRequest,
+): Promise<CreditAccountResponse[]> {
+  return apiPost<CreditAccountResponse[]>(
+    "/payment/internal/sources/credits",
+    params,
+  );
 }
 
 // ─── Payment Transactions ───
@@ -72,8 +84,13 @@ export async function getPaymentSourcesCredits(params: PaymentSourcesRequest): P
  * @auth JWT + OTP
  * @status ✅ Used in mobile (payment confirmation)
  */
-export async function createPaymentTransaction(params: CreatePaymentTransactionRequest): Promise<PaymentTransactionResult> {
-  return apiPost<PaymentTransactionResult>('/payment/internal/createTransaction', params);
+export async function createPaymentTransaction(
+  params: CreatePaymentTransactionRequest,
+): Promise<PaymentTransactionResult> {
+  return apiPost<PaymentTransactionResult>(
+    "/payment/internal/createTransaction",
+    params,
+  );
 }
 
 /**
@@ -84,6 +101,11 @@ export async function createPaymentTransaction(params: CreatePaymentTransactionR
  * @auth JWT
  * @status ✅ Used in mobile (PSE payment)
  */
-export async function createPayzenTransaction(params: CreatePayzenTransactionRequest): Promise<PayzenTransactionResult> {
-  return apiPost<PayzenTransactionResult>('/payment/payzen/createTransaction', params);
+export async function createPayzenTransaction(
+  params: CreatePayzenTransactionRequest,
+): Promise<PayzenTransactionResult> {
+  return apiPost<PayzenTransactionResult>(
+    "/payment/payzen/createTransaction",
+    params,
+  );
 }
