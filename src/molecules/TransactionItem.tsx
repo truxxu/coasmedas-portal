@@ -12,10 +12,11 @@ interface TransactionItemProps {
 export function TransactionItem({ transaction, showDivider = true }: TransactionItemProps) {
   const { hideBalances } = useHideBalances();
   const isPositive = transaction.amount > 0;
+  const isZero = transaction.amount === 0;
 
   const displayAmount = hideBalances
     ? maskCurrency()
-    : `${isPositive ? '+' : '-'} ${formatCurrency(Math.abs(transaction.amount))}`;
+    : `${isPositive ? '+ ' : isZero ? '' : '- '}${formatCurrency(Math.abs(transaction.amount))}`;
 
   return (
     <div>
@@ -24,7 +25,7 @@ export function TransactionItem({ transaction, showDivider = true }: Transaction
           <p className="font-bold text-brand-text-black">{transaction.description}</p>
           <p className="text-sm text-brand-gray-secondary">{transaction.date}</p>
         </div>
-        <p className={`font-medium ${isPositive ? 'text-brand-positive' : 'text-red-600'}`}>
+        <p className={`font-medium ${isZero ? 'text-brand-text-black' : isPositive ? 'text-brand-positive' : 'text-red-600'}`}>
           {displayAmount}
         </p>
       </div>
