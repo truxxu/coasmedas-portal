@@ -27,7 +27,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(
       autoFocus = false,
       ariaLabel = "Dígito del código",
     },
-    ref
+    ref,
   ) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
@@ -63,7 +63,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(
         `}
       />
     );
-  }
+  },
 );
 
 CodeInput.displayName = "CodeInput";

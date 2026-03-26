@@ -5,6 +5,7 @@
 All HTTP communication with the Coasmedas backend uses **Axios** with a centralized configuration.
 
 ### Key Constraints
+
 - **All endpoints use POST** (even data retrieval)
 - **Response envelope**: `{ statusCode, statusDesc, payload }`
 - **Auth**: JWT Bearer token (RS256), no refresh mechanism
@@ -12,10 +13,10 @@ All HTTP communication with the Coasmedas backend uses **Axios** with a centrali
 
 ### Clients
 
-| Client | File | Use Case |
-|--------|------|----------|
-| Client-side | `/lib/api/client.ts` | Browser requests (React components, hooks) |
-| Server-side | `/lib/api/server-client.ts` | Server Components, Server Actions |
+| Client      | File                        | Use Case                                   |
+| ----------- | --------------------------- | ------------------------------------------ |
+| Client-side | `/lib/api/client.ts`        | Browser requests (React components, hooks) |
+| Server-side | `/lib/api/server-client.ts` | Server Components, Server Actions          |
 
 ### Auth Token Flow
 
@@ -42,14 +43,14 @@ export interface SavingsProduct {
 }
 
 // 2. services/products.service.ts
-import { apiPost } from '@/lib/api/client';
-import type { SavingsProduct } from '@/types/api/products';
-import type { UserIdentification } from '@/types/api/common';
+import { apiPost } from "@/lib/api/client";
+import type { SavingsProduct } from "@/types/api/products";
+import type { UserIdentification } from "@/types/api/common";
 
 export async function getSavingsProducts(
   params: UserIdentification,
 ): Promise<SavingsProduct[]> {
-  return apiPost<SavingsProduct[]>('/products/savings', params);
+  return apiPost<SavingsProduct[]>("/products/savings", params);
 }
 ```
 
@@ -57,12 +58,12 @@ export async function getSavingsProducts(
 
 All service functions may throw:
 
-| Error Class | Status Code | Description |
-|-------------|-------------|-------------|
-| `AuthError` | 107 | Session expired, redirect to login |
-| `ValidationError` | 2 | Invalid request data |
-| `ApiError` | Various | Other backend errors |
-| `NetworkError` | N/A | Connection failures |
+| Error Class       | Status Code | Description                        |
+| ----------------- | ----------- | ---------------------------------- |
+| `AuthError`       | 107         | Session expired, redirect to login |
+| `ValidationError` | 2           | Invalid request data               |
+| `ApiError`        | Various     | Other backend errors               |
+| `NetworkError`    | N/A         | Connection failures                |
 
 Error classes are defined in `/lib/api/errors.ts`.
 

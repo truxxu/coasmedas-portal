@@ -1,4 +1,4 @@
-import { useUIContext } from '@/src/contexts';
+import { useUIContext } from "@/src/contexts";
 
 export function useHideBalances() {
   const { hideBalances, toggleHideBalances } = useUIContext();
@@ -11,6 +11,7 @@ export function useSidebar() {
 }
 
 export function useMobileSidebar() {
-  const { mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar } = useUIContext();
+  const { mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar } =
+    useUIContext();
   return { mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar };
 }

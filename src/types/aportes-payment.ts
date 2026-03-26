@@ -5,7 +5,7 @@
 /**
  * Payment method type
  */
-export type AportesPaymentMethod = 'account' | 'pse';
+export type AportesPaymentMethod = "account" | "pse";
 
 /**
  * Aportes payment breakdown details
@@ -46,7 +46,7 @@ export interface AportesConfirmationData {
  * Step 4: Aportes transaction result
  */
 export interface AportesTransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
@@ -76,4 +76,4 @@ export interface AportesPaymentFlowState {
 /**
  * Value color options for detail rows
  */
-export type AportesValueColor = 'default' | 'red' | 'navy' | 'green';
+export type AportesValueColor = "default" | "red" | "navy" | "green";

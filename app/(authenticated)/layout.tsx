@@ -1,5 +1,11 @@
-import { UIProvider, WelcomeBarProvider } from '@/src/contexts';
-import { Sidebar, TopBar, WelcomeBar, SessionFooter, AuthHydrator } from '@/src/organisms';
+import { UIProvider, WelcomeBarProvider } from "@/src/contexts";
+import {
+  Sidebar,
+  TopBar,
+  WelcomeBar,
+  SessionFooter,
+  AuthHydrator,
+} from "@/src/organisms";
 
 export default function AuthenticatedLayout({
   children,

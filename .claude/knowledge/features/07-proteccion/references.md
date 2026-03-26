@@ -140,7 +140,7 @@ A **new molecule** component for protection/insurance product cards. This card d
 | Status Values  | activo/bloqueado   | al_dia/en_mora        | activo/vencido       | activo/inactivo/cancelado |
 | Detail Fields  | None               | 3 fields              | 4 fields             | 3 fields                  |
 | Product Prefix | None               | Optional (CR-)        | DTA-                 | No (uses "No" prefix)     |
-| Number Format  | \*\*\*1234         | **_1234 or CR-_**1234 | DTA-\*\*\*123        | No**\*\***65-9            |
+| Number Format  | \*\*\*1234         | ***1234 or CR-***1234 | DTA-\*\*\*123        | No**\*\***65-9            |
 | Detail Field 1 | -                  | Valor desembolsado    | Tasa E.A.            | Pago Mínimo               |
 | Detail Field 2 | -                  | Próximo pago          | Plazo                | Fecha Límite de Pago      |
 | Detail Field 3 | -                  | Valor próximo pago    | F. Creación          | Pago Total Anual          |
@@ -328,7 +328,7 @@ import { maskProteccionNumber } from "@/src/utils";
 export default function ProteccionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [selectedProduct, setSelectedProduct] = useState<ProteccionProduct>(
-    mockProteccionProducts[0]
+    mockProteccionProducts[0],
   );
   // ... rest of the implementation
 }

@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 
 interface ConfirmationRowProps {
   label: string;
   value: string;
-  valueColor?: 'default' | 'success' | 'error';
+  valueColor?: "default" | "success" | "error";
   className?: string;
 }
 
 export const ConfirmationRow: React.FC<ConfirmationRowProps> = ({
   label,
   value,
-  valueColor = 'default',
-  className = '',
+  valueColor = "default",
+  className = "",
 }) => {
   const colorClasses = {
-    default: 'text-black',
-    success: 'text-brand-success-icon',
-    error: 'text-brand-error',
+    default: "text-black",
+    success: "text-brand-success-icon",
+    error: "text-brand-error",
   };
 
   return (

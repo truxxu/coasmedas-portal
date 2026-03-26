@@ -42,7 +42,9 @@ export function CupoRotativoConfirmationCard({
 
         {/* Account Info */}
         <div className="flex justify-between items-center py-1 mt-4">
-          <span className="text-[15px] text-brand-text-black">Cupo Origen:</span>
+          <span className="text-[15px] text-brand-text-black">
+            Cupo Origen:
+          </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {confirmationData.cupoOrigen}
           </span>
@@ -53,6 +55,15 @@ export function CupoRotativoConfirmationCard({
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {confirmationData.cuentaDestino}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center py-1">
+          <span className="text-[15px] text-brand-text-black">
+            Costo Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
+            {formatCurrency(confirmationData.transactionCost ?? 0)}
           </span>
         </div>
 

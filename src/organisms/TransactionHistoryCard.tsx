@@ -28,7 +28,9 @@ export function TransactionHistoryCard({
   className = "",
   infoBox,
 }: TransactionHistoryCardProps) {
-  const [startDate, setStartDate] = useState(() => getDateMonthsAgo(maxRangeMonths));
+  const [startDate, setStartDate] = useState(() =>
+    getDateMonthsAgo(maxRangeMonths),
+  );
   const [endDate, setEndDate] = useState(() => getTodayDate());
 
   const handleApply = () => {
@@ -60,7 +62,9 @@ export function TransactionHistoryCard({
       {/* Transactions list or empty state */}
       {loading ? (
         <div className="py-8 text-center">
-          <p className="text-[16px] text-brand-gray-label">Cargando movimientos...</p>
+          <p className="text-[16px] text-brand-gray-label">
+            Cargando movimientos...
+          </p>
         </div>
       ) : transactions.length === 0 ? (
         <div className="py-8 text-center">

@@ -2,7 +2,9 @@ interface CaptchaPlaceholderProps {
   className?: string;
 }
 
-export function CaptchaPlaceholder({ className = '' }: CaptchaPlaceholderProps) {
+export function CaptchaPlaceholder({
+  className = "",
+}: CaptchaPlaceholderProps) {
   return (
     <div
       className={`bg-brand-border rounded-[6px] px-6 py-8 text-center ${className}`}

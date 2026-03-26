@@ -377,7 +377,7 @@ interface ExternalTransferConfirmationCardProps {
 **Layout:**
 
 1. **Card Header**
-   - Title: "Confirmacion de Transferencia" (18px, Bold, navy `#005066`)
+   - Title: "Confirmación de Transferencia" (18px, Bold, navy `#005066`)
    - Description: "Por favor, verifica que los datos de la transaccion sean correctos antes de continuar." (14px, Regular, `#58585B`)
 
 2. **Holder Section** (rows with label/value)
@@ -541,9 +541,9 @@ const breadcrumbItems = [
 ```typescript
 const EXTERNAL_TRANSFER_STEPS: StepperStep[] = [
   { id: 1, label: "Detalle" },
-  { id: 2, label: "Confirmacion" },
+  { id: 2, label: "Confirmación" },
   { id: 3, label: "SMS" },
-  { id: 4, label: "Finalizacion" },
+  { id: 4, label: "Finalización" },
 ];
 ```
 

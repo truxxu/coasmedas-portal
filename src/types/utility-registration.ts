@@ -4,9 +4,9 @@
  */
 
 /**
- * City dropdown option
+ * Category dropdown option
  */
-export interface CityOption {
+export interface CategoryOption {
   id: string;
   name: string;
 }
@@ -18,15 +18,15 @@ export interface ConvenioOption {
   id: string;
   name: string;
   category: string;
-  cityId: string;
+  categoryId: string;
 }
 
 /**
  * Form data for utility registration
  */
 export interface UtilityRegistrationForm {
-  cityId: string;
-  cityName: string;
+  categoryId: string;
+  categoryName: string;
   convenioId: string;
   convenioName: string;
   billNumber: string;
@@ -37,7 +37,7 @@ export interface UtilityRegistrationForm {
  * Data structure for confirmation display
  */
 export interface UtilityConfirmationData {
-  city: string;
+  category: string;
   convenio: string;
   billNumber: string;
   alias: string;
@@ -57,7 +57,7 @@ export interface UtilityRegistrationResult {
   registrationId?: string;
   alias: string;
   convenio: string;
-  city: string;
+  category: string;
   billNumber: string;
   errorMessage?: string;
 }
@@ -71,7 +71,7 @@ export type UtilityFlowType = "inscribir" | "pagar";
  * Form validation errors
  */
 export interface UtilityRegistrationErrors {
-  cityId?: string;
+  categoryId?: string;
   convenioId?: string;
   billNumber?: string;
   alias?: string;

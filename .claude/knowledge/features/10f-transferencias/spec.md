@@ -195,17 +195,18 @@ export const mockNetworkTransferUserData = {
 /**
  * Mock confirmation data
  */
-export const mockNetworkTransferConfirmation: NetworkTransferConfirmationData = {
-  holderName: "CAMILO ANDRES CRUZ",
-  holderDocument: "CC 1.***.***. 231",
-  sourceProduct: "Cuenta de Ahorros",
-  destinationHolder: "PEDRO PEREZ",
-  destinationBank: "Coopcentral",
-  destinationAccountType: "Ahorros",
-  destinationAccountNumber: "123.-456789-01",
-  amount: 200000,
-  concept: "Clases mensuales",
-};
+export const mockNetworkTransferConfirmation: NetworkTransferConfirmationData =
+  {
+    holderName: "CAMILO ANDRES CRUZ",
+    holderDocument: "CC 1.***.***. 231",
+    sourceProduct: "Cuenta de Ahorros",
+    destinationHolder: "PEDRO PEREZ",
+    destinationBank: "Coopcentral",
+    destinationAccountType: "Ahorros",
+    destinationAccountNumber: "123.-456789-01",
+    amount: 200000,
+    concept: "Clases mensuales",
+  };
 ```
 
 ### Updated Stepper Configuration
@@ -259,12 +260,11 @@ interface NetworkTransferFormProps {
 Add after the Transfer Amount section:
 
 ```tsx
-{/* Concept Input - Optional */}
+{
+  /* Concept Input - Optional */
+}
 <div>
-  <label
-    htmlFor="concept"
-    className="block text-sm text-brand-text-black mb-2"
-  >
+  <label htmlFor="concept" className="block text-sm text-brand-text-black mb-2">
     Concepto (Opcional)
   </label>
   <input
@@ -282,7 +282,7 @@ Add after the Transfer Amount section:
       focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none
     "
   />
-</div>
+</div>;
 ```
 
 ### 5.2 New Organism: NetworkTransferConfirmationCard
@@ -596,7 +596,9 @@ export default function ConfirmacionPage() {
   useEffect(() => {
     // Get data from session storage
     const recipientData = sessionStorage.getItem("networkTransferRecipient");
-    const destinationData = sessionStorage.getItem("networkTransferDestination");
+    const destinationData = sessionStorage.getItem(
+      "networkTransferDestination",
+    );
     const sourceId = sessionStorage.getItem("networkTransferSourceId");
     const amount = sessionStorage.getItem("networkTransferAmount");
     const concept = sessionStorage.getItem("networkTransferConcept") || "";
@@ -619,9 +621,10 @@ export default function ConfirmacionPage() {
       destinationBank: "Coopcentral",
       destinationAccountType:
         destination.type === "ahorros" ? "Ahorros" : "Corriente",
-      destinationAccountNumber: destination.maskedNumber.replace(/\*/g, "").length > 0
-        ? `123-456789-${destination.maskedNumber.slice(-2)}`
-        : destination.maskedNumber,
+      destinationAccountNumber:
+        destination.maskedNumber.replace(/\*/g, "").length > 0
+          ? `123-456789-${destination.maskedNumber.slice(-2)}`
+          : destination.maskedNumber,
       amount: Number(amount),
       concept: concept || undefined,
     };
@@ -649,9 +652,7 @@ export default function ConfirmacionPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Red Coopcentral"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
       </div>
 
       {/* Stepper */}
@@ -724,20 +725,20 @@ const transferResult: NetworkTransferResult = {
 
 ### Step 1: Details Form
 
-| Field           | Rule             | Error Message                               |
-| --------------- | ---------------- | ------------------------------------------- |
-| Source Account  | Required         | "Por favor selecciona una cuenta origen"    |
-| Amount          | Required         | "Por favor ingresa un valor a transferir"   |
-| Amount          | > 0              | "El valor debe ser mayor a cero"            |
-| Amount          | ≤ source balance | "Saldo insuficiente en la cuenta seleccionada" |
-| Concept         | Optional         | N/A                                         |
-| Concept         | Max 100 chars    | "El concepto no puede exceder 100 caracteres" |
+| Field          | Rule             | Error Message                                  |
+| -------------- | ---------------- | ---------------------------------------------- |
+| Source Account | Required         | "Por favor selecciona una cuenta origen"       |
+| Amount         | Required         | "Por favor ingresa un valor a transferir"      |
+| Amount         | > 0              | "El valor debe ser mayor a cero"               |
+| Amount         | ≤ source balance | "Saldo insuficiente en la cuenta seleccionada" |
+| Concept        | Optional         | N/A                                            |
+| Concept        | Max 100 chars    | "El concepto no puede exceder 100 caracteres"  |
 
 ### Step 3: SMS Verification
 
-| Field | Rule               | Error Message                              |
-| ----- | ------------------ | ------------------------------------------ |
-| Code  | Required, 6 digits | "Por favor ingresa el código de 6 dígitos" |
+| Field | Rule               | Error Message                                      |
+| ----- | ------------------ | -------------------------------------------------- |
+| Code  | Required, 6 digits | "Por favor ingresa el código de 6 dígitos"         |
 | Code  | Valid code         | "Código incorrecto. Por favor intenta nuevamente." |
 
 ---
@@ -748,13 +749,13 @@ const transferResult: NetworkTransferResult = {
 
 All prefixed with `networkTransfer` to avoid conflicts:
 
-| Key                           | Type   | Description                                  |
-| ----------------------------- | ------ | -------------------------------------------- |
-| `networkTransferRecipient`    | JSON   | Selected recipient account object            |
-| `networkTransferDestination`  | JSON   | Selected destination product object          |
-| `networkTransferSourceId`     | string | Selected source account ID                   |
-| `networkTransferAmount`       | string | Transfer amount (as string for preservation) |
-| `networkTransferConcept`      | string | Transfer concept/description (NEW)           |
+| Key                          | Type   | Description                                  |
+| ---------------------------- | ------ | -------------------------------------------- |
+| `networkTransferRecipient`   | JSON   | Selected recipient account object            |
+| `networkTransferDestination` | JSON   | Selected destination product object          |
+| `networkTransferSourceId`    | string | Selected source account ID                   |
+| `networkTransferAmount`      | string | Transfer amount (as string for preservation) |
+| `networkTransferConcept`     | string | Transfer concept/description (NEW)           |
 
 ### Flow Navigation
 
@@ -820,18 +821,18 @@ export {
 
 The following existing components should be reused:
 
-| Component            | Location        | Usage                         |
-| -------------------- | --------------- | ----------------------------- |
-| `BackButton`         | atoms           | Back navigation arrow         |
-| `Breadcrumbs`        | molecules       | Page navigation trail         |
-| `HideBalancesToggle` | molecules       | Balance visibility toggle     |
-| `Stepper`            | molecules       | 4-step progress indicator     |
-| `CodeInputCard`      | organisms       | SMS verification (Step 3)     |
-| `Card`               | atoms           | Container cards               |
-| `Button`             | atoms           | Primary and secondary buttons |
-| `Divider`            | atoms           | Horizontal separators         |
-| `DestinationProductCard` | molecules   | Destination product display   |
-| `TransferAmountInput` | molecules      | Amount input with formatting  |
+| Component                | Location  | Usage                         |
+| ------------------------ | --------- | ----------------------------- |
+| `BackButton`             | atoms     | Back navigation arrow         |
+| `Breadcrumbs`            | molecules | Page navigation trail         |
+| `HideBalancesToggle`     | molecules | Balance visibility toggle     |
+| `Stepper`                | molecules | 4-step progress indicator     |
+| `CodeInputCard`          | organisms | SMS verification (Step 3)     |
+| `Card`                   | atoms     | Container cards               |
+| `Button`                 | atoms     | Primary and secondary buttons |
+| `Divider`                | atoms     | Horizontal separators         |
+| `DestinationProductCard` | molecules | Destination product display   |
+| `TransferAmountInput`    | molecules | Amount input with formatting  |
 
 ---
 
@@ -915,12 +916,12 @@ The following existing components should be reused:
 
 ## 14. Design References
 
-| Step | Figma Node  | Description                                    |
-| ---- | ----------- | ---------------------------------------------- |
-| 1    | `842-11`    | Details form with source/destination selection |
-| 2    | `842-594`   | Confirmation card with transfer summary        |
-| 3    | (existing)  | SMS verification (reuse existing)              |
-| 4    | `842-1052`  | Success/error result card                      |
+| Step | Figma Node | Description                                    |
+| ---- | ---------- | ---------------------------------------------- |
+| 1    | `842-11`   | Details form with source/destination selection |
+| 2    | `842-594`  | Confirmation card with transfer summary        |
+| 3    | (existing) | SMS verification (reuse existing)              |
+| 4    | `842-1052` | Success/error result card                      |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`
 

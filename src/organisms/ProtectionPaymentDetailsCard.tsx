@@ -1,21 +1,24 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card } from '@/src/atoms';
-import { ProtectionPaymentCard } from '@/src/molecules';
+import React from "react";
+import { Card } from "@/src/atoms";
+import { ProtectionPaymentCard } from "@/src/molecules";
 import type {
   ProtectionPaymentSourceAccount,
   ProtectionPaymentProduct,
   ProtectionPaymentMethod,
-} from '@/src/types/protection-payment';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+} from "@/src/types/protection-payment";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface ProtectionPaymentDetailsCardProps {
   sourceAccounts: ProtectionPaymentSourceAccount[];
   products: ProtectionPaymentProduct[];
   selectedAccountId: string;
   selectedProduct: ProtectionPaymentProduct | null;
-  onAccountChange: (accountId: string, paymentMethod: ProtectionPaymentMethod) => void;
+  onAccountChange: (
+    accountId: string,
+    paymentMethod: ProtectionPaymentMethod,
+  ) => void;
   onProductSelect: (product: ProtectionPaymentProduct) => void;
   errors?: {
     sourceAccount?: string;
@@ -24,7 +27,9 @@ interface ProtectionPaymentDetailsCardProps {
   hideBalances?: boolean;
 }
 
-export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCardProps> = ({
+export const ProtectionPaymentDetailsCard: React.FC<
+  ProtectionPaymentDetailsCardProps
+> = ({
   sourceAccounts,
   products,
   selectedAccountId,
@@ -34,9 +39,14 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
   errors = {},
   hideBalances = false,
 }) => {
-  const getAccountDisplayName = (account: ProtectionPaymentSourceAccount): string => {
-    const accountType = account.type === 'ahorros' ? 'Cuenta de Ahorros' : 'Cuenta Corriente';
-    const balance = hideBalances ? maskCurrency() : formatCurrency(account.balance);
+  const getAccountDisplayName = (
+    account: ProtectionPaymentSourceAccount,
+  ): string => {
+    const accountType =
+      account.type === "ahorros" ? "Cuenta de Ahorros" : "Cuenta Corriente";
+    const balance = hideBalances
+      ? maskCurrency()
+      : formatCurrency(account.balance);
     return `${accountType} - Saldo: ${balance}`;
   };
 
@@ -44,7 +54,7 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
     <Card className="p-4 sm:p-6 space-y-5 sm:space-y-6">
       {/* Card Title */}
       <h2 className="text-lg font-bold text-brand-navy-dark">
-        Pago de Proteccion
+        Pago de Protección y Actividades
       </h2>
 
       {/* Source Account Section */}
@@ -57,13 +67,13 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
             value={selectedAccountId}
             onChange={(e) => {
               const value = e.target.value;
-              const isPSE = value === 'pse';
-              onAccountChange(value, isPSE ? 'pse' : 'account');
+              const isPSE = value === "pse";
+              onAccountChange(value, isPSE ? "pse" : "account");
             }}
             className={`
               w-full sm:flex-1 h-11 px-3 rounded-md border text-base text-black bg-white
               focus:outline-none focus:ring-2 focus:ring-brand-primary
-              ${errors.sourceAccount ? 'border-brand-error' : 'border-brand-footer-text'}
+              ${errors.sourceAccount ? "border-brand-error" : "border-brand-footer-text"}
             `}
           >
             <option value="">Seleccionar cuenta</option>
@@ -111,7 +121,9 @@ export const ProtectionPaymentDetailsCard: React.FC<ProtectionPaymentDetailsCard
         </p>
 
         {errors.product && (
-          <p className="text-sm text-brand-error text-center">{errors.product}</p>
+          <p className="text-sm text-brand-error text-center">
+            {errors.product}
+          </p>
         )}
       </div>
     </Card>

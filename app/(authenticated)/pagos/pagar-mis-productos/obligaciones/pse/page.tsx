@@ -29,9 +29,13 @@ export default function PSEPage() {
         throw new Error("Sesion no valida");
       }
       const valor = sessionStorage.getItem("obligacionPaymentValor");
-      const targetProductStr = sessionStorage.getItem("obligacionTargetProductApi");
-      const tipoProducto = sessionStorage.getItem("obligacionTargetTipoProducto") || '';
-      if (!valor || !targetProductStr) throw new Error("Datos de pago no encontrados");
+      const targetProductStr = sessionStorage.getItem(
+        "obligacionTargetProductApi",
+      );
+      const tipoProducto =
+        sessionStorage.getItem("obligacionTargetTipoProducto") || "";
+      if (!valor || !targetProductStr)
+        throw new Error("Datos de pago no encontrados");
 
       const targetProduct: CreditAccountResponse = JSON.parse(targetProductStr);
       const vlrPagoTotal = parseInt(valor, 10);

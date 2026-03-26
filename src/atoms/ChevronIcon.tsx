@@ -1,14 +1,17 @@
 interface ChevronIconProps {
-  direction?: 'up' | 'down' | 'left' | 'right';
+  direction?: "up" | "down" | "left" | "right";
   className?: string;
 }
 
-export function ChevronIcon({ direction = 'down', className = '' }: ChevronIconProps) {
+export function ChevronIcon({
+  direction = "down",
+  className = "",
+}: ChevronIconProps) {
   const rotations = {
-    up: 'rotate-180',
-    down: 'rotate-0',
-    left: 'rotate-90',
-    right: '-rotate-90',
+    up: "rotate-180",
+    down: "rotate-0",
+    left: "rotate-90",
+    right: "-rotate-90",
   };
 
   return (
@@ -18,7 +21,12 @@ export function ChevronIcon({ direction = 'down', className = '' }: ChevronIconP
       viewBox="0 0 24 24"
       stroke="currentColor"
     >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
     </svg>
   );
 }

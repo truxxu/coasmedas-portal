@@ -1,4 +1,4 @@
-import { useUserContext } from '@/src/contexts';
+import { useUserContext } from "@/src/contexts";
 
 export function useUser() {
   const { user } = useUserContext();

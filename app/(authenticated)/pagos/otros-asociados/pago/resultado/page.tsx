@@ -12,20 +12,27 @@ import {
   OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
   mockOtrosAsociadosTransactionResult,
 } from "@/src/mocks";
-import { OtrosAsociadosTransactionResult, PayableProduct, FundingSourceType } from "@/src/types";
+import {
+  OtrosAsociadosTransactionResult,
+  PayableProduct,
+  FundingSourceType,
+} from "@/src/types";
 
 export default function OtrosAsociadosResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [sourceType] = useState<FundingSourceType>(() => {
-    if (typeof window === 'undefined') return "cuenta";
-    const stored = sessionStorage.getItem("otrosAsociadosSourceType") as FundingSourceType | null;
+    if (typeof window === "undefined") return "cuenta";
+    const stored = sessionStorage.getItem(
+      "otrosAsociadosSourceType",
+    ) as FundingSourceType | null;
     return stored || "cuenta";
   });
 
   const [result] = useState<OtrosAsociadosTransactionResult>(() => {
-    if (typeof window === 'undefined') return mockOtrosAsociadosTransactionResult;
+    if (typeof window === "undefined")
+      return mockOtrosAsociadosTransactionResult;
     const totalAmount = sessionStorage.getItem("otrosAsociadosTotalAmount");
     const productsStr = sessionStorage.getItem("otrosAsociadosProducts");
 
@@ -45,9 +52,10 @@ export default function OtrosAsociadosResultadoPage() {
   });
 
   // Determine which stepper to use based on funding source
-  const paymentSteps = sourceType === "pse"
-    ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
-    : OTROS_ASOCIADOS_PAYMENT_STEPS;
+  const paymentSteps =
+    sourceType === "pse"
+      ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
+      : OTROS_ASOCIADOS_PAYMENT_STEPS;
 
   // Current step is final step: 4 for both flows
   const currentStep = 4;

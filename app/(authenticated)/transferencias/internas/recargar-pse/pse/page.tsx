@@ -35,7 +35,7 @@ export default function PSEPage() {
     }
 
     const destination = mockPSERechargeAccounts.find(
-      (acc) => acc.id === destinationId
+      (acc) => acc.id === destinationId,
     );
 
     if (!destination) {
@@ -55,7 +55,7 @@ export default function PSEPage() {
       // Store result for the next page
       sessionStorage.setItem(
         "pseRechargeTransactionResult",
-        JSON.stringify(result)
+        JSON.stringify(result),
       );
 
       // Navigate to result page
@@ -69,9 +69,7 @@ export default function PSEPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Recargar con PSE"]}
-        />
+        <Breadcrumbs items={["Inicio", "Transferencias", "Recargar con PSE"]} />
       </div>
 
       {/* Stepper */}

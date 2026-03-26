@@ -6,10 +6,10 @@
  * Payment option identifier
  */
 export type PaymentOptionId =
-  | 'pago-unificado'
-  | 'aportes'
-  | 'obligaciones'
-  | 'proteccion';
+  | "pago-unificado"
+  | "aportes"
+  | "obligaciones"
+  | "proteccion";
 
 /**
  * Payment option configuration
@@ -18,7 +18,7 @@ export interface PaymentOption {
   id: PaymentOptionId;
   title: string;
   description: string;
-  variant: 'featured' | 'standard';
+  variant: "featured" | "standard";
   route?: string; // Optional: Route to payment flow (TBD)
 }
 
@@ -78,7 +78,7 @@ export interface CodeVerificationFormData {
  * Step 4: Transaction result
  */
 export interface TransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   transactionCost: number;
   transactionDate: string;
   transactionTime: string;

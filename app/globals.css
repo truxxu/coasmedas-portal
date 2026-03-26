@@ -5,7 +5,7 @@
   --foreground: #171717;
 
   /* Coasmedas brand colors */
-  --brand-primary: #00B8ED;
+  --brand-primary: #00b8ed;
   --brand-navy: #005066;
   --brand-navy-dark: #194e8d;
   --brand-navy-alt: #004680;
@@ -90,7 +90,11 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-cabin), -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    var(--font-cabin),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
 }
 

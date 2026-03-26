@@ -11,7 +11,7 @@ export interface ApiResponse<T = unknown> {
 /**
  * Document type identifiers accepted by the backend.
  */
-export type DocumentType = 'CC' | 'CE' | 'NIT' | 'TI' | 'PA';
+export type DocumentType = "CC" | "CE" | "NIT" | "TI" | "PA";
 
 /**
  * Common user identification fields used in most request payloads.
@@ -49,17 +49,17 @@ export interface DeviceInfo {
  * @see /docs/CONSOLIDATED_API_REFERENCE.md - POST /send-otp/transaction
  */
 export type TransactionOtpType =
-  | 'PaymentInternal'
-  | 'TransferInternal'
-  | 'TransferExternalBanks'
-  | 'TransferExternalEntities';
+  | "PaymentInternal"
+  | "TransferInternal"
+  | "TransferExternalBanks"
+  | "TransferExternalEntities";
 
 /**
  * Normalize a monetary value that may come as string or number.
  * Backend returns strings (MapFrame), but some fields arrive as numbers.
  */
 export function normalizeMoney(value: string | number): number {
-  if (typeof value === 'number') return value;
+  if (typeof value === "number") return value;
   const parsed = parseFloat(value);
   return isNaN(parsed) ? 0 : parsed;
 }

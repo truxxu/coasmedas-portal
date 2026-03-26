@@ -1,14 +1,17 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
-import { Label, Input, ErrorMessage } from '@/src/atoms';
+import { forwardRef, InputHTMLAttributes } from "react";
+import { Label, Input, ErrorMessage } from "@/src/atoms";
 
-interface PasswordFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface PasswordFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   label: string;
   name: string;
   error?: string;
 }
 
 export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
-  ({ label, name, error, required, className = '', ...props }, ref) => {
+  ({ label, name, error, required, className = "", ...props }, ref) => {
     return (
       <div className={`flex flex-col ${className}`}>
         <Label htmlFor={name} required={required}>
@@ -25,7 +28,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
         <ErrorMessage message={error} />
       </div>
     );
-  }
+  },
 );
 
-PasswordField.displayName = 'PasswordField';
+PasswordField.displayName = "PasswordField";

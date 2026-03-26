@@ -5,19 +5,27 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { ExternalTransferConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext, useWelcomeBar, useUserContext } from "@/src/contexts";
 import type { ExternalTransferConfirmationData } from "@/src/types/externalTransfer";
 import {
-  mockExternalTransferSourceAccounts,
   mockExternalTransferDestinations,
-  mockExternalTransferUserData,
   EXTERNAL_TRANSFER_STEPS,
 } from "@/src/mocks";
+import { maskNumber } from "@/src/utils";
+import { sendTransactionOtp } from "@/services/auth.service";
+import { getExternalSourceInfo } from "@/lib/mappers/externalTransfers.mapper";
+import type {
+  SavingsAccountResponse,
+  CreditAccountResponse,
+} from "@/types/api/products";
 
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  const { user } = useUserContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [confirmationData] = useState<ExternalTransferConfirmationData | null>(
     () => {
       if (typeof window === "undefined") return null;
@@ -33,21 +41,71 @@ export default function ConfirmacionPage() {
         return null;
       }
 
-      const sourceAccount = mockExternalTransferSourceAccounts.find(
-        (acc) => acc.id === sourceId,
+      // Read raw API data for source lookup
+      const savingsApiStr = sessionStorage.getItem(
+        "externalTransferSavingsApi",
       );
-      const destination = mockExternalTransferDestinations.find(
-        (acc) => acc.id === destinationId,
+      const creditsApiStr = sessionStorage.getItem(
+        "externalTransferCreditsApi",
       );
 
-      if (!sourceAccount || !destination) {
+      if (!savingsApiStr || !creditsApiStr) {
         return null;
       }
 
+      const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
+      const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
+
+      const sourceInfo = getExternalSourceInfo(
+        savingsData,
+        creditsData,
+        sourceId,
+      );
+      if (!sourceInfo) return null;
+
+      // Destination still uses mock data (inscribed accounts API missing)
+      const destination = mockExternalTransferDestinations.find(
+        (acc) => acc.id === destinationId,
+      );
+      if (!destination) return null;
+
+      // Build and store transaction request for SMS step
+      const txRequest = {
+        origen: sourceInfo.sourceRef,
+        destino: {
+          name: destination.holderName,
+          documentType: "CC",
+          documentNumber: "",
+          accountNumber: destination.accountNumber,
+          accountType: destination.accountType === "ahorros" ? "01" : "02",
+          entityCode: "",
+        },
+        valorTransferencia: Number(amount),
+      };
+      sessionStorage.setItem(
+        "externalTransferTxRequest",
+        JSON.stringify(txRequest),
+      );
+
+      // Store context for result mapping
+      sessionStorage.setItem("externalTransferSourceName", sourceInfo.name);
+      sessionStorage.setItem("externalTransferDestBank", destination.bankName);
+      sessionStorage.setItem(
+        "externalTransferDestAccNum",
+        destination.accountNumber,
+      );
+
+      const userName =
+        user?.fullName ||
+        `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+      const maskedDoc = user
+        ? `${user.documentType} ${maskNumber(user.documentNumber)}`
+        : "";
+
       return {
-        holderName: mockExternalTransferUserData.holderName,
-        holderDocument: mockExternalTransferUserData.holderDocument,
-        sourceProduct: sourceAccount.type,
+        holderName: userName,
+        holderDocument: maskedDoc,
+        sourceProduct: sourceInfo.name,
         destinationHolder: destination.holderName,
         destinationBank: destination.bankName,
         destinationAccountType:
@@ -73,15 +131,33 @@ export default function ConfirmacionPage() {
     }
   }, [confirmationData, router]);
 
-  const handleConfirmPayment = () => {
-    if (confirmationData) {
+  const handleConfirmPayment = async () => {
+    if (!confirmationData) return;
+
+    setIsSubmitting(true);
+    try {
       sessionStorage.setItem(
         "externalTransferConfirmation",
         JSON.stringify(confirmationData),
       );
-    }
 
-    router.push("/transferencias/externas/otros-bancos/sms");
+      // Send OTP before navigating to SMS step
+      const { documentType, documentNumber } = user ?? {};
+      if (documentType && documentNumber) {
+        await sendTransactionOtp({
+          documentType,
+          documentNumber,
+          trnType: "TransferExternalBanks",
+        });
+      }
+
+      router.push("/transferencias/externas/otros-bancos/sms");
+    } catch {
+      // If OTP fails, still navigate — the SMS page can handle resend
+      router.push("/transferencias/externas/otros-bancos/sms");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBack = () => {
@@ -118,12 +194,17 @@ export default function ConfirmacionPage() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="text-sm font-medium text-brand-teal-dark hover:underline"
+          disabled={isSubmitting}
+          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
         >
           Volver
         </button>
-        <Button variant="primary" onClick={handleConfirmPayment}>
-          Confirmar Pago
+        <Button
+          variant="primary"
+          onClick={handleConfirmPayment}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Enviando..." : "Confirmar Pago"}
         </Button>
       </div>
     </div>

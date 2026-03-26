@@ -17,57 +17,57 @@
 
 ## 2. Endpoint Summary
 
-| # | Path | Auth | Description |
-|---|------|------|-------------|
-| 1 | `/register` | OTP | Register a new user |
-| 2 | `/register-device` | OTP | Register a new device |
-| 3 | `/login` | OTP + Password | Authenticate and obtain JWT |
-| 4 | `/send-otp` | None | Send OTP via SMS |
-| 5 | `/send-otp/transaction` | JWT | Send OTP for transaction confirmation |
-| 6 | `/update-password` | OTP | Update user password |
-| 7 | `/get-salt` | JWT | Retrieve password salt |
-| 8 | `/balances` | JWT | Query account balances |
-| 9 | `/products/contributions` | JWT | Query contribution (aportes) products |
-| 10 | `/products/savings` | JWT | Query savings products |
-| 11 | `/products/investments` | JWT | Query investment products |
-| 12 | `/products/credits` | JWT | Query credit products |
-| 13 | `/products/protection` | JWT | Query protection/insurance products |
-| 14 | `/movements` | JWT | Query account movements |
-| 15 | `/transfer/internal/createTransaction` | JWT + OTP | Execute internal transfer |
-| 16 | `/transfer/external/listBanks` | JWT | List available banks (Visionamos) |
-| 17 | `/transfer/external/listEntities` | JWT | List available entities (Visionamos) |
-| 18 | `/transfer/internal/sources/savings` | JWT | List savings accounts as transfer sources |
-| 19 | `/transfer/internal/sources/credits` | JWT | List credit accounts as transfer sources |
-| 20 | `/transfer/internal/sources/investments` | JWT | List investment accounts as transfer sources |
-| 21 | `/transfer/internal/targets/savings` | JWT | List savings accounts as transfer targets |
-| 22 | `/transfer/internal/targets/credits` | JWT | List credit accounts as transfer targets |
-| 23 | `/transfer/internal/targets/investments` | JWT | List investment accounts as transfer targets |
-| 24 | `/transfer/external/sources/savings` | JWT | List savings accounts for external transfer sources |
-| 25 | `/transfer/external/sources/credits` | JWT | List credit accounts for external transfer sources |
-| 26 | `/transfer/external/entities/targets/queryProduct` | JWT | Validate external destination account |
-| 27 | `/transfer/external/entities/createTransaction` | JWT + OTP | Execute external transfer (entities) |
-| 28 | `/transfer/external/banks/createTransaction` | JWT + OTP | Execute external transfer (banks) |
-| 29 | `/transfer/external/getTransactionCost` | JWT | Get external transfer cost/commission |
-| 30 | `/transfer/external/transfiya/createTransaction` | JWT + OTP | Execute TransfiYa transfer |
-| 31 | `/transfer/external/transfiya/getTransactionCost` | JWT | Get TransfiYa transfer cost |
-| 32 | `/payment/products` | JWT | List products available for payment |
-| 33 | `/payment/payzen/createTransaction` | JWT | Create Payzen payment link |
-| 34 | `/payment/internal/sources/savings` | JWT | List savings accounts for payment sources |
-| 35 | `/payment/internal/sources/credits` | JWT | List credit accounts for payment sources |
-| 36 | `/payment/internal/createTransaction` | JWT + OTP | Execute internal payment |
-| 37 | `/userValidation` | JWT | Validate user exists |
-| 38 | `/bre-b/accounts/list` | JWT | List BRE-B eligible accounts |
-| 39 | `/bre-b/keys/create` | JWT | Create BRE-B key |
-| 40 | `/bre-b/keys/list` | JWT | List BRE-B keys |
-| 41 | `/bre-b/keys/resolve` | JWT | Resolve BRE-B key |
-| 42 | `/bre-b/keys/block` | JWT | Block BRE-B key |
-| 43 | `/bre-b/keys/unblock` | JWT | Unblock BRE-B key |
-| 44 | `/bre-b/keys/update` | JWT | Update BRE-B key |
-| 45 | `/bre-b/keys/delete` | JWT | Delete BRE-B key |
-| 46 | `/bre-b/terms/accept` | JWT | Accept BRE-B terms |
-| 47 | `/bre-b/txs/init` | JWT | Initiate BRE-B transaction |
-| 48 | `/bre-b/txs/list` | JWT | List BRE-B transactions |
-| 49 | `/bre-b/txs/status` | JWT | Check BRE-B transaction status |
+| #   | Path                                               | Auth           | Description                                         |
+| --- | -------------------------------------------------- | -------------- | --------------------------------------------------- |
+| 1   | `/register`                                        | OTP            | Register a new user                                 |
+| 2   | `/register-device`                                 | OTP            | Register a new device                               |
+| 3   | `/login`                                           | OTP + Password | Authenticate and obtain JWT                         |
+| 4   | `/send-otp`                                        | None           | Send OTP via SMS                                    |
+| 5   | `/send-otp/transaction`                            | JWT            | Send OTP for transaction confirmation               |
+| 6   | `/update-password`                                 | OTP            | Update user password                                |
+| 7   | `/get-salt`                                        | JWT            | Retrieve password salt                              |
+| 8   | `/balances`                                        | JWT            | Query account balances                              |
+| 9   | `/products/contributions`                          | JWT            | Query contribution (aportes) products               |
+| 10  | `/products/savings`                                | JWT            | Query savings products                              |
+| 11  | `/products/investments`                            | JWT            | Query investment products                           |
+| 12  | `/products/credits`                                | JWT            | Query credit products                               |
+| 13  | `/products/protection`                             | JWT            | Query protection/insurance products                 |
+| 14  | `/movements`                                       | JWT            | Query account movements                             |
+| 15  | `/transfer/internal/createTransaction`             | JWT + OTP      | Execute internal transfer                           |
+| 16  | `/transfer/external/listBanks`                     | JWT            | List available banks (Visionamos)                   |
+| 17  | `/transfer/external/listEntities`                  | JWT            | List available entities (Visionamos)                |
+| 18  | `/transfer/internal/sources/savings`               | JWT            | List savings accounts as transfer sources           |
+| 19  | `/transfer/internal/sources/credits`               | JWT            | List credit accounts as transfer sources            |
+| 20  | `/transfer/internal/sources/investments`           | JWT            | List investment accounts as transfer sources        |
+| 21  | `/transfer/internal/targets/savings`               | JWT            | List savings accounts as transfer targets           |
+| 22  | `/transfer/internal/targets/credits`               | JWT            | List credit accounts as transfer targets            |
+| 23  | `/transfer/internal/targets/investments`           | JWT            | List investment accounts as transfer targets        |
+| 24  | `/transfer/external/sources/savings`               | JWT            | List savings accounts for external transfer sources |
+| 25  | `/transfer/external/sources/credits`               | JWT            | List credit accounts for external transfer sources  |
+| 26  | `/transfer/external/entities/targets/queryProduct` | JWT            | Validate external destination account               |
+| 27  | `/transfer/external/entities/createTransaction`    | JWT + OTP      | Execute external transfer (entities)                |
+| 28  | `/transfer/external/banks/createTransaction`       | JWT + OTP      | Execute external transfer (banks)                   |
+| 29  | `/transfer/external/getTransactionCost`            | JWT            | Get external transfer cost/commission               |
+| 30  | `/transfer/external/transfiya/createTransaction`   | JWT + OTP      | Execute TransfiYa transfer                          |
+| 31  | `/transfer/external/transfiya/getTransactionCost`  | JWT            | Get TransfiYa transfer cost                         |
+| 32  | `/payment/products`                                | JWT            | List products available for payment                 |
+| 33  | `/payment/payzen/createTransaction`                | JWT            | Create Payzen payment link                          |
+| 34  | `/payment/internal/sources/savings`                | JWT            | List savings accounts for payment sources           |
+| 35  | `/payment/internal/sources/credits`                | JWT            | List credit accounts for payment sources            |
+| 36  | `/payment/internal/createTransaction`              | JWT + OTP      | Execute internal payment                            |
+| 37  | `/userValidation`                                  | JWT            | Validate user exists                                |
+| 38  | `/bre-b/accounts/list`                             | JWT            | List BRE-B eligible accounts                        |
+| 39  | `/bre-b/keys/create`                               | JWT            | Create BRE-B key                                    |
+| 40  | `/bre-b/keys/list`                                 | JWT            | List BRE-B keys                                     |
+| 41  | `/bre-b/keys/resolve`                              | JWT            | Resolve BRE-B key                                   |
+| 42  | `/bre-b/keys/block`                                | JWT            | Block BRE-B key                                     |
+| 43  | `/bre-b/keys/unblock`                              | JWT            | Unblock BRE-B key                                   |
+| 44  | `/bre-b/keys/update`                               | JWT            | Update BRE-B key                                    |
+| 45  | `/bre-b/keys/delete`                               | JWT            | Delete BRE-B key                                    |
+| 46  | `/bre-b/terms/accept`                              | JWT            | Accept BRE-B terms                                  |
+| 47  | `/bre-b/txs/init`                                  | JWT            | Initiate BRE-B transaction                          |
+| 48  | `/bre-b/txs/list`                                  | JWT            | List BRE-B transactions                             |
+| 49  | `/bre-b/txs/status`                                | JWT            | Check BRE-B transaction status                      |
 
 ---
 
@@ -99,6 +99,7 @@
 **Auth:** OTP | **Flow:** `RegisterFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -110,6 +111,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -138,6 +140,7 @@
 **Auth:** OTP | **Flow:** `RegisterDeviceFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -149,6 +152,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -163,6 +167,7 @@
 **Auth:** OTP + Password | **Flow:** `LoginFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -174,6 +179,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -202,6 +208,7 @@
 **Auth:** None | **Flow:** `SendOTPFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -211,6 +218,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -231,6 +239,7 @@
 **Auth:** JWT | **Flow:** `SendOTPTransactionFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -240,6 +249,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -258,6 +268,7 @@
 **Auth:** OTP | **Flow:** `UpdatePasswordFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -269,6 +280,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -294,6 +306,7 @@
 **Auth:** JWT | **Flow:** `GetSaltFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -303,6 +316,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -320,6 +334,7 @@
 **Auth:** JWT | **Flow:** `BalancesFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -329,6 +344,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -351,6 +367,7 @@
 **Auth:** JWT | **Flow:** `ProductsContributionsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -360,6 +377,7 @@
 ```
 
 **Success Response (full variant -- when ahorroPermanente exists):**
+
 ```json
 {
   "statusCode": 0,
@@ -399,6 +417,7 @@
 **Auth:** JWT | **Flow:** `ProductsSavingsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -408,6 +427,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -435,6 +455,7 @@
 **Auth:** JWT | **Flow:** `ProductsInvestmentsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -444,6 +465,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -473,6 +495,7 @@
 **Auth:** JWT | **Flow:** `ProductsCreditsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -482,6 +505,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -516,6 +540,7 @@
 **Auth:** JWT | **Flow:** `ProductsProtectionFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -525,6 +550,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -553,6 +579,7 @@
 **Auth:** JWT | **Flow:** `MovementsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -566,6 +593,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -594,6 +622,7 @@
 **Auth:** JWT + OTP | **Flow:** `TransferInternalFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -616,6 +645,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -638,13 +668,12 @@
 **Request Body:** `{}` (no required fields)
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": [
-    { "code": "<string>", "name": "<string>" }
-  ]
+  "payload": [{ "code": "<string>", "name": "<string>" }]
 }
 ```
 
@@ -659,13 +688,12 @@
 **Request Body:** `{}` (no required fields)
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": [
-    { "code": "<string>", "name": "<string>" }
-  ]
+  "payload": [{ "code": "<string>", "name": "<string>" }]
 }
 ```
 
@@ -678,6 +706,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesSavingsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -697,6 +726,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesCreditsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -716,6 +746,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesInvestmentsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -733,6 +764,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalTargetsSavingsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -750,6 +782,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalTargetsCreditsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -767,6 +800,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalTargetsInvestmentsFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -784,6 +818,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesSavingsFlow` (reused)
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -801,6 +836,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesCreditsFlow` (reused)
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -818,6 +854,7 @@
 **Auth:** JWT | **Flow:** `TransferExternalTargetsQueryProductFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -833,6 +870,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -849,6 +887,7 @@
 **Auth:** JWT + OTP | **Flow:** `TransferExternalEntitiesCreateTransactionFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -873,6 +912,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -905,6 +945,7 @@
 **Auth:** JWT | **Flow:** `TransferExternalGetTransactionCostFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -927,6 +968,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -947,6 +989,7 @@
 **Auth:** JWT + OTP | **Flow:** `TransferExternalTransfiyaCreateTransactionFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -978,6 +1021,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1000,6 +1044,7 @@
 **Auth:** JWT | **Flow:** `TransferExternalTransfiyaGetTransactionCostFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1014,6 +1059,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1032,6 +1078,7 @@
 **Auth:** JWT | **Flow:** `ProductsToPayFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1041,6 +1088,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1067,6 +1115,7 @@
 **Auth:** JWT | **Flow:** `CreatePaymentPayzenFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1085,6 +1134,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1104,6 +1154,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesSavingsFlow` (reused)
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1121,6 +1172,7 @@
 **Auth:** JWT | **Flow:** `TransferInternalSourcesCreditsFlow` (reused)
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1138,6 +1190,7 @@
 **Auth:** JWT + OTP | **Flow:** `CreatePaymentInternalFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1154,6 +1207,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1174,6 +1228,7 @@
 **Auth:** JWT | **Flow:** `UserValidationFlow`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1183,6 +1238,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1199,6 +1255,7 @@
 **Auth:** JWT | **Flow:** `BreBAccountsListFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1208,6 +1265,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1236,6 +1294,7 @@
 **Auth:** JWT | **Flow:** `BreBKeysCreateFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "typeKeyCustomer": "<string>",
@@ -1259,6 +1318,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1278,6 +1338,7 @@
 **Auth:** JWT | **Flow:** `BreBKeysListFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "user": "<string>",
@@ -1293,6 +1354,7 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1312,6 +1374,7 @@
 **Auth:** JWT | **Flow:** `BreBKeysResolveFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1330,11 +1393,12 @@
 > **Note:** `DefaultFields.json` includes a field `ike` in this path -- this appears to be a typo (likely should be removed or is `like`).
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1347,6 +1411,7 @@
 **Auth:** JWT | **Flow:** `BreBKeysBlockFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "idKeyCustomer": "<string>",
@@ -1371,11 +1436,12 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1418,6 +1484,7 @@
 **Auth:** JWT | **Flow:** `BreBTermsAcceptFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentType": "CC",
@@ -1428,11 +1495,12 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1445,6 +1513,7 @@
 **Auth:** JWT | **Flow:** `BreBTxsInitFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentNumber": "1234567890",
@@ -1480,11 +1549,12 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1497,6 +1567,7 @@
 **Auth:** JWT | **Flow:** `BreBTxsListFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentNumber": "1234567890",
@@ -1509,11 +1580,12 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1526,6 +1598,7 @@
 **Auth:** JWT | **Flow:** `BreBTxsStatusFlowInit`
 
 **Request Body:**
+
 ```json
 {
   "documentNumber": "1234567890",
@@ -1542,11 +1615,12 @@
 ```
 
 **Success Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": { }
+  "payload": {}
 }
 ```
 
@@ -1567,29 +1641,29 @@ All error responses follow the same envelope:
 
 ### Error Code Catalog
 
-| Code | Flow | Description |
-|------|------|-------------|
-| 0 | (success) | Transaccion exitosa |
-| 1 | `LoginErrorFlow` | Error en login |
-| 2 | `ErrorRequestFlow` | No pasa validacion de formato |
-| 4 | `UserRegisteredFlow` | Usuario ya esta registrado |
-| 101 | `NotFoundUserFlow` | Usuario no encontrado |
-| 102 | `CellphoneErrorFlow` | El celular guardado en el core tiene un formato erroneo |
-| 103 | `EmailErrorFlow` | El email guardado en el core tiene un formato erroneo |
-| 105 | `SendToCoreErrorFlow` | Error en comunicacion con el core |
-| 106 | `OtpErradoFlow` | OTP invalido |
-| 107 | `AuthorizationErrorFlow` | No autorizado para realizar esta operacion |
-| 108 | `ErrorVisionamosFlow` | Error consumiendo web service de Visionamos |
-| 109 | `RspCrearOrdenPagoPayzenWsErrorFlow` | No se pudo generar el link de pago, error en el Web Service de Payzen: {error} |
-| 110 | `RspCrearOrdenPagoPayzenErrorFlow` | No se pudo generar el link de pago, Payzen responde: {detailedErrorMessage} |
-| 111 | `RspCrearOrdenPagoPayzenNoResponseFlow` | Payzen no responde |
-| 112 | `RspCreateTransactionVisionamosWsErrorFlow` | No se pudo crear la transaccion en Visionamos, respuesta: {error} |
-| 113 | `RspCreateTransactionVisionamosErrorFlow` | No se pudo autorizar la transaccion, Visionamos responde: {message} |
-| 114 | `RspCreateTransactionVisionamosWsNoResponseFlow` | Visionamos no responde |
-| 115 | `RspTransfiYaErrorFlow` | No se pudo autorizar la transaccion, Visionamos responde: {Mensaje} |
-| 116 | `InalambriaErrorFlow` | Inalambria respondio: {responseCode} \| {body} |
-| 500 | (BRE-B flows) | Visionamos Auth Error / Visionamos Request Error |
-| (dynamic) | `SendToCoreRspErrorFlow` | Core banking returned non-zero response code with description |
+| Code      | Flow                                             | Description                                                                    |
+| --------- | ------------------------------------------------ | ------------------------------------------------------------------------------ |
+| 0         | (success)                                        | Transaccion exitosa                                                            |
+| 1         | `LoginErrorFlow`                                 | Error en login                                                                 |
+| 2         | `ErrorRequestFlow`                               | No pasa validacion de formato                                                  |
+| 4         | `UserRegisteredFlow`                             | Usuario ya esta registrado                                                     |
+| 101       | `NotFoundUserFlow`                               | Usuario no encontrado                                                          |
+| 102       | `CellphoneErrorFlow`                             | El celular guardado en el core tiene un formato erroneo                        |
+| 103       | `EmailErrorFlow`                                 | El email guardado en el core tiene un formato erroneo                          |
+| 105       | `SendToCoreErrorFlow`                            | Error en comunicacion con el core                                              |
+| 106       | `OtpErradoFlow`                                  | OTP invalido                                                                   |
+| 107       | `AuthorizationErrorFlow`                         | No autorizado para realizar esta operacion                                     |
+| 108       | `ErrorVisionamosFlow`                            | Error consumiendo web service de Visionamos                                    |
+| 109       | `RspCrearOrdenPagoPayzenWsErrorFlow`             | No se pudo generar el link de pago, error en el Web Service de Payzen: {error} |
+| 110       | `RspCrearOrdenPagoPayzenErrorFlow`               | No se pudo generar el link de pago, Payzen responde: {detailedErrorMessage}    |
+| 111       | `RspCrearOrdenPagoPayzenNoResponseFlow`          | Payzen no responde                                                             |
+| 112       | `RspCreateTransactionVisionamosWsErrorFlow`      | No se pudo crear la transaccion en Visionamos, respuesta: {error}              |
+| 113       | `RspCreateTransactionVisionamosErrorFlow`        | No se pudo autorizar la transaccion, Visionamos responde: {message}            |
+| 114       | `RspCreateTransactionVisionamosWsNoResponseFlow` | Visionamos no responde                                                         |
+| 115       | `RspTransfiYaErrorFlow`                          | No se pudo autorizar la transaccion, Visionamos responde: {Mensaje}            |
+| 116       | `InalambriaErrorFlow`                            | Inalambria respondio: {responseCode} \| {body}                                 |
+| 500       | (BRE-B flows)                                    | Visionamos Auth Error / Visionamos Request Error                               |
+| (dynamic) | `SendToCoreRspErrorFlow`                         | Core banking returned non-zero response code with description                  |
 
 ---
 
@@ -1599,51 +1673,54 @@ Request validation is performed by `ValJsonRequestFlow` using rules from `Data/F
 
 ### Validation Ranges
 
-| Range Name | Rule |
-|------------|------|
+| Range Name                | Rule                                             |
+| ------------------------- | ------------------------------------------------ |
 | `DocumentNumberRangeList` | Numeric, 0 to 9999999999999999 (up to 16 digits) |
-| `OtpRangeList` | Numeric, 0 to 999999 (6 digits) |
-| `PasswordRangeList` | String, max 60 chars (BCrypt hash) |
-| `HashRangeList` | String, max 29 chars (BCrypt salt) |
-| `ValoresRangeList` | Numeric range for monetary values |
-| `IdCuentaRangeList` | Numeric range for account IDs |
-| `AccountNumberRangeList` | Numeric range for account numbers |
-| `EntityCodeRangeList` | Numeric range for entity codes |
-| `MobileRangeList` | Numeric range for mobile numbers |
-| `NamesRangeList` | String range for names |
-| `EmailRangeList` | String range for email |
-| `LongStringRangeList` | String range for long text fields |
-| `FechaRangeList` | Numeric range for dates (yyyyMMdd format) |
-| `TrnTypeOtpList` | Numeric range for transaction types |
-| `PositiveAmountRange` | Numeric, positive amounts |
-| `TypeAccountRange` | Numeric range for account types |
-| `TargetNodeRange` | Numeric range for target nodes |
+| `OtpRangeList`            | Numeric, 0 to 999999 (6 digits)                  |
+| `PasswordRangeList`       | String, max 60 chars (BCrypt hash)               |
+| `HashRangeList`           | String, max 29 chars (BCrypt salt)               |
+| `ValoresRangeList`        | Numeric range for monetary values                |
+| `IdCuentaRangeList`       | Numeric range for account IDs                    |
+| `AccountNumberRangeList`  | Numeric range for account numbers                |
+| `EntityCodeRangeList`     | Numeric range for entity codes                   |
+| `MobileRangeList`         | Numeric range for mobile numbers                 |
+| `NamesRangeList`          | String range for names                           |
+| `EmailRangeList`          | String range for email                           |
+| `LongStringRangeList`     | String range for long text fields                |
+| `FechaRangeList`          | Numeric range for dates (yyyyMMdd format)        |
+| `TrnTypeOtpList`          | Numeric range for transaction types              |
+| `PositiveAmountRange`     | Numeric, positive amounts                        |
+| `TypeAccountRange`        | Numeric range for account types                  |
+| `TargetNodeRange`         | Numeric range for target nodes                   |
 
 ### Allowed Lists
 
-| List Name | Rule |
-|-----------|------|
-| `DocTypeList` | Allowed document types (e.g., CC, CE, NIT, TI, PA) |
-| `CreditTypeList` | Allowed credit/portfolio types |
-| `AccountTypeVisionamosList` | Allowed Visionamos account types |
-| `TypeKeyList` | Allowed BRE-B key types |
+| List Name                   | Rule                                               |
+| --------------------------- | -------------------------------------------------- |
+| `DocTypeList`               | Allowed document types (e.g., CC, CE, NIT, TI, PA) |
+| `CreditTypeList`            | Allowed credit/portfolio types                     |
+| `AccountTypeVisionamosList` | Allowed Visionamos account types                   |
+| `TypeKeyList`               | Allowed BRE-B key types                            |
 
 ---
 
 ## 7. Observations
 
 ### Architecture
+
 - **Single POST entry point:** All 49 endpoints share a single HTTP POST listener, routed by URL path via `PathMap`. No REST verbs are used for incoming requests.
 - **Flow reuse:** Several paths map to the same internal flow (e.g., `/transfer/external/sources/savings`, `/payment/internal/sources/savings` both use `TransferInternalSourcesSavingsFlow`).
 - **Core banking integration:** Uses ODBC stored procedure (`SpAppMovil`) with fixed-length frame protocol. Responses are parsed using MapFrame JSON definitions.
 - **Third-party integrations:** Visionamos (external transfers, BRE-B), TransfiYa (real-time transfers via Visionamos), Payzen (payment links), Inalambria (SMS).
 
 ### Security Concerns
+
 - **Hardcoded OTP bypass:** Document number `93370888` skips OTP validation in the login flow (line 2536). This should be removed in production.
 - **Password handling:** BCrypt hash + HMAC-SHA256 pepper. Salt is stored and retrievable via `/get-salt` endpoint.
 - **JWT lifetime:** Token expiration is configured but the exact TTL is not visible in the static config.
 
 ### Data Quirks
+
 - **`indPag` field:** Present as a required field in many query endpoints but its purpose as a pagination indicator is not fully clear from the flow logic.
 - **`ike` typo:** In `/bre-b/keys/resolve`, `DefaultFields.json` lists `ike` as a required field -- likely a typo.
 - **Decimal values:** Core banking monetary fields use `ValorConDecimales` type where the last 2 digits represent decimals (e.g., `150000` = `1500.00`). The API converts these before returning.
@@ -1651,6 +1728,7 @@ Request validation is performed by `ValJsonRequestFlow` using rules from `Data/F
 - **Empty results:** Endpoints that query lists return `{"statusCode":0,"payload":[]}` when no results are found (not an error).
 
 ### BRE-B Endpoints
+
 - All BRE-B endpoints proxy requests to Visionamos BRE-B API after JWT authentication.
 - They authenticate with Visionamos using a separate OAuth token flow before making the actual API call.
 - Error responses from BRE-B flows use `statusCode: 500` with `"Visionamos Auth Error"` or `"Visionamos Request Error"` and include the upstream error details in the payload.

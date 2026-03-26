@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronIcon } from '@/src/atoms';
+import React from "react";
+import { ChevronIcon } from "@/src/atoms";
 
 interface BeneficiaryListItemProps {
   name: string;

@@ -60,10 +60,10 @@ Create new types in `src/types/pseRecharge.ts`:
  */
 export interface PSERechargeDestination {
   id: string;
-  name: string;              // e.g., "Cuenta de Ahorros"
-  maskedNumber: string;      // e.g., "***4428"
-  balance: number;           // Current balance
-  accountType: string;       // e.g., "Ahorros"
+  name: string; // e.g., "Cuenta de Ahorros"
+  maskedNumber: string; // e.g., "***4428"
+  balance: number; // Current balance
+  accountType: string; // e.g., "Ahorros"
 }
 
 /**
@@ -79,10 +79,10 @@ export interface PSERechargeFormData {
  */
 export interface PSERechargeConfirmationData {
   holderName: string;
-  documentNumber: string;     // Masked: "CC 1.***.***234"
-  productToRecharge: string;  // e.g., "Cuenta de Ahorros (***4428)"
+  documentNumber: string; // Masked: "CC 1.***.***234"
+  productToRecharge: string; // e.g., "Cuenta de Ahorros (***4428)"
   amount: number;
-  method: string;             // "PSE"
+  method: string; // "PSE"
 }
 
 /**
@@ -90,14 +90,14 @@ export interface PSERechargeConfirmationData {
  */
 export interface PSERechargeResult {
   status: "success" | "error";
-  productRecharged: string;    // e.g., "Cuenta de Ahorros (****4428)"
+  productRecharged: string; // e.g., "Cuenta de Ahorros (****4428)"
   amountRecharged: number;
-  method: string;              // "PSE"
-  transactionCost: number;     // Typically 0
-  transactionDate: string;     // e.g., "1 de septiembre de 2025"
-  transactionTime: string;     // e.g., "7:21 pm"
-  approvalNumber: string;      // e.g., "150606"
-  description: string;         // e.g., "Recarga Exitosa" or error message
+  method: string; // "PSE"
+  transactionCost: number; // Typically 0
+  transactionDate: string; // e.g., "1 de septiembre de 2025"
+  transactionTime: string; // e.g., "7:21 pm"
+  approvalNumber: string; // e.g., "150606"
+  description: string; // e.g., "Recarga Exitosa" or error message
 }
 
 /**
@@ -213,6 +213,7 @@ interface PSERechargeDetailsCardProps {
 ```
 
 **Sections:**
+
 1. **Header**
    - Title: "Recargar mis cuentas con PSE" (18px, Bold, navy `#1D4E8F`)
    - Description: "Trae dinero desde cualquier otra entidad financiera de forma facil y segura." (15px, Regular, black)
@@ -220,7 +221,7 @@ interface PSERechargeDetailsCardProps {
 2. **Destination Account Selection**
    - Label: "A que producto quieres abonar?" (14px, Regular, black)
    - Select dropdown with account options
-   - Format: "Cuenta de Ahorros (***4428) - Saldo: $ 8.730.500"
+   - Format: "Cuenta de Ahorros (\*\*\*4428) - Saldo: $ 8.730.500"
    - Height: 44px, border radius: 6px, border: `#B1B1B1`
 
 3. **Recharge Amount**
@@ -244,13 +245,14 @@ interface PSERechargeConfirmationCardProps {
 ```
 
 **Layout:**
-- Header: "Confirmacion de Pago" (18px, Bold, navy `#1D4E8F`)
+
+- Header: "Confirmación de Pago" (18px, Bold, navy `#1D4E8F`)
 - Description: "Por favor, verificar que los datos de la transaccion sean correctos antes de continuar." (15px, Light, black)
 - Two-column label/value pairs:
   - Titular → CAMILO ANDRES CRUZ
   - Documento → CC 1.***.***234
   - ─────────────── (divider)
-  - Producto a Recargar → Cuenta de Ahorros (***4428)
+  - Producto a Recargar → Cuenta de Ahorros (\*\*\*4428)
   - Valor a Recargar → $ 500.000
   - Metodo → PSE (17px, Medium)
 
@@ -261,6 +263,7 @@ Location: `src/organisms/PSELoadingCard.tsx` (existing)
 Reuse the existing PSE loading card from the pagos feature for Step 3.
 
 **Behavior:**
+
 - Display message: "Redirigiendo al portal de PSE..."
 - Show loading spinner
 - Simulate PSE redirect (in development, auto-proceed after delay)
@@ -282,12 +285,13 @@ interface PSERechargeResultCardProps {
 ```
 
 **Sections:**
+
 1. **Status Icon + Title** (centered)
    - Success: Green checkmark in teal circle (`#00AFA9`) + "Transaccion Exitosa" (22px, Bold, navy)
    - Error: Red X in red circle + "Transaccion Fallida"
 
 2. **Recharge Details**
-   - Producto Recargado → Cuenta de Ahorros (****4428)
+   - Producto Recargado → Cuenta de Ahorros (\*\*\*\*4428)
    - Valor Recargado → $ 500.000
    - Metodo → PSE (18px, Medium)
    - Costo de Transaccion → $ 0
@@ -312,9 +316,10 @@ interface PSERechargeResultCardProps {
 Location: `app/(authenticated)/transferencias/internas/recargar-pse/page.tsx`
 
 **Behavior:**
+
 1. Set WelcomeBar with title "Recargar con PSE" and back href
 2. Display breadcrumbs: Inicio / Transferencias / Recargar con PSE
-3. Show Stepper at step 1 (labels: Detalle, Confirmacion, SMS, Finalizacion)
+3. Show Stepper at step 1 (labels: Detalle, Confirmación, SMS, Finalización)
 4. Render `PSERechargeDetailsCard` form
 5. Validate on submit:
    - Destination must be selected
@@ -325,6 +330,7 @@ Location: `app/(authenticated)/transferencias/internas/recargar-pse/page.tsx`
 7. Store selections in sessionStorage and navigate to confirmation
 
 **Session Storage Keys:**
+
 - `pseRechargeDestinationId`
 - `pseRechargeAmount`
 
@@ -333,6 +339,7 @@ Location: `app/(authenticated)/transferencias/internas/recargar-pse/page.tsx`
 Location: `app/(authenticated)/transferencias/internas/recargar-pse/confirmacion/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage
 2. If missing data, redirect back to step 1
 3. Display breadcrumbs and Stepper at step 2
@@ -345,6 +352,7 @@ Location: `app/(authenticated)/transferencias/internas/recargar-pse/confirmacion
 Location: `app/(authenticated)/transferencias/internas/recargar-pse/pse/page.tsx`
 
 **Behavior:**
+
 1. Read data from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 3
 3. Reuse existing `PSELoadingCard` organism
@@ -360,6 +368,7 @@ Location: `app/(authenticated)/transferencias/internas/recargar-pse/pse/page.tsx
 Location: `app/(authenticated)/transferencias/internas/recargar-pse/resultado/page.tsx`
 
 **Behavior:**
+
 1. Read transaction result from sessionStorage, redirect if missing
 2. Display breadcrumbs and Stepper at step 4 (all complete)
 3. Render `PSERechargeResultCard` with transaction result
@@ -393,19 +402,19 @@ Add or enable the "recargar-pse" option:
 
 ### Step 1: Details Form
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| Destination Account | Required | "Por favor selecciona una cuenta destino." |
-| Amount | Required, > 0 | "Por favor ingresa un valor valido." |
-| Amount | Minimum limit (if any) | "El valor minimo de recarga es $ X." |
-| Amount | Maximum limit (if any) | "El valor maximo de recarga es $ X." |
+| Field               | Rule                   | Error Message                              |
+| ------------------- | ---------------------- | ------------------------------------------ |
+| Destination Account | Required               | "Por favor selecciona una cuenta destino." |
+| Amount              | Required, > 0          | "Por favor ingresa un valor valido."       |
+| Amount              | Minimum limit (if any) | "El valor minimo de recarga es $ X."       |
+| Amount              | Maximum limit (if any) | "El valor maximo de recarga es $ X."       |
 
 ### Button States
 
-| Condition | Confirmar Button |
-|-----------|-----------------|
+| Condition                         | Confirmar Button     |
+| --------------------------------- | -------------------- |
 | No account selected OR amount = 0 | Disabled (`#A6C4FF`) |
-| Account selected AND amount > 0 | Enabled (`#007FFF`) |
+| Account selected AND amount > 0   | Enabled (`#007FFF`)  |
 
 ---
 
@@ -415,11 +424,11 @@ Add or enable the "recargar-pse" option:
 
 All prefixed with `pseRecharge` to avoid conflicts:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `pseRechargeDestinationId` | string | Selected destination account ID |
-| `pseRechargeAmount` | string | Recharge amount (as string) |
-| `pseRechargeTransactionResult` | JSON | Transaction result object |
+| Key                            | Type   | Description                     |
+| ------------------------------ | ------ | ------------------------------- |
+| `pseRechargeDestinationId`     | string | Selected destination account ID |
+| `pseRechargeAmount`            | string | Recharge amount (as string)     |
+| `pseRechargeTransactionResult` | JSON   | Transaction result object       |
 
 ### Flow Navigation
 
@@ -438,6 +447,7 @@ Step 4 → [Finalizar] → Clear sessionStorage → /home
 ### New Components to Export
 
 **Organisms** (`src/organisms/index.ts`):
+
 ```typescript
 export { PSERechargeDetailsCard } from "./PSERechargeDetailsCard";
 export { PSERechargeConfirmationCard } from "./PSERechargeConfirmationCard";
@@ -445,6 +455,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
 ```
 
 **Types** (`src/types/index.ts`):
+
 ```typescript
 export type {
   PSERechargeDestination,
@@ -456,6 +467,7 @@ export type {
 ```
 
 **Mocks** (`src/mocks/index.ts`):
+
 ```typescript
 export {
   mockPSERechargeAccounts,
@@ -471,22 +483,22 @@ export {
 
 The following existing components should be reused:
 
-| Component | Location | Usage |
-|-----------|----------|-------|
-| `Breadcrumbs` | molecules | Page navigation trail |
-| `Stepper` | molecules | 4-step progress indicator |
-| `HideBalancesToggle` | molecules | Balance visibility toggle |
-| `BackButton` | atoms | Back navigation arrow |
-| `PSELoadingCard` | organisms | PSE redirect loading (Step 3) |
-| `Button` | atoms | Primary and secondary buttons |
-| `Card` | atoms | Container cards |
-| `Select` | atoms | Dropdown for account selection |
-| `CurrencyInput` | atoms | Currency formatted input |
-| `Divider` | atoms | Horizontal separators |
-| `SuccessIcon` | atoms | Green checkmark icon |
-| `ErrorIcon` | atoms | Red X icon |
+| Component            | Location  | Usage                          |
+| -------------------- | --------- | ------------------------------ |
+| `Breadcrumbs`        | molecules | Page navigation trail          |
+| `Stepper`            | molecules | 4-step progress indicator      |
+| `HideBalancesToggle` | molecules | Balance visibility toggle      |
+| `BackButton`         | atoms     | Back navigation arrow          |
+| `PSELoadingCard`     | organisms | PSE redirect loading (Step 3)  |
+| `Button`             | atoms     | Primary and secondary buttons  |
+| `Card`               | atoms     | Container cards                |
+| `Select`             | atoms     | Dropdown for account selection |
+| `CurrencyInput`      | atoms     | Currency formatted input       |
+| `Divider`            | atoms     | Horizontal separators          |
+| `SuccessIcon`        | atoms     | Green checkmark icon           |
+| `ErrorIcon`          | atoms     | Red X icon                     |
 
-Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are identical (Detalle, Confirmacion, SMS, Finalizacion).
+Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are identical (Detalle, Confirmación, SMS, Finalización).
 
 ---
 
@@ -506,24 +518,28 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 ## 13. Implementation Checklist
 
 ### Phase 1: Types and Mocks
+
 - [ ] Create `src/types/pseRecharge.ts`
 - [ ] Update `src/types/index.ts`
 - [ ] Create `src/mocks/mockPSERechargeData.ts`
 - [ ] Update `src/mocks/index.ts`
 
 ### Phase 2: Organisms
+
 - [ ] Create `PSERechargeDetailsCard` organism
 - [ ] Create `PSERechargeConfirmationCard` organism
 - [ ] Create `PSERechargeResultCard` organism
 - [ ] Update `src/organisms/index.ts`
 
 ### Phase 3: Pages
+
 - [ ] Create Step 1 page: `recargar-pse/page.tsx`
 - [ ] Create Step 2 page: `recargar-pse/confirmacion/page.tsx`
 - [ ] Create Step 3 page: `recargar-pse/pse/page.tsx`
 - [ ] Create Step 4 page: `recargar-pse/resultado/page.tsx`
 
 ### Phase 4: Enable Flow
+
 - [ ] Update `InternasFlowGrid.tsx` to add/enable the flow option
 
 ---
@@ -531,6 +547,7 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 ## 14. Testing Scenarios
 
 ### Happy Path
+
 1. Select destination account from dropdown
 2. Enter valid amount (> 0)
 3. Click "Confirmar" button
@@ -541,17 +558,20 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 8. Click "Finalizar" to return to home
 
 ### Validation Errors
+
 1. No destination selected → Button disabled
 2. Amount = 0 or empty → Button disabled
 3. Amount below minimum (if applicable) → Error message
 4. Amount above maximum (if applicable) → Error message
 
 ### PSE Flow Errors
+
 1. PSE timeout → Display error message and allow retry
 2. PSE payment declined → Show error result screen with reason
 3. PSE connection error → Display error and option to retry
 
 ### Edge Cases
+
 1. Navigate directly to step 2/3/4 without data → Redirect to step 1
 2. Session timeout during PSE redirect → Handle gracefully
 3. Balance hidden mode → Mask all currency values
@@ -561,12 +581,12 @@ Reuse `TRANSFER_STEPS` from `mockTransferData.ts` as the stepper labels are iden
 
 ## 15. Design References
 
-| Step | Figma Node | Description |
-|------|------------|-------------|
-| 1 | `810-1074` | Recharge details form |
-| 2 | `810-1076` | Payment confirmation |
-| 3 | N/A | Reuses existing PSELoadingCard |
-| 4 | `810-1078` | Transaction result |
+| Step | Figma Node | Description                    |
+| ---- | ---------- | ------------------------------ |
+| 1    | `810-1074` | Recharge details form          |
+| 2    | `810-1076` | Payment confirmation           |
+| 3    | N/A        | Reuses existing PSELoadingCard |
+| 4    | `810-1078` | Transaction result             |
 
 Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=`
 
@@ -574,30 +594,30 @@ Base URL: `https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?nod
 
 ## 16. Key Differences from Other Transfer Flows
 
-| Aspect | Other Flows (10, 10a, 10b) | PSE Recharge (10c) |
-|--------|---------------------------|-------------------|
-| Verification | SMS code verification | PSE external redirect |
-| Source | Internal accounts/cupos | External bank via PSE |
-| Method shown | N/A or internal | "PSE" |
-| Step 3 behavior | Enter SMS code | Loading + PSE redirect |
-| Source balance | Debited from internal source | N/A (external source) |
-| Result labels | Cuenta Origen/Destino | Producto Recargado, Valor Recargado |
-| New molecule needed | Varies | None (reuse existing) |
+| Aspect              | Other Flows (10, 10a, 10b)   | PSE Recharge (10c)                  |
+| ------------------- | ---------------------------- | ----------------------------------- |
+| Verification        | SMS code verification        | PSE external redirect               |
+| Source              | Internal accounts/cupos      | External bank via PSE               |
+| Method shown        | N/A or internal              | "PSE"                               |
+| Step 3 behavior     | Enter SMS code               | Loading + PSE redirect              |
+| Source balance      | Debited from internal source | N/A (external source)               |
+| Result labels       | Cuenta Origen/Destino        | Producto Recargado, Valor Recargado |
+| New molecule needed | Varies                       | None (reuse existing)               |
 
 ---
 
 ## 17. Color Reference
 
-| Color Name | Hex Code | Usage |
-|------------|----------|-------|
-| Primary Navy | `#1D4E8F` | Section titles, outline buttons border/text |
-| Primary Blue | `#007FFF` | Primary buttons, stepper active |
-| Disabled Blue | `#A6C4FF` | Disabled button background |
-| Success Green | `#00A44C` | Success message text (Recarga Exitosa) |
-| Teal (Success Icon) | `#00AFA9` | Success checkmark circle |
-| Text Black | `#111827` | Primary text |
-| Gray Medium | `#808284` | Inactive stepper numbers |
-| Gray Lines | `#E4E6EA` | Borders, dividers, inactive stepper |
-| Gray Border | `#B1B1B1` | Input borders, underlines |
-| Light Blue BG | `#F0F9FF` | Main content area background |
-| Link Dark | `#004266` | "Volver" link |
+| Color Name          | Hex Code  | Usage                                       |
+| ------------------- | --------- | ------------------------------------------- |
+| Primary Navy        | `#1D4E8F` | Section titles, outline buttons border/text |
+| Primary Blue        | `#007FFF` | Primary buttons, stepper active             |
+| Disabled Blue       | `#A6C4FF` | Disabled button background                  |
+| Success Green       | `#00A44C` | Success message text (Recarga Exitosa)      |
+| Teal (Success Icon) | `#00AFA9` | Success checkmark circle                    |
+| Text Black          | `#111827` | Primary text                                |
+| Gray Medium         | `#808284` | Inactive stepper numbers                    |
+| Gray Lines          | `#E4E6EA` | Borders, dividers, inactive stepper         |
+| Gray Border         | `#B1B1B1` | Input borders, underlines                   |
+| Light Blue BG       | `#F0F9FF` | Main content area background                |
+| Link Dark           | `#004266` | "Volver" link                               |

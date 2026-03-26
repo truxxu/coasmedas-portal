@@ -163,7 +163,7 @@ export function QuickAccessGrid() {
           title={item.title}
           description={item.description}
           icon={item.icon}
-          titleImage={'titleImage' in item ? item.titleImage : undefined}
+          titleImage={"titleImage" in item ? item.titleImage : undefined}
           href={item.href}
           variant={item.variant}
         />

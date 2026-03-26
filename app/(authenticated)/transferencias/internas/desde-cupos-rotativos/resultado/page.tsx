@@ -14,7 +14,7 @@ export default function ResultadoPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<CupoRotativoTransferResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
     const resultData = sessionStorage.getItem("cupoRotativoTransferResult");
     if (!resultData) return null;

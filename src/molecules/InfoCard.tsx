@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Button } from '@/src/atoms';
+import { ReactNode } from "react";
+import { Button } from "@/src/atoms";
 
 interface InfoCardProps {
   title: string;
@@ -9,16 +9,18 @@ interface InfoCardProps {
   children?: ReactNode;
 }
 
-export function InfoCard({ title, description, buttonText, buttonHref, children }: InfoCardProps) {
+export function InfoCard({
+  title,
+  description,
+  buttonText,
+  buttonHref,
+  children,
+}: InfoCardProps) {
   return (
     <div className="bg-white p-8 rounded-lg">
-      <h3 className="text-xl font-bold text-brand-navy mb-4">
-        {title}
-      </h3>
+      <h3 className="text-xl font-bold text-brand-navy mb-4">{title}</h3>
 
-      <p className="text-sm text-black mb-6 leading-relaxed">
-        {description}
-      </p>
+      <p className="text-sm text-black mb-6 leading-relaxed">{description}</p>
 
       {children}
 

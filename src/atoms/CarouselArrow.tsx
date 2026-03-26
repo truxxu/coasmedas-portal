@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { ChevronIcon } from './ChevronIcon';
+import { ChevronIcon } from "./ChevronIcon";
 
 interface CarouselArrowProps {
-  direction: 'left' | 'right';
+  direction: "left" | "right";
   onClick: () => void;
   disabled?: boolean;
   className?: string;
@@ -13,11 +13,12 @@ export function CarouselArrow({
   direction,
   onClick,
   disabled = false,
-  className = '',
+  className = "",
 }: CarouselArrowProps) {
-  const ariaLabel = direction === 'left'
-    ? 'Ver productos anteriores'
-    : 'Ver productos siguientes';
+  const ariaLabel =
+    direction === "left"
+      ? "Ver productos anteriores"
+      : "Ver productos siguientes";
 
   return (
     <button

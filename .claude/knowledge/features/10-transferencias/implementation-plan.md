@@ -19,15 +19,15 @@ Before starting implementation, verify these existing components are available:
 
 ### From 09a-pagos (Already Implemented)
 
-| Component | Location | Purpose |
-|-----------|----------|---------|
-| `StepperCircle` | `src/atoms/StepperCircle.tsx` | Individual step circle |
-| `StepperConnector` | `src/atoms/StepperConnector.tsx` | Line between steps |
-| `Stepper` | `src/molecules/Stepper.tsx` | Complete stepper component |
-| `CodeInput` | `src/atoms/CodeInput.tsx` | Single digit input |
-| `CodeInputGroup` | `src/molecules/CodeInputGroup.tsx` | Group of 6 inputs |
-| `CodeInputCard` | `src/organisms/CodeInputCard.tsx` | SMS verification card |
-| `Step` | `src/types/stepper.ts` | Step type definition |
+| Component          | Location                           | Purpose                    |
+| ------------------ | ---------------------------------- | -------------------------- |
+| `StepperCircle`    | `src/atoms/StepperCircle.tsx`      | Individual step circle     |
+| `StepperConnector` | `src/atoms/StepperConnector.tsx`   | Line between steps         |
+| `Stepper`          | `src/molecules/Stepper.tsx`        | Complete stepper component |
+| `CodeInput`        | `src/atoms/CodeInput.tsx`          | Single digit input         |
+| `CodeInputGroup`   | `src/molecules/CodeInputGroup.tsx` | Group of 6 inputs          |
+| `CodeInputCard`    | `src/organisms/CodeInputCard.tsx`  | SMS verification card      |
+| `Step`             | `src/types/stepper.ts`             | Step type definition       |
 
 ### General Components (Already Available)
 
@@ -50,17 +50,18 @@ Before starting implementation, verify these existing components are available:
 
 ```typescript
 // Types to create:
-- TransferAccount          // User account for source selection
-- DestinationProduct       // Destination product for transfer
-- TransferDetailsFormData  // Step 1 form data
-- TransferConfirmationData // Step 2 confirmation display
-- SMSVerificationFormData  // Step 3 SMS code
-- TransferResult           // Step 4 transaction result
-- TransferFlowState        // Complete flow state
-- InternalTransferOption   // Flow selection card data
+-TransferAccount - // User account for source selection
+  DestinationProduct - // Destination product for transfer
+  TransferDetailsFormData - // Step 1 form data
+  TransferConfirmationData - // Step 2 confirmation display
+  SMSVerificationFormData - // Step 3 SMS code
+  TransferResult - // Step 4 transaction result
+  TransferFlowState - // Complete flow state
+  InternalTransferOption; // Flow selection card data
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All interfaces defined with proper TypeScript types
 - [ ] Export added to `src/types/index.ts`
 
@@ -71,6 +72,7 @@ Before starting implementation, verify these existing components are available:
 **File**: `src/mocks/mockTransferData.ts`
 
 **Mock Data to Create**:
+
 ```typescript
 - mockTransferAccounts: TransferAccount[]     // 3 source accounts
 - mockDestinationProducts: DestinationProduct[] // 4 destination products
@@ -82,6 +84,7 @@ Before starting implementation, verify these existing components are available:
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All mock data created with realistic values
 - [ ] Export added to `src/mocks/index.ts`
 
@@ -96,6 +99,7 @@ Before starting implementation, verify these existing components are available:
 **File**: `src/molecules/FlowOptionCard.tsx`
 
 **Component Specification**:
+
 ```typescript
 interface FlowOptionCardProps {
   title: string;
@@ -107,6 +111,7 @@ interface FlowOptionCardProps {
 ```
 
 **Styling**:
+
 - Border: `1px dashed #B1B1B1`
 - Border radius: `8px`
 - Padding: `20px`
@@ -114,6 +119,7 @@ interface FlowOptionCardProps {
 - Disabled: 50% opacity, not-allowed cursor
 
 **Acceptance Criteria**:
+
 - [ ] Component renders with title and description
 - [ ] Hover state changes background and border
 - [ ] Disabled state prevents click and shows visual feedback
@@ -139,11 +145,13 @@ interface InternasFlowGridProps {
 ```
 
 **Layout**:
+
 - Card container with header and description
 - 2x2 grid of `FlowOptionCard` components
 - Only "Entre mis cuentas" enabled; others disabled
 
 **Acceptance Criteria**:
+
 - [ ] Displays 4 flow options in responsive grid
 - [ ] "Entre mis cuentas" is clickable
 - [ ] Other options show disabled state
@@ -173,11 +181,13 @@ interface TransferDetailsCardProps {
 ```
 
 **Form Fields**:
+
 1. Source account dropdown (shows balance)
 2. Destination product dropdown (excludes selected source)
 3. Amount input with currency formatting
 
 **Acceptance Criteria**:
+
 - [ ] Source dropdown shows accounts with masked numbers and balances
 - [ ] Destination dropdown excludes selected source account
 - [ ] Amount field formats with Colombian peso separators
@@ -201,6 +211,7 @@ interface TransferConfirmationCardProps {
 ```
 
 **Display Fields**:
+
 - Holder name
 - Masked document number
 - Source account (with masked number)
@@ -208,6 +219,7 @@ interface TransferConfirmationCardProps {
 - Transfer amount (respects hideBalances)
 
 **Acceptance Criteria**:
+
 - [ ] All transaction details display correctly
 - [ ] Divider lines separate sections
 - [ ] Amount respects hideBalances setting
@@ -229,12 +241,14 @@ interface TransferResultCardProps {
 ```
 
 **Display Elements**:
+
 - Success/error icon (checkmark or X)
 - Title: "Transaccion Exitosa" or "Transaccion Fallida"
 - Transaction details table
 - Color-coded description (green for success, red for error)
 
 **Acceptance Criteria**:
+
 - [ ] Success state shows teal checkmark icon
 - [ ] Error state shows red X icon
 - [ ] All transaction details display correctly
@@ -252,6 +266,7 @@ interface TransferResultCardProps {
 **File**: `src/utils/transferHelpers.ts`
 
 **Functions to Create**:
+
 ```typescript
 - hasInsufficientBalance(account, amount): boolean
 - isValidTransferAmount(amount, min?, max?): boolean
@@ -261,6 +276,7 @@ interface TransferResultCardProps {
 ```
 
 **Acceptance Criteria**:
+
 - [ ] All utility functions implemented
 - [ ] Functions handle edge cases
 - [ ] Export added to `src/utils/index.ts`
@@ -278,16 +294,19 @@ interface TransferResultCardProps {
 **Route**: `/transferencias/internas`
 
 **Page Structure**:
+
 1. Header: BackButton + "Internas" title + HideBalancesToggle
 2. Breadcrumbs: Inicio / Transferencias / Internas
 3. InternasFlowGrid component
 
 **Behavior**:
+
 - Back button navigates to `/home`
 - "Entre mis cuentas" navigates to step 1
 - Other options are disabled
 
 **Acceptance Criteria**:
+
 - [ ] Page renders with correct layout
 - [ ] Breadcrumbs display correctly
 - [ ] Flow selection navigates to step 1
@@ -302,6 +321,7 @@ interface TransferResultCardProps {
 **Route**: `/transferencias/internas/entre-mis-cuentas`
 
 **Page Structure**:
+
 1. Header: BackButton + "Entre mis Cuentas" title + HideBalancesToggle
 2. Breadcrumbs: Inicio / Transferencias / Entre mis Cuentas
 3. Stepper (step 1 active)
@@ -309,17 +329,20 @@ interface TransferResultCardProps {
 5. Actions: "Volver" link + "Confirmar" button
 
 **State Management**:
+
 - Local state for form fields
 - Validation on "Confirmar" click
 - Store data in sessionStorage on success
 
 **Validation Rules**:
+
 - Source account required
 - Destination product required (different from source)
 - Amount > 0
 - Amount <= source account balance
 
 **Acceptance Criteria**:
+
 - [ ] Stepper shows step 1 as active
 - [ ] Form fields work correctly
 - [ ] Validation errors display
@@ -336,6 +359,7 @@ interface TransferResultCardProps {
 **Route**: `/transferencias/internas/entre-mis-cuentas/confirmacion`
 
 **Page Structure**:
+
 1. Header (same as step 1)
 2. Breadcrumbs
 3. Stepper (step 2 active, step 1 completed)
@@ -343,12 +367,14 @@ interface TransferResultCardProps {
 5. Actions: "Volver" link + "Confirmar Pago" button
 
 **Behavior**:
+
 - Load data from sessionStorage on mount
 - Redirect to step 1 if no data
 - Store confirmation data on "Confirmar Pago"
 - Navigate to step 3
 
 **Acceptance Criteria**:
+
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Confirmation data displays correctly
 - [ ] Redirects to step 1 if no session data
@@ -364,6 +390,7 @@ interface TransferResultCardProps {
 **Route**: `/transferencias/internas/entre-mis-cuentas/sms`
 
 **Page Structure**:
+
 1. Header (same as previous)
 2. Breadcrumbs
 3. Stepper (step 3 active, steps 1-2 completed)
@@ -371,6 +398,7 @@ interface TransferResultCardProps {
 5. Actions: "Volver" link + "Pagar" button
 
 **Behavior**:
+
 - 6-digit OTP input with auto-advance
 - Resend code functionality
 - Validate code on "Pagar" (mock: "123456" is valid)
@@ -379,6 +407,7 @@ interface TransferResultCardProps {
 - Show error on invalid code
 
 **Acceptance Criteria**:
+
 - [ ] Stepper shows step 3 active
 - [ ] OTP input works with auto-advance
 - [ ] Resend link functions (with cooldown)
@@ -396,6 +425,7 @@ interface TransferResultCardProps {
 **Route**: `/transferencias/internas/entre-mis-cuentas/resultado`
 
 **Page Structure**:
+
 1. Header (back button disabled)
 2. Breadcrumbs
 3. Stepper (all 4 steps completed)
@@ -403,6 +433,7 @@ interface TransferResultCardProps {
 5. Actions: "Imprimir/Guardar" + "Realizar otra transaccion" + "Finalizar"
 
 **Behavior**:
+
 - Display mock success result
 - "Imprimir/Guardar" triggers window.print()
 - "Realizar otra transaccion" clears data, navigates to step 1
@@ -410,6 +441,7 @@ interface TransferResultCardProps {
 - Clean sessionStorage on unmount
 
 **Acceptance Criteria**:
+
 - [ ] Stepper shows all steps completed
 - [ ] Result card displays correctly
 - [ ] Print button works
@@ -456,13 +488,14 @@ interface TransferResultCardProps {
 
 **Breakpoints to Test**:
 
-| Breakpoint | Width | Checks |
-|------------|-------|--------|
-| Mobile | <640px | Single column layout, readable stepper |
-| Tablet | 640-1023px | Adaptive layout |
-| Desktop | >=1024px | Full 2-column grid where applicable |
+| Breakpoint | Width      | Checks                                 |
+| ---------- | ---------- | -------------------------------------- |
+| Mobile     | <640px     | Single column layout, readable stepper |
+| Tablet     | 640-1023px | Adaptive layout                        |
+| Desktop    | >=1024px   | Full 2-column grid where applicable    |
 
 **Critical Elements**:
+
 - [ ] Flow grid responsive (2x2 on desktop, 1 column on mobile)
 - [ ] Stepper readable on all sizes
 - [ ] Form fields usable on mobile
@@ -473,6 +506,7 @@ interface TransferResultCardProps {
 #### Step 6.3: Accessibility Testing
 
 **WCAG 2.1 AA Checks**:
+
 - [ ] Keyboard navigation through all elements
 - [ ] Focus states visible on all interactive elements
 - [ ] Form fields have proper labels
@@ -486,31 +520,31 @@ interface TransferResultCardProps {
 
 ### New Files to Create
 
-| File | Phase | Priority |
-|------|-------|----------|
-| `src/types/transfer.ts` | 1.1 | High |
-| `src/mocks/mockTransferData.ts` | 1.2 | High |
-| `src/molecules/FlowOptionCard.tsx` | 2.1 | High |
-| `src/organisms/InternasFlowGrid.tsx` | 3.1 | High |
-| `src/organisms/TransferDetailsCard.tsx` | 3.2 | High |
-| `src/organisms/TransferConfirmationCard.tsx` | 3.3 | High |
-| `src/organisms/TransferResultCard.tsx` | 3.4 | High |
-| `src/utils/transferHelpers.ts` | 4.1 | Medium |
-| `app/(authenticated)/transferencias/internas/page.tsx` | 5.1 | High |
-| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/page.tsx` | 5.2 | High |
-| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/confirmacion/page.tsx` | 5.3 | High |
-| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/sms/page.tsx` | 5.4 | High |
-| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/resultado/page.tsx` | 5.5 | High |
+| File                                                                                  | Phase | Priority |
+| ------------------------------------------------------------------------------------- | ----- | -------- |
+| `src/types/transfer.ts`                                                               | 1.1   | High     |
+| `src/mocks/mockTransferData.ts`                                                       | 1.2   | High     |
+| `src/molecules/FlowOptionCard.tsx`                                                    | 2.1   | High     |
+| `src/organisms/InternasFlowGrid.tsx`                                                  | 3.1   | High     |
+| `src/organisms/TransferDetailsCard.tsx`                                               | 3.2   | High     |
+| `src/organisms/TransferConfirmationCard.tsx`                                          | 3.3   | High     |
+| `src/organisms/TransferResultCard.tsx`                                                | 3.4   | High     |
+| `src/utils/transferHelpers.ts`                                                        | 4.1   | Medium   |
+| `app/(authenticated)/transferencias/internas/page.tsx`                                | 5.1   | High     |
+| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/page.tsx`              | 5.2   | High     |
+| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/confirmacion/page.tsx` | 5.3   | High     |
+| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/sms/page.tsx`          | 5.4   | High     |
+| `app/(authenticated)/transferencias/internas/entre-mis-cuentas/resultado/page.tsx`    | 5.5   | High     |
 
 ### Files to Update
 
-| File | Change |
-|------|--------|
-| `src/types/index.ts` | Add transfer exports |
-| `src/mocks/index.ts` | Add mock data exports |
+| File                     | Change                    |
+| ------------------------ | ------------------------- |
+| `src/types/index.ts`     | Add transfer exports      |
+| `src/mocks/index.ts`     | Add mock data exports     |
 | `src/molecules/index.ts` | Add FlowOptionCard export |
-| `src/organisms/index.ts` | Add organism exports |
-| `src/utils/index.ts` | Add helper exports |
+| `src/organisms/index.ts` | Add organism exports      |
+| `src/utils/index.ts`     | Add helper exports        |
 
 ---
 
@@ -551,10 +585,12 @@ Phase 6: Testing
 ## Dependencies
 
 ### NPM Packages (Already Installed)
+
 - react-hook-form (optional for this feature)
 - yup (optional for validation)
 
 ### Internal Dependencies
+
 - Components from 09a-pagos (Stepper, CodeInputCard)
 - UIContext for hideBalances
 - Existing utility functions
@@ -563,12 +599,12 @@ Phase 6: Testing
 
 ## Risks & Mitigations
 
-| Risk | Mitigation |
-|------|------------|
-| Stepper component not found | Verify 09a-pagos implementation exists |
-| CodeInputCard missing | Check organisms exports |
-| Session data loss on refresh | Use sessionStorage (browser native) |
-| Validation inconsistencies | Create centralized validation utils |
+| Risk                         | Mitigation                             |
+| ---------------------------- | -------------------------------------- |
+| Stepper component not found  | Verify 09a-pagos implementation exists |
+| CodeInputCard missing        | Check organisms exports                |
+| Session data loss on refresh | Use sessionStorage (browser native)    |
+| Validation inconsistencies   | Create centralized validation utils    |
 
 ---
 

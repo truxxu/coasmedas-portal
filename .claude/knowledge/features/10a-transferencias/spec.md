@@ -30,6 +30,7 @@
 The **Transferencias Internas - A Cuentas de mi Red** feature allows users to transfer money to previously registered accounts belonging to other associates in the Coopcentral network. This is the second internal transfer flow, following "Entre mis cuentas".
 
 ### Key Characteristics
+
 - **Multi-step flow**: 4 sequential steps with progress tracking
 - **Recipient Selection**: First step allows selecting from pre-registered network contacts
 - **Product Selection**: Users can choose the destination product from the recipient's available accounts
@@ -39,7 +40,9 @@ The **Transferencias Internas - A Cuentas de mi Red** feature allows users to tr
 - **Accessibility**: WCAG 2.1 AA compliant
 
 ### Navigation Context
+
 **Sidebar Structure**:
+
 ```
 Transferencias (accordion)
 ├── Internas
@@ -54,29 +57,33 @@ Transferencias (accordion)
 ```
 
 ### User Journey
+
 1. View list of registered network accounts (recipients)
 2. Select recipient and their destination product, enter transfer amount
 3. Enter 6-digit SMS security code
 4. View transaction result with option to print/save
 
 ### Key Difference from "Entre mis cuentas"
-| Aspect | Entre mis cuentas | A Cuentas de mi Red |
-|--------|-------------------|---------------------|
-| Step 1 | Form (source/destination/amount) | Recipient list selection |
-| Step 2 | Confirmation review | Form (source/destination/amount) + Captcha |
-| Recipients | Own accounts only | Pre-registered network contacts |
-| Destination | Own products | Recipient's products |
+
+| Aspect      | Entre mis cuentas                | A Cuentas de mi Red                        |
+| ----------- | -------------------------------- | ------------------------------------------ |
+| Step 1      | Form (source/destination/amount) | Recipient list selection                   |
+| Step 2      | Confirmation review              | Form (source/destination/amount) + Captcha |
+| Recipients  | Own accounts only                | Pre-registered network contacts            |
+| Destination | Own products                     | Recipient's products                       |
 
 ---
 
 ## User Stories
 
 ### US-10a.1: View Registered Network Accounts
+
 **As an** authenticated user
 **I want** to see all my registered network contacts
 **So that** I can choose who to transfer money to
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/cuentas-mi-red`
 - [ ] Stepper shows 4 steps with step 1 active
 - [ ] Shows list of registered accounts with avatar, name, and product count
@@ -85,11 +92,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to internal transfers selection
 
 ### US-10a.2: Enter Transfer Details
+
 **As an** authenticated user
 **I want** to fill in transfer details for my chosen recipient
 **So that** I can send money to their account
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/cuentas-mi-red/detalle`
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Title shows recipient name: "Transferencias a [RECIPIENT_NAME]"
@@ -101,11 +110,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to recipient selection
 
 ### US-10a.3: Enter SMS Verification Code
+
 **As an** authenticated user
 **I want** to enter the SMS code sent to my phone
 **So that** I can authorize the transfer
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/cuentas-mi-red/verificacion`
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6-digit OTP input with auto-advance
@@ -115,11 +126,13 @@ Transferencias (accordion)
 - [ ] "Volver" link navigates back to details
 
 ### US-10a.4: View Transaction Result
+
 **As an** authenticated user
 **I want** to see the result of my transfer
 **So that** I know if it was successful
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/transferencias/internas/cuentas-mi-red/resultado`
 - [ ] Stepper shows all 4 steps completed
 - [ ] Success shows teal/green checkmark icon
@@ -176,6 +189,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -196,8 +210,8 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
  */
 export interface RegisteredNetworkAccount {
   id: string;
-  name: string;               // Full name (e.g., "MARÍA FERNANDA GONZALEZ")
-  productCount: number;       // Number of available products
+  name: string; // Full name (e.g., "MARÍA FERNANDA GONZALEZ")
+  productCount: number; // Number of available products
   products: NetworkProduct[]; // Available products for this recipient
 }
 
@@ -206,9 +220,9 @@ export interface RegisteredNetworkAccount {
  */
 export interface NetworkProduct {
   id: string;
-  type: 'ahorros' | 'corriente';  // Account type
-  name: string;                    // "Cuenta de Ahorros"
-  maskedNumber: string;            // "****4522"
+  type: "ahorros" | "corriente"; // Account type
+  name: string; // "Cuenta de Ahorros"
+  maskedNumber: string; // "****4522"
 }
 
 /**
@@ -216,9 +230,9 @@ export interface NetworkProduct {
  */
 export interface SourceAccount {
   id: string;
-  name: string;           // "Cuenta de Ahorros"
-  accountType: string;    // "Ahorros"
-  productNumber: string;  // "4428" (raw, will be masked)
+  name: string; // "Cuenta de Ahorros"
+  accountType: string; // "Ahorros"
+  productNumber: string; // "4428" (raw, will be masked)
   balance: number;
 }
 
@@ -235,16 +249,16 @@ export interface NetworkTransferFormData {
  * Step 4: Network transfer result
  */
 export interface NetworkTransferResult {
-  status: 'success' | 'error';
-  sourceAccount: string;        // "Cuenta de Ahorros"
-  recipientName: string;        // "MARIA FERNANDA GONZALEZ"
-  destinationAccount: string;   // "Cuenta de Ahorros (Ahorros ****4522)"
+  status: "success" | "error";
+  sourceAccount: string; // "Cuenta de Ahorros"
+  recipientName: string; // "MARIA FERNANDA GONZALEZ"
+  destinationAccount: string; // "Cuenta de Ahorros (Ahorros ****4522)"
   amountTransferred: number;
   transactionCost: number;
-  transactionDate: string;      // "1 de septiembre de 2025"
-  transactionTime: string;      // "7:21 pm"
-  approvalNumber: string;       // "450606"
-  description: string;          // "Transferencia Exitosa"
+  transactionDate: string; // "1 de septiembre de 2025"
+  transactionTime: string; // "7:21 pm"
+  approvalNumber: string; // "450606"
+  description: string; // "Transferencia Exitosa"
 }
 
 /**
@@ -267,7 +281,7 @@ export interface NetworkTransferFlowState {
 
 ```typescript
 // Add export
-export * from './networkTransfer';
+export * from "./networkTransfer";
 ```
 
 ---
@@ -281,6 +295,7 @@ export * from './networkTransfer';
 **Location**: `src/molecules/RegisteredAccountItem.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface RegisteredAccountItemProps {
   name: string;
@@ -291,6 +306,7 @@ interface RegisteredAccountItemProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Avatar, ChevronIcon } from '@/src/atoms';
@@ -349,6 +365,7 @@ export const RegisteredAccountItem: React.FC<RegisteredAccountItemProps> = ({
 **Location**: `src/molecules/DestinationProductCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface DestinationProductCardProps {
   productName: string;
@@ -361,6 +378,7 @@ interface DestinationProductCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -414,6 +432,7 @@ export const DestinationProductCard: React.FC<DestinationProductCardProps> = ({
 **Location**: `src/molecules/TransferAmountInput.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface TransferAmountInputProps {
   value: string;
@@ -426,6 +445,7 @@ interface TransferAmountInputProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -499,6 +519,7 @@ export const TransferAmountInput: React.FC<TransferAmountInputProps> = ({
 **Location**: `src/molecules/InfoNoteBox.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface InfoNoteBoxProps {
   children: React.ReactNode;
@@ -507,6 +528,7 @@ interface InfoNoteBoxProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -547,6 +569,7 @@ export const InfoNoteBox: React.FC<InfoNoteBoxProps> = ({
 **Location**: `src/organisms/RegisteredAccountsList.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface RegisteredAccountsListProps {
   accounts: RegisteredNetworkAccount[];
@@ -556,6 +579,7 @@ interface RegisteredAccountsListProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -619,6 +643,7 @@ export const RegisteredAccountsList: React.FC<RegisteredAccountsListProps> = ({
 **Location**: `src/organisms/NetworkTransferForm.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface NetworkTransferFormProps {
   recipientName: string;
@@ -634,6 +659,7 @@ interface NetworkTransferFormProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -750,6 +776,7 @@ export const NetworkTransferForm: React.FC<NetworkTransferFormProps> = ({
 **Location**: `src/organisms/NetworkTransferResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface NetworkTransferResultCardProps {
   result: NetworkTransferResult;
@@ -758,6 +785,7 @@ interface NetworkTransferResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -1435,12 +1463,14 @@ export default function ResultadoPage() {
 Use browser sessionStorage to persist data between steps, consistent with 09a-pagos and 10-transferencias.
 
 **Storage Keys**:
+
 - `networkTransferRecipient` - JSON stringified RegisteredNetworkAccount
 - `networkTransferDestination` - JSON stringified NetworkProduct
 - `networkTransferSourceId` - Selected source account ID
 - `networkTransferAmount` - Transfer amount (string)
 
 **Lifecycle**:
+
 1. Step 1: Store recipient on selection
 2. Step 2: Read recipient, store source and amount on "Confirmar"
 3. Step 3: Read all data, verify code
@@ -1451,6 +1481,7 @@ Use browser sessionStorage to persist data between steps, consistent with 09a-pa
 ## Utility Functions
 
 ### Existing Utils to Reuse
+
 - `formatCurrency` - Format as Colombian Peso
 - `maskCurrency` - Returns masked currency string
 - `maskNumber` - Mask account numbers
@@ -1459,16 +1490,19 @@ Use browser sessionStorage to persist data between steps, consistent with 09a-pa
 ### File: `src/utils/networkTransferHelpers.ts` (Optional)
 
 ```typescript
-import { RegisteredNetworkAccount, SourceAccount } from '@/src/types/networkTransfer';
+import {
+  RegisteredNetworkAccount,
+  SourceAccount,
+} from "@/src/types/networkTransfer";
 
 /**
  * Clear all network transfer flow data from sessionStorage
  */
 export const clearNetworkTransferFlowData = (): void => {
-  sessionStorage.removeItem('networkTransferRecipient');
-  sessionStorage.removeItem('networkTransferDestination');
-  sessionStorage.removeItem('networkTransferSourceId');
-  sessionStorage.removeItem('networkTransferAmount');
+  sessionStorage.removeItem("networkTransferRecipient");
+  sessionStorage.removeItem("networkTransferDestination");
+  sessionStorage.removeItem("networkTransferSourceId");
+  sessionStorage.removeItem("networkTransferAmount");
 };
 
 /**
@@ -1479,18 +1513,18 @@ export const hasRequiredDataForStep = (step: 1 | 2 | 3 | 4): boolean => {
     case 1:
       return true; // No prerequisite data needed
     case 2:
-      return !!sessionStorage.getItem('networkTransferRecipient');
+      return !!sessionStorage.getItem("networkTransferRecipient");
     case 3:
       return !!(
-        sessionStorage.getItem('networkTransferRecipient') &&
-        sessionStorage.getItem('networkTransferSourceId') &&
-        sessionStorage.getItem('networkTransferAmount')
+        sessionStorage.getItem("networkTransferRecipient") &&
+        sessionStorage.getItem("networkTransferSourceId") &&
+        sessionStorage.getItem("networkTransferAmount")
       );
     case 4:
       return !!(
-        sessionStorage.getItem('networkTransferRecipient') &&
-        sessionStorage.getItem('networkTransferSourceId') &&
-        sessionStorage.getItem('networkTransferAmount')
+        sessionStorage.getItem("networkTransferRecipient") &&
+        sessionStorage.getItem("networkTransferSourceId") &&
+        sessionStorage.getItem("networkTransferAmount")
       );
     default:
       return false;
@@ -1502,7 +1536,7 @@ export const hasRequiredDataForStep = (step: 1 | 2 | 3 | 4): boolean => {
  */
 export const hasInsufficientBalance = (
   account: SourceAccount,
-  requiredAmount: number
+  requiredAmount: number,
 ): boolean => {
   return account.balance < requiredAmount;
 };
@@ -1519,55 +1553,55 @@ import {
   RegisteredNetworkAccount,
   SourceAccount,
   NetworkTransferResult,
-} from '@/src/types/networkTransfer';
-import { Step } from '@/src/types/stepper';
+} from "@/src/types/networkTransfer";
+import { Step } from "@/src/types/stepper";
 
 /**
  * Mock registered network accounts (recipients)
  */
 export const mockRegisteredAccounts: RegisteredNetworkAccount[] = [
   {
-    id: '1',
-    name: 'MARÍA FERNANDA GONZALEZ',
+    id: "1",
+    name: "MARÍA FERNANDA GONZALEZ",
     productCount: 2,
     products: [
       {
-        id: 'p1',
-        type: 'ahorros',
-        name: 'Cuenta de Ahorros',
-        maskedNumber: '****4522',
+        id: "p1",
+        type: "ahorros",
+        name: "Cuenta de Ahorros",
+        maskedNumber: "****4522",
       },
       {
-        id: 'p2',
-        type: 'corriente',
-        name: 'Cuenta Corriente',
-        maskedNumber: '****7890',
-      },
-    ],
-  },
-  {
-    id: '2',
-    name: 'CARLOS ALBERTO PÉREZ',
-    productCount: 1,
-    products: [
-      {
-        id: 'p3',
-        type: 'ahorros',
-        name: 'Cuenta de Ahorros',
-        maskedNumber: '****3344',
+        id: "p2",
+        type: "corriente",
+        name: "Cuenta Corriente",
+        maskedNumber: "****7890",
       },
     ],
   },
   {
-    id: '3',
-    name: 'JULIANA ANDREA BARRIOS',
+    id: "2",
+    name: "CARLOS ALBERTO PÉREZ",
     productCount: 1,
     products: [
       {
-        id: 'p4',
-        type: 'ahorros',
-        name: 'Cuenta de Ahorros',
-        maskedNumber: '****9988',
+        id: "p3",
+        type: "ahorros",
+        name: "Cuenta de Ahorros",
+        maskedNumber: "****3344",
+      },
+    ],
+  },
+  {
+    id: "3",
+    name: "JULIANA ANDREA BARRIOS",
+    productCount: 1,
+    products: [
+      {
+        id: "p4",
+        type: "ahorros",
+        name: "Cuenta de Ahorros",
+        maskedNumber: "****9988",
       },
     ],
   },
@@ -1578,24 +1612,24 @@ export const mockRegisteredAccounts: RegisteredNetworkAccount[] = [
  */
 export const mockSourceAccounts: SourceAccount[] = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
-    accountType: 'Ahorros',
-    productNumber: '4428',
+    id: "1",
+    name: "Cuenta de Ahorros",
+    accountType: "Ahorros",
+    productNumber: "4428",
     balance: 8730500,
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
-    accountType: 'Corriente',
-    productNumber: '7891',
+    id: "2",
+    name: "Cuenta Corriente",
+    accountType: "Corriente",
+    productNumber: "7891",
     balance: 5200000,
   },
   {
-    id: '3',
-    name: 'Cuenta Nómina',
-    accountType: 'Nómina',
-    productNumber: '2341',
+    id: "3",
+    name: "Cuenta Nómina",
+    accountType: "Nómina",
+    productNumber: "2341",
     balance: 3450000,
   },
 ];
@@ -1604,48 +1638,48 @@ export const mockSourceAccounts: SourceAccount[] = [
  * Mock transaction result (success)
  */
 export const mockNetworkTransferResult: NetworkTransferResult = {
-  status: 'success',
-  sourceAccount: 'Cuenta de Ahorros',
-  recipientName: 'MARIA FERNANDA GONZALEZ',
-  destinationAccount: 'Cuenta de Ahorros (Ahorros ****4522)',
+  status: "success",
+  sourceAccount: "Cuenta de Ahorros",
+  recipientName: "MARIA FERNANDA GONZALEZ",
+  destinationAccount: "Cuenta de Ahorros (Ahorros ****4522)",
   amountTransferred: 350000,
   transactionCost: 0,
-  transactionDate: '1 de septiembre de 2025',
-  transactionTime: '7:21 pm',
-  approvalNumber: '450606',
-  description: 'Transferencia Exitosa',
+  transactionDate: "1 de septiembre de 2025",
+  transactionTime: "7:21 pm",
+  approvalNumber: "450606",
+  description: "Transferencia Exitosa",
 };
 
 /**
  * Mock transaction result (error)
  */
 export const mockNetworkTransferResultError: NetworkTransferResult = {
-  status: 'error',
-  sourceAccount: 'Cuenta de Ahorros',
-  recipientName: 'MARIA FERNANDA GONZALEZ',
-  destinationAccount: 'Cuenta de Ahorros (Ahorros ****4522)',
+  status: "error",
+  sourceAccount: "Cuenta de Ahorros",
+  recipientName: "MARIA FERNANDA GONZALEZ",
+  destinationAccount: "Cuenta de Ahorros (Ahorros ****4522)",
   amountTransferred: 0,
   transactionCost: 0,
-  transactionDate: '1 de septiembre de 2025',
-  transactionTime: '7:21 pm',
-  approvalNumber: '-',
-  description: 'Fondos insuficientes',
+  transactionDate: "1 de septiembre de 2025",
+  transactionTime: "7:21 pm",
+  approvalNumber: "-",
+  description: "Fondos insuficientes",
 };
 
 /**
  * Network transfer flow steps
  */
 export const NETWORK_TRANSFER_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 ```
 
 **Export**: Add to `src/mocks/index.ts`
@@ -1657,7 +1691,7 @@ export const MOCK_VALID_CODE = '123456';
 ### File: `src/schemas/networkTransferSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 2: Network transfer details validation
@@ -1665,15 +1699,17 @@ import * as yup from 'yup';
 export const networkTransferDetailsSchema = yup.object({
   sourceAccountId: yup
     .string()
-    .required('Por favor selecciona una cuenta origen'),
+    .required("Por favor selecciona una cuenta origen"),
   amount: yup
     .number()
-    .required('Por favor ingresa un valor a transferir')
-    .positive('El valor debe ser mayor a 0')
-    .max(100000000, 'El valor máximo es $100.000.000'),
+    .required("Por favor ingresa un valor a transferir")
+    .positive("El valor debe ser mayor a 0")
+    .max(100000000, "El valor máximo es $100.000.000"),
 });
 
-export type NetworkTransferDetailsFormData = yup.InferType<typeof networkTransferDetailsSchema>;
+export type NetworkTransferDetailsFormData = yup.InferType<
+  typeof networkTransferDetailsSchema
+>;
 
 /**
  * Step 3: SMS code verification validation
@@ -1681,12 +1717,14 @@ export type NetworkTransferDetailsFormData = yup.InferType<typeof networkTransfe
 export const smsVerificationSchema = yup.object({
   code: yup
     .string()
-    .required('Por favor ingresa el código')
-    .length(6, 'El código debe tener 6 dígitos')
-    .matches(/^\d+$/, 'El código debe contener solo números'),
+    .required("Por favor ingresa el código")
+    .length(6, "El código debe tener 6 dígitos")
+    .matches(/^\d+$/, "El código debe contener solo números"),
 });
 
-export type SMSVerificationFormData = yup.InferType<typeof smsVerificationSchema>;
+export type SMSVerificationFormData = yup.InferType<
+  typeof smsVerificationSchema
+>;
 ```
 
 ---
@@ -1747,6 +1785,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 ## Implementation Order
 
 ### Phase 1: Foundation (Types & Mock Data)
+
 1. Create type definitions:
    - `src/types/networkTransfer.ts`
    - Update `src/types/index.ts`
@@ -1756,6 +1795,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Molecules
+
 3. Create molecules:
    - `src/molecules/RegisteredAccountItem.tsx`
    - `src/molecules/DestinationProductCard.tsx`
@@ -1764,6 +1804,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
    - Update `src/molecules/index.ts`
 
 ### Phase 3: Organisms
+
 4. Create organisms:
    - `src/organisms/RegisteredAccountsList.tsx`
    - `src/organisms/NetworkTransferForm.tsx`
@@ -1771,11 +1812,13 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
    - Update `src/organisms/index.ts`
 
 ### Phase 4: Utilities (Optional)
+
 5. Create utility functions:
    - `src/utils/networkTransferHelpers.ts`
    - Update `src/utils/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/transferencias/internas/cuentas-mi-red/page.tsx` (Step 1)
    - `app/(authenticated)/transferencias/internas/cuentas-mi-red/detalle/page.tsx` (Step 2)
@@ -1783,11 +1826,13 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
    - `app/(authenticated)/transferencias/internas/cuentas-mi-red/resultado/page.tsx` (Step 4)
 
 ### Phase 6: Integration
+
 7. Update InternasFlowGrid:
    - Enable "A cuentas de mi red" option in the flow selection grid
    - Update navigation to point to the new route
 
 ### Phase 7: Testing & Refinement
+
 8. Manual testing:
    - Test complete flow from recipient selection to result
    - Test back navigation at each step
@@ -1810,6 +1855,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 ### Manual Testing Checklist
 
 #### Step 1: Recipient Selection (`/transferencias/internas/cuentas-mi-red`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] Registered accounts list displays with avatars
@@ -1820,6 +1866,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - [ ] Empty state displays if no accounts
 
 #### Step 2: Transfer Details (`/transferencias/internas/cuentas-mi-red/detalle`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Title shows recipient name
@@ -1837,6 +1884,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - [ ] Redirects to step 1 if no session data
 
 #### Step 3: SMS Verification (`/transferencias/internas/cuentas-mi-red/verificacion`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6 code input fields render
@@ -1853,6 +1901,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - [ ] Redirects to step 1 if no session data
 
 #### Step 4: Result (`/transferencias/internas/cuentas-mi-red/resultado`)
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all 4 steps completed
 - [ ] Success checkmark icon displays (teal border)
@@ -1870,6 +1919,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - [ ] Session storage cleared on exit
 
 ### Responsive Testing
+
 - [ ] Desktop (≥1024px): Layout correct
 - [ ] Tablet (640-1023px): Layout adapts
 - [ ] Mobile (<640px): Stacked layout works
@@ -1878,6 +1928,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - [ ] Code inputs sized for touch on mobile
 
 ### Accessibility Testing
+
 - [ ] Tab navigation through all interactive elements
 - [ ] Focus states visible
 - [ ] Screen reader announces steps
@@ -1891,6 +1942,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 ## Dependencies
 
 ### Existing Components (from 09a-pagos/10-transferencias)
+
 - `StepperCircle` (atom)
 - `StepperConnector` (atom)
 - `CodeInput` (atom)
@@ -1899,6 +1951,7 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - `CodeInputCard` (organism)
 
 ### Existing Components (general)
+
 - `Card` (atom)
 - `Button` (atom)
 - `BackButton` (atom)
@@ -1909,10 +1962,12 @@ app/(authenticated)/transferencias/internas/cuentas-mi-red/
 - `HideBalancesToggle` (molecule)
 
 ### Existing Contexts
+
 - `UIContext` - for `hideBalances`
 - `useWelcomeBar` - for welcome bar visibility
 
 ### Existing Utils
+
 - `formatCurrency`
 - `maskCurrency`
 - `maskNumber`

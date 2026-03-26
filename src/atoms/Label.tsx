@@ -1,11 +1,16 @@
-import { LabelHTMLAttributes, ReactNode } from 'react';
+import { LabelHTMLAttributes, ReactNode } from "react";
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode;
   required?: boolean;
 }
 
-export function Label({ children, required, className = '', ...props }: LabelProps) {
+export function Label({
+  children,
+  required,
+  className = "",
+  ...props
+}: LabelProps) {
   return (
     <label
       className={`block font-medium text-[14.5px] text-brand-gray-high mb-1.5 ${className}`}

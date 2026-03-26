@@ -7,13 +7,13 @@
 
 ## Overview
 
-| Metric | Count |
-|--------|-------|
-| Total endpoints available (backend) | 46 |
-| Currently used by mobile app | 46 |
-| Endpoints with Postman examples | 18 |
-| Endpoints without Postman examples | 28 |
-| Excluded (not implementing) | 3 (TransfiYa x2, `/register-device`) |
+| Metric                              | Count                                |
+| ----------------------------------- | ------------------------------------ |
+| Total endpoints available (backend) | 46                                   |
+| Currently used by mobile app        | 46                                   |
+| Endpoints with Postman examples     | 18                                   |
+| Endpoints without Postman examples  | 28                                   |
+| Excluded (not implementing)         | 3 (TransfiYa x2, `/register-device`) |
 
 ### Protocol
 
@@ -63,6 +63,7 @@ All responses follow this structure:
 ## Common Request Patterns
 
 **User Identification (most endpoints):**
+
 ```json
 {
   "documentType": "CC",
@@ -73,6 +74,7 @@ All responses follow this structure:
 **Allowed Document Types:** CC, CE, NIT, TI, PA
 
 **Source Account Object:**
+
 ```json
 {
   "codigoProductoCobis": "01",
@@ -81,9 +83,11 @@ All responses follow this structure:
   "tipoCartera": "0"
 }
 ```
+
 > `tipoCartera` is only required for credit accounts.
 
 **Device Info (BRE-B endpoints):**
+
 ```json
 {
   "ip": "192.168.1.1",
@@ -112,15 +116,18 @@ All responses follow this structure:
 > **Auth resolved:** No auth required. Used pre-login (salt needed to hash password before authenticating). Confirmed by mobile app + Postman behavior. Backend config marking as JWT is incorrect.
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
   "documentNumber": "79138052"
 }
 ```
+
 > Backend docs include `"indPag": "1"` but mobile and Postman omit it. Likely optional.
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -140,6 +147,7 @@ All responses follow this structure:
 - **Mobile usage:** Login screen, Registration screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -148,6 +156,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -160,6 +169,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - Contact info is masked for privacy
 - `email` field present in backend + Postman but missing from mobile report
 
@@ -172,6 +182,7 @@ All responses follow this structure:
 - **Mobile usage:** Login screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -180,9 +191,11 @@ All responses follow this structure:
   "otp": "745765"
 }
 ```
+
 > Backend docs include an optional `deviceId` field. Not used by mobile or web.
 
 **Response (Postman actual):**
+
 ```json
 {
   "statusCode": 0,
@@ -203,6 +216,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - `documentNumber` and `mobile` returned as numbers (not strings)
 - Password must be BCrypt hash (60 chars). Salt retrieved via `/get-salt`
 - Password verification uses BCrypt + HMAC-SHA256 pepper server-side
@@ -218,6 +232,7 @@ All responses follow this structure:
 > **Auth resolved:** No auth required. Mobile report is correct. Backend config marking as JWT is not enforced.
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -227,12 +242,14 @@ All responses follow this structure:
 ```
 
 **Allowed `trnType` values:**
+
 - `PaymentInternal`
 - `TransferInternal`
 - `TransferExternalBanks`
 - `TransferExternalEntities`
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -257,21 +274,25 @@ All responses follow this structure:
 > **Auth resolved:** No auth required. Pre-registration endpoint - user has no account yet. Mobile report is correct.
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
   "documentNumber": "1234567890"
 }
 ```
+
 > Backend includes `indPag: "1"`.
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa"
 }
 ```
+
 > No payload. Confirmation only. Error code 101 if user not found.
 
 ---
@@ -283,6 +304,7 @@ All responses follow this structure:
 - **Mobile usage:** Registration/Password screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -294,6 +316,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -326,6 +349,7 @@ All responses follow this structure:
 - **Mobile usage:** Change Password screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -337,6 +361,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -366,12 +391,14 @@ All responses follow this structure:
 - **Mobile usage:** Home screen, Balances screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
   "documentNumber": "1234567890"
 }
 ```
+
 > Backend includes `indPag: "1"`.
 
 **Response:**
@@ -379,6 +406,7 @@ All responses follow this structure:
 > :warning: **MAJOR DISCREPANCY:** Mobile report shows categorized object `{ ahorro: [...], aportes: [...], ... }`. Backend shows flat array `[{ producto, saldo }]`. **Backend is the authoritative source (MapFrame-based).** The mobile app likely transforms this flat structure client-side.
 
 **Backend response:**
+
 ```json
 {
   "statusCode": 0,
@@ -391,6 +419,7 @@ All responses follow this structure:
 ```
 
 **Mobile interpretation:**
+
 ```json
 {
   "payload": [{
@@ -404,6 +433,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - Need to verify actual response structure with a real API call
 - The mobile app may be using a different internal structure or the backend may have been updated
 
@@ -416,6 +446,7 @@ All responses follow this structure:
 - **Mobile usage:** Product details screens
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -429,11 +460,13 @@ All responses follow this structure:
 ```
 
 **Notes on request fields:**
+
 - `fechaConsulta`: Format `YYYYMMDD`. Mobile sends as string, Postman sends as number `0` (all history?)
 - `tipoCartera`: Required for credit products, omit for others
 - `indPag`: Pagination indicator
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -463,6 +496,7 @@ All responses follow this structure:
 - **Mobile usage:** Savings balances screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -472,6 +506,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -491,6 +526,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - :warning: **Type discrepancy:** Backend says all values are strings (MapFrame parsing). Mobile report says `saldoDisponible` and `saldoTotal` are numbers. Postman shows `codigoProductoCobis` as number in BRE-B accounts but likely string here.
 - Same response structure used by: `/transfer/internal/sources/savings`, `/transfer/external/sources/savings`, `/payment/internal/sources/savings`, `/transfer/internal/targets/savings`
 - Backend includes internal flags (`indicadorTransaccionesInternas`, `indicadorTransaccionesExternasYPagos`) not exposed in the API response
@@ -504,6 +540,7 @@ All responses follow this structure:
 - **Mobile usage:** Credit balance screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -513,6 +550,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -539,6 +577,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - Same structure reused by: `/transfer/internal/sources/credits`, `/transfer/external/sources/credits`, `/payment/internal/sources/credits`, `/transfer/internal/targets/credits`
 
 ---
@@ -550,6 +589,7 @@ All responses follow this structure:
 - **Mobile usage:** Investment balances screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -559,6 +599,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -580,6 +621,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - `codigoProductoCobis === "4"` = PAC, `"21"` = CDAT
 - Same structure reused by: `/transfer/internal/sources/investments`, `/transfer/internal/targets/investments`
 
@@ -592,6 +634,7 @@ All responses follow this structure:
 - **Mobile usage:** Contributions balance screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -601,6 +644,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -630,6 +674,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - If `idCuentaAhorroPermanente == 0`, the `ahorroPermanente` key is omitted
 - Monetary fields use `ValorConDecimales` type internally (last 2 digits = decimals, e.g. `150000` = `1500.00`). API converts before returning.
 - `codigoProductoCobisAportes` returned as number (not string like other endpoints)
@@ -643,6 +688,7 @@ All responses follow this structure:
 - **Mobile usage:** Protection balance screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -652,6 +698,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -672,6 +719,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - Backend includes `diasMora` in the response (not in mobile report)
 - Protection products are payment-only (no balance concept)
 
@@ -686,6 +734,7 @@ All responses follow this structure:
 - **Mobile usage:** Payments screen (product selection)
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -695,6 +744,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -721,6 +771,7 @@ All responses follow this structure:
 - **Mobile usage:** Payment source selection screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -742,6 +793,7 @@ All responses follow this structure:
 - **Mobile usage:** Payment source selection screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -763,6 +815,7 @@ All responses follow this structure:
 - **Mobile usage:** Payment confirmation/verification screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -789,6 +842,7 @@ All responses follow this structure:
 > **Note:** The `cuentas` array supports multi-product unified payment. Each entry uses `tipoProducto` (e.g. "AP", "CR", "PR") obtained from `/payment/products` by matching `idCuenta`.
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -811,6 +865,7 @@ All responses follow this structure:
 - **Mobile usage:** Payzen payment confirmation screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -831,6 +886,7 @@ All responses follow this structure:
 > Mobile app also sends `cuentas` array. Backend docs do not include it.
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -842,6 +898,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - User should be redirected to `paymentUrl` to complete payment
 - Third-party integration with Payzen payment gateway
 
@@ -886,6 +943,7 @@ All responses follow this structure:
 - **Mobile usage:** Internal transfer destination selection
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -895,6 +953,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -920,6 +979,7 @@ All responses follow this structure:
 - **Description:** List credit accounts available as transfer destination
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -956,6 +1016,7 @@ All responses follow this structure:
 - **Mobile usage:** Transfer verification screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -978,6 +1039,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1022,6 +1084,7 @@ All responses follow this structure:
 **Request:** `{}` (no required fields)
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1044,6 +1107,7 @@ All responses follow this structure:
 - **Mobile usage:** External transfer cost confirmation screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1066,6 +1130,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1086,6 +1151,7 @@ All responses follow this structure:
 - **Mobile usage:** External transfer verification screen
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1110,6 +1176,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1138,13 +1205,12 @@ All responses follow this structure:
 **Request:** `{}` (no required fields)
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa",
-  "payload": [
-    { "code": "001", "name": "COOPCENTRAL" }
-  ]
+  "payload": [{ "code": "001", "name": "COOPCENTRAL" }]
 }
 ```
 
@@ -1157,6 +1223,7 @@ All responses follow this structure:
 - **Mobile usage:** Coop transfer destination validation
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1172,12 +1239,14 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
   "statusDesc": "Transaccion exitosa"
 }
 ```
+
 > No payload. Confirmation only.
 
 ---
@@ -1204,6 +1273,7 @@ All responses follow this structure:
 - **Description:** List accounts eligible for BRE-B key registration
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1213,6 +1283,7 @@ All responses follow this structure:
 ```
 
 **Response (Postman actual):**
+
 ```json
 {
   "statusCode": 0,
@@ -1241,6 +1312,7 @@ All responses follow this structure:
 ```
 
 **Notes:**
+
 - `codigoProductoCobis` is a number in the actual response (not string)
 - `tipoCuenta`: `AH` = savings, `CR` = credit
 - `subtipoCuenta`: `AV` = vista, `CR` = credit rotation
@@ -1253,6 +1325,7 @@ All responses follow this structure:
 - **Description:** List user's registered BRE-B keys
 
 **Request:**
+
 ```json
 {
   "user": "ANDERSON SOLANO BERNAL",
@@ -1268,6 +1341,7 @@ All responses follow this structure:
 ```
 
 **Response (Postman actual - with keys):**
+
 ```json
 {
   "statusCode": 0,
@@ -1289,6 +1363,7 @@ All responses follow this structure:
 ```
 
 **Response (no keys):**
+
 ```json
 {
   "statusCode": 0,
@@ -1307,6 +1382,7 @@ All responses follow this structure:
 - **Description:** Resolve a BRE-B key to find the recipient
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1323,6 +1399,7 @@ All responses follow this structure:
 ```
 
 **Response (Postman actual):**
+
 ```json
 {
   "statusCode": 0,
@@ -1345,6 +1422,7 @@ All responses follow this structure:
 - **Description:** Create a new BRE-B key
 
 **Key Types (`typeKeyCustomer`):**
+
 - `E` - Email
 - `M` - Mobile number
 - `B` - Business code
@@ -1352,6 +1430,7 @@ All responses follow this structure:
 - `NRIC` - Document ID
 
 **Request:**
+
 ```json
 {
   "typeKeyCustomer": "M",
@@ -1375,6 +1454,7 @@ All responses follow this structure:
 ```
 
 **Response (Postman actual - success):**
+
 ```json
 {
   "statusCode": 0,
@@ -1403,6 +1483,7 @@ All responses follow this structure:
 ```
 
 **Response (already used key):**
+
 ```json
 {
   "statusCode": 0,
@@ -1451,6 +1532,7 @@ All responses follow this structure:
 - **Description:** Accept BRE-B terms and conditions
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1461,6 +1543,7 @@ All responses follow this structure:
 ```
 
 **Response (Postman actual):**
+
 ```json
 {
   "statusCode": 0,
@@ -1481,6 +1564,7 @@ All responses follow this structure:
 - **Description:** Initiate a BRE-B transfer transaction
 
 **Request:**
+
 ```json
 {
   "documentNumber": "93363449",
@@ -1516,6 +1600,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1535,6 +1620,7 @@ All responses follow this structure:
 - **Description:** Check BRE-B transaction status
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1551,6 +1637,7 @@ All responses follow this structure:
 ```
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1573,6 +1660,7 @@ All responses follow this structure:
 - **Description:** List BRE-B transaction history
 
 **Request:**
+
 ```json
 {
   "documentType": "CC",
@@ -1587,6 +1675,7 @@ All responses follow this structure:
 > :warning: **Type discrepancy:** Mobile sends dates as strings `"YYYYMMDD"`. Backend sends as numbers `20240101`. Use numbers per backend spec.
 
 **Response:**
+
 ```json
 {
   "statusCode": 0,
@@ -1601,32 +1690,32 @@ All responses follow this structure:
 
 ## Error Codes
 
-| Code | Description | Action |
-|------|-------------|--------|
-| 0 | Success | Process response |
-| 1 | Login error | Show error message |
-| 2 | Request validation failed | Check request format |
-| 4 | User already registered | Show info message |
-| 101 | User not found | Show not found message |
-| 102 | Mobile format error in core | Contact support |
-| 103 | Email format error in core | Contact support |
-| 105 | Core banking communication error | Retry or show error |
-| 106 | Invalid OTP | Ask user to retry |
-| 107 | Unauthorized | Redirect to login |
-| 108 | Visionamos web service error | Show error |
-| 109 | Payzen WS error | Show payment error |
-| 110 | Payzen rejection | Show Payzen error detail |
-| 111 | Payzen no response | Show timeout error |
-| 112 | Visionamos transaction WS error | Show error |
-| 113 | Visionamos transaction rejected | Show rejection message |
-| 114 | Visionamos no response | Show timeout error |
-| 116 | Inalambria (SMS) error | Show SMS error |
-| 500 | BRE-B Visionamos error | Show error with upstream details |
+| Code | Description                      | Action                           |
+| ---- | -------------------------------- | -------------------------------- |
+| 0    | Success                          | Process response                 |
+| 1    | Login error                      | Show error message               |
+| 2    | Request validation failed        | Check request format             |
+| 4    | User already registered          | Show info message                |
+| 101  | User not found                   | Show not found message           |
+| 102  | Mobile format error in core      | Contact support                  |
+| 103  | Email format error in core       | Contact support                  |
+| 105  | Core banking communication error | Retry or show error              |
+| 106  | Invalid OTP                      | Ask user to retry                |
+| 107  | Unauthorized                     | Redirect to login                |
+| 108  | Visionamos web service error     | Show error                       |
+| 109  | Payzen WS error                  | Show payment error               |
+| 110  | Payzen rejection                 | Show Payzen error detail         |
+| 111  | Payzen no response               | Show timeout error               |
+| 112  | Visionamos transaction WS error  | Show error                       |
+| 113  | Visionamos transaction rejected  | Show rejection message           |
+| 114  | Visionamos no response           | Show timeout error               |
+| 116  | Inalambria (SMS) error           | Show SMS error                   |
+| 500  | BRE-B Visionamos error           | Show error with upstream details |
 
 ### Special State Codes
 
-| Code | Meaning |
-|------|---------|
+| Code   | Meaning                                           |
+| ------ | ------------------------------------------------- |
 | `U119` | Empty result / Already exists (context-dependent) |
 
 ### Error Message Extraction Priority
@@ -1638,13 +1727,13 @@ All responses follow this structure:
 
 ## Validation Rules
 
-| Field | Rule |
-|-------|------|
-| `documentNumber` | Numeric, up to 16 digits |
-| `otp` | Numeric, 6 digits (0-999999) |
-| `password` | String, max 60 chars (BCrypt hash) |
-| `salt` | String, max 29 chars (BCrypt salt) |
-| `documentType` | Allowed: CC, CE, NIT, TI, PA |
+| Field            | Rule                               |
+| ---------------- | ---------------------------------- |
+| `documentNumber` | Numeric, up to 16 digits           |
+| `otp`            | Numeric, 6 digits (0-999999)       |
+| `password`       | String, max 60 chars (BCrypt hash) |
+| `salt`           | String, max 29 chars (BCrypt salt) |
+| `documentType`   | Allowed: CC, CE, NIT, TI, PA       |
 
 ---
 
@@ -1652,10 +1741,10 @@ All responses follow this structure:
 
 Several URL paths share the same backend flow:
 
-| Backend Flow | Endpoints Using It |
-|---|---|
-| `TransferInternalSourcesSavingsFlow` | `/transfer/internal/sources/savings`, `/transfer/external/sources/savings`, `/payment/internal/sources/savings` |
-| `TransferInternalSourcesCreditsFlow` | `/transfer/internal/sources/credits`, `/transfer/external/sources/credits`, `/payment/internal/sources/credits` |
-| `TransferInternalSourcesInvestmentsFlow` | `/transfer/internal/sources/investments` |
+| Backend Flow                             | Endpoints Using It                                                                                              |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `TransferInternalSourcesSavingsFlow`     | `/transfer/internal/sources/savings`, `/transfer/external/sources/savings`, `/payment/internal/sources/savings` |
+| `TransferInternalSourcesCreditsFlow`     | `/transfer/internal/sources/credits`, `/transfer/external/sources/credits`, `/payment/internal/sources/credits` |
+| `TransferInternalSourcesInvestmentsFlow` | `/transfer/internal/sources/investments`                                                                        |
 
 This means these endpoints return identical response structures.

@@ -9,44 +9,46 @@ import type { Step } from "@/src/types/stepper";
 /**
  * Mock source accounts (user's savings accounts)
  */
-export const mockExternalTransferSourceAccounts: ExternalTransferSourceAccount[] = [
-  {
-    id: "savings-1",
-    type: "Cuenta de Ahorros",
-    balance: 8730500,
-    maskedNumber: "****4428",
-  },
-];
+export const mockExternalTransferSourceAccounts: ExternalTransferSourceAccount[] =
+  [
+    {
+      id: "savings-1",
+      type: "Cuenta de Ahorros",
+      balance: 8730500,
+      maskedNumber: "****4428",
+    },
+  ];
 
 /**
  * Mock destination accounts (from Inscribir Cuentas feature)
  */
-export const mockExternalTransferDestinations: ExternalTransferDestinationAccount[] = [
-  {
-    id: "dest-1",
-    alias: "Cuenta Mama",
-    bankName: "Bancolombia",
-    accountType: "ahorros",
-    accountNumber: "123-456789-01",
-    holderName: "MARIA GONZALEZ",
-  },
-  {
-    id: "dest-2",
-    alias: "Cuenta Arriendo",
-    bankName: "Davivienda",
-    accountType: "ahorros",
-    accountNumber: "987-654321-00",
-    holderName: "INMOBILIARIA XYZ",
-  },
-  {
-    id: "dest-3",
-    alias: "Restaurante Almuerzos",
-    bankName: "BBVA",
-    accountType: "corriente",
-    accountNumber: "456-789012-34",
-    holderName: "DANIELA ALVARADO",
-  },
-];
+export const mockExternalTransferDestinations: ExternalTransferDestinationAccount[] =
+  [
+    {
+      id: "dest-1",
+      alias: "Cuenta Mama",
+      bankName: "Bancolombia",
+      accountType: "ahorros",
+      accountNumber: "123-456789-01",
+      holderName: "MARIA GONZALEZ",
+    },
+    {
+      id: "dest-2",
+      alias: "Cuenta Arriendo",
+      bankName: "Davivienda",
+      accountType: "ahorros",
+      accountNumber: "987-654321-00",
+      holderName: "INMOBILIARIA XYZ",
+    },
+    {
+      id: "dest-3",
+      alias: "Restaurante Almuerzos",
+      bankName: "BBVA",
+      accountType: "corriente",
+      accountNumber: "456-789012-34",
+      holderName: "DANIELA ALVARADO",
+    },
+  ];
 
 /**
  * Mock user data for confirmation
@@ -59,17 +61,18 @@ export const mockExternalTransferUserData = {
 /**
  * Mock confirmation data
  */
-export const mockExternalTransferConfirmation: ExternalTransferConfirmationData = {
-  holderName: "CAMILO ANDRES CRUZ",
-  holderDocument: "CC 1.***.***. 231",
-  sourceProduct: "Cuenta de Ahorros",
-  destinationHolder: "MARIA GONZALEZ",
-  destinationBank: "Bancolombia",
-  destinationAccountType: "Ahorros",
-  destinationAccountNumber: "123.-456789-01",
-  amount: 500000,
-  concept: "Vacaciones",
-};
+export const mockExternalTransferConfirmation: ExternalTransferConfirmationData =
+  {
+    holderName: "CAMILO ANDRES CRUZ",
+    holderDocument: "CC 1.***.***. 231",
+    sourceProduct: "Cuenta de Ahorros",
+    destinationHolder: "MARIA GONZALEZ",
+    destinationBank: "Bancolombia",
+    destinationAccountType: "Ahorros",
+    destinationAccountNumber: "123.-456789-01",
+    amount: 500000,
+    concept: "Vacaciones",
+  };
 
 /**
  * Mock successful transaction result
@@ -116,7 +119,7 @@ export const EXTERNAL_TRANSFER_MOCK_VALID_CODE = "123456";
  */
 export const EXTERNAL_TRANSFER_STEPS: Step[] = [
   { number: 1, label: "Detalle" },
-  { number: 2, label: "Confirmacion" },
+  { number: 2, label: "Confirmación" },
   { number: 3, label: "SMS" },
-  { number: 4, label: "Finalizacion" },
+  { number: 4, label: "Finalización" },
 ];

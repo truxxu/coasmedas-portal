@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
@@ -12,16 +12,36 @@ import {
   mockRegisteredServices,
   UTILITY_PAYMENT_STEPS,
 } from "@/src/mocks";
-import type { UtilityPaymentDetails, UtilityPaymentMethod } from "@/src/types";
+import { mockCategories, mockConvenios } from "@/src/mocks";
+import type {
+  UtilityPaymentDetails,
+  UtilityPaymentMethod,
+  UtilityPaymentType,
+} from "@/src/types";
 
 const initialFormData: UtilityPaymentDetails = {
   sourceAccountId: "",
   sourceAccountDisplay: "",
+  paymentType: "inscrito",
   serviceId: "",
   serviceDisplay: "",
   serviceType: "",
   amount: 0,
   paymentMethod: "account",
+  categoryId: "",
+  categoryName: "",
+  convenioId: "",
+  convenioName: "",
+  reference: "",
+};
+
+type FormErrors = {
+  sourceAccount?: string;
+  service?: string;
+  categoryId?: string;
+  convenioId?: string;
+  reference?: string;
+  amount?: string;
 };
 
 export default function PagarServiciosDetallePage() {
@@ -31,10 +51,7 @@ export default function PagarServiciosDetallePage() {
 
   const [formData, setFormData] =
     useState<UtilityPaymentDetails>(initialFormData);
-  const [errors, setErrors] = useState<{
-    sourceAccount?: string;
-    service?: string;
-  }>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
   // Configure WelcomeBar on mount, clear on unmount
@@ -46,9 +63,15 @@ export default function PagarServiciosDetallePage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Filter convenios by selected category
+  const filteredConvenios = useMemo(
+    () => mockConvenios.filter((c) => c.categoryId === formData.categoryId),
+    [formData.categoryId],
+  );
+
   const handleSourceAccountChange = (
     accountId: string,
-    paymentMethod: UtilityPaymentMethod
+    paymentMethod: UtilityPaymentMethod,
   ) => {
     const isPSE = paymentMethod === "pse";
     const account = mockUtilitySourceAccounts.find((a) => a.id === accountId);
@@ -76,14 +99,78 @@ export default function PagarServiciosDetallePage() {
     setErrors((prev) => ({ ...prev, service: undefined }));
   };
 
+  const handlePaymentTypeChange = (paymentType: UtilityPaymentType) => {
+    setFormData((prev) => ({
+      ...prev,
+      paymentType,
+      // Reset fields when switching
+      serviceId: "",
+      serviceDisplay: "",
+      serviceType: "",
+      categoryId: "",
+      categoryName: "",
+      convenioId: "",
+      convenioName: "",
+      reference: "",
+      amount: 0,
+    }));
+    setErrors({});
+  };
+
+  const handleCategoryChange = (categoryId: string, categoryName: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      categoryId,
+      categoryName,
+      convenioId: "",
+      convenioName: "",
+    }));
+    setErrors((prev) => ({ ...prev, categoryId: undefined }));
+  };
+
+  const handleConvenioChange = (convenioId: string, convenioName: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      convenioId,
+      convenioName,
+    }));
+    setErrors((prev) => ({ ...prev, convenioId: undefined }));
+  };
+
+  const handleReferenceChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, reference: value }));
+    setErrors((prev) => ({ ...prev, reference: undefined }));
+  };
+
+  const handleAmountChange = (value: number) => {
+    setFormData((prev) => ({ ...prev, amount: value }));
+    setErrors((prev) => ({ ...prev, amount: undefined }));
+  };
+
   const validateForm = (): boolean => {
-    const newErrors: typeof errors = {};
+    const newErrors: FormErrors = {};
 
     if (!formData.sourceAccountId) {
       newErrors.sourceAccount = "Por favor selecciona una cuenta origen";
     }
-    if (!formData.serviceId) {
-      newErrors.service = "Por favor selecciona un servicio a pagar";
+
+    if (formData.paymentType === "inscrito") {
+      if (!formData.serviceId) {
+        newErrors.service = "Por favor selecciona un servicio a pagar";
+      }
+    } else {
+      if (!formData.categoryId) {
+        newErrors.categoryId = "Por favor selecciona una categoría";
+      }
+      if (!formData.convenioId) {
+        newErrors.convenioId = "Por favor selecciona un convenio";
+      }
+      if (!formData.reference?.trim()) {
+        newErrors.reference = "Por favor ingresa la referencia";
+      }
+      if (formData.amount <= 0) {
+        newErrors.amount = "Por favor ingresa un valor a pagar";
+      }
     }
 
     // Check if amount exceeds account balance (only for account payments, not PSE)
@@ -93,7 +180,7 @@ export default function PagarServiciosDetallePage() {
       formData.paymentMethod === "account"
     ) {
       const selectedAccount = mockUtilitySourceAccounts.find(
-        (a) => a.id === formData.sourceAccountId
+        (a) => a.id === formData.sourceAccountId,
       );
       if (selectedAccount && formData.amount > selectedAccount.balance) {
         newErrors.sourceAccount =
@@ -140,6 +227,13 @@ export default function PagarServiciosDetallePage() {
         errors={errors}
         onSourceAccountChange={handleSourceAccountChange}
         onServiceChange={handleServiceChange}
+        categories={mockCategories}
+        convenios={filteredConvenios}
+        onPaymentTypeChange={handlePaymentTypeChange}
+        onCategoryChange={handleCategoryChange}
+        onConvenioChange={handleConvenioChange}
+        onReferenceChange={handleReferenceChange}
+        onAmountChange={handleAmountChange}
       />
 
       {/* Footer Actions */}

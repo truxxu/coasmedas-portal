@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Divider } from '@/src/atoms';
-import { PayableProductCard } from '@/src/molecules';
-import { OtrosAsociadosSourceAccount, PayableProduct } from '@/src/types';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import React from "react";
+import { Card, Divider } from "@/src/atoms";
+import { PayableProductCard } from "@/src/molecules";
+import { OtrosAsociadosSourceAccount, PayableProduct } from "@/src/types";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface OtrosAsociadosDetailsCardProps {
   beneficiaryName: string;
@@ -19,7 +19,9 @@ interface OtrosAsociadosDetailsCardProps {
   hideBalances: boolean;
 }
 
-export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps> = ({
+export const OtrosAsociadosDetailsCard: React.FC<
+  OtrosAsociadosDetailsCardProps
+> = ({
   beneficiaryName,
   accounts,
   selectedAccountId,
@@ -52,10 +54,9 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
             <option value="">Seleccionar origen de fondos</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
-                {account.sourceType === 'pse'
+                {account.sourceType === "pse"
                   ? account.type
-                  : `${account.type} - Saldo: ${hideBalances ? maskCurrency() : formatCurrency(account.balance)}`
-                }
+                  : `${account.type} - Saldo: ${hideBalances ? maskCurrency() : formatCurrency(account.balance)}`}
               </option>
             ))}
           </select>
@@ -93,9 +94,7 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
 
       {/* Payment Summary */}
       <div className="space-y-4 pt-4">
-        <h3 className="text-lg font-bold text-brand-navy">
-          Resumen del Pago
-        </h3>
+        <h3 className="text-lg font-bold text-brand-navy">Resumen del Pago</h3>
 
         <Divider />
 

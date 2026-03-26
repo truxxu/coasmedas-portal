@@ -28,6 +28,7 @@
 The **Pagar Servicios Publicos** feature allows users to register and pay their utility bills. This specification covers the **registration sub-flow** that enables users to register their utility services (electricity, water, gas, etc.) before making payments.
 
 ### Key Characteristics
+
 - **Flow Selection**: Initial page to choose between registering or paying utility services
 - **Multi-step wizard**: Registration flow with form, confirmation, and result pages
 - **City-Convenio relationship**: Utility providers are filtered based on selected city
@@ -35,6 +36,7 @@ The **Pagar Servicios Publicos** feature allows users to register and pay their 
 - **Simple form**: Minimal required fields for quick registration
 
 ### User Journey
+
 1. Select action: "Inscribir Servicios" (Register) or "Pagar Servicios" (Pay)
 2. Fill registration form with city, utility provider, bill number, and alias
 3. Review and confirm registration data
@@ -42,14 +44,14 @@ The **Pagar Servicios Publicos** feature allows users to register and pay their 
 
 ### Key Differences from Other Payment Flows
 
-| Aspect | Pago Unificado (09a) | Pago a Otros Asociados (09d) | Servicios Publicos (09e) |
-|--------|----------------------|------------------------------|--------------------------|
-| Purpose | Pay own products | Pay other associate's products | Register/Pay utilities |
-| Flow Type | 4-step wizard | Pre-step + 4-step wizard | Selection + 3-step wizard |
-| Pre-step | None | Beneficiary selection | Flow selection |
-| Form Fields | Account selection | Multi-product checkbox | City, Convenio, Bill, Alias |
-| Verification | SMS code | SMS code | None (registration only) |
-| Result Type | Transaction | Transaction | Registration status |
+| Aspect       | Pago Unificado (09a) | Pago a Otros Asociados (09d)   | Servicios Publicos (09e)    |
+| ------------ | -------------------- | ------------------------------ | --------------------------- |
+| Purpose      | Pay own products     | Pay other associate's products | Register/Pay utilities      |
+| Flow Type    | 4-step wizard        | Pre-step + 4-step wizard       | Selection + 3-step wizard   |
+| Pre-step     | None                 | Beneficiary selection          | Flow selection              |
+| Form Fields  | Account selection    | Multi-product checkbox         | City, Convenio, Bill, Alias |
+| Verification | SMS code             | SMS code                       | None (registration only)    |
+| Result Type  | Transaction          | Transaction                    | Registration status         |
 
 ---
 
@@ -99,6 +101,7 @@ app/(authenticated)/pagos/
 ```
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -118,7 +121,7 @@ app/(authenticated)/pagos/
  */
 export interface CityOption {
   id: string;
-  name: string;  // "Cali", "Bogota", "Medellin"
+  name: string; // "Cali", "Bogota", "Medellin"
 }
 
 /**
@@ -126,9 +129,9 @@ export interface CityOption {
  */
 export interface ConvenioOption {
   id: string;
-  name: string;       // "ENEL - Energia"
-  category: string;   // "Energia", "Gas", "Agua", "Telefonia"
-  cityId: string;     // Available in which city
+  name: string; // "ENEL - Energia"
+  category: string; // "Energia", "Gas", "Agua", "Telefonia"
+  cityId: string; // Available in which city
 }
 
 /**
@@ -139,8 +142,8 @@ export interface UtilityRegistrationForm {
   cityName: string;
   convenioId: string;
   convenioName: string;
-  billNumber: string;     // Numero de factura o referencia
-  alias: string;          // User-friendly name (e.g., "Luz casa")
+  billNumber: string; // Numero de factura o referencia
+  alias: string; // User-friendly name (e.g., "Luz casa")
 }
 
 /**
@@ -156,7 +159,7 @@ export interface UtilityConfirmationData {
 /**
  * Registration result status
  */
-export type RegistrationStatus = 'Aceptada' | 'Rechazada' | 'Pendiente';
+export type RegistrationStatus = "Aceptada" | "Rechazada" | "Pendiente";
 
 /**
  * Registration result
@@ -175,14 +178,14 @@ export interface UtilityRegistrationResult {
 /**
  * Flow selection type
  */
-export type UtilityFlowType = 'inscribir' | 'pagar';
+export type UtilityFlowType = "inscribir" | "pagar";
 
 /**
  * Complete registration flow state
  */
 export interface UtilityRegistrationFlowState {
   // Step tracking
-  currentStep: 'selection' | 'form' | 'confirmation' | 'result';
+  currentStep: "selection" | "form" | "confirmation" | "result";
 
   // Form data
   formData: UtilityRegistrationForm;
@@ -190,7 +193,7 @@ export interface UtilityRegistrationFlowState {
   // Options
   cities: CityOption[];
   convenios: ConvenioOption[];
-  filteredConvenios: ConvenioOption[];  // Filtered by selected city
+  filteredConvenios: ConvenioOption[]; // Filtered by selected city
 
   // Validation
   errors: {
@@ -212,7 +215,7 @@ export interface UtilityRegistrationFlowState {
 ### Update: `src/types/index.ts`
 
 ```typescript
-export * from './utility-registration';
+export * from "./utility-registration";
 ```
 
 ---
@@ -226,14 +229,16 @@ export * from './utility-registration';
 **Location**: `src/atoms/SuccessIcon.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface SuccessIconProps {
-  size?: 'sm' | 'md' | 'lg';  // sm=40px, md=60px, lg=80px
+  size?: "sm" | "md" | "lg"; // sm=40px, md=60px, lg=80px
   className?: string;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -292,14 +297,16 @@ export const SuccessIcon: React.FC<SuccessIconProps> = ({
 **Note**: May already exist from previous features. If so, reuse.
 
 **Props Interface**:
+
 ```typescript
 interface ErrorIconProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -360,6 +367,7 @@ export const ErrorIcon: React.FC<ErrorIconProps> = ({
 **Purpose**: Selectable card for flow choice (Inscribir vs Pagar)
 
 **Props Interface**:
+
 ```typescript
 interface FlowOptionCardProps {
   title: string;
@@ -370,6 +378,7 @@ interface FlowOptionCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -428,16 +437,18 @@ export const FlowOptionCard: React.FC<FlowOptionCardProps> = ({
 **Note**: May already exist from 09d-pagos. If so, reuse that component.
 
 **Props Interface**:
+
 ```typescript
 interface ConfirmationRowProps {
   label: string;
   value: string;
-  valueColor?: 'default' | 'success' | 'error';
+  valueColor?: "default" | "success" | "error";
   className?: string;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -482,6 +493,7 @@ export const ConfirmationRow: React.FC<ConfirmationRowProps> = ({
 **Location**: `src/organisms/FlowSelectionCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface FlowSelectionCardProps {
   onSelectInscribir: () => void;
@@ -490,6 +502,7 @@ interface FlowSelectionCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -543,6 +556,7 @@ export const FlowSelectionCard: React.FC<FlowSelectionCardProps> = ({
 **Location**: `src/organisms/UtilityRegistrationForm.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityRegistrationFormProps {
   cities: CityOption[];
@@ -565,6 +579,7 @@ interface UtilityRegistrationFormProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -759,6 +774,7 @@ export const UtilityRegistrationForm: React.FC<UtilityRegistrationFormProps> = (
 **Location**: `src/organisms/UtilityConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityConfirmationCardProps {
   confirmationData: UtilityConfirmationData;
@@ -769,6 +785,7 @@ interface UtilityConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Button } from '@/src/atoms';
@@ -852,6 +869,7 @@ export const UtilityConfirmationCard: React.FC<UtilityConfirmationCardProps> = (
 **Location**: `src/organisms/UtilityRegistrationResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface UtilityRegistrationResultCardProps {
   result: UtilityRegistrationResult;
@@ -859,6 +877,7 @@ interface UtilityRegistrationResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, SuccessIcon, ErrorIcon } from '@/src/atoms';
@@ -1346,10 +1365,10 @@ export default function ResultadoServiciosPage() {
 
 ### SessionStorage Keys
 
-| Key | Description | Type |
-|-----|-------------|------|
-| `utilityRegistrationData` | Form data from registration form | JSON (UtilityRegistrationForm) |
-| `utilityRegistrationResult` | Registration result | JSON (UtilityRegistrationResult) |
+| Key                         | Description                      | Type                             |
+| --------------------------- | -------------------------------- | -------------------------------- |
+| `utilityRegistrationData`   | Form data from registration form | JSON (UtilityRegistrationForm)   |
+| `utilityRegistrationResult` | Registration result              | JSON (UtilityRegistrationResult) |
 
 ### Navigation Flow
 
@@ -1376,17 +1395,17 @@ import {
   CityOption,
   ConvenioOption,
   UtilityRegistrationResult,
-} from '@/src/types/utility-registration';
+} from "@/src/types/utility-registration";
 
 /**
  * Mock cities for dropdown
  */
 export const mockCities: CityOption[] = [
-  { id: '1', name: 'Cali' },
-  { id: '2', name: 'Bogota' },
-  { id: '3', name: 'Medellin' },
-  { id: '4', name: 'Barranquilla' },
-  { id: '5', name: 'Cartagena' },
+  { id: "1", name: "Cali" },
+  { id: "2", name: "Bogota" },
+  { id: "3", name: "Medellin" },
+  { id: "4", name: "Barranquilla" },
+  { id: "5", name: "Cartagena" },
 ];
 
 /**
@@ -1394,32 +1413,32 @@ export const mockCities: CityOption[] = [
  */
 export const mockConvenios: ConvenioOption[] = [
   // Cali (cityId: 1)
-  { id: '1', name: 'ENEL - Energia', category: 'Energia', cityId: '1' },
-  { id: '2', name: 'EMCALI - Agua', category: 'Agua', cityId: '1' },
-  { id: '3', name: 'Gases de Occidente', category: 'Gas', cityId: '1' },
-  { id: '4', name: 'Claro - Telefonia', category: 'Telefonia', cityId: '1' },
+  { id: "1", name: "ENEL - Energia", category: "Energia", cityId: "1" },
+  { id: "2", name: "EMCALI - Agua", category: "Agua", cityId: "1" },
+  { id: "3", name: "Gases de Occidente", category: "Gas", cityId: "1" },
+  { id: "4", name: "Claro - Telefonia", category: "Telefonia", cityId: "1" },
 
   // Bogota (cityId: 2)
-  { id: '5', name: 'Codensa - Energia', category: 'Energia', cityId: '2' },
-  { id: '6', name: 'Acueducto de Bogota', category: 'Agua', cityId: '2' },
-  { id: '7', name: 'Vanti Gas', category: 'Gas', cityId: '2' },
-  { id: '8', name: 'ETB - Telefonia', category: 'Telefonia', cityId: '2' },
+  { id: "5", name: "Codensa - Energia", category: "Energia", cityId: "2" },
+  { id: "6", name: "Acueducto de Bogota", category: "Agua", cityId: "2" },
+  { id: "7", name: "Vanti Gas", category: "Gas", cityId: "2" },
+  { id: "8", name: "ETB - Telefonia", category: "Telefonia", cityId: "2" },
 
   // Medellin (cityId: 3)
-  { id: '9', name: 'EPM - Energia', category: 'Energia', cityId: '3' },
-  { id: '10', name: 'EPM - Agua', category: 'Agua', cityId: '3' },
-  { id: '11', name: 'EPM - Gas', category: 'Gas', cityId: '3' },
-  { id: '12', name: 'UNE - Telefonia', category: 'Telefonia', cityId: '3' },
+  { id: "9", name: "EPM - Energia", category: "Energia", cityId: "3" },
+  { id: "10", name: "EPM - Agua", category: "Agua", cityId: "3" },
+  { id: "11", name: "EPM - Gas", category: "Gas", cityId: "3" },
+  { id: "12", name: "UNE - Telefonia", category: "Telefonia", cityId: "3" },
 
   // Barranquilla (cityId: 4)
-  { id: '13', name: 'Electricaribe', category: 'Energia', cityId: '4' },
-  { id: '14', name: 'Triple A - Agua', category: 'Agua', cityId: '4' },
-  { id: '15', name: 'Gases del Caribe', category: 'Gas', cityId: '4' },
+  { id: "13", name: "Electricaribe", category: "Energia", cityId: "4" },
+  { id: "14", name: "Triple A - Agua", category: "Agua", cityId: "4" },
+  { id: "15", name: "Gases del Caribe", category: "Gas", cityId: "4" },
 
   // Cartagena (cityId: 5)
-  { id: '16', name: 'Afinia - Energia', category: 'Energia', cityId: '5' },
-  { id: '17', name: 'Aguas de Cartagena', category: 'Agua', cityId: '5' },
-  { id: '18', name: 'Surtigas', category: 'Gas', cityId: '5' },
+  { id: "16", name: "Afinia - Energia", category: "Energia", cityId: "5" },
+  { id: "17", name: "Aguas de Cartagena", category: "Agua", cityId: "5" },
+  { id: "18", name: "Surtigas", category: "Gas", cityId: "5" },
 ];
 
 /**
@@ -1427,12 +1446,12 @@ export const mockConvenios: ConvenioOption[] = [
  */
 export const mockRegistrationResultSuccess: UtilityRegistrationResult = {
   success: true,
-  status: 'Aceptada',
-  registrationId: 'REG-123456',
-  alias: 'Luz casa',
-  convenio: 'ENEL - Energia',
-  city: 'Cali',
-  billNumber: '555',
+  status: "Aceptada",
+  registrationId: "REG-123456",
+  alias: "Luz casa",
+  convenio: "ENEL - Energia",
+  city: "Cali",
+  billNumber: "555",
 };
 
 /**
@@ -1440,19 +1459,20 @@ export const mockRegistrationResultSuccess: UtilityRegistrationResult = {
  */
 export const mockRegistrationResultError: UtilityRegistrationResult = {
   success: false,
-  status: 'Rechazada',
-  alias: 'Luz casa',
-  convenio: 'ENEL - Energia',
-  city: 'Cali',
-  billNumber: '555',
-  errorMessage: 'El numero de factura no existe en el sistema del convenio seleccionado.',
+  status: "Rechazada",
+  alias: "Luz casa",
+  convenio: "ENEL - Energia",
+  city: "Cali",
+  billNumber: "555",
+  errorMessage:
+    "El numero de factura no existe en el sistema del convenio seleccionado.",
 };
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './mockUtilityRegistrationData';
+export * from "./mockUtilityRegistrationData";
 ```
 
 ---
@@ -1462,37 +1482,31 @@ export * from './mockUtilityRegistrationData';
 ### File: `src/schemas/utilityRegistrationSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Utility registration form validation schema
  */
 export const utilityRegistrationSchema = yup.object({
-  cityId: yup
-    .string()
-    .required('Por favor selecciona una ciudad'),
-  cityName: yup
-    .string()
-    .required(),
-  convenioId: yup
-    .string()
-    .required('Por favor selecciona un convenio'),
-  convenioName: yup
-    .string()
-    .required(),
+  cityId: yup.string().required("Por favor selecciona una ciudad"),
+  cityName: yup.string().required(),
+  convenioId: yup.string().required("Por favor selecciona un convenio"),
+  convenioName: yup.string().required(),
   billNumber: yup
     .string()
     .trim()
-    .required('Por favor ingresa el numero de factura')
-    .min(1, 'El numero de factura es requerido'),
+    .required("Por favor ingresa el numero de factura")
+    .min(1, "El numero de factura es requerido"),
   alias: yup
     .string()
     .trim()
-    .required('Por favor ingresa un alias')
-    .max(50, 'El alias no puede exceder 50 caracteres'),
+    .required("Por favor ingresa un alias")
+    .max(50, "El alias no puede exceder 50 caracteres"),
 });
 
-export type UtilityRegistrationFormData = yup.InferType<typeof utilityRegistrationSchema>;
+export type UtilityRegistrationFormData = yup.InferType<
+  typeof utilityRegistrationSchema
+>;
 ```
 
 ---
@@ -1551,6 +1565,7 @@ app/(authenticated)/pagos/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/utility-registration.ts`
    - Update `src/types/index.ts`
@@ -1560,18 +1575,21 @@ app/(authenticated)/pagos/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Atoms
+
 3. Create atoms:
    - `src/atoms/SuccessIcon.tsx`
    - `src/atoms/ErrorIcon.tsx` (if not exists)
    - Update `src/atoms/index.ts`
 
 ### Phase 3: Molecules
+
 4. Create molecules:
    - `src/molecules/FlowOptionCard.tsx`
    - `src/molecules/ConfirmationRow.tsx` (if not exists from 09d)
    - Update `src/molecules/index.ts`
 
 ### Phase 4: Organisms
+
 5. Create organisms:
    - `src/organisms/FlowSelectionCard.tsx`
    - `src/organisms/UtilityRegistrationForm.tsx`
@@ -1580,6 +1598,7 @@ app/(authenticated)/pagos/
    - Update `src/organisms/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/pagos/servicios-publicos/page.tsx` (Flow Selection)
    - `app/(authenticated)/pagos/servicios-publicos/inscribir/page.tsx` (Form)
@@ -1587,10 +1606,12 @@ app/(authenticated)/pagos/
    - `app/(authenticated)/pagos/servicios-publicos/inscribir/resultado/page.tsx` (Result)
 
 ### Phase 6: Validation Schemas (Optional)
+
 7. Create validation schemas:
    - `src/schemas/utilityRegistrationSchemas.ts`
 
 ### Phase 7: Testing & Refinement
+
 8. Manual testing of complete flow
 9. Edge case testing
 10. Responsive testing
@@ -1603,6 +1624,7 @@ app/(authenticated)/pagos/
 ### Manual Testing Checklist
 
 #### Page 1: Flow Selection
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to /pagos
 - [ ] Breadcrumbs display correctly
@@ -1619,6 +1641,7 @@ app/(authenticated)/pagos/
 - [ ] Focus states visible
 
 #### Page 2: Registration Form
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to flow selection
 - [ ] Breadcrumbs display correctly
@@ -1642,6 +1665,7 @@ app/(authenticated)/pagos/
 - [ ] Form data stored in sessionStorage
 
 #### Page 3: Confirmation
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to registration form
 - [ ] Breadcrumbs display correctly
@@ -1657,6 +1681,7 @@ app/(authenticated)/pagos/
 - [ ] Redirects to form if no sessionStorage data
 
 #### Page 4: Result
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to /pagos
 - [ ] Breadcrumbs display correctly
@@ -1672,6 +1697,7 @@ app/(authenticated)/pagos/
 - [ ] Error state shows error message
 
 ### Error States Testing
+
 - [ ] Empty city shows error
 - [ ] Empty convenio shows error
 - [ ] Empty bill number shows error
@@ -1681,6 +1707,7 @@ app/(authenticated)/pagos/
 - [ ] Registration rejection shows error result
 
 ### Responsive Testing
+
 - [ ] Desktop (>=1024px): Two-column option cards
 - [ ] Tablet (640-1023px): Two-column or stacked cards
 - [ ] Mobile (<640px): Stacked cards
@@ -1689,6 +1716,7 @@ app/(authenticated)/pagos/
 - [ ] Confirmation rows readable on all sizes
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all elements
 - [ ] Focus states visible on all interactive elements
 - [ ] Form labels properly associated
@@ -1702,6 +1730,7 @@ app/(authenticated)/pagos/
 ## Dependencies
 
 ### Existing Components (Reuse)
+
 - `BackButton` atom
 - `Button` atom
 - `Card` atom
@@ -1710,9 +1739,11 @@ app/(authenticated)/pagos/
 - `FormField` molecule (or use native input)
 
 ### May Exist from 09d-pagos
+
 - `ConfirmationRow` molecule
 
 ### New for 09e-pagos
+
 - `SuccessIcon` atom
 - `ErrorIcon` atom
 - `FlowOptionCard` molecule
@@ -1726,23 +1757,27 @@ app/(authenticated)/pagos/
 ## Notes & Considerations
 
 ### City-Convenio Relationship
+
 - Convenios are filtered based on selected city
 - When city changes, convenio selection resets
 - Convenio dropdown disabled until city selected
 - Each convenio has a category (Energia, Gas, Agua, Telefonia)
 
 ### Form Validation Rules
+
 - **Ciudad**: Required
 - **Convenio**: Required (depends on city selection)
 - **Numero de Factura**: Required, non-empty
 - **Alias**: Required, max 50 characters
 
 ### Session Storage Cleanup
+
 - Clear data on successful completion
 - Clear data when navigating away
 - Clear data on component unmount (result page)
 
 ### Future Features
+
 - Payment flow (`/pagos/servicios-publicos/pagar`)
 - List of registered services
 - Edit/delete registered services
@@ -1750,12 +1785,14 @@ app/(authenticated)/pagos/
 - Payment history
 
 ### Error Handling
+
 - Form validation errors
 - Network/API errors
 - Registration rejection from backend
 - Missing sessionStorage data (redirect to form)
 
 ### Accessibility
+
 - All form fields have labels
 - Error messages linked to fields
 - Keyboard navigation through options
@@ -1777,41 +1814,45 @@ app/(authenticated)/pagos/
 ## Design System Values Reference
 
 ### Colors
-| Element | Color | Hex |
-|---------|-------|-----|
-| Primary Text (titles) | Navy Blue | #1D4E8F |
-| Primary Button | Blue | #007FFF |
-| Link Text | Dark Blue | #004266 |
-| Success Text/Icon | Green | #009900 |
-| Error Text/Icon | Red | #FF0D00 |
-| Card Background | White | #FFFFFF |
-| Page Background | Light Blue | #F0F9FF |
-| Input Border | Gray | #E4E6EA |
-| Dashed Border (options) | Navy Blue | #1D4E8F |
-| Body Text | Black | #000000 |
+
+| Element                 | Color      | Hex     |
+| ----------------------- | ---------- | ------- |
+| Primary Text (titles)   | Navy Blue  | #1D4E8F |
+| Primary Button          | Blue       | #007FFF |
+| Link Text               | Dark Blue  | #004266 |
+| Success Text/Icon       | Green      | #009900 |
+| Error Text/Icon         | Red        | #FF0D00 |
+| Card Background         | White      | #FFFFFF |
+| Page Background         | Light Blue | #F0F9FF |
+| Input Border            | Gray       | #E4E6EA |
+| Dashed Border (options) | Navy Blue  | #1D4E8F |
+| Body Text               | Black      | #000000 |
 
 ### Typography
-| Element | Font | Size | Weight |
-|---------|------|------|--------|
-| Page Title | Ubuntu | 20px | Medium |
-| Card Title | Ubuntu | 21px | Bold |
-| Section Title | Ubuntu | 18px | Bold |
-| Option Card Title | Ubuntu | 20px | Medium |
-| Form Labels | Ubuntu | 15px | Regular |
-| Body Text | Ubuntu | 15px | Regular |
+
+| Element             | Font   | Size | Weight  |
+| ------------------- | ------ | ---- | ------- |
+| Page Title          | Ubuntu | 20px | Medium  |
+| Card Title          | Ubuntu | 21px | Bold    |
+| Section Title       | Ubuntu | 18px | Bold    |
+| Option Card Title   | Ubuntu | 20px | Medium  |
+| Form Labels         | Ubuntu | 15px | Regular |
+| Body Text           | Ubuntu | 15px | Regular |
 | Confirmation Labels | Ubuntu | 15px | Regular |
-| Confirmation Values | Ubuntu | 15px | Medium |
-| Success Title | Ubuntu | 23px | Bold |
-| Button Text | Ubuntu | 14px | Bold |
-| Link Text | Ubuntu | 14px | Medium |
+| Confirmation Values | Ubuntu | 15px | Medium  |
+| Success Title       | Ubuntu | 23px | Bold    |
+| Button Text         | Ubuntu | 14px | Bold    |
+| Link Text           | Ubuntu | 14px | Medium  |
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Form field spacing: `20px` (space-y-5)
 - Option card height: `176px`
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Option cards: `8px` (rounded-lg)
 - Inputs: `6px` (rounded-md)

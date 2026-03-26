@@ -29,6 +29,7 @@
 The **Pago a Otros Asociados** feature allows users to make payments to registered beneficiaries (other Coasmedas associates). This flow consists of a beneficiary selection page followed by a 4-step payment wizard.
 
 ### Key Characteristics
+
 - **Pre-step flow**: Beneficiary selection before entering the 4-step wizard
 - **Multi-step wizard**: 4 sequential steps with progress tracking
 - **Multi-product selection**: Users can select multiple products to pay with individual amounts
@@ -37,6 +38,7 @@ The **Pago a Otros Asociados** feature allows users to make payments to register
 - **Reusability**: Reuses Stepper, OTP, and result components from previous payment features
 
 ### User Journey
+
 1. Select a registered beneficiary (associate) to pay
 2. Select source account and products to pay with amounts (Step 1: Details)
 3. Review and confirm payment details (Step 2: Confirmation)
@@ -45,15 +47,15 @@ The **Pago a Otros Asociados** feature allows users to make payments to register
 
 ### Key Differences from Other Payment Flows
 
-| Aspect | Pago Unificado (09a) | Pago de Aportes (09b) | Pago de Obligaciones (09c) | Pago a Otros Asociados (09d) |
-|--------|----------------------|----------------------|---------------------------|------------------------------|
-| Target | Self (all products) | Self (Aportes) | Self (Loan/Credit) | Other associate |
-| Pre-step | None | None | None | Beneficiary selection |
-| Product Selection | None (all included) | No selection | Single product | Multiple products (checkbox) |
-| Payment Source | Account dropdown | Account dropdown | PSE only | Account dropdown |
-| Amount Input | Fixed totals | Single editable | Quick buttons + editable | Multiple per product |
-| Step 3 | SMS verification | SMS verification | PSE loading | SMS verification |
-| Result Fields | Generic | Aportes-specific | Obligaciones-specific | Multi-product summary |
+| Aspect            | Pago Unificado (09a) | Pago de Aportes (09b) | Pago de Obligaciones (09c) | Pago a Otros Asociados (09d) |
+| ----------------- | -------------------- | --------------------- | -------------------------- | ---------------------------- |
+| Target            | Self (all products)  | Self (Aportes)        | Self (Loan/Credit)         | Other associate              |
+| Pre-step          | None                 | None                  | None                       | Beneficiary selection        |
+| Product Selection | None (all included)  | No selection          | Single product             | Multiple products (checkbox) |
+| Payment Source    | Account dropdown     | Account dropdown      | PSE only                   | Account dropdown             |
+| Amount Input      | Fixed totals         | Single editable       | Quick buttons + editable   | Multiple per product         |
+| Step 3            | SMS verification     | SMS verification      | PSE loading                | SMS verification             |
+| Result Fields     | Generic              | Aportes-specific      | Obligaciones-specific      | Multi-product summary        |
 
 ---
 
@@ -104,6 +106,7 @@ app/(authenticated)/pagos/otros-asociados/
 ```
 
 ### Reused Components from Previous Payment Features
+
 - `Stepper` (09a) - Multi-step progress indicator
 - `StepperCircle` (09a) - Individual step indicator
 - `StepperConnector` (09a) - Connector line between steps
@@ -114,6 +117,7 @@ app/(authenticated)/pagos/otros-asociados/
 - `CurrencyInput` (09b) - Editable currency input
 
 ### Technology Stack
+
 - **React 19**: Component framework
 - **Next.js 16 App Router**: Routing and page structure
 - **TypeScript**: Type safety
@@ -133,9 +137,9 @@ app/(authenticated)/pagos/otros-asociados/
  */
 export interface RegisteredBeneficiary {
   id: string;
-  fullName: string;        // "MARÍA FERNANDA GONZALEZ"
-  alias: string;           // "Mamá"
-  documentNumber: string;  // masked: "***3040"
+  fullName: string; // "MARÍA FERNANDA GONZALEZ"
+  alias: string; // "Mamá"
+  documentNumber: string; // masked: "***3040"
 }
 
 /**
@@ -143,11 +147,11 @@ export interface RegisteredBeneficiary {
  */
 export interface PayableProduct {
   id: string;
-  name: string;              // "Plan Senior", "Crédito de Libre Inversión"
-  productNumber: string;     // masked: "***5488"
-  minimumPayment: number | null;  // null = "N/A"
-  totalPayment: number | null;    // null = "Indefinido"
-  amountToPay: number;       // user input
+  name: string; // "Plan Senior", "Crédito de Libre Inversión"
+  productNumber: string; // masked: "***5488"
+  minimumPayment: number | null; // null = "N/A"
+  totalPayment: number | null; // null = "Indefinido"
+  amountToPay: number; // user input
   isSelected: boolean;
 }
 
@@ -156,9 +160,9 @@ export interface PayableProduct {
  */
 export interface SourceAccount {
   id: string;
-  type: string;              // "Cuenta de Ahorros"
-  balance: number;           // 8730500
-  number: string;            // masked "****4428"
+  type: string; // "Cuenta de Ahorros"
+  balance: number; // 8730500
+  number: string; // masked "****4428"
 }
 
 /**
@@ -177,8 +181,8 @@ export interface OtrosAsociadosDetailsData {
  */
 export interface OtrosAsociadosConfirmationData {
   titular: string;
-  documento: string;           // Masked
-  productoADebitar: string;    // "Cuenta de Ahorro"
+  documento: string; // Masked
+  productoADebitar: string; // "Cuenta de Ahorro"
   beneficiaryName: string;
   products: Array<{
     name: string;
@@ -199,7 +203,7 @@ export interface OtrosAsociadosTransactionResult {
   transmissionDate: string;
   transactionTime: string;
   approvalNumber: string;
-  description: 'Exitosa' | 'Fallida' | 'Pendiente';
+  description: "Exitosa" | "Fallida" | "Pendiente";
 }
 
 /**
@@ -242,17 +246,19 @@ export interface OtrosAsociadosPaymentFlowState {
 **Note**: May already exist. If not, create it.
 
 **Props Interface**:
+
 ```typescript
 interface CheckboxProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
   id?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -300,6 +306,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 **Location**: `src/molecules/BeneficiaryListItem.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface BeneficiaryListItemProps {
   name: string;
@@ -310,6 +317,7 @@ interface BeneficiaryListItemProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { ChevronIcon } from '@/src/atoms';
@@ -361,6 +369,7 @@ export const BeneficiaryListItem: React.FC<BeneficiaryListItemProps> = ({
 **Location**: `src/molecules/PayableProductCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface PayableProductCardProps {
   product: PayableProduct;
@@ -371,6 +380,7 @@ interface PayableProductCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -468,16 +478,18 @@ export const PayableProductCard: React.FC<PayableProductCardProps> = ({
 **Location**: `src/molecules/ConfirmationRow.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface ConfirmationRowProps {
   label: string;
   value: string;
-  valueColor?: 'default' | 'success' | 'error';
+  valueColor?: "default" | "success" | "error";
   className?: string;
 }
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 
@@ -522,6 +534,7 @@ export const ConfirmationRow: React.FC<ConfirmationRowProps> = ({
 **Location**: `src/organisms/BeneficiarySelectionCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface BeneficiarySelectionCardProps {
   beneficiaries: RegisteredBeneficiary[];
@@ -530,6 +543,7 @@ interface BeneficiarySelectionCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card } from '@/src/atoms';
@@ -582,6 +596,7 @@ export const BeneficiarySelectionCard: React.FC<BeneficiarySelectionCardProps> =
 **Location**: `src/organisms/OtrosAsociadosDetailsCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface OtrosAsociadosDetailsCardProps {
   beneficiaryName: string;
@@ -598,6 +613,7 @@ interface OtrosAsociadosDetailsCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 'use client';
 
@@ -720,6 +736,7 @@ export const OtrosAsociadosDetailsCard: React.FC<OtrosAsociadosDetailsCardProps>
 **Location**: `src/organisms/OtrosAsociadosConfirmationCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface OtrosAsociadosConfirmationCardProps {
   confirmationData: OtrosAsociadosConfirmationData;
@@ -728,6 +745,7 @@ interface OtrosAsociadosConfirmationCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -814,6 +832,7 @@ export const OtrosAsociadosConfirmationCard: React.FC<OtrosAsociadosConfirmation
 **Location**: `src/organisms/OtrosAsociadosResultCard.tsx`
 
 **Props Interface**:
+
 ```typescript
 interface OtrosAsociadosResultCardProps {
   result: OtrosAsociadosTransactionResult;
@@ -822,6 +841,7 @@ interface OtrosAsociadosResultCardProps {
 ```
 
 **Implementation**:
+
 ```typescript
 import React from 'react';
 import { Card, Divider } from '@/src/atoms';
@@ -1543,13 +1563,13 @@ export default function OtrosAsociadosResultadoPage() {
 
 Use distinct keys to avoid conflicts with other payment flows:
 
-| Key | Description | Type |
-|-----|-------------|------|
-| `otrosAsociadosBeneficiary` | Selected beneficiary object | JSON (RegisteredBeneficiary) |
-| `otrosAsociadosAccountId` | Selected source account ID | string |
-| `otrosAsociadosProducts` | Selected products with amounts | JSON (PayableProduct[]) |
-| `otrosAsociadosTotalAmount` | Total payment amount | string |
-| `otrosAsociadosConfirmation` | Confirmation data | JSON (OtrosAsociadosConfirmationData) |
+| Key                          | Description                    | Type                                  |
+| ---------------------------- | ------------------------------ | ------------------------------------- |
+| `otrosAsociadosBeneficiary`  | Selected beneficiary object    | JSON (RegisteredBeneficiary)          |
+| `otrosAsociadosAccountId`    | Selected source account ID     | string                                |
+| `otrosAsociadosProducts`     | Selected products with amounts | JSON (PayableProduct[])               |
+| `otrosAsociadosTotalAmount`  | Total payment amount           | string                                |
+| `otrosAsociadosConfirmation` | Confirmation data              | JSON (OtrosAsociadosConfirmationData) |
 
 ### Navigation Flow
 
@@ -1574,35 +1594,35 @@ Use distinct keys to avoid conflicts with other payment flows:
 ### File: `src/mocks/mockOtrosAsociadosPaymentData.ts`
 
 ```typescript
-import { Step } from '@/src/types/stepper';
+import { Step } from "@/src/types/stepper";
 import {
   RegisteredBeneficiary,
   PayableProduct,
   SourceAccount,
   OtrosAsociadosTransactionResult,
-} from '@/src/types/otros-asociados-payment';
+} from "@/src/types/otros-asociados-payment";
 
 /**
  * Mock registered beneficiaries (other associates)
  */
 export const mockRegisteredBeneficiaries: RegisteredBeneficiary[] = [
   {
-    id: '1',
-    fullName: 'MARÍA FERNANDA GONZALEZ',
-    alias: 'Mamá',
-    documentNumber: '***3040',
+    id: "1",
+    fullName: "MARÍA FERNANDA GONZALEZ",
+    alias: "Mamá",
+    documentNumber: "***3040",
   },
   {
-    id: '2',
-    fullName: 'CARLOS ALBERTO RAMIREZ',
-    alias: 'Papá',
-    documentNumber: '***5678',
+    id: "2",
+    fullName: "CARLOS ALBERTO RAMIREZ",
+    alias: "Papá",
+    documentNumber: "***5678",
   },
   {
-    id: '3',
-    fullName: 'ANDREA SOFIA MARTINEZ',
-    alias: 'Hermana',
-    documentNumber: '***9012',
+    id: "3",
+    fullName: "ANDREA SOFIA MARTINEZ",
+    alias: "Hermana",
+    documentNumber: "***9012",
   },
 ];
 
@@ -1611,16 +1631,16 @@ export const mockRegisteredBeneficiaries: RegisteredBeneficiary[] = [
  */
 export const mockSourceAccounts: SourceAccount[] = [
   {
-    id: '1',
-    type: 'Cuenta de Ahorros',
+    id: "1",
+    type: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428',
+    number: "****4428",
   },
   {
-    id: '2',
-    type: 'Cuenta Corriente',
+    id: "2",
+    type: "Cuenta Corriente",
     balance: 5200000,
-    number: '****7891',
+    number: "****7891",
   },
 ];
 
@@ -1629,27 +1649,27 @@ export const mockSourceAccounts: SourceAccount[] = [
  */
 export const mockPayableProducts: PayableProduct[] = [
   {
-    id: '1',
-    name: 'Plan Senior',
-    productNumber: '***5488',
+    id: "1",
+    name: "Plan Senior",
+    productNumber: "***5488",
     minimumPayment: null,
     totalPayment: null,
     amountToPay: 0,
     isSelected: false,
   },
   {
-    id: '2',
-    name: 'Crédito de Libre Inversión',
-    productNumber: '***1010',
+    id: "2",
+    name: "Crédito de Libre Inversión",
+    productNumber: "***1010",
     minimumPayment: 850000,
     totalPayment: 12500000,
     amountToPay: 850000,
     isSelected: false,
   },
   {
-    id: '3',
-    name: 'Seguro de Vida',
-    productNumber: '***2020',
+    id: "3",
+    name: "Seguro de Vida",
+    productNumber: "***2020",
     minimumPayment: 120000,
     totalPayment: 1440000,
     amountToPay: 120000,
@@ -1661,54 +1681,56 @@ export const mockPayableProducts: PayableProduct[] = [
  * Mock user data (payer)
  */
 export const mockUserData = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***. 234',
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***. 234",
 };
 
 /**
  * Mock transaction result (success)
  */
-export const mockOtrosAsociadosTransactionResult: OtrosAsociadosTransactionResult = {
-  success: true,
-  creditLine: 'Crédito de Libre Inversión',
-  productNumber: '***5678',
-  amountPaid: 850000,
-  transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '950606',
-  description: 'Exitosa',
-};
+export const mockOtrosAsociadosTransactionResult: OtrosAsociadosTransactionResult =
+  {
+    success: true,
+    creditLine: "Crédito de Libre Inversión",
+    productNumber: "***5678",
+    amountPaid: 850000,
+    transactionCost: 0,
+    transmissionDate: "1 de septiembre de 2025",
+    transactionTime: "10:21 pm",
+    approvalNumber: "950606",
+    description: "Exitosa",
+  };
 
 /**
  * Mock transaction result (error)
  */
-export const mockOtrosAsociadosTransactionResultError: OtrosAsociadosTransactionResult = {
-  success: false,
-  creditLine: 'Crédito de Libre Inversión',
-  productNumber: '***5678',
-  amountPaid: 0,
-  transactionCost: 0,
-  transmissionDate: '1 de septiembre de 2025',
-  transactionTime: '10:21 pm',
-  approvalNumber: '-',
-  description: 'Fallida',
-};
+export const mockOtrosAsociadosTransactionResultError: OtrosAsociadosTransactionResult =
+  {
+    success: false,
+    creditLine: "Crédito de Libre Inversión",
+    productNumber: "***5678",
+    amountPaid: 0,
+    transactionCost: 0,
+    transmissionDate: "1 de septiembre de 2025",
+    transactionTime: "10:21 pm",
+    approvalNumber: "-",
+    description: "Fallida",
+  };
 
 /**
  * Payment flow steps
  */
 export const OTROS_ASOCIADOS_PAYMENT_STEPS: Step[] = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 
 /**
  * Mock SMS verification code (for testing)
  */
-export const MOCK_VALID_CODE = '123456';
+export const MOCK_VALID_CODE = "123456";
 ```
 
 **Export**: Add to `src/mocks/index.ts`
@@ -1720,18 +1742,16 @@ export const MOCK_VALID_CODE = '123456';
 ### File: `src/schemas/otrosAsociadosPaymentSchemas.ts`
 
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 /**
  * Step 1: Payment details validation
  */
 export const otrosAsociadosDetailsSchema = yup.object({
-  sourceAccountId: yup
-    .string()
-    .required('Por favor selecciona una cuenta'),
+  sourceAccountId: yup.string().required("Por favor selecciona una cuenta"),
   selectedProducts: yup
     .array()
-    .min(1, 'Por favor selecciona al menos un producto'),
+    .min(1, "Por favor selecciona al menos un producto"),
 });
 
 export type OtrosAsociadosDetailsFormData = yup.InferType<
@@ -1742,11 +1762,15 @@ export type OtrosAsociadosDetailsFormData = yup.InferType<
  * Custom validation for payment amounts
  */
 export const validatePaymentAmounts = (
-  products: Array<{ amountToPay: number; minimumPayment: number | null; isSelected: boolean }>
+  products: Array<{
+    amountToPay: number;
+    minimumPayment: number | null;
+    isSelected: boolean;
+  }>,
 ): string | null => {
   for (const product of products) {
     if (product.isSelected && product.amountToPay <= 0) {
-      return 'El valor a pagar debe ser mayor a 0 para todos los productos seleccionados';
+      return "El valor a pagar debe ser mayor a 0 para todos los productos seleccionados";
     }
   }
   return null;
@@ -1757,10 +1781,10 @@ export const validatePaymentAmounts = (
  */
 export const validateSufficientBalance = (
   totalAmount: number,
-  accountBalance: number
+  accountBalance: number,
 ): string | null => {
   if (totalAmount > accountBalance) {
-    return 'Saldo insuficiente en la cuenta seleccionada';
+    return "Saldo insuficiente en la cuenta seleccionada";
   }
   return null;
 };
@@ -1823,6 +1847,7 @@ app/(authenticated)/pagos/otros-asociados/
 ## Implementation Order
 
 ### Phase 1: Types & Mock Data
+
 1. Create type definitions:
    - `src/types/otros-asociados-payment.ts`
    - Update `src/types/index.ts`
@@ -1832,11 +1857,13 @@ app/(authenticated)/pagos/otros-asociados/
    - Update `src/mocks/index.ts`
 
 ### Phase 2: Atoms
+
 3. Create atoms (if not exists):
    - `src/atoms/Checkbox.tsx`
    - Update `src/atoms/index.ts`
 
 ### Phase 3: Molecules
+
 4. Create molecules:
    - `src/molecules/BeneficiaryListItem.tsx`
    - `src/molecules/PayableProductCard.tsx`
@@ -1844,6 +1871,7 @@ app/(authenticated)/pagos/otros-asociados/
    - Update `src/molecules/index.ts`
 
 ### Phase 4: Organisms
+
 5. Create organisms:
    - `src/organisms/BeneficiarySelectionCard.tsx`
    - `src/organisms/OtrosAsociadosDetailsCard.tsx`
@@ -1852,6 +1880,7 @@ app/(authenticated)/pagos/otros-asociados/
    - Update `src/organisms/index.ts`
 
 ### Phase 5: Pages
+
 6. Create pages in order:
    - `app/(authenticated)/pagos/otros-asociados/page.tsx` (Beneficiary selection)
    - `app/(authenticated)/pagos/otros-asociados/pago/page.tsx` (Step 1)
@@ -1860,10 +1889,12 @@ app/(authenticated)/pagos/otros-asociados/
    - `app/(authenticated)/pagos/otros-asociados/pago/resultado/page.tsx` (Step 4)
 
 ### Phase 6: Validation Schemas (Optional)
+
 7. Create validation schemas:
    - `src/schemas/otrosAsociadosPaymentSchemas.ts`
 
 ### Phase 7: Testing & Refinement
+
 8. Manual testing of complete flow
 9. Edge case testing
 10. Responsive testing
@@ -1876,6 +1907,7 @@ app/(authenticated)/pagos/otros-asociados/
 ### Manual Testing Checklist
 
 #### Pre-step: Beneficiary Selection
+
 - [ ] Page renders correctly
 - [ ] Back button navigates to /pagos
 - [ ] Breadcrumbs display correctly
@@ -1887,6 +1919,7 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] Empty state shows message when no beneficiaries
 
 #### Step 1: Details
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 1 as active
 - [ ] Beneficiary name displays in card title
@@ -1908,6 +1941,7 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] Redirects to beneficiary selection if no beneficiary in sessionStorage
 
 #### Step 2: Confirmation
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] Titular name and masked document display
@@ -1921,6 +1955,7 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 3: SMS Code
+
 - [ ] Page renders correctly
 - [ ] Stepper shows step 3 active, steps 1-2 completed
 - [ ] 6 code input fields render
@@ -1939,6 +1974,7 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] Redirects to step 1 if no sessionStorage data
 
 #### Step 4: Result
+
 - [ ] Page renders correctly
 - [ ] Stepper shows all steps completed
 - [ ] Success icon displays for successful transaction
@@ -1955,12 +1991,14 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] sessionStorage is cleared on finish
 
 ### Error States Testing
+
 - [ ] Error result card renders correctly
 - [ ] Error icon (red X) displays
 - [ ] "Transacción Fallida" title shows
 - [ ] Description shows in red for error
 
 ### Responsive Testing
+
 - [ ] Desktop (≥1024px): Layout correct
 - [ ] Tablet (640-1023px): Layout adapts
 - [ ] Mobile (<640px): Stacked layout works
@@ -1969,6 +2007,7 @@ app/(authenticated)/pagos/otros-asociados/
 - [ ] Stepper labels visible on all breakpoints
 
 ### Accessibility Testing
+
 - [ ] Tab navigation works through all interactive elements
 - [ ] Beneficiary items are keyboard accessible
 - [ ] Checkboxes have proper labels
@@ -1983,6 +2022,7 @@ app/(authenticated)/pagos/otros-asociados/
 ## Dependencies
 
 ### Reused from 09a-pagos
+
 - `Stepper` molecule
 - `StepperCircle` atom
 - `StepperConnector` atom
@@ -1993,9 +2033,11 @@ app/(authenticated)/pagos/otros-asociados/
 - Step types and interfaces
 
 ### Reused from 09b-pagos
+
 - `CurrencyInput` atom
 
 ### Existing Components
+
 - `BackButton` atom
 - `Button` atom
 - `Card` atom
@@ -2005,6 +2047,7 @@ app/(authenticated)/pagos/otros-asociados/
 - `HideBalancesToggle` molecule
 
 ### New for 09d-pagos
+
 - `Checkbox` atom (if not exists)
 - `BeneficiaryListItem` molecule
 - `PayableProductCard` molecule
@@ -2019,12 +2062,14 @@ app/(authenticated)/pagos/otros-asociados/
 ## Notes & Considerations
 
 ### Key Differences from Other Payment Flows
+
 1. **Pre-step**: Beneficiary selection is required before entering the wizard
 2. **Multi-product selection**: Uses checkboxes for multiple products
 3. **Per-product amounts**: Each selected product has its own amount input
 4. **Payment to others**: Pays another associate's products, not own products
 
 ### Product Selection Logic
+
 - Products are shown with checkboxes
 - Selecting a product reveals the amount input
 - Default amount can be minimum payment or 0
@@ -2032,17 +2077,20 @@ app/(authenticated)/pagos/otros-asociados/
 - Total is calculated from all selected products
 
 ### Session Storage Cleanup
+
 - All sessionStorage keys are cleared on:
   - Successful completion (Finalizar button)
   - Leaving the flow (manual navigation)
   - Component unmount on result page
 
 ### SMS Code Testing
+
 - Mock valid code: `123456`
 - Any other 6-digit code will show error
 - In production, implement actual SMS verification
 
 ### Error Handling
+
 - Handle no beneficiary selected
 - Handle no account selected
 - Handle no products selected
@@ -2052,6 +2100,7 @@ app/(authenticated)/pagos/otros-asociados/
 - Handle network failures gracefully
 
 ### Accessibility
+
 - All interactive elements keyboard accessible
 - Checkboxes have aria-labels
 - Focus management in OTP inputs
@@ -2074,38 +2123,42 @@ app/(authenticated)/pagos/otros-asociados/
 ## Design System Values Reference
 
 ### Colors
-| Element | Color | Hex |
-|---------|-------|-----|
-| Primary Text (titles) | Navy Blue | #1D4E8F |
-| Primary Button | Blue | #007FFF |
-| Secondary Button Border | Navy | #1D4E8F |
-| Link Text | Dark Blue | #004266 |
-| Success Text/Icon | Green | #00A44C |
-| Error Text/Icon | Red | #FF0D00 |
-| Inactive Step | Gray | #E4E6EA |
-| Inactive Step Text | Gray | #808284 |
-| Card Background | White | #FFFFFF |
-| Page Background | Light Blue | #F0F9FF |
-| Divider Lines | Gray | #E4E6EA, #B1B1B1 |
+
+| Element                 | Color      | Hex              |
+| ----------------------- | ---------- | ---------------- |
+| Primary Text (titles)   | Navy Blue  | #1D4E8F          |
+| Primary Button          | Blue       | #007FFF          |
+| Secondary Button Border | Navy       | #1D4E8F          |
+| Link Text               | Dark Blue  | #004266          |
+| Success Text/Icon       | Green      | #00A44C          |
+| Error Text/Icon         | Red        | #FF0D00          |
+| Inactive Step           | Gray       | #E4E6EA          |
+| Inactive Step Text      | Gray       | #808284          |
+| Card Background         | White      | #FFFFFF          |
+| Page Background         | Light Blue | #F0F9FF          |
+| Divider Lines           | Gray       | #E4E6EA, #B1B1B1 |
 
 ### Typography
-| Element | Font | Size | Weight |
-|---------|------|------|--------|
-| Page Title | Ubuntu | 20px | Medium |
-| Section Title | Ubuntu | 18px | Bold |
-| Beneficiary Name | Ubuntu | 18px | Medium |
-| Body Text | Ubuntu | 15px | Regular |
-| Small Text | Ubuntu | 14px | Regular |
-| Labels (light) | Ubuntu | 12px | Light/Regular |
-| Currency Values | Ubuntu | 21px | Regular/Medium |
-| Button Text | Ubuntu | 14-16px | Bold |
+
+| Element          | Font   | Size    | Weight         |
+| ---------------- | ------ | ------- | -------------- |
+| Page Title       | Ubuntu | 20px    | Medium         |
+| Section Title    | Ubuntu | 18px    | Bold           |
+| Beneficiary Name | Ubuntu | 18px    | Medium         |
+| Body Text        | Ubuntu | 15px    | Regular        |
+| Small Text       | Ubuntu | 14px    | Regular        |
+| Labels (light)   | Ubuntu | 12px    | Light/Regular  |
+| Currency Values  | Ubuntu | 21px    | Regular/Medium |
+| Button Text      | Ubuntu | 14-16px | Bold           |
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - List item spacing: `12px` (space-y-3)
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - List items: `8px` (rounded-lg)
 - Inputs: `6px` (rounded-md)

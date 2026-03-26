@@ -11,36 +11,53 @@
  * @see /src/types/protection-payment.ts — UI types (Proteccion)
  */
 
-import { normalizeMoney, normalizeString } from '@/types/api/common';
-import type { AccountReference } from '@/types/api/common';
+import { normalizeMoney, normalizeString } from "@/types/api/common";
+import type { AccountReference } from "@/types/api/common";
 import type {
   PaymentProduct,
   PaymentAccountTarget,
   PaymentTransactionResult,
-} from '@/types/api/payments';
+} from "@/types/api/payments";
 import type {
   SavingsAccountResponse,
   CreditAccountResponse,
   ContributionsResponse,
   ProtectionAccountResponse,
-} from '@/types/api/products';
-import type { PaymentAccount, PendingPayments, TransactionResult } from '@/src/types/payment';
-import type { AportesPaymentBreakdown, AportesTransactionResult } from '@/src/types/aportes-payment';
-import type { ObligacionSourceAccount, ObligacionPaymentProduct, ObligacionTransactionResult } from '@/src/types/obligacion-payment';
-import type { ProtectionPaymentProduct, ProtectionPaymentResultData } from '@/src/types/protection-payment';
-import { maskNumber, formatCurrency } from '@/src/utils';
-import { parseApiDate, parseApiTime, formatDate } from '@/src/utils/dates';
+} from "@/types/api/products";
+import type {
+  PaymentAccount,
+  PendingPayments,
+  TransactionResult,
+} from "@/src/types/payment";
+import type {
+  AportesPaymentBreakdown,
+  AportesTransactionResult,
+} from "@/src/types/aportes-payment";
+import type {
+  ObligacionSourceAccount,
+  ObligacionPaymentProduct,
+  ObligacionTransactionResult,
+  ExcessPaymentOption,
+} from "@/src/types/obligacion-payment";
+import type {
+  ProtectionPaymentProduct,
+  ProtectionPaymentResultData,
+} from "@/src/types/protection-payment";
+import { maskNumber, formatCurrency } from "@/src/utils";
+import { parseApiDate, parseApiTime, formatDate } from "@/src/utils/dates";
 
 // ─── Source Account Mappers ───
 
 /**
  * Map savings API response → PaymentAccount (Aportes & Pago Unificado).
  */
-export function mapSavingsToPaymentAccount(item: SavingsAccountResponse): PaymentAccount {
+export function mapSavingsToPaymentAccount(
+  item: SavingsAccountResponse,
+): PaymentAccount {
   return {
     id: item.idCuenta,
     name: item.nombreProducto,
-    balance: normalizeMoney(item.saldoDisponible),
+    balance: normalizeMoney(item.saldoTotal),
     number: maskNumber(item.numeroCuenta),
   };
 }
@@ -48,11 +65,13 @@ export function mapSavingsToPaymentAccount(item: SavingsAccountResponse): Paymen
 /**
  * Map savings API response → ObligacionSourceAccount (Obligaciones & Proteccion).
  */
-export function mapSavingsToSourceAccount(item: SavingsAccountResponse): ObligacionSourceAccount {
-  const balance = normalizeMoney(item.saldoDisponible);
+export function mapSavingsToSourceAccount(
+  item: SavingsAccountResponse,
+): ObligacionSourceAccount {
+  const balance = normalizeMoney(item.saldoTotal);
   return {
     id: item.idCuenta,
-    type: 'ahorros',
+    type: "ahorros",
     accountNumber: item.numeroCuenta,
     maskedNumber: maskNumber(item.numeroCuenta),
     balance,
@@ -63,11 +82,13 @@ export function mapSavingsToSourceAccount(item: SavingsAccountResponse): Obligac
 /**
  * Map credits API response → ObligacionSourceAccount.
  */
-export function mapCreditsToSourceAccount(item: CreditAccountResponse): ObligacionSourceAccount {
+export function mapCreditsToSourceAccount(
+  item: CreditAccountResponse,
+): ObligacionSourceAccount {
   const balance = normalizeMoney(item.cupoDisponible);
   return {
     id: item.idCuenta,
-    type: 'corriente',
+    type: "corriente",
     accountNumber: item.numeroCuenta,
     maskedNumber: maskNumber(item.numeroCuenta),
     balance,
@@ -80,17 +101,19 @@ export function mapCreditsToSourceAccount(item: CreditAccountResponse): Obligaci
 /**
  * Map contributions API response → AportesPaymentBreakdown.
  */
-export function mapContributionsToBreakdown(data: ContributionsResponse): AportesPaymentBreakdown {
+export function mapContributionsToBreakdown(
+  data: ContributionsResponse,
+): AportesPaymentBreakdown {
   const a = data.aportes;
   const fechaCubrimiento = parseApiDate(a.fechaCubrimientoAportes);
   return {
-    planName: 'Plan de Aportes',
+    planName: "Plan de Aportes",
     productNumber: maskNumber(a.numeroCuentaAportes),
     aportesVigentes: normalizeMoney(a.aportesVigentes),
     fondoSolidaridadVigente: normalizeMoney(a.fondosSolidariosVigentes),
     aportesEnMora: normalizeMoney(a.aportesMora),
     fondoSolidaridadEnMora: normalizeMoney(a.fondosSolidariosMora),
-    fechaLimitePago: fechaCubrimiento ? formatDate(fechaCubrimiento) : '',
+    fechaLimitePago: fechaCubrimiento ? formatDate(fechaCubrimiento) : "",
     costoTransaccion: 0,
   };
 }
@@ -98,7 +121,9 @@ export function mapContributionsToBreakdown(data: ContributionsResponse): Aporte
 /**
  * Map credit API response → ObligacionPaymentProduct.
  */
-export function mapCreditToObligacionPaymentProduct(item: CreditAccountResponse): ObligacionPaymentProduct {
+export function mapCreditToObligacionPaymentProduct(
+  item: CreditAccountResponse,
+): ObligacionPaymentProduct {
   const diasMora = normalizeMoney(item.diasMora);
   return {
     id: item.idCuenta,
@@ -106,22 +131,40 @@ export function mapCreditToObligacionPaymentProduct(item: CreditAccountResponse)
     productNumber: maskNumber(item.numeroCuenta),
     totalBalance: normalizeMoney(item.pagoTotal),
     minimumPayment: normalizeMoney(item.pagoMinimo),
-    paymentDeadline: parseApiDate(item.fechaPago) ? formatDate(parseApiDate(item.fechaPago)) : '',
-    status: diasMora > 0 ? 'en_mora' : 'al_dia',
+    paymentDeadline: parseApiDate(item.fechaPago)
+      ? formatDate(parseApiDate(item.fechaPago))
+      : "",
+    fechaApertura: "", // API gap: CreditAccountResponse does not provide opening date yet
+    status: diasMora > 0 ? "en_mora" : "al_dia",
+    valorEnMora: 0, // API gap: no dedicated overdue amount field in CreditAccountResponse
   };
+}
+
+/**
+ * Get display label for excess payment option.
+ */
+export function getExcessPaymentLabel(option: ExcessPaymentOption): string {
+  const labels: Record<ExcessPaymentOption, string> = {
+    proximas_cuotas: "Abono a próximas cuotas",
+    reduccion_plazo: "Reducción de tiempo (plazo)",
+    reduccion_cuota: "Reducción de valor de cuota",
+  };
+  return labels[option];
 }
 
 /**
  * Map protection API response → ProtectionPaymentProduct.
  */
-export function mapProtectionToPaymentProduct(item: ProtectionAccountResponse): ProtectionPaymentProduct {
+export function mapProtectionToPaymentProduct(
+  item: ProtectionAccountResponse,
+): ProtectionPaymentProduct {
   const diasMora = normalizeMoney(item.diasMora);
   return {
     id: item.idCuenta,
     title: item.nombreProducto,
     productNumber: maskNumber(item.numeroCuenta),
     nextPaymentAmount: normalizeMoney(item.pagoMinimo),
-    status: diasMora > 0 ? 'inactivo' : 'activo',
+    status: diasMora > 0 ? "inactivo" : "activo",
   };
 }
 
@@ -129,7 +172,9 @@ export function mapProtectionToPaymentProduct(item: ProtectionAccountResponse): 
  * Map PaymentProduct[] → PendingPayments (Pago Unificado).
  * Groups products by tipoProducto and sums pagoMinimo per category.
  */
-export function mapPaymentProductsToPendingPayments(items: PaymentProduct[]): PendingPayments {
+export function mapPaymentProductsToPendingPayments(
+  items: PaymentProduct[],
+): PendingPayments {
   let aportes = 0;
   let obligaciones = 0;
   let proteccion = 0;
@@ -137,11 +182,11 @@ export function mapPaymentProductsToPendingPayments(items: PaymentProduct[]): Pe
   for (const item of items) {
     const amount = normalizeMoney(item.pagoMinimo);
     const tipo = item.tipoProducto.toUpperCase();
-    if (tipo === 'AP') {
+    if (tipo === "AP") {
       aportes += amount;
-    } else if (tipo === 'CR' || tipo === 'OB') {
+    } else if (tipo === "CR" || tipo === "OB") {
       obligaciones += amount;
-    } else if (tipo === 'PR' || tipo === 'SE') {
+    } else if (tipo === "PR" || tipo === "SE") {
       proteccion += amount;
     }
   }
@@ -158,7 +203,7 @@ export function mapPaymentProductsToPendingPayments(items: PaymentProduct[]): Pe
 
 function formatResultDate(fechaTrn: string): string {
   const iso = parseApiDate(fechaTrn);
-  if (!iso) return '';
+  if (!iso) return "";
   return formatDate(iso);
 }
 
@@ -174,7 +219,7 @@ export function mapResultToAportes(
   context: { lineaCredito: string; numeroProducto: string },
 ): AportesTransactionResult {
   return {
-    status: 'success',
+    status: "success",
     lineaCredito: context.lineaCredito,
     numeroProducto: context.numeroProducto,
     valorPagado: normalizeMoney(result.vlrPagoTotal),
@@ -182,7 +227,7 @@ export function mapResultToAportes(
     fechaTransmision: formatResultDate(result.fechaTrn),
     horaTransaccion: formatResultTime(result.horaTrn),
     numeroAprobacion: normalizeString(result.numAprobacion),
-    descripcion: 'Exitosa',
+    descripcion: "Exitosa",
   };
 }
 
@@ -194,16 +239,16 @@ export function mapResultToObligacion(
   context: { lineaCredito: string; numeroProducto: string },
 ): ObligacionTransactionResult {
   return {
-    status: 'success',
+    status: "success",
     lineaCredito: context.lineaCredito,
     numeroProducto: context.numeroProducto,
     valorPagado: normalizeMoney(result.vlrPagoTotal),
     costoTransaccion: 0,
-    abonoExcedente: 'Reduccion de Cuota',
+    abonoExcedente: "Reduccion de Cuota",
     fechaTransmision: formatResultDate(result.fechaTrn),
     horaTransaccion: formatResultTime(result.horaTrn),
     numeroAprobacion: normalizeString(result.numAprobacion),
-    descripcion: 'Exitosa',
+    descripcion: "Exitosa",
   };
 }
 
@@ -223,21 +268,23 @@ export function mapResultToProtection(
     transmissionDate: formatResultDate(result.fechaTrn),
     transactionTime: formatResultTime(result.horaTrn),
     approvalNumber: normalizeString(result.numAprobacion),
-    description: 'Exitosa',
+    description: "Exitosa",
   };
 }
 
 /**
  * Map API payment result → TransactionResult (Pago Unificado).
  */
-export function mapResultToTransaction(result: PaymentTransactionResult): TransactionResult {
+export function mapResultToTransaction(
+  result: PaymentTransactionResult,
+): TransactionResult {
   return {
-    status: 'success',
+    status: "success",
     transactionCost: 0,
     transactionDate: formatResultDate(result.fechaTrn),
     transactionTime: formatResultTime(result.horaTrn),
     approvalNumber: normalizeString(result.numAprobacion),
-    description: 'Exitosa',
+    description: "Exitosa",
   };
 }
 
@@ -246,7 +293,9 @@ export function mapResultToTransaction(result: PaymentTransactionResult): Transa
 /**
  * Build AccountReference from a SavingsAccountResponse.
  */
-export function buildAccountReference(account: SavingsAccountResponse): AccountReference {
+export function buildAccountReference(
+  account: SavingsAccountResponse,
+): AccountReference {
   return {
     codigoProductoCobis: account.codigoProductoCobis,
     idCuenta: account.idCuenta,
@@ -257,7 +306,11 @@ export function buildAccountReference(account: SavingsAccountResponse): AccountR
 /**
  * Build a PaymentAccountTarget for aportes (contributions).
  */
-export function buildAportesTarget(contributions: ContributionsResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
+export function buildAportesTarget(
+  contributions: ContributionsResponse,
+  amount: number,
+  tipoProducto: string,
+): PaymentAccountTarget {
   const a = contributions.aportes;
   return {
     idCuenta: normalizeString(a.idCuentaAportes),
@@ -270,7 +323,11 @@ export function buildAportesTarget(contributions: ContributionsResponse, amount:
 /**
  * Build a PaymentAccountTarget from a CreditAccountResponse.
  */
-export function buildCreditTarget(credit: CreditAccountResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
+export function buildCreditTarget(
+  credit: CreditAccountResponse,
+  amount: number,
+  tipoProducto: string,
+): PaymentAccountTarget {
   return {
     idCuenta: credit.idCuenta,
     numeroCuenta: credit.numeroCuenta,
@@ -282,7 +339,11 @@ export function buildCreditTarget(credit: CreditAccountResponse, amount: number,
 /**
  * Build a PaymentAccountTarget from a ProtectionAccountResponse.
  */
-export function buildProtectionTarget(protection: ProtectionAccountResponse, amount: number, tipoProducto: string): PaymentAccountTarget {
+export function buildProtectionTarget(
+  protection: ProtectionAccountResponse,
+  amount: number,
+  tipoProducto: string,
+): PaymentAccountTarget {
   return {
     idCuenta: protection.idCuenta,
     numeroCuenta: protection.numeroCuenta,
@@ -294,7 +355,9 @@ export function buildProtectionTarget(protection: ProtectionAccountResponse, amo
 /**
  * Build PaymentAccountTarget[] from the unified payment products list.
  */
-export function buildUnifiedTargets(products: PaymentProduct[]): PaymentAccountTarget[] {
+export function buildUnifiedTargets(
+  products: PaymentProduct[],
+): PaymentAccountTarget[] {
   return products.map((p) => ({
     idCuenta: p.idCuenta,
     numeroCuenta: p.numeroCuenta,

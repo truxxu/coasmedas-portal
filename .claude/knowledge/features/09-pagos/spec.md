@@ -44,6 +44,7 @@ The Pagos (Payments) feature provides a centralized interface for users to acces
 ### Scope
 
 **In Scope**:
+
 - Pagar mis productos page implementation
 - PaymentOptionCard component (featured and standard variants)
 - PaymentOptionsGrid organism
@@ -51,6 +52,7 @@ The Pagos (Payments) feature provides a centralized interface for users to acces
 - Navigation structure (placeholders for payment flows)
 
 **Out of Scope** (Future Implementation):
+
 - Payment flow implementations (Pago Unificado, Aportes, Obligaciones, Protección)
 - Pago a otros asociado page
 - Pagar servicios públicos page
@@ -64,6 +66,7 @@ The Pagos (Payments) feature provides a centralized interface for users to acces
 ### Dependencies
 
 **Existing Components**:
+
 - `BackButton` (src/atoms)
 - `Breadcrumbs` (src/molecules)
 - `HideBalancesToggle` (src/molecules)
@@ -74,10 +77,12 @@ The Pagos (Payments) feature provides a centralized interface for users to acces
 - `SessionFooter` (src/organisms)
 
 **New Components Required**:
+
 - `PaymentOptionCard` (src/molecules) - NEW
 - `PaymentOptionsGrid` (src/organisms) - NEW
 
 **Frameworks & Libraries**:
+
 - Next.js 16 (App Router)
 - React 19
 - TypeScript
@@ -120,6 +125,7 @@ src/
 **File**: `src/molecules/PaymentOptionCard.tsx`
 
 #### Purpose
+
 Reusable card component for displaying payment options with two visual variants: featured (navy background) and standard (white background).
 
 #### Props Interface
@@ -128,7 +134,7 @@ Reusable card component for displaying payment options with two visual variants:
 interface PaymentOptionCardProps {
   title: string;
   description: string;
-  variant?: 'featured' | 'standard';
+  variant?: "featured" | "standard";
   onClick: () => void;
   className?: string;
 }
@@ -140,11 +146,11 @@ interface PaymentOptionCardProps {
 export function PaymentOptionCard({
   title,
   description,
-  variant = 'standard',
+  variant = "standard",
   onClick,
-  className = '',
+  className = "",
 }: PaymentOptionCardProps) {
-  const isFeatured = variant === 'featured';
+  const isFeatured = variant === "featured";
 
   return (
     <button
@@ -153,9 +159,10 @@ export function PaymentOptionCard({
         w-full text-left rounded-2xl p-6
         transition-all duration-300 ease-in-out
         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-        ${isFeatured
-          ? 'bg-brand-navy shadow-md hover:shadow-lg hover:scale-[1.02] active:shadow-sm'
-          : 'bg-white border border-gray-200 shadow-md hover:border-brand-navy hover:bg-blue-50 hover:shadow-lg active:border-blue-500 active:bg-blue-100'
+        ${
+          isFeatured
+            ? "bg-brand-navy shadow-md hover:shadow-lg hover:scale-[1.02] active:shadow-sm"
+            : "bg-white border border-gray-200 shadow-md hover:border-brand-navy hover:bg-blue-50 hover:shadow-lg active:border-blue-500 active:bg-blue-100"
         }
         ${className}
       `}
@@ -164,7 +171,7 @@ export function PaymentOptionCard({
       <h3
         className={`
           text-xl font-medium mb-3
-          ${isFeatured ? 'text-blue-400' : 'text-brand-navy'}
+          ${isFeatured ? "text-blue-400" : "text-brand-navy"}
         `}
       >
         {title}
@@ -172,7 +179,7 @@ export function PaymentOptionCard({
       <p
         className={`
           text-[15px] leading-relaxed
-          ${isFeatured ? 'text-white' : 'text-gray-900'}
+          ${isFeatured ? "text-white" : "text-gray-900"}
         `}
       >
         {description}
@@ -185,6 +192,7 @@ export function PaymentOptionCard({
 #### Styling Details
 
 **Featured Variant**:
+
 - Background: `#1D4E8F` (brand-navy)
 - Title color: `#007FFF` or lighter blue
 - Description color: `#FFFFFF` (white)
@@ -192,6 +200,7 @@ export function PaymentOptionCard({
 - Border: None
 
 **Standard Variant**:
+
 - Background: `#FFFFFF` (white)
 - Border: `1px solid #E4E6EA`
 - Title color: `#1D4E8F` (brand-navy)
@@ -200,6 +209,7 @@ export function PaymentOptionCard({
 - Active: Border color blue-500, background blue-100
 
 #### Accessibility
+
 - `<button>` element for proper semantics
 - `aria-label` with descriptive text
 - Keyboard accessible (Tab, Enter, Space)
@@ -213,6 +223,7 @@ export function PaymentOptionCard({
 **File**: `src/organisms/PaymentOptionsGrid.tsx`
 
 #### Purpose
+
 Container component that organizes payment option cards in a responsive grid layout.
 
 #### Props Interface
@@ -227,36 +238,40 @@ interface PaymentOptionsGridProps {
 #### Component Structure
 
 ```tsx
-import { PaymentOptionCard } from '@/src/molecules';
+import { PaymentOptionCard } from "@/src/molecules";
 
 const paymentOptions = [
   {
-    id: 'pago-unificado',
-    title: 'Pago Unificado',
-    description: 'Paga todos tus productos pendientes en una sola transacción y mantente al día fácilmente.',
-    variant: 'featured' as const,
+    id: "pago-unificado",
+    title: "Pago Unificado",
+    description:
+      "Paga todos tus productos pendientes en una sola transacción y mantente al día fácilmente.",
+    variant: "featured" as const,
   },
   {
-    id: 'aportes',
-    title: 'Aportes',
-    description: 'Paga tus aportes sociales y solidaridad.',
-    variant: 'standard' as const,
+    id: "aportes",
+    title: "Aportes",
+    description: "Paga tus aportes sociales y solidaridad.",
+    variant: "standard" as const,
   },
   {
-    id: 'obligaciones',
-    title: 'Obligaciones',
-    description: 'Paga tus créditos, tarjetas y otros compromisos.',
-    variant: 'standard' as const,
+    id: "obligaciones",
+    title: "Obligaciones",
+    description: "Paga tus créditos, tarjetas y otros compromisos.",
+    variant: "standard" as const,
   },
   {
-    id: 'proteccion',
-    title: 'Protección',
-    description: 'Paga tus seguros y pólizas para estar siempre cubierto.',
-    variant: 'standard' as const,
+    id: "proteccion",
+    title: "Protección",
+    description: "Paga tus seguros y pólizas para estar siempre cubierto.",
+    variant: "standard" as const,
   },
 ];
 
-export function PaymentOptionsGrid({ onOptionClick, className = '' }: PaymentOptionsGridProps) {
+export function PaymentOptionsGrid({
+  onOptionClick,
+  className = "",
+}: PaymentOptionsGridProps) {
   return (
     <div
       className={`
@@ -279,6 +294,7 @@ export function PaymentOptionsGrid({ onOptionClick, className = '' }: PaymentOpt
 ```
 
 #### Grid Layout
+
 - **Mobile** (`<640px`): 1 column (stacked)
 - **Tablet** (`640px - 1023px`): 2 columns
 - **Desktop** (`≥1024px`): 2 columns
@@ -297,10 +313,10 @@ Add the following type definitions:
  * Payment option identifier
  */
 export type PaymentOptionId =
-  | 'pago-unificado'
-  | 'aportes'
-  | 'obligaciones'
-  | 'proteccion';
+  | "pago-unificado"
+  | "aportes"
+  | "obligaciones"
+  | "proteccion";
 
 /**
  * Payment option configuration
@@ -309,7 +325,7 @@ export interface PaymentOption {
   id: PaymentOptionId;
   title: string;
   description: string;
-  variant: 'featured' | 'standard';
+  variant: "featured" | "standard";
   route?: string; // Optional: Route to payment flow (TBD)
 }
 ```
@@ -325,19 +341,19 @@ export interface PaymentOption {
 #### Implementation
 
 ```tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { BackButton, Breadcrumbs, HideBalancesToggle } from '@/src/molecules';
-import { PaymentOptionsGrid } from '@/src/organisms';
+import { useRouter } from "next/navigation";
+import { BackButton, Breadcrumbs, HideBalancesToggle } from "@/src/molecules";
+import { PaymentOptionsGrid } from "@/src/organisms";
 
 export default function PagarMisProductosPage() {
   const router = useRouter();
 
   const breadcrumbs = [
-    { label: 'Inicio', href: '/home' },
-    { label: 'Pagos', href: '/pagos' },
-    { label: 'Pagar mis productos', href: '/pagos/pagar-mis-productos' },
+    { label: "Inicio", href: "/home" },
+    { label: "Pagos", href: "/pagos" },
+    { label: "Pagar mis productos", href: "/pagos/pagar-mis-productos" },
   ];
 
   const handleOptionClick = (optionId: string) => {
@@ -403,10 +419,10 @@ export default function PagarMisProductosPage() {
 **File**: `app/(authenticated)/pagos/page.tsx`
 
 ```tsx
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
 export default function PagosPage() {
-  redirect('/pagos/pagar-mis-productos');
+  redirect("/pagos/pagar-mis-productos");
 }
 ```
 
@@ -427,14 +443,14 @@ Update the navigation items array to include the Pagos accordion:
 ```tsx
 const navigationItems = [
   {
-    id: 'inicio',
-    label: 'Inicio',
+    id: "inicio",
+    label: "Inicio",
     icon: HomeIcon, // Existing icon
-    href: '/home',
+    href: "/home",
   },
   {
-    id: 'productos',
-    label: 'Productos',
+    id: "productos",
+    label: "Productos",
     icon: ProductsIcon, // Existing icon
     expandable: true,
     children: [
@@ -442,31 +458,31 @@ const navigationItems = [
     ],
   },
   {
-    id: 'pagos',
-    label: 'Pagos',
+    id: "pagos",
+    label: "Pagos",
     icon: PaymentIcon, // NEW - Need to add payment icon
     expandable: true,
     children: [
       {
-        id: 'pagar-mis-productos',
-        label: 'Pagar mis productos',
-        href: '/pagos/pagar-mis-productos',
+        id: "pagar-mis-productos",
+        label: "Pagar mis productos",
+        href: "/pagos/pagar-mis-productos",
       },
       {
-        id: 'pago-otros-asociado',
-        label: 'Pago a otros asociado',
-        href: '/pagos/pago-otros-asociado', // TODO: Implement later
+        id: "pago-otros-asociado",
+        label: "Pago a otros asociado",
+        href: "/pagos/pago-otros-asociado", // TODO: Implement later
       },
       {
-        id: 'pagar-servicios-publicos',
-        label: 'Pagar servicios públicos',
-        href: '/pagos/pagar-servicios-publicos', // TODO: Implement later
+        id: "pagar-servicios-publicos",
+        label: "Pagar servicios públicos",
+        href: "/pagos/pagar-servicios-publicos", // TODO: Implement later
       },
     ],
   },
   {
-    id: 'transferencias',
-    label: 'Transferencias',
+    id: "transferencias",
+    label: "Transferencias",
     icon: TransferIcon, // Existing icon
     expandable: true,
     children: [
@@ -518,6 +534,7 @@ function PaymentIcon({ className }: { className?: string }) {
 ### Tailwind Classes Reference
 
 #### Page Layout
+
 ```css
 /* Main container */
 .space-y-6         /* 24px vertical spacing between sections */
@@ -529,6 +546,7 @@ function PaymentIcon({ className }: { className?: string }) {
 ```
 
 #### Typography
+
 ```css
 /* Page title */
 .text-xl          /* 20px / 1.25rem */
@@ -555,6 +573,7 @@ function PaymentIcon({ className }: { className?: string }) {
 ```
 
 #### Cards
+
 ```css
 /* Common card styles */
 .w-full           /* 100% width */
@@ -575,6 +594,7 @@ function PaymentIcon({ className }: { className?: string }) {
 ```
 
 #### Grid
+
 ```css
 .grid             /* CSS Grid */
 .grid-cols-1      /* 1 column on mobile */
@@ -589,10 +609,10 @@ Ensure these CSS variables are defined in `app/globals.css`:
 ```css
 @layer base {
   :root {
-    --brand-navy: #1D4E8F;
-    --brand-primary: #007FFF;
-    --light-blue: #F0F9FF;
-    --border-gray: #E4E6EA;
+    --brand-navy: #1d4e8f;
+    --brand-primary: #007fff;
+    --light-blue: #f0f9ff;
+    --border-gray: #e4e6ea;
   }
 }
 ```
@@ -761,11 +781,13 @@ Ensure all text meets WCAG 2.1 AA standards:
 ## Implementation Steps
 
 ### Step 1: Create Type Definitions
+
 - [ ] Add `PaymentOptionId` type to `src/types/index.ts`
 - [ ] Add `PaymentOption` interface to `src/types/index.ts`
 - [ ] Export new types from `src/types/index.ts`
 
 ### Step 2: Create PaymentOptionCard Component
+
 - [ ] Create `src/molecules/PaymentOptionCard.tsx`
 - [ ] Implement component with featured/standard variants
 - [ ] Add proper TypeScript interfaces
@@ -774,6 +796,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Export from `src/molecules/index.ts`
 
 ### Step 3: Create PaymentOptionsGrid Component
+
 - [ ] Create `src/organisms/PaymentOptionsGrid.tsx`
 - [ ] Define payment options data array
 - [ ] Implement responsive grid layout
@@ -782,6 +805,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Export from `src/organisms/index.ts`
 
 ### Step 4: Update Sidebar Component
+
 - [ ] Add payment icon component (or use existing icon)
 - [ ] Add Pagos navigation item to navigationItems array
 - [ ] Configure expandable accordion with sub-items:
@@ -791,6 +815,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Test accordion expand/collapse behavior
 
 ### Step 5: Create Page Structure
+
 - [ ] Create `app/(authenticated)/pagos/page.tsx` (redirect)
 - [ ] Create `app/(authenticated)/pagos/pagar-mis-productos/page.tsx`
 - [ ] Implement page layout with header section
@@ -800,6 +825,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Implement handleOptionClick function (placeholder navigation)
 
 ### Step 6: Styling & Polish
+
 - [ ] Verify all Tailwind classes match design specs
 - [ ] Test hover states on all interactive elements
 - [ ] Verify focus states are visible and accessible
@@ -808,6 +834,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Test responsive layout on mobile, tablet, desktop
 
 ### Step 7: Accessibility Audit
+
 - [ ] Test keyboard navigation (Tab, Enter, Space)
 - [ ] Verify focus order is logical
 - [ ] Add/verify all ARIA attributes
@@ -816,6 +843,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Ensure all interactive elements have proper labels
 
 ### Step 8: Testing
+
 - [ ] Test navigation from sidebar to page
 - [ ] Test breadcrumb navigation
 - [ ] Test back button functionality
@@ -887,6 +915,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 ### Manual Testing
 
 #### Desktop (≥1024px)
+
 - [ ] Page loads correctly
 - [ ] All 4 payment cards visible in 2x2 grid
 - [ ] Sidebar "Pagos" menu is expandable
@@ -900,6 +929,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Enter/Space keys activate focused elements
 
 #### Tablet (640px - 1023px)
+
 - [ ] Layout adapts correctly
 - [ ] Cards maintain 2 column grid
 - [ ] Spacing is appropriate
@@ -907,6 +937,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] All interactions work as on desktop
 
 #### Mobile (<640px)
+
 - [ ] Layout adapts correctly
 - [ ] Cards stack vertically (1 column)
 - [ ] Cards are full width
@@ -916,6 +947,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] All interactions work on touch devices
 
 ### Browser Testing
+
 - [ ] Chrome (latest)
 - [ ] Firefox (latest)
 - [ ] Safari (latest)
@@ -924,6 +956,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] Chrome Mobile (Android)
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation works (Tab, Shift+Tab, Enter, Space)
 - [ ] Focus indicators are visible
 - [ ] Screen reader announces content correctly (optional)
@@ -931,6 +964,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - [ ] No keyboard traps
 
 ### Edge Cases
+
 - [ ] Long card titles/descriptions don't break layout
 - [ ] Rapid clicking doesn't cause issues
 - [ ] Browser back button works correctly
@@ -942,16 +976,19 @@ Ensure all text meets WCAG 2.1 AA standards:
 ## Future Enhancements
 
 ### Phase 2: Payment Flows
+
 - Implement Pago Unificado flow
 - Implement Aportes payment flow
 - Implement Obligaciones payment flow
 - Implement Protección payment flow
 
 ### Phase 3: Additional Pages
+
 - Pago a otros asociado page
 - Pagar servicios públicos page
 
 ### Phase 4: Enhanced Features
+
 - Recent payments section
 - Scheduled payments
 - Payment history integration
@@ -960,6 +997,7 @@ Ensure all text meets WCAG 2.1 AA standards:
 - Bulk payment options
 
 ### Technical Improvements
+
 - Add loading states for async operations
 - Implement error handling for failed navigations
 - Add analytics tracking for card clicks

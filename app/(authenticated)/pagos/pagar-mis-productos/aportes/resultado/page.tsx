@@ -42,7 +42,8 @@ export default function ResultadoAportesPage() {
         fechaTransmision: "",
         horaTransaccion: "",
         numeroAprobacion: "-",
-        descripcion: JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
+        descripcion:
+          JSON.parse(pseErrorStr).message || "Error al conectar con PSE",
       };
     }
 

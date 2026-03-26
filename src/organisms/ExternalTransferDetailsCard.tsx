@@ -44,7 +44,9 @@ export function ExternalTransferDetailsCard({
     return `${account.type} - Saldo: ${balance}`;
   };
 
-  const formatDestinationOption = (account: ExternalTransferDestinationAccount) => {
+  const formatDestinationOption = (
+    account: ExternalTransferDestinationAccount,
+  ) => {
     return `${account.alias} (${account.bankName})`;
   };
 
@@ -53,9 +55,7 @@ export function ExternalTransferDetailsCard({
     onAmountChange(value);
   };
 
-  const formattedAmount = amount
-    ? Number(amount).toLocaleString("es-CO")
-    : "0";
+  const formattedAmount = amount ? Number(amount).toLocaleString("es-CO") : "0";
 
   const hasNoDestinations = destinationAccounts.length === 0;
 
@@ -105,7 +105,8 @@ export function ExternalTransferDetailsCard({
           {hasNoDestinations ? (
             <div className="p-4 bg-brand-background rounded-lg border border-brand-border">
               <p className="text-[14px] text-brand-gray-high mb-2">
-                No tienes cuentas inscritas. Registra una cuenta para realizar transferencias.
+                No tienes cuentas inscritas. Registra una cuenta para realizar
+                transferencias.
               </p>
               <Link
                 href="/transferencias/inscribir-cuentas"
@@ -161,7 +162,8 @@ export function ExternalTransferDetailsCard({
             htmlFor="transfer-concept"
             className="block text-[14px] font-medium text-brand-text-black mb-2"
           >
-            Cual es el concepto de la transaccion? <span className="font-normal text-brand-gray-high">(opcional)</span>
+            Cual es el concepto de la transaccion?{" "}
+            <span className="font-normal text-brand-gray-high">(opcional)</span>
           </label>
           <Input
             id="transfer-concept"
@@ -174,9 +176,7 @@ export function ExternalTransferDetailsCard({
         </div>
       </div>
 
-      {error && (
-        <p className="text-sm text-brand-error text-center">{error}</p>
-      )}
+      {error && <p className="text-sm text-brand-error text-center">{error}</p>}
     </Card>
   );
 }

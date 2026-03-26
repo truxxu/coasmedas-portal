@@ -3,9 +3,9 @@
  */
 export interface ExternalTransferSourceAccount {
   id: string;
-  type: string;              // e.g., "Cuenta de Ahorros"
-  balance: number;           // Available balance
-  maskedNumber: string;      // e.g., "****4428"
+  type: string; // e.g., "Cuenta de Ahorros"
+  balance: number; // Available balance
+  maskedNumber: string; // e.g., "****4428"
 }
 
 /**
@@ -13,11 +13,11 @@ export interface ExternalTransferSourceAccount {
  */
 export interface ExternalTransferDestinationAccount {
   id: string;
-  alias: string;             // User-defined alias e.g., "Cuenta Mama"
-  bankName: string;          // e.g., "Bancolombia"
+  alias: string; // User-defined alias e.g., "Cuenta Mama"
+  bankName: string; // e.g., "Bancolombia"
   accountType: "ahorros" | "corriente";
-  accountNumber: string;     // e.g., "123-456789-01"
-  holderName: string;        // e.g., "MARIA GONZALEZ"
+  accountNumber: string; // e.g., "123-456789-01"
+  holderName: string; // e.g., "MARIA GONZALEZ"
 }
 
 /**
@@ -36,12 +36,12 @@ export interface ExternalTransferFormData {
 export interface ExternalTransferConfirmationData {
   // Holder (user) info
   holderName: string;
-  holderDocument: string;     // Masked: "CC 1.***.***. 231"
-  sourceProduct: string;      // e.g., "Cuenta de Ahorros"
+  holderDocument: string; // Masked: "CC 1.***.***. 231"
+  sourceProduct: string; // e.g., "Cuenta de Ahorros"
 
   // Destination info
-  destinationHolder: string;  // e.g., "MARIA GONZALEZ"
-  destinationBank: string;    // e.g., "Bancolombia"
+  destinationHolder: string; // e.g., "MARIA GONZALEZ"
+  destinationBank: string; // e.g., "Bancolombia"
   destinationAccountType: string; // e.g., "Ahorros"
   destinationAccountNumber: string; // e.g., "123.-456789-01"
 
@@ -65,10 +65,10 @@ export interface ExternalTransferResult {
   transactionCost: number;
 
   // Transaction metadata
-  transactionDate: string;    // e.g., "5 de Enero de 2025"
-  transactionTime: string;    // e.g., "03:02 p.m."
-  approvalNumber: string;     // e.g., "256606"
-  description: string;        // e.g., "Transferencia Exitosa"
+  transactionDate: string; // e.g., "5 de Enero de 2025"
+  transactionTime: string; // e.g., "03:02 p.m."
+  approvalNumber: string; // e.g., "256606"
+  description: string; // e.g., "Transferencia Exitosa"
 
   // Error info (if failed)
   errorMessage?: string;

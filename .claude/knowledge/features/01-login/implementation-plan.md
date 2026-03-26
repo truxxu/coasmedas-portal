@@ -10,6 +10,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Review Figma design
 - [x] Read [spec.md](./spec.md) for full feature requirements
 - [x] Read [references.md](./references.md) for design guidance
@@ -17,6 +18,7 @@
 - [ ] Prehome feature (00-prehome) completed
 
 ### Current State
+
 - ✅ Next.js 16 project initialized
 - ✅ Tailwind CSS v4 configured
 - ✅ TypeScript configured
@@ -33,16 +35,19 @@
 ### Step 0.1: Install Required Packages
 
 **Packages to Install**:
+
 ```bash
 yarn add react-hook-form yup @hookform/resolvers
 ```
 
 **Purpose**:
+
 - `react-hook-form` - Form state management
 - `yup` - Schema validation
 - `@hookform/resolvers` - Connect yup with react-hook-form
 
 **Verify Installation**:
+
 ```bash
 # Check package.json includes:
 # "react-hook-form": "^7.x.x"
@@ -67,26 +72,27 @@ mkdir -p src/schemas
 **File**: `src/schemas/loginSchema.ts`
 
 **Schema Definition**:
+
 ```typescript
-import * as yup from 'yup';
+import * as yup from "yup";
 
 export const loginSchema = yup.object({
   documentType: yup
     .string()
-    .required('Selecciona un tipo de documento')
-    .oneOf(['CC', 'CE', 'TI', 'PA'], 'Tipo de documento inválido'),
+    .required("Selecciona un tipo de documento")
+    .oneOf(["CC", "CE", "TI", "PA"], "Tipo de documento inválido"),
 
   documentNumber: yup
     .string()
-    .required('Número de documento es requerido')
-    .matches(/^[0-9]+$/, 'Solo números permitidos')
-    .min(6, 'Mínimo 6 dígitos')
-    .max(15, 'Máximo 15 dígitos'),
+    .required("Número de documento es requerido")
+    .matches(/^[0-9]+$/, "Solo números permitidos")
+    .min(6, "Mínimo 6 dígitos")
+    .max(15, "Máximo 15 dígitos"),
 
   password: yup
     .string()
-    .required('Contraseña es requerida')
-    .min(8, 'Mínimo 8 caracteres'),
+    .required("Contraseña es requerida")
+    .min(8, "Mínimo 8 caracteres"),
 });
 
 export type LoginFormData = yup.InferType<typeof loginSchema>;
@@ -98,13 +104,13 @@ export type LoginFormData = yup.InferType<typeof loginSchema>;
 
 ```typescript
 export const DOCUMENT_TYPES = [
-  { value: 'CC', label: 'Cédula de ciudadanía' },
-  { value: 'CE', label: 'Cédula de extranjería' },
-  { value: 'TI', label: 'Tarjeta de identidad' },
-  { value: 'PA', label: 'Pasaporte' },
+  { value: "CC", label: "Cédula de ciudadanía" },
+  { value: "CE", label: "Cédula de extranjería" },
+  { value: "TI", label: "Tarjeta de identidad" },
+  { value: "PA", label: "Pasaporte" },
 ] as const;
 
-export type DocumentType = 'CC' | 'CE' | 'TI' | 'PA';
+export type DocumentType = "CC" | "CE" | "TI" | "PA";
 ```
 
 ---
@@ -116,6 +122,7 @@ export type DocumentType = 'CC' | 'CE' | 'TI' | 'PA';
 **File**: `src/atoms/Input.tsx`
 
 **Features**:
+
 - Text, password, number types
 - Error state styling
 - Focus state styling
@@ -124,15 +131,17 @@ export type DocumentType = 'CC' | 'CE' | 'TI' | 'PA';
 - Integrates with react-hook-form
 
 **Props**:
+
 ```typescript
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: 'text' | 'password' | 'number';
+  type?: "text" | "password" | "number";
   error?: string;
   className?: string;
 }
 ```
 
 **Styling**:
+
 ```css
 /* Default */
 h-11 px-3 rounded-[6px] border border-[#B1B1B1]
@@ -150,6 +159,7 @@ border-2 border-red-600
 **File**: `src/atoms/Select.tsx`
 
 **Features**:
+
 - Dropdown with chevron icon
 - Error state styling
 - Focus state styling
@@ -157,6 +167,7 @@ border-2 border-red-600
 - Keyboard accessible
 
 **Props**:
+
 ```typescript
 interface SelectOption {
   value: string;
@@ -172,6 +183,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 ```
 
 **Styling**:
+
 - Same as Input component
 - Chevron icon on right side
 - Appearance: custom dropdown arrow
@@ -181,12 +193,14 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 **File**: `src/atoms/Label.tsx`
 
 **Features**:
+
 - Associates with input via htmlFor
 - Shows asterisk for required fields
 - Ubuntu Medium font
 - Gray color (#58585B)
 
 **Props**:
+
 ```typescript
 interface LabelProps {
   htmlFor: string;
@@ -197,6 +211,7 @@ interface LabelProps {
 ```
 
 **Styling**:
+
 ```css
 font-medium text-[14.5px] text-brand-gray-high mb-1.5
 ```
@@ -206,12 +221,14 @@ font-medium text-[14.5px] text-brand-gray-high mb-1.5
 **File**: `src/atoms/ErrorMessage.tsx`
 
 **Features**:
+
 - Displays validation error
 - Red text color
 - Small font size
 - aria-live for screen readers
 
 **Props**:
+
 ```typescript
 interface ErrorMessageProps {
   message?: string;
@@ -220,6 +237,7 @@ interface ErrorMessageProps {
 ```
 
 **Styling**:
+
 ```css
 text-red-600 text-xs mt-1
 ```
@@ -229,6 +247,7 @@ text-red-600 text-xs mt-1
 **File**: `src/atoms/Button.tsx` (modify existing)
 
 **Add Disabled Variant**:
+
 ```typescript
 // Add to variants
 disabled: 'bg-[#A6C4FF] text-brand-navy cursor-not-allowed'
@@ -238,6 +257,7 @@ disabled?: boolean;
 ```
 
 **Styling for Disabled**:
+
 ```css
 bg-[#A6C4FF] text-brand-navy cursor-not-allowed
 ```
@@ -247,15 +267,15 @@ bg-[#A6C4FF] text-brand-navy cursor-not-allowed
 **File**: `src/atoms/index.ts`
 
 ```typescript
-export { Button } from './Button';
-export { Logo } from './Logo';
-export { Link } from './Link';
-export { Card } from './Card';
-export { SectionTitle } from './SectionTitle';
-export { Input } from './Input';
-export { Select } from './Select';
-export { Label } from './Label';
-export { ErrorMessage } from './ErrorMessage';
+export { Button } from "./Button";
+export { Logo } from "./Logo";
+export { Link } from "./Link";
+export { Card } from "./Card";
+export { SectionTitle } from "./SectionTitle";
+export { Input } from "./Input";
+export { Select } from "./Select";
+export { Label } from "./Label";
+export { ErrorMessage } from "./ErrorMessage";
 ```
 
 ---
@@ -267,12 +287,14 @@ export { ErrorMessage } from './ErrorMessage';
 **File**: `src/molecules/FormField.tsx`
 
 **Features**:
+
 - Wraps Label + Input + ErrorMessage
 - Consistent spacing
 - Forwards ref for react-hook-form
 - Error state handling
 
 **Props**:
+
 ```typescript
 interface FormFieldProps extends InputProps {
   label: string;
@@ -283,6 +305,7 @@ interface FormFieldProps extends InputProps {
 ```
 
 **Structure**:
+
 ```tsx
 <div className="flex flex-col gap-1.5">
   <Label htmlFor={name} required={required}>
@@ -298,11 +321,13 @@ interface FormFieldProps extends InputProps {
 **File**: `src/molecules/SelectField.tsx`
 
 **Features**:
+
 - Wraps Label + Select + ErrorMessage
 - Consistent with FormField
 - Forwards ref for react-hook-form
 
 **Props**:
+
 ```typescript
 interface SelectFieldProps extends SelectProps {
   label: string;
@@ -313,6 +338,7 @@ interface SelectFieldProps extends SelectProps {
 ```
 
 **Structure**:
+
 - Same as FormField but uses Select component
 
 ### Step 3.3: Create PasswordField Component
@@ -320,23 +346,27 @@ interface SelectFieldProps extends SelectProps {
 **File**: `src/molecules/PasswordField.tsx`
 
 **Features**:
+
 - FormField variant for password
 - Optional visibility toggle icon
 - Eye icon to show/hide password
 
 **Props**:
+
 ```typescript
-interface PasswordFieldProps extends Omit<FormFieldProps, 'type'> {
+interface PasswordFieldProps extends Omit<FormFieldProps, "type"> {
   showToggle?: boolean;
 }
 ```
 
 **State**:
+
 ```typescript
 const [showPassword, setShowPassword] = useState(false);
 ```
 
 **Toggle Icon** (optional for MVP):
+
 - Eye icon from SVG or icon library
 - Positioned absolute right side of input
 
@@ -345,11 +375,13 @@ const [showPassword, setShowPassword] = useState(false);
 **File**: `src/molecules/CaptchaPlaceholder.tsx`
 
 **Features**:
+
 - Gray box with placeholder text
 - Rounded corners
 - Future: Integrate reCAPTCHA
 
 **Props**:
+
 ```typescript
 interface CaptchaPlaceholderProps {
   className?: string;
@@ -357,6 +389,7 @@ interface CaptchaPlaceholderProps {
 ```
 
 **Styling**:
+
 ```css
 bg-[#E4E6EA] rounded-[6px] px-6 py-8 text-center
 text-brand-gray-high font-medium
@@ -369,18 +402,18 @@ text-brand-gray-high font-medium
 **File**: `src/molecules/index.ts`
 
 ```typescript
-export { NavBar } from './NavBar';
-export { HeroBanner } from './HeroBanner';
-export { WelcomeSection } from './WelcomeSection';
-export { ServiceCard } from './ServiceCard';
-export { NewsCard } from './NewsCard';
-export { InfoCard } from './InfoCard';
-export { AppPromoSection } from './AppPromoSection';
-export { Footer } from './Footer';
-export { FormField } from './FormField';
-export { SelectField } from './SelectField';
-export { PasswordField } from './PasswordField';
-export { CaptchaPlaceholder } from './CaptchaPlaceholder';
+export { NavBar } from "./NavBar";
+export { HeroBanner } from "./HeroBanner";
+export { WelcomeSection } from "./WelcomeSection";
+export { ServiceCard } from "./ServiceCard";
+export { NewsCard } from "./NewsCard";
+export { InfoCard } from "./InfoCard";
+export { AppPromoSection } from "./AppPromoSection";
+export { Footer } from "./Footer";
+export { FormField } from "./FormField";
+export { SelectField } from "./SelectField";
+export { PasswordField } from "./PasswordField";
+export { CaptchaPlaceholder } from "./CaptchaPlaceholder";
 ```
 
 ---
@@ -392,6 +425,7 @@ export { CaptchaPlaceholder } from './CaptchaPlaceholder';
 **File**: `src/organisms/LoginForm.tsx`
 
 **Features**:
+
 - Complete form with all fields
 - react-hook-form integration
 - yup validation
@@ -399,6 +433,7 @@ export { CaptchaPlaceholder } from './CaptchaPlaceholder';
 - Submit handling
 
 **Structure**:
+
 ```typescript
 'use client';
 
@@ -498,6 +533,7 @@ export function LoginForm() {
 **File**: `src/organisms/LoginCard.tsx`
 
 **Features**:
+
 - White card container
 - Rounded corners (24px)
 - Shadow
@@ -505,9 +541,10 @@ export function LoginForm() {
 - Contains: Logo, Header, LoginForm, Footer sections
 
 **Structure**:
+
 ```tsx
-import { Logo, Link } from '@/src/atoms';
-import { LoginForm } from './LoginForm';
+import { Logo, Link } from "@/src/atoms";
+import { LoginForm } from "./LoginForm";
 
 export function LoginCard() {
   return (
@@ -572,18 +609,18 @@ export function LoginCard() {
 
 ```typescript
 // Prehome organisms
-export { PrehomeHeader } from './PrehomeHeader';
-export { PrehomeHero } from './PrehomeHero';
-export { PrehomeWelcome } from './PrehomeWelcome';
-export { PrehomeServices } from './PrehomeServices';
-export { PrehomeNews } from './PrehomeNews';
-export { PrehomeInfo } from './PrehomeInfo';
-export { PrehomeApp } from './PrehomeApp';
-export { PrehomeFooter } from './PrehomeFooter';
+export { PrehomeHeader } from "./PrehomeHeader";
+export { PrehomeHero } from "./PrehomeHero";
+export { PrehomeWelcome } from "./PrehomeWelcome";
+export { PrehomeServices } from "./PrehomeServices";
+export { PrehomeNews } from "./PrehomeNews";
+export { PrehomeInfo } from "./PrehomeInfo";
+export { PrehomeApp } from "./PrehomeApp";
+export { PrehomeFooter } from "./PrehomeFooter";
 
 // Login organisms
-export { LoginForm } from './LoginForm';
-export { LoginCard } from './LoginCard';
+export { LoginForm } from "./LoginForm";
+export { LoginCard } from "./LoginCard";
 ```
 
 ---
@@ -603,6 +640,7 @@ mkdir -p app/login
 **File**: `app/login/page.tsx`
 
 **Features**:
+
 - Navy blue background
 - Centered LoginCard
 - Full viewport height
@@ -610,13 +648,15 @@ mkdir -p app/login
 - Responsive layout
 
 **Structure**:
+
 ```tsx
-import { Metadata } from 'next';
-import { LoginCard } from '@/src/organisms';
+import { Metadata } from "next";
+import { LoginCard } from "@/src/organisms";
 
 export const metadata: Metadata = {
-  title: 'Iniciar Sesión - Coasmedas',
-  description: 'Accede a tu cuenta de Coasmedas Portal para gestionar tus finanzas de forma segura.',
+  title: "Iniciar Sesión - Coasmedas",
+  description:
+    "Accede a tu cuenta de Coasmedas Portal para gestionar tus finanzas de forma segura.",
 };
 
 export default function LoginPage() {
@@ -635,12 +675,14 @@ export default function LoginPage() {
 ### Step 6.1: Mobile Adjustments (<768px)
 
 **LoginCard.tsx**:
+
 ```tsx
 // Update padding for mobile
-className="... px-8 py-12 md:px-10 md:py-14"
+className = "... px-8 py-12 md:px-10 md:py-14";
 ```
 
 **LoginForm.tsx**:
+
 ```tsx
 // Ensure full-width inputs on mobile
 // All inputs already full-width by default
@@ -664,6 +706,7 @@ className="... px-8 py-12 md:px-10 md:py-14"
 ### Step 6.4: Test Responsive Breakpoints
 
 **Test at**:
+
 - 375px (mobile)
 - 768px (tablet)
 - 1280px (desktop)
@@ -676,10 +719,12 @@ className="... px-8 py-12 md:px-10 md:py-14"
 ### Step 7.1: Test Validation Rules
 
 **Document Type**:
+
 - [ ] Empty field shows error on submit
 - [ ] Invalid option rejected
 
 **Document Number**:
+
 - [ ] Empty field shows "Número de documento es requerido"
 - [ ] Letters show "Solo números permitidos"
 - [ ] Less than 6 digits shows "Mínimo 6 dígitos"
@@ -687,6 +732,7 @@ className="... px-8 py-12 md:px-10 md:py-14"
 - [ ] Valid number removes error
 
 **Password**:
+
 - [ ] Empty field shows "Contraseña es requerida"
 - [ ] Less than 8 characters shows "Mínimo 8 caracteres"
 - [ ] 8+ characters removes error
@@ -694,21 +740,25 @@ className="... px-8 py-12 md:px-10 md:py-14"
 ### Step 7.2: Test Form States
 
 **Initial State**:
+
 - [ ] Button disabled (light blue)
 - [ ] No error messages
 - [ ] All fields empty
 
 **Validation State**:
+
 - [ ] Errors appear on blur
 - [ ] Field borders turn red on error
 - [ ] Error messages appear below fields
 
 **Valid State**:
+
 - [ ] Button enabled (primary blue)
 - [ ] No error messages
 - [ ] Button clickable
 
 **Submitting State**:
+
 - [ ] Button shows "Ingresando..."
 - [ ] Button disabled during submit
 - [ ] Fields remain filled
@@ -716,11 +766,13 @@ className="... px-8 py-12 md:px-10 md:py-14"
 ### Step 7.3: Implement Error Styling
 
 **Input Error State**:
+
 ```css
 border-2 border-red-600
 ```
 
 **Error Message**:
+
 ```css
 text-red-600 text-xs mt-1
 ```
@@ -740,6 +792,7 @@ text-red-600 text-xs mt-1
 ### Step 8.2: Keyboard Navigation
 
 **Test**:
+
 - [ ] Tab through all fields in order
 - [ ] Dropdown navigable with arrow keys
 - [ ] Enter submits form
@@ -749,6 +802,7 @@ text-red-600 text-xs mt-1
 ### Step 8.3: Screen Reader Testing
 
 **Add ARIA Attributes**:
+
 ```tsx
 // Error messages
 <div aria-live="polite" aria-atomic="true">
@@ -763,6 +817,7 @@ aria-disabled={!isValid || isSubmitting}
 ```
 
 **Test with**:
+
 - NVDA (Windows)
 - VoiceOver (macOS)
 - TalkBack (Android)
@@ -770,6 +825,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 8.4: Color Contrast Audit
 
 **Check**:
+
 - [ ] Labels (#58585B on white): Pass WCAG AA
 - [ ] Links (#1D4E8F on white): Pass WCAG AA
 - [ ] Button text (white on #007FFF): Pass WCAG AA
@@ -782,6 +838,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.1: Visual QA
 
 **Compare with Figma**:
+
 - [ ] Logo size and position
 - [ ] Heading typography (20px, bold)
 - [ ] Input heights (44px)
@@ -793,6 +850,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.2: Interaction Testing
 
 **Test All Interactions**:
+
 - [ ] Dropdown opens/closes
 - [ ] Dropdown selection works
 - [ ] Input accepts typing
@@ -805,6 +863,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.3: Browser Testing
 
 **Test in**:
+
 - [ ] Chrome (latest)
 - [ ] Firefox (latest)
 - [ ] Safari (latest)
@@ -813,6 +872,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.4: Mobile Device Testing
 
 **Test on**:
+
 - [ ] iOS Safari (iPhone)
 - [ ] Android Chrome (Android phone)
 - [ ] iPad Safari (tablet)
@@ -820,6 +880,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.5: Performance
 
 **Run Lighthouse Audit**:
+
 - [ ] Performance > 90
 - [ ] Accessibility > 95
 - [ ] Best Practices > 90
@@ -828,6 +889,7 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 9.6: Code Quality
 
 **Checks**:
+
 - [ ] No TypeScript errors
 - [ ] No ESLint warnings
 - [ ] yarn build succeeds
@@ -841,11 +903,13 @@ aria-disabled={!isValid || isSubmitting}
 ### Step 10.1: Update Prehome Links
 
 **Verify Navigation**:
+
 - [ ] Navbar "Iniciar Sesión" navigates to `/login`
 - [ ] Hero "Ingresar" button navigates to `/login`
 - [ ] Back navigation works
 
 **Files to Check**:
+
 - `src/molecules/NavBar.tsx`
 - `src/molecules/HeroBanner.tsx`
 
@@ -855,26 +919,27 @@ aria-disabled={!isValid || isSubmitting}
 
 ## Time Tracking
 
-| Phase | Task | Estimated Time | Notes |
-|-------|------|----------------|-------|
-| Phase 0 | Dependencies | 0.5 hr | Install packages |
-| Phase 1 | Validation Schema | 0.5 hr | Yup schema + types |
-| Phase 2 | Atoms | 2-3 hrs | Input, Select, Label, ErrorMessage |
-| Phase 3 | Molecules | 2-3 hrs | FormField, SelectField, PasswordField |
-| Phase 4 | Organisms | 3-4 hrs | LoginForm, LoginCard |
-| Phase 5 | Page | 1 hr | Login route |
-| Phase 6 | Responsive | 1-2 hrs | Mobile/tablet/desktop |
-| Phase 7 | Validation | 1-2 hrs | Error states, testing |
-| Phase 8 | Accessibility | 1-2 hrs | A11y audit |
-| Phase 9 | Polish | 1-2 hrs | Visual QA, testing |
-| Phase 10 | Integration | 0.5 hr | Link from prehome |
-| **Total** | | **15-21 hrs (2-3 days)** | |
+| Phase     | Task              | Estimated Time           | Notes                                 |
+| --------- | ----------------- | ------------------------ | ------------------------------------- |
+| Phase 0   | Dependencies      | 0.5 hr                   | Install packages                      |
+| Phase 1   | Validation Schema | 0.5 hr                   | Yup schema + types                    |
+| Phase 2   | Atoms             | 2-3 hrs                  | Input, Select, Label, ErrorMessage    |
+| Phase 3   | Molecules         | 2-3 hrs                  | FormField, SelectField, PasswordField |
+| Phase 4   | Organisms         | 3-4 hrs                  | LoginForm, LoginCard                  |
+| Phase 5   | Page              | 1 hr                     | Login route                           |
+| Phase 6   | Responsive        | 1-2 hrs                  | Mobile/tablet/desktop                 |
+| Phase 7   | Validation        | 1-2 hrs                  | Error states, testing                 |
+| Phase 8   | Accessibility     | 1-2 hrs                  | A11y audit                            |
+| Phase 9   | Polish            | 1-2 hrs                  | Visual QA, testing                    |
+| Phase 10  | Integration       | 0.5 hr                   | Link from prehome                     |
+| **Total** |                   | **15-21 hrs (2-3 days)** |                                       |
 
 ---
 
 ## Component Checklist
 
 ### Atoms
+
 - [ ] Input (with error state)
 - [ ] Select (with chevron icon)
 - [ ] Label (with required asterisk)
@@ -882,22 +947,27 @@ aria-disabled={!isValid || isSubmitting}
 - [ ] Button (disabled variant)
 
 ### Molecules
+
 - [ ] FormField (Label + Input + Error)
 - [ ] SelectField (Label + Select + Error)
 - [ ] PasswordField (FormField variant)
 - [ ] CaptchaPlaceholder (gray box)
 
 ### Organisms
+
 - [ ] LoginForm (form + validation)
 - [ ] LoginCard (card container)
 
 ### Page
+
 - [ ] app/login/page.tsx (navy background + card)
 
 ### Schema
+
 - [ ] src/schemas/loginSchema.ts (yup validation)
 
 ### Constants
+
 - [ ] src/constants/documentTypes.ts (dropdown options)
 
 ---
@@ -907,40 +977,49 @@ aria-disabled={!isValid || isSubmitting}
 ### New Files (14 files)
 
 **Schemas**:
+
 - `src/schemas/loginSchema.ts`
 
 **Constants**:
+
 - `src/constants/documentTypes.ts`
 
 **Atoms**:
+
 - `src/atoms/Input.tsx`
 - `src/atoms/Select.tsx`
 - `src/atoms/Label.tsx`
 - `src/atoms/ErrorMessage.tsx`
 
 **Molecules**:
+
 - `src/molecules/FormField.tsx`
 - `src/molecules/SelectField.tsx`
 - `src/molecules/PasswordField.tsx`
 - `src/molecules/CaptchaPlaceholder.tsx`
 
 **Organisms**:
+
 - `src/organisms/LoginForm.tsx`
 - `src/organisms/LoginCard.tsx`
 
 **Page**:
+
 - `app/login/page.tsx`
 
 ### Modified Files (3 files)
 
 **Atoms**:
+
 - `src/atoms/Button.tsx` (add disabled variant)
 - `src/atoms/index.ts` (export new atoms)
 
 **Molecules**:
+
 - `src/molecules/index.ts` (export new molecules)
 
 **Organisms**:
+
 - `src/organisms/index.ts` (export new organisms)
 
 ---
@@ -948,6 +1027,7 @@ aria-disabled={!isValid || isSubmitting}
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] Form fields accept input
 - [ ] Dropdown shows all options
 - [ ] Document number accepts only numbers
@@ -960,6 +1040,7 @@ aria-disabled={!isValid || isSubmitting}
 - [ ] Links navigate correctly
 
 ### Visual Testing
+
 - [ ] Matches Figma design
 - [ ] Colors correct
 - [ ] Typography correct
@@ -968,6 +1049,7 @@ aria-disabled={!isValid || isSubmitting}
 - [ ] Touch targets minimum 44px
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation works
 - [ ] Screen reader announces correctly
 - [ ] Focus indicators visible
@@ -976,6 +1058,7 @@ aria-disabled={!isValid || isSubmitting}
 - [ ] Error messages announced
 
 ### Performance Testing
+
 - [ ] Lighthouse score > 90
 - [ ] No console errors
 - [ ] Build succeeds
@@ -987,12 +1070,14 @@ aria-disabled={!isValid || isSubmitting}
 ## Known Issues / Future Enhancements
 
 ### Current Scope (MVP)
+
 - Form validation (front-end only)
 - Static form submission (console.log)
 - CAPTCHA placeholder (no integration)
 - No API integration
 
 ### Future (Out of Scope)
+
 - API integration for login
 - CAPTCHA integration (Google reCAPTCHA)
 - Password visibility toggle icon
@@ -1018,34 +1103,42 @@ aria-disabled={!isValid || isSubmitting}
 ## Key Implementation Notes
 
 ### React Hook Form Pattern
+
 ```typescript
-const { register, handleSubmit, formState: { errors } } = useForm({
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
   resolver: yupResolver(loginSchema),
-  mode: 'onBlur', // Validate on blur
+  mode: "onBlur", // Validate on blur
 });
 ```
 
 ### Form Field Pattern
+
 ```tsx
 <FormField
   label="Document Number"
   name="documentNumber"
   error={errors.documentNumber?.message}
-  {...register('documentNumber')}
+  {...register("documentNumber")}
 />
 ```
 
 ### Button Disabled State
+
 ```tsx
 <Button
   disabled={!isValid || isSubmitting}
-  variant={isValid ? 'primary' : 'disabled'}
+  variant={isValid ? "primary" : "disabled"}
 >
-  {isSubmitting ? 'Loading...' : 'Submit'}
+  {isSubmitting ? "Loading..." : "Submit"}
 </Button>
 ```
 
 ### Validation on Blur
+
 - Use `mode: 'onBlur'` in useForm
 - Validation triggers when user leaves field
 - Immediate feedback on errors

@@ -12,12 +12,14 @@
 The **Ahorros** (Savings) feature provides authenticated users access to their savings products through a horizontally scrollable carousel. Users can view multiple savings accounts, select one to see its transaction history, and download monthly statements.
 
 **Key Purpose**:
+
 - View all savings products in a scrollable carousel
 - Select a product to see its details and transactions
 - Filter and view transaction history for selected product
 - Download monthly PDF reports/statements
 
 **Key Difference from Aportes**:
+
 - Aportes: Single static product info card
 - Ahorros: Multiple products in a selectable carousel (reusable component)
 
@@ -26,11 +28,13 @@ The **Ahorros** (Savings) feature provides authenticated users access to their s
 ## User Stories
 
 ### US-04.1: View Savings Products Carousel
+
 **As an** authenticated user
 **I want** to see all my savings products in a carousel
 **So that** I can quickly overview all my savings accounts
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/ahorros`
 - [ ] Carousel shows all user's savings products
 - [ ] First product is selected by default (blue border)
@@ -40,11 +44,13 @@ The **Ahorros** (Savings) feature provides authenticated users access to their s
 - [ ] Responsive: 1 card on mobile, 2 on tablet, 3 on desktop
 
 ### US-04.2: Select Savings Product
+
 **As an** authenticated user
 **I want** to select a savings product from the carousel
 **So that** I can view its transaction history and details
 
 **Acceptance Criteria**:
+
 - [ ] Clicking a card selects it (shows blue border)
 - [ ] Only one card can be selected at a time
 - [ ] Transaction history section updates with selected product's data
@@ -52,23 +58,27 @@ The **Ahorros** (Savings) feature provides authenticated users access to their s
 - [ ] Selection persists during page session
 
 ### US-04.3: View Savings Product Card Information
+
 **As an** authenticated user
 **I want** to see key information on each savings product card
 **So that** I can quickly understand my account status
 
 **Acceptance Criteria**:
+
 - [ ] Card shows product title (e.g., "Cuenta de Ahorros")
 - [ ] Card shows account type (e.g., "Tipo de cuenta: Ahorros")
-- [ ] Card shows masked product number (e.g., "***4428")
+- [ ] Card shows masked product number (e.g., "\*\*\*4428")
 - [ ] Card shows total balance (respects "Ocultar saldos" toggle)
 - [ ] Card shows status: "Activo" (green) or "Bloqueado" (red)
 
 ### US-04.4: Transaction History for Selected Product
+
 **As an** authenticated user
 **I want** to filter and view transaction history for my selected savings product
 **So that** I can track my account activity
 
 **Acceptance Criteria**:
+
 - [ ] Transaction history updates when different product is selected
 - [ ] Title dynamically shows selected product number
 - [ ] Date range filter with start and end date inputs
@@ -78,11 +88,13 @@ The **Ahorros** (Savings) feature provides authenticated users access to their s
 - [ ] Shows empty state when no transactions found
 
 ### US-04.5: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements for my savings accounts
 **So that** I can keep records of my account activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months (last 12 months)
 - [ ] Selecting month triggers PDF download
 - [ ] Clear description of functionality
@@ -93,8 +105,8 @@ The **Ahorros** (Savings) feature provides authenticated users access to their s
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
+| Path                 | Description                    |
+| -------------------- | ------------------------------ |
 | `/productos/ahorros` | Ahorros (Savings) product page |
 
 ### File Structure
@@ -125,13 +137,13 @@ src/
 
 The following components from feature 03-products will be **reused**:
 
-| Component | Purpose |
-|-----------|---------|
-| `ProductPageHeader` | Page header with back button, title, breadcrumbs |
-| `TransactionHistoryCard` | Transaction list with date filter |
-| `DownloadReportsCard` | Monthly report download |
-| `DateRangeFilter` | Date filter molecule |
-| `Breadcrumbs` | Breadcrumb navigation |
+| Component                | Purpose                                          |
+| ------------------------ | ------------------------------------------------ |
+| `ProductPageHeader`      | Page header with back button, title, breadcrumbs |
+| `TransactionHistoryCard` | Transaction list with date filter                |
+| `DownloadReportsCard`    | Monthly report download                          |
+| `DateRangeFilter`        | Date filter molecule                             |
+| `Breadcrumbs`            | Breadcrumb navigation                            |
 
 ---
 
@@ -140,19 +152,21 @@ The following components from feature 03-products will be **reused**:
 ### Atoms
 
 #### CarouselArrow
+
 Navigation arrow button for carousel (left/right variants).
 
 ```typescript
 interface CarouselArrowProps {
-  direction: 'left' | 'right';
+  direction: "left" | "right";
   onClick: () => void;
   disabled?: boolean;
   className?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 ```
 
 **Styling**:
+
 - Size: `42px x 42px`
 - Background: White with shadow
 - Border: `1px solid #E4E6EA`
@@ -163,6 +177,7 @@ interface CarouselArrowProps {
 - Position: Vertically centered relative to cards
 
 **Tailwind Classes**:
+
 ```css
 w-[42px] h-[42px] rounded-full bg-white border border-[#E4E6EA]
 shadow-sm flex items-center justify-center
@@ -171,6 +186,7 @@ transition-colors
 ```
 
 #### CarouselDots
+
 Pagination dot indicators for carousel.
 
 ```typescript
@@ -183,6 +199,7 @@ interface CarouselDotsProps {
 ```
 
 **Styling**:
+
 - Dot size: `8px x 8px`
 - Gap between dots: `8px`
 - Active dot: Filled `#194E8D`
@@ -191,6 +208,7 @@ interface CarouselDotsProps {
 - Container: Centered below carousel
 
 **Tailwind Classes**:
+
 ```css
 /* Container */
 flex items-center justify-center gap-2 mt-4
@@ -207,6 +225,7 @@ w-2 h-2 rounded-full bg-[#194E8D] cursor-pointer
 ### Molecules
 
 #### SavingsProductCard
+
 Individual savings account card for the carousel.
 
 ```typescript
@@ -219,17 +238,18 @@ interface SavingsProductCardProps {
 
 interface SavingsProduct {
   id: string;
-  title: string;           // "Cuenta de Ahorros"
-  accountType: string;     // "Ahorros", "Ahorro Programado"
-  productNumber: string;   // "4428" (raw, will be masked)
-  balance: number;         // 8730500
-  status: SavingsStatus;   // 'activo' | 'bloqueado' | 'inactivo'
+  title: string; // "Cuenta de Ahorros"
+  accountType: string; // "Ahorros", "Ahorro Programado"
+  productNumber: string; // "4428" (raw, will be masked)
+  balance: number; // 8730500
+  status: SavingsStatus; // 'activo' | 'bloqueado' | 'inactivo'
 }
 
-type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
+type SavingsStatus = "activo" | "bloqueado" | "inactivo";
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────┐
 │ Cuenta de Ahorros                   │
@@ -243,6 +263,7 @@ type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
 ```
 
 **Styling**:
+
 - Width: `250px` minimum, flexible
 - Height: Auto
 - Background: White
@@ -265,9 +286,12 @@ type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
 | Status "Bloqueado" | Ubuntu | 15px | Regular | Red #FF0000 |
 
 **Hide Balances Integration**:
+
 ```typescript
 const { hideBalances } = useUIContext();
-{hideBalances ? '$ ••••••' : formatCurrency(product.balance)}
+{
+  hideBalances ? "$ ••••••" : formatCurrency(product.balance);
+}
 ```
 
 ---
@@ -275,19 +299,21 @@ const { hideBalances } = useUIContext();
 ### Organisms
 
 #### ProductCarousel
+
 Reusable horizontal carousel component for displaying product cards.
 
 ```typescript
 interface ProductCarouselProps {
-  title: string;                              // "Resumen de Cuentas de Ahorro"
-  products: SavingsProduct[];                 // Array of products
-  selectedProductId?: string;                 // ID of selected product
+  title: string; // "Resumen de Cuentas de Ahorro"
+  products: SavingsProduct[]; // Array of products
+  selectedProductId?: string; // ID of selected product
   onProductSelect: (product: SavingsProduct) => void;
   className?: string;
 }
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Resumen de Cuentas de Ahorro                                                │
@@ -329,12 +355,14 @@ interface ProductCarouselProps {
    | Desktop (>=1024px) | 3 | ~32% |
 
 **Styling**:
+
 - Container: White background, rounded-2xl, padding 24px
 - Title: Ubuntu Bold, 20px, navy #194E8D
 - Cards container: Flex, gap-5, overflow-x-auto
 - Gap between cards: `20px`
 
 **Tailwind Classes**:
+
 ```css
 /* Outer container */
 bg-white rounded-2xl p-6
@@ -355,6 +383,7 @@ w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]
 ```
 
 **Scroll Behavior Hook**:
+
 ```typescript
 // Custom hook for carousel scroll management
 function useCarouselScroll(containerRef: RefObject<HTMLDivElement>) {
@@ -362,11 +391,24 @@ function useCarouselScroll(containerRef: RefObject<HTMLDivElement>) {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const scrollLeft = () => { /* ... */ };
-  const scrollRight = () => { /* ... */ };
-  const scrollToPage = (page: number) => { /* ... */ };
+  const scrollLeft = () => {
+    /* ... */
+  };
+  const scrollRight = () => {
+    /* ... */
+  };
+  const scrollToPage = (page: number) => {
+    /* ... */
+  };
 
-  return { canScrollLeft, canScrollRight, currentPage, scrollLeft, scrollRight, scrollToPage };
+  return {
+    canScrollLeft,
+    canScrollRight,
+    currentPage,
+    scrollLeft,
+    scrollRight,
+    scrollToPage,
+  };
 }
 ```
 
@@ -380,7 +422,7 @@ function useCarouselScroll(containerRef: RefObject<HTMLDivElement>) {
 /**
  * Status of a savings product
  */
-export type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
+export type SavingsStatus = "activo" | "bloqueado" | "inactivo";
 
 /**
  * Savings product information
@@ -415,7 +457,7 @@ export type OnProductSelect = (product: SavingsProduct) => void;
 
 ```typescript
 // Add export
-export * from './savings';
+export * from "./savings";
 ```
 
 ---
@@ -428,14 +470,21 @@ export * from './savings';
 /**
  * Calculate total pages based on total items and visible items
  */
-export function calculateTotalPages(totalItems: number, visibleItems: number): number {
+export function calculateTotalPages(
+  totalItems: number,
+  visibleItems: number,
+): number {
   return Math.ceil(totalItems / visibleItems);
 }
 
 /**
  * Get current page based on scroll position
  */
-export function getCurrentPage(scrollLeft: number, cardWidth: number, gap: number): number {
+export function getCurrentPage(
+  scrollLeft: number,
+  cardWidth: number,
+  gap: number,
+): number {
   const itemWidth = cardWidth + gap;
   return Math.round(scrollLeft / itemWidth);
 }
@@ -443,7 +492,11 @@ export function getCurrentPage(scrollLeft: number, cardWidth: number, gap: numbe
 /**
  * Get scroll position for a specific page
  */
-export function getScrollPositionForPage(page: number, cardWidth: number, gap: number): number {
+export function getScrollPositionForPage(
+  page: number,
+  cardWidth: number,
+  gap: number,
+): number {
   return page * (cardWidth + gap);
 }
 ```
@@ -455,37 +508,37 @@ export function getScrollPositionForPage(page: number, cardWidth: number, gap: n
 ### File: `src/mocks/ahorros.ts`
 
 ```typescript
-import { SavingsProduct } from '@/src/types/savings';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { SavingsProduct } from "@/src/types/savings";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock savings products for carousel
  */
 export const mockSavingsProducts: SavingsProduct[] = [
   {
-    id: '1',
-    title: 'Cuenta de Ahorros',
-    accountType: 'Ahorros',
-    productNumber: '4428',
+    id: "1",
+    title: "Cuenta de Ahorros",
+    accountType: "Ahorros",
+    productNumber: "4428",
     balance: 8730500,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Ahorro Programado',
-    accountType: 'Ahorro Programado',
-    productNumber: '1234',
+    id: "2",
+    title: "Ahorro Programado",
+    accountType: "Ahorro Programado",
+    productNumber: "1234",
     balance: 2500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '3',
-    title: 'Ahorro Metas',
-    accountType: 'Ahorro',
-    productNumber: '9876',
+    id: "3",
+    title: "Ahorro Metas",
+    accountType: "Ahorro",
+    productNumber: "9876",
     balance: 1200000,
-    status: 'bloqueado',
+    status: "bloqueado",
   },
 ];
 
@@ -494,38 +547,39 @@ export const mockSavingsProducts: SavingsProduct[] = [
  */
 export const mockAhorrosTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-20',
-    description: 'Abono mensual',
+    id: "1",
+    date: "2024-11-20",
+    description: "Abono mensual",
     amount: 20000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '2',
-    date: '2024-11-15',
-    description: 'Transferencia recibida',
+    id: "2",
+    date: "2024-11-15",
+    description: "Transferencia recibida",
     amount: 150000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '3',
-    date: '2024-11-10',
-    description: 'Retiro cajero',
+    id: "3",
+    date: "2024-11-10",
+    description: "Retiro cajero",
     amount: 50000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockAhorrosAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockAhorrosAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './ahorros';
+export * from "./ahorros";
 // ... other exports
 ```
 
@@ -640,18 +694,22 @@ export default function AhorrosPage() {
 
 ### Carousel Responsive Behavior
 
-| Breakpoint | Visible Cards | Arrow Position | Dots |
-|------------|---------------|----------------|------|
-| Mobile (<640px) | 1 | Hidden (swipe) | Show |
-| Tablet (640-1023px) | 2 | Show | Show |
-| Desktop (>=1024px) | 3 | Show | Show |
+| Breakpoint          | Visible Cards | Arrow Position | Dots |
+| ------------------- | ------------- | -------------- | ---- |
+| Mobile (<640px)     | 1             | Hidden (swipe) | Show |
+| Tablet (640-1023px) | 2             | Show           | Show |
+| Desktop (>=1024px)  | 3             | Show           | Show |
 
 ### Card Width Calculation
 
 ```typescript
 // Calculate card width based on viewport
-const getCardWidth = (containerWidth: number, visibleCards: number, gap: number) => {
-  return (containerWidth - (gap * (visibleCards - 1))) / visibleCards;
+const getCardWidth = (
+  containerWidth: number,
+  visibleCards: number,
+  gap: number,
+) => {
+  return (containerWidth - gap * (visibleCards - 1)) / visibleCards;
 };
 ```
 
@@ -722,7 +780,7 @@ const getCardWidth = (containerWidth: number, visibleCards: number, gap: number)
         aria-selected={product.id === selectedProductId}
         tabIndex={0}
         onClick={() => onProductSelect(product)}
-        onKeyDown={(e) => e.key === 'Enter' && onProductSelect(product)}
+        onKeyDown={(e) => e.key === "Enter" && onProductSelect(product)}
       >
         {/* Card content */}
       </div>
@@ -773,7 +831,7 @@ The sidebar should highlight "Ahorros" when on `/productos/ahorros`:
 ```typescript
 // In Sidebar.tsx - already handled by pathname check
 const pathname = usePathname();
-const isAhorrosActive = pathname === '/productos/ahorros';
+const isAhorrosActive = pathname === "/productos/ahorros";
 ```
 
 ---
@@ -781,24 +839,28 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 ## Implementation Checklist
 
 ### Phase 1: Types and Utilities
+
 - [ ] Create `src/types/savings.ts`
 - [ ] Create `src/utils/carousel.ts`
 - [ ] Update `src/types/index.ts` exports
 - [ ] Update `src/utils/index.ts` exports
 
 ### Phase 2: Carousel Atoms
+
 - [ ] Create `CarouselArrow` atom
 - [ ] Create `CarouselDots` atom
 - [ ] Update `src/atoms/index.ts` exports
 - [ ] Style atoms per design specifications
 
 ### Phase 3: Carousel Molecules
+
 - [ ] Create `SavingsProductCard` molecule
 - [ ] Integrate with `useUIContext` for hideBalances
 - [ ] Add status color logic (Activo/Bloqueado)
 - [ ] Update `src/molecules/index.ts` exports
 
 ### Phase 4: Carousel Organism
+
 - [ ] Create `ProductCarousel` organism
 - [ ] Implement scroll behavior (snap, smooth)
 - [ ] Implement navigation arrows logic
@@ -807,10 +869,12 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 - [ ] Update `src/organisms/index.ts` exports
 
 ### Phase 5: Mock Data
+
 - [ ] Create `src/mocks/ahorros.ts`
 - [ ] Update `src/mocks/index.ts` exports
 
 ### Phase 6: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/ahorros/page.tsx`
 - [ ] Wire up carousel with mock data
 - [ ] Reuse `TransactionHistoryCard` from 03-products
@@ -818,6 +882,7 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 - [ ] Connect selection logic to transaction history title
 
 ### Phase 7: Polish
+
 - [ ] Add responsive styles for all breakpoints
 - [ ] Add hover/focus states
 - [ ] Add loading state for carousel
@@ -830,6 +895,7 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] First product is selected by default
 - [ ] Clicking a card selects it (blue border)
 - [ ] Only one card selected at a time
@@ -844,6 +910,7 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 - [ ] "Ocultar saldos" masks all balances
 
 ### Responsive Testing
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
@@ -851,6 +918,7 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 - [ ] Gap between cards is consistent
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through carousel
 - [ ] Arrow keys move between cards
 - [ ] Enter/Space selects card
@@ -860,6 +928,7 @@ const isAhorrosActive = pathname === '/productos/ahorros';
 - [ ] Color contrast passes WCAG AA
 
 ### Integration Testing
+
 - [ ] Page loads at `/productos/ahorros`
 - [ ] Sidebar shows "Ahorros" as active
 - [ ] Back button navigates to `/home`
@@ -901,11 +970,11 @@ const ProductCarousel = dynamic(
 
 When connecting to the backend API:
 
-| Endpoint | Purpose | When Called |
-|----------|---------|-------------|
-| `GET /balances?type=ahorros` | Fetch savings products | Page load |
-| `GET /movements?productId={id}` | Fetch transactions | Product selection |
-| `GET /reports/{productId}/{month}` | Download PDF | Month selection |
+| Endpoint                           | Purpose                | When Called       |
+| ---------------------------------- | ---------------------- | ----------------- |
+| `GET /balances?type=ahorros`       | Fetch savings products | Page load         |
+| `GET /movements?productId={id}`    | Fetch transactions     | Product selection |
+| `GET /reports/{productId}/{month}` | Download PDF           | Month selection   |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 

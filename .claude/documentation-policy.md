@@ -8,18 +8,23 @@
 ## 🎯 Core Principles
 
 ### 1. Documentation IS Memory
+
 In Claude Code, all documentation serves as memory for AI context:
+
 - Memory files guide AI behavior
 - Documentation informs AI about architecture
 - **They are the same thing** - manage them together
 
 ### 2. Progressive Complexity
+
 Start simple, grow as needed:
+
 - **Early Stage** (current): Lightweight memory in `.claude/`
 - **Growth Stage**: Add knowledge directory when needed
 - **Mature Stage**: Full hierarchical structure with progress tracking
 
 ### 3. Single Source of Truth
+
 - All memory/docs centralized under `.claude/`
 - Use `@path/to/file` imports to compose memory
 - No duplicate information across files
@@ -29,6 +34,7 @@ Start simple, grow as needed:
 ## 📁 Structure (Scalable)
 
 ### Phase 1: Early Stage (← YOU ARE HERE)
+
 ```
 .claude/
 ├── coding-standards.md      # Style guidelines
@@ -39,11 +45,13 @@ Start simple, grow as needed:
 ```
 
 **Rules**:
+
 - Keep it simple - 3-5 files max
 - Add files only when you have content
 - Import into CLAUDE.md using `@.claude/filename.md`
 
 ### Phase 2: Growth Stage
+
 ```
 .claude/
 ├── coding-standards.md
@@ -63,11 +71,13 @@ Start simple, grow as needed:
 ```
 
 **Triggers to add `/knowledge`**:
+
 - 3+ major features documented
 - Complex business logic requiring detailed specs
 - Multiple team members needing shared context
 
 ### Phase 3: Mature Stage
+
 ```
 .claude/
 ├── coding-standards.md
@@ -101,6 +111,7 @@ Start simple, grow as needed:
 ```
 
 **Triggers to add `/progress`**:
+
 - Multi-week development cycles
 - Epic/sprint planning with multiple phases
 - Bug tracking becomes complex
@@ -111,11 +122,13 @@ Start simple, grow as needed:
 ## 📝 Naming Conventions
 
 ### Current Phase (Early Stage):
+
 ```
 lowercase-with-hyphens.md        # Simple, readable
 ```
 
 ### Growth/Mature Phase:
+
 ```
 # Core/Knowledge
 knowledge/core/UPPERCASE_CORE_DOCS.md
@@ -136,6 +149,7 @@ progress/status/status-{module}.md              # Overall module status
 ## 📊 Epic & Phase Tracking Structure
 
 ### Epic Progress Files
+
 Each epic has three related files:
 
 ```
@@ -146,6 +160,7 @@ progress/epics/
 ```
 
 ### Phase Summaries
+
 Each completed phase gets a summary:
 
 ```
@@ -156,6 +171,7 @@ progress/phases/
 ```
 
 ### Relationship:
+
 ```
 Epic 1.1: Products Feature
 │
@@ -196,53 +212,65 @@ Epic 1.1: Products Feature
 ### Reference Types
 
 #### 1. External Links (Figma, Google Docs, etc.)
+
 Store links in a `references.md` file:
 
 ```markdown
 # References - {Feature Name}
 
 ## UI/UX Design
+
 - **Figma Design**: [Design System](https://figma.com/file/...)
 - **Wireframes**: [Wireframes v1](https://figma.com/file/...)
 - **Prototype**: [Interactive Prototype](https://figma.com/proto/...)
 
 ## Documentation
+
 - **Product Spec**: [Google Doc](https://docs.google.com/...)
 - **User Stories**: [Jira Epic](https://jira.company.com/...)
 - **API Contract**: [Swagger/OpenAPI](https://api.company.com/docs)
 
 ## Technical Resources
+
 - **Library Docs**: [React Hook Form](https://react-hook-form.com)
 - **Tutorial**: [Implementation Guide](https://...)
 
 ## Meeting Notes
+
 - **Kickoff Meeting**: [Notes](https://...)
 - **Design Review**: [Notes](https://...)
 
 ---
+
 **Last Updated**: YYYY-MM-DD
 ```
 
 #### 2. Local Files (Images, PDFs, etc.)
+
 Store in `attachments/` subdirectory with organized folders.
 
 #### 3. Inline References in Feature Spec
+
 Reference materials directly in the feature spec:
 
 ```markdown
 # Feature: User Authentication
 
 ## UI Design
+
 See designs in `attachments/designs/`:
+
 - Desktop: ![Login Desktop](./attachments/designs/login-screen-desktop.png)
 - Mobile: ![Login Mobile](./attachments/designs/login-screen-mobile.png)
 
 External design: [Figma - Auth Flows](https://figma.com/file/...)
 
 ## API Documentation
+
 See [API Spec](./api.md) for detailed endpoint documentation.
 
 ## External References
+
 See [references.md](./references.md) for complete list of links.
 ```
 
@@ -284,6 +312,7 @@ New reference material?
 ## 🔄 Documentation Workflow
 
 ### Starting a New Epic (Mature Stage)
+
 ```
 1. Create epic spec: progress/epics/epic-{version}-{name}.md
 2. Create implementation plan: progress/epics/plan-{version}.md
@@ -294,6 +323,7 @@ New reference material?
 ```
 
 ### During a Phase
+
 ```
 1. Update progress/epics/progress-{version}.md at start of session
 2. Use TodoWrite tool for task tracking within session
@@ -302,6 +332,7 @@ New reference material?
 ```
 
 ### Completing a Phase
+
 ```
 1. Create progress/phases/phase-{N}-epic-{version}.md
    - Summary of what was completed
@@ -315,6 +346,7 @@ New reference material?
 ```
 
 ### Completing an Epic
+
 ```
 1. Finalize progress/epics/progress-{version}.md
    - Mark epic complete
@@ -326,6 +358,7 @@ New reference material?
 ```
 
 ### Adding Guidelines (Early/Growth Stage)
+
 ```
 Use `#` command:
 # Always use server components by default
@@ -334,6 +367,7 @@ OR use `/memory` to edit directly
 ```
 
 ### Adding Feature References
+
 ```
 1. Create feature directory: .claude/knowledge/features/{feature-name}/
 2. Create spec.md with feature specification
@@ -395,6 +429,7 @@ New information to document?
 ## 📋 Templates
 
 ### Epic Specification (Mature Stage)
+
 ```markdown
 # Epic {VERSION}: {Name}
 
@@ -403,27 +438,33 @@ New information to document?
 **Status**: Planning | In Progress | Complete
 
 ## Objectives
+
 - Objective 1
 - Objective 2
 
 ## User Stories
+
 - As a {role}, I want {capability}, so that {benefit}
 
 ## Acceptance Criteria
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 
 ## Technical Approach
+
 - Architecture decisions
 - Technologies
 - Dependencies
 
 ## References
+
 - Links to core docs
 - Related epics
 ```
 
 ### Implementation Plan (Mature Stage)
+
 ```markdown
 # Implementation Plan - Epic {VERSION}
 
@@ -433,34 +474,42 @@ New information to document?
 ## Phase Breakdown
 
 ### Phase 1: {Name} (Days 1-N)
+
 **Duration**: N days
 **Story Points**: N SP
 
 **Deliverables**:
+
 - Deliverable 1
 - Deliverable 2
 
 **Tasks**:
+
 1. Task 1 (N hrs)
 2. Task 2 (N hrs)
 
 **Files to Create/Modify**:
+
 - `path/to/file1.ts`
 - `path/to/file2.ts`
 
 ### Phase 2: {Name} (Days N-M)
+
 ...
 
 ## Dependencies
+
 - External dependency 1
 - Epic dependency 2
 
 ## Risks
+
 - Risk 1: Mitigation strategy
 - Risk 2: Mitigation strategy
 ```
 
 ### Progress Tracker (Mature Stage)
+
 ```markdown
 # Progress - Epic {VERSION}: {Name}
 
@@ -471,12 +520,14 @@ New information to document?
 ## Phase Status
 
 ### Phase 1: {Name} ✅
+
 - **Status**: Complete
 - **Duration**: N days (planned) / M days (actual)
 - **Completed**: YYYY-MM-DD
 - **Summary**: Link to progress/phases/phase-1-epic-{version}.md
 
 ### Phase 2: {Name} 🔄
+
 - **Status**: In Progress (60%)
 - **Started**: YYYY-MM-DD
 - **Progress**:
@@ -486,27 +537,33 @@ New information to document?
   - ⏳ Task 4
 
 ### Phase 3: {Name} ⏳
+
 - **Status**: Pending
 - **Planned Start**: YYYY-MM-DD
 
 ## Overall Metrics
+
 - **Story Points**: N/M complete (X%)
 - **Time**: N/M days (X%)
 - **Files Created**: N files
 - **Files Modified**: M files
 
 ## Blockers
+
 - None | Blocker description
 
 ## Next Steps
+
 1. Complete Task 3
 2. Start Task 4
 
 ---
+
 **Last Updated**: YYYY-MM-DD HH:MM
 ```
 
 ### Phase Summary (Mature Stage)
+
 ```markdown
 # Phase {N} Summary - Epic {VERSION}
 
@@ -515,48 +572,59 @@ New information to document?
 **Story Points**: N SP
 
 ## Objectives
+
 What this phase aimed to accomplish
 
 ## Completed Tasks
+
 - ✅ Task 1: Description
 - ✅ Task 2: Description
 - ✅ Task 3: Description
 
 ## Files Created
+
 - `path/to/file1.ts` - Description
 - `path/to/file2.ts` - Description
 
 ## Files Modified
+
 - `path/to/file3.ts` - Changes made
 - `path/to/file4.ts` - Changes made
 
 ## Key Decisions
+
 - Decision 1: Why we chose this approach
 - Decision 2: Trade-offs considered
 
 ## Challenges & Solutions
+
 - Challenge 1: How we solved it
 - Challenge 2: How we solved it
 
 ## Metrics
+
 - **Lines of Code**: +N/-M
 - **Components Created**: N
 - **Tests Added**: N
 - **Time**: N hours
 
 ## Learnings
+
 - Learning 1
 - Learning 2
 
 ## Next Phase
+
 Brief preview of Phase {N+1}
 
 ---
+
 **Phase**: {N} of {M}
 **Epic**: {VERSION}
 ```
 
 ### Feature Specification (Growth+ Stage)
+
 ```markdown
 # Feature: {Name}
 
@@ -565,38 +633,48 @@ Brief preview of Phase {N+1}
 **Last Updated**: YYYY-MM-DD
 
 ## Overview
+
 What does this feature do?
 
 ## UI Design
+
 See designs in `attachments/designs/`:
+
 - Desktop: ![Desktop](./attachments/designs/desktop.png)
 - Mobile: ![Mobile](./attachments/designs/mobile.png)
 
 External design: [Figma](https://figma.com/file/...)
 
 ## User Stories
+
 - As a {role}, I want {capability}, so that {benefit}
 
 ## Technical Approach
+
 - Architecture decisions
 - Key components
 - Dependencies
 
 ## API
+
 See [api.md](./api.md) for endpoint documentation.
 
 ## Acceptance Criteria
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 
 ## References
+
 See [references.md](./references.md) for all external resources.
 
 ---
+
 **Feature Directory**: `.claude/knowledge/features/{feature-name}/`
 ```
 
 ### Feature References (Growth+ Stage)
+
 ```markdown
 # References - {Feature Name}
 
@@ -608,6 +686,7 @@ See [references.md](./references.md) for all external resources.
 ## Design Resources
 
 ### UI/UX Design
+
 - **Figma Design System**: [Link](https://figma.com/...)
   - Last updated: YYYY-MM-DD
   - Owner: Designer Name
@@ -615,6 +694,7 @@ See [references.md](./references.md) for all external resources.
 - **Prototype**: [Link](https://figma.com/...)
 
 ### Design Tokens
+
 - Location: `attachments/designs/design-tokens.json`
 - Colors, spacing, typography defined
 
@@ -623,6 +703,7 @@ See [references.md](./references.md) for all external resources.
 ## Product Documentation
 
 ### Specifications
+
 - **Product Spec**: [Google Doc](https://docs.google.com/...)
 - **User Stories**: [Jira](https://jira.company.com/...)
 
@@ -631,10 +712,12 @@ See [references.md](./references.md) for all external resources.
 ## Technical Resources
 
 ### API Documentation
+
 - **External API**: [Stripe Docs](https://stripe.com/docs)
 - **Internal API**: See [api.md](./api.md)
 
 ### Libraries & Frameworks
+
 - **React Hook Form**: https://react-hook-form.com
 - **Zod Validation**: https://zod.dev
 
@@ -643,6 +726,7 @@ See [references.md](./references.md) for all external resources.
 ## Architecture & Diagrams
 
 ### System Diagrams
+
 - **Architecture Diagram**: `attachments/diagrams/architecture.png`
 - **Database Schema**: `attachments/diagrams/db-schema.png`
 
@@ -651,26 +735,31 @@ See [references.md](./references.md) for all external resources.
 ## Meeting Notes & Decisions
 
 ### Meetings
+
 - **Kickoff Meeting** (YYYY-MM-DD): [Notes](https://...)
 - **Design Review** (YYYY-MM-DD): [Notes](https://...)
 
 ### Decision Records
+
 - **ADR 1 - Auth Strategy**: See `.claude/decisions.md#adr-1`
 
 ---
 
 ## Related Features
+
 - [Feature: User Profile](../user-profile/spec.md)
 
 ---
 
 ## Notes
+
 - All Figma designs require company account access
 - Design tokens auto-sync from Figma plugin
 ```
 
 ### Feature API Documentation (Growth+ Stage)
-```markdown
+
+````markdown
 # API Documentation - {Feature Name}
 
 **Feature**: {Feature Name}
@@ -682,15 +771,18 @@ See [references.md](./references.md) for all external resources.
 ## Endpoints
 
 ### GET /api/{resource}
+
 **Description**: Retrieve {resource} data
 
 **Authentication**: Required
 
 **Query Parameters**:
+
 - `page` (number, optional): Page number (default: 1)
 - `limit` (number, optional): Items per page (default: 10)
 
 **Response**:
+
 ```json
 {
   "data": [...],
@@ -701,8 +793,10 @@ See [references.md](./references.md) for all external resources.
   }
 }
 ```
+````
 
 **Example**:
+
 ```bash
 curl -H "Authorization: Bearer {token}" \
   https://api.example.com/api/resource?page=1&limit=10
@@ -711,11 +805,13 @@ curl -H "Authorization: Bearer {token}" \
 ---
 
 ### POST /api/{resource}
+
 **Description**: Create new {resource}
 
 **Authentication**: Required
 
 **Request Body**:
+
 ```json
 {
   "name": "string",
@@ -724,6 +820,7 @@ curl -H "Authorization: Bearer {token}" \
 ```
 
 **Response**:
+
 ```json
 {
   "id": "uuid",
@@ -738,6 +835,7 @@ curl -H "Authorization: Bearer {token}" \
 ## Error Responses
 
 ### 400 Bad Request
+
 ```json
 {
   "error": "Validation failed",
@@ -750,6 +848,7 @@ curl -H "Authorization: Bearer {token}" \
 ## External APIs
 
 ### Stripe Payment API
+
 - **Documentation**: [Stripe API Docs](https://stripe.com/docs/api)
 - **Version**: 2024-11-20
 - **Endpoints Used**:
@@ -758,9 +857,11 @@ curl -H "Authorization: Bearer {token}" \
 ---
 
 ## Related Files
+
 - Implementation: `app/api/{resource}/route.ts`
 - Types: `src/types/{resource}.ts`
-```
+
+````
 
 ### Bug Documentation
 ```markdown
@@ -789,9 +890,10 @@ How to avoid in the future?
 ## Time Impact
 - Time to fix: N hours
 - Phase delay: N days (if any)
-```
+````
 
 ### Architecture Decision Record (ADR)
+
 ```markdown
 # ADR {N}: {Title}
 
@@ -799,17 +901,21 @@ How to avoid in the future?
 **Status**: Proposed | Accepted | Deprecated | Superseded
 
 ## Context
+
 What is the issue we're trying to solve?
 
 ## Decision
+
 What did we decide to do?
 
 ## Consequences
+
 - **Positive**: Benefits
 - **Negative**: Trade-offs
 - **Risks**: What could go wrong?
 
 ## Alternatives Considered
+
 - Alternative 1: Why not chosen
 - Alternative 2: Why not chosen
 ```
@@ -819,6 +925,7 @@ What did we decide to do?
 ## ✅ Best Practices
 
 ### DO:
+
 - ✅ Use `@imports` to compose CLAUDE.md from modular files
 - ✅ Keep early-stage docs simple and actionable
 - ✅ Add structure only when complexity demands it
@@ -836,6 +943,7 @@ What did we decide to do?
 - ✅ Organize attachments by type
 
 ### DON'T:
+
 - ❌ Create elaborate structure before you need it
 - ❌ Duplicate information across files
 - ❌ Mix epic spec with progress tracking
@@ -855,12 +963,14 @@ What did we decide to do?
 ## 🔧 Lifecycle Management
 
 ### When to Archive
+
 - Epic completed and reviewed
 - Feature deprecated/removed
 - Old decisions superseded
 - Outdated patterns no longer used
 
 ### How to Archive
+
 ```
 .claude/archive/
 └── YYYY/
@@ -871,6 +981,7 @@ What did we decide to do?
 ```
 
 ### When to Update
+
 - At start of each session (progress tracker)
 - After completing each phase (create summary)
 - After completing epic (finalize tracker)
@@ -883,6 +994,7 @@ What did we decide to do?
 ## 📊 Benefits
 
 ### For AI (Claude Code)
+
 - Fast context building (centralized location)
 - Predictable structure (knows where to look)
 - Reduced token usage (no duplicate reads)
@@ -891,6 +1003,7 @@ What did we decide to do?
 - Easy access to designs and references
 
 ### For Developers
+
 - Easy to find guidelines
 - Clear source of truth
 - Quick onboarding
@@ -904,6 +1017,7 @@ What did we decide to do?
 ## 🚀 Migration Path (Current Project)
 
 ### Now (Early Stage):
+
 ```
 ✅ CLAUDE.md - imports coding-standards.md, workflows.md, documentation-policy.md
 ✅ Keep it simple - add files only when needed
@@ -911,6 +1025,7 @@ What did we decide to do?
 ```
 
 ### When to Add Knowledge (5-10 features):
+
 ```
 1. Create .claude/knowledge/ directory
 2. Create knowledge/features/ subdirectory
@@ -923,6 +1038,7 @@ What did we decide to do?
 ```
 
 ### When to Add Progress Tracking (First Epic):
+
 ```
 1. Create .claude/progress/ directory
 2. Create epics/ subdirectory
@@ -931,6 +1047,7 @@ What did we decide to do?
 ```
 
 ### When to Add Bug Tracking (As Needed):
+
 ```
 1. Create .claude/progress/bugs/ directory
 2. Document bugs using template
@@ -942,6 +1059,7 @@ What did we decide to do?
 ## 🎓 Examples
 
 ### Early Stage (Current):
+
 ```bash
 # Quick guideline
 # Use Zod for all form validation
@@ -951,6 +1069,7 @@ What did we decide to do?
 ```
 
 ### Growth Stage with Features:
+
 ```bash
 # Create feature with references
 .claude/knowledge/features/authentication/
@@ -967,6 +1086,7 @@ See [references](./references.md) for designs
 ```
 
 ### Mature Stage with Epic Tracking:
+
 ```bash
 # Starting Epic 1.1
 .claude/progress/epics/epic-1.1-products.md      # Spec
@@ -994,21 +1114,21 @@ See [references](./references.md) for designs
 
 **I need to...**
 
-| Task | Action | File Location |
-|------|--------|---------------|
-| Add quick guideline | Use `#` command | `.claude/*.md` |
-| Edit existing memory | Use `/memory` command | `.claude/` |
-| Start new epic | Create spec, plan, progress | `.claude/progress/epics/` |
-| Track epic progress | Update progress file | `.claude/progress/epics/progress-{version}.md` |
-| Complete a phase | Create phase summary | `.claude/progress/phases/phase-{N}-epic-{version}.md` |
-| Document bug | Create bug file | `.claude/progress/bugs/` |
-| Create feature spec | Create feature directory | `.claude/knowledge/features/{name}/` |
-| Link to Figma design | Add to references.md | `.claude/knowledge/features/{name}/references.md` |
-| Store exported design | Save to attachments | `.claude/knowledge/features/{name}/attachments/designs/` |
-| Document API | Create api.md | `.claude/knowledge/features/{name}/api.md` |
-| Store diagram | Save to attachments | `.claude/knowledge/features/{name}/attachments/diagrams/` |
-| Document architecture | Create/update file | `.claude/architecture.md` |
-| Find all guidelines | Read CLAUDE.md | `CLAUDE.md` |
+| Task                  | Action                      | File Location                                             |
+| --------------------- | --------------------------- | --------------------------------------------------------- |
+| Add quick guideline   | Use `#` command             | `.claude/*.md`                                            |
+| Edit existing memory  | Use `/memory` command       | `.claude/`                                                |
+| Start new epic        | Create spec, plan, progress | `.claude/progress/epics/`                                 |
+| Track epic progress   | Update progress file        | `.claude/progress/epics/progress-{version}.md`            |
+| Complete a phase      | Create phase summary        | `.claude/progress/phases/phase-{N}-epic-{version}.md`     |
+| Document bug          | Create bug file             | `.claude/progress/bugs/`                                  |
+| Create feature spec   | Create feature directory    | `.claude/knowledge/features/{name}/`                      |
+| Link to Figma design  | Add to references.md        | `.claude/knowledge/features/{name}/references.md`         |
+| Store exported design | Save to attachments         | `.claude/knowledge/features/{name}/attachments/designs/`  |
+| Document API          | Create api.md               | `.claude/knowledge/features/{name}/api.md`                |
+| Store diagram         | Save to attachments         | `.claude/knowledge/features/{name}/attachments/diagrams/` |
+| Document architecture | Create/update file          | `.claude/architecture.md`                                 |
+| Find all guidelines   | Read CLAUDE.md              | `CLAUDE.md`                                               |
 
 ---
 

@@ -3,7 +3,7 @@
  */
 export interface UtilitySourceAccount {
   id: string;
-  type: 'ahorros' | 'corriente';
+  type: "ahorros" | "corriente";
   accountNumber: string;
   maskedNumber: string;
   balance: number;
@@ -26,7 +26,12 @@ export interface RegisteredService {
 /**
  * Payment method type for utility payments
  */
-export type UtilityPaymentMethod = 'account' | 'pse';
+export type UtilityPaymentMethod = "account" | "pse";
+
+/**
+ * Payment type: registered service or non-registered (one-time)
+ */
+export type UtilityPaymentType = "inscrito" | "no-inscrito";
 
 /**
  * Step 1 - Payment details form data
@@ -34,11 +39,18 @@ export type UtilityPaymentMethod = 'account' | 'pse';
 export interface UtilityPaymentDetails {
   sourceAccountId: string;
   sourceAccountDisplay: string;
+  paymentType: UtilityPaymentType;
   serviceId: string;
   serviceDisplay: string;
   serviceType: string;
   amount: number;
   paymentMethod: UtilityPaymentMethod;
+  // Fields for non-registered service payment
+  categoryId?: string;
+  categoryName?: string;
+  convenioId?: string;
+  convenioName?: string;
+  reference?: string;
 }
 
 /**

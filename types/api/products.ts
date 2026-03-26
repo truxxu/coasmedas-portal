@@ -1,4 +1,4 @@
-import type { UserIdentification } from './common';
+import type { UserIdentification } from "./common";
 
 // ─── Request Types ───
 
@@ -65,12 +65,13 @@ export interface MovementItem {
 
 export interface SavingsAccountResponse {
   numeroCuenta: string;
-  alias: string;
+  alias?: string;
+  estado: string;
   nombreProducto: string;
-  saldoDisponible: string | number;
+  saldoDisponible?: string | number;
   saldoTotal: string | number;
   idCuenta: string;
-  codigoProductoCobis: string;
+  codigoProductoCobis: string | number;
 }
 
 // ─── /products/credits Response ───

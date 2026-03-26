@@ -17,7 +17,7 @@ export function TransferConfirmationCard({
     <Card className="space-y-6 p-8">
       <div>
         <h2 className="text-lg font-bold text-brand-teal-dark mb-2">
-          Confirmacion de Pago
+          Confirmación de Pago
         </h2>
         <p className="text-[15px] text-brand-text-black">
           Por favor, verifica que los datos de la transacción sean correctos
@@ -61,6 +61,15 @@ export function TransferConfirmationCard({
           </span>
           <span className="text-[15px] font-medium text-brand-text-black">
             {confirmationData.destinationProduct}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center py-2">
+          <span className="text-[15px] text-brand-text-black">
+            Costo Transacción:
+          </span>
+          <span className="text-[15px] font-medium text-brand-text-black">
+            {formatCurrency(confirmationData.transactionCost ?? 0)}
           </span>
         </div>
 

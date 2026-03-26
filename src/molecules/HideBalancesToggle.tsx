@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Toggle } from '@/src/atoms';
-import { useHideBalances } from '@/src/hooks';
+import { Toggle } from "@/src/atoms";
+import { useHideBalances } from "@/src/hooks";
 
 export function HideBalancesToggle() {
   const { hideBalances, toggleHideBalances } = useHideBalances();

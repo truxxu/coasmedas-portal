@@ -14,11 +14,20 @@ import type {
   ProtectionPaymentMethod,
   ProtectionPaymentSourceAccount,
 } from "@/src/types";
-import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
+import {
+  getPaymentSourcesSavings,
+  getPaymentProducts,
+} from "@/services/payments.service";
 import { getProductsProtection } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
-import { mapSavingsToSourceAccount, mapProtectionToPaymentProduct } from "@/lib/mappers/payments.mapper";
-import type { SavingsAccountResponse, ProtectionAccountResponse } from "@/types/api/products";
+import {
+  mapSavingsToSourceAccount,
+  mapProtectionToPaymentProduct,
+} from "@/lib/mappers/payments.mapper";
+import type {
+  SavingsAccountResponse,
+  ProtectionAccountResponse,
+} from "@/types/api/products";
 import type { PaymentProduct } from "@/types/api/payments";
 import type { ObligacionSourceAccount } from "@/src/types/obligacion-payment";
 
@@ -35,22 +44,35 @@ export default function ProteccionDetallePage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
 
-  const [sourceAccounts, setSourceAccounts] = useState<ProtectionPaymentSourceAccount[]>([]);
+  const [sourceAccounts, setSourceAccounts] = useState<
+    ProtectionPaymentSourceAccount[]
+  >([]);
   const [products, setProducts] = useState<ProtectionPaymentProduct[]>([]);
-  const [formData, setFormData] = useState<ProtectionPaymentDetailsFormData>(initialFormData);
-  const [selectedProduct, setSelectedProduct] = useState<ProtectionPaymentProduct | null>(null);
-  const [errors, setErrors] = useState<{ sourceAccount?: string; product?: string }>({});
+  const [formData, setFormData] =
+    useState<ProtectionPaymentDetailsFormData>(initialFormData);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProtectionPaymentProduct | null>(null);
+  const [errors, setErrors] = useState<{
+    sourceAccount?: string;
+    product?: string;
+  }>({});
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Store raw API data
-  const [savingsApiData, setSavingsApiData] = useState<SavingsAccountResponse[]>([]);
-  const [protectionApiData, setProtectionApiData] = useState<ProtectionAccountResponse[]>([]);
-  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
+  const [savingsApiData, setSavingsApiData] = useState<
+    SavingsAccountResponse[]
+  >([]);
+  const [protectionApiData, setProtectionApiData] = useState<
+    ProtectionAccountResponse[]
+  >([]);
+  const [paymentProductsData, setPaymentProductsData] = useState<
+    PaymentProduct[]
+  >([]);
 
   useEffect(() => {
     setWelcomeBar({
-      title: "Pago de Proteccion",
+      title: "Pago de Protección y Actividades",
       backHref: "/pagos/pagar-mis-productos",
     });
     return () => clearWelcomeBar();
@@ -66,21 +88,25 @@ export default function ProteccionDetallePage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, protectionRes, paymentProductsRes] = await Promise.all([
-        getPaymentSourcesSavings(params),
-        getProductsProtection(params),
-        getPaymentProducts(params),
-      ]);
+      const [savingsRes, protectionRes, paymentProductsRes] = await Promise.all(
+        [
+          getPaymentSourcesSavings(params),
+          getProductsProtection(params),
+          getPaymentProducts(params),
+        ],
+      );
 
       setSavingsApiData(savingsRes);
       setProtectionApiData(protectionRes);
       setPaymentProductsData(paymentProductsRes);
 
       // Map savings → ProtectionPaymentSourceAccount (same shape as ObligacionSourceAccount)
-      const mappedAccounts: ProtectionPaymentSourceAccount[] = savingsRes.map((s) => {
-        const mapped: ObligacionSourceAccount = mapSavingsToSourceAccount(s);
-        return mapped;
-      });
+      const mappedAccounts: ProtectionPaymentSourceAccount[] = savingsRes.map(
+        (s) => {
+          const mapped: ObligacionSourceAccount = mapSavingsToSourceAccount(s);
+          return mapped;
+        },
+      );
       setSourceAccounts(mappedAccounts);
 
       const mappedProducts = protectionRes.map(mapProtectionToPaymentProduct);
@@ -104,7 +130,7 @@ export default function ProteccionDetallePage() {
 
   const handleAccountChange = (
     accountId: string,
-    paymentMethod: ProtectionPaymentMethod
+    paymentMethod: ProtectionPaymentMethod,
   ) => {
     const isPSE = paymentMethod === "pse";
     const account = allSourceAccounts.find((a) => a.id === accountId);
@@ -145,7 +171,7 @@ export default function ProteccionDetallePage() {
       formData.paymentMethod === "account"
     ) {
       const selectedAccount = allSourceAccounts.find(
-        (a) => a.id === formData.sourceAccountId
+        (a) => a.id === formData.sourceAccountId,
       );
       if (
         selectedAccount &&
@@ -169,30 +195,39 @@ export default function ProteccionDetallePage() {
     };
     sessionStorage.setItem(
       "protectionPaymentDetails",
-      JSON.stringify(dataToStore)
+      JSON.stringify(dataToStore),
     );
 
     // Store raw API data for transaction building
     const selectedSavings = savingsApiData.find(
-      (a) => String(a.idCuenta) === String(formData.sourceAccountId)
+      (a) => String(a.idCuenta) === String(formData.sourceAccountId),
     );
     if (selectedSavings) {
-      sessionStorage.setItem("protectionSourceAccountApi", JSON.stringify(selectedSavings));
+      sessionStorage.setItem(
+        "protectionSourceAccountApi",
+        JSON.stringify(selectedSavings),
+      );
     }
     if (selectedProduct) {
       const protectionApi = protectionApiData.find(
-        (p) => String(p.idCuenta) === String(selectedProduct.id)
+        (p) => String(p.idCuenta) === String(selectedProduct.id),
       );
       if (protectionApi) {
-        sessionStorage.setItem("protectionTargetProductApi", JSON.stringify(protectionApi));
+        sessionStorage.setItem(
+          "protectionTargetProductApi",
+          JSON.stringify(protectionApi),
+        );
       }
 
       // Cross-reference payment products to find tipoProducto for the target
       const matchingProduct = paymentProductsData.find(
-        (p) => String(p.idCuenta) === String(selectedProduct.id)
+        (p) => String(p.idCuenta) === String(selectedProduct.id),
       );
       if (matchingProduct) {
-        sessionStorage.setItem("protectionTargetTipoProducto", matchingProduct.tipoProducto);
+        sessionStorage.setItem(
+          "protectionTargetTipoProducto",
+          matchingProduct.tipoProducto,
+        );
       }
     }
 
@@ -206,7 +241,7 @@ export default function ProteccionDetallePage() {
   if (loadError) {
     return (
       <div className="space-y-6">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
         <div className="bg-white rounded-2xl p-6 text-center">
           <p className="text-red-600 mb-4">{loadError}</p>
           <button
@@ -223,7 +258,7 @@ export default function ProteccionDetallePage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
         <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
           <div className="h-6 w-48 bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
@@ -233,10 +268,30 @@ export default function ProteccionDetallePage() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes productos de protección pendientes por pagar en este
+            momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Proteccion"]} />
+        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
       </div>
 
       <div className="-mx-8 bg-white shadow-sm">

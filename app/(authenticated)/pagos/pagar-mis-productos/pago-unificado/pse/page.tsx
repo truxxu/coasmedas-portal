@@ -28,7 +28,8 @@ export default function PSEPage() {
       }
       const confirmationStr = sessionStorage.getItem("paymentConfirmationData");
       const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
-      if (!confirmationStr || !productsStr) throw new Error("Datos de pago no encontrados");
+      if (!confirmationStr || !productsStr)
+        throw new Error("Datos de pago no encontrados");
 
       const confirmation = JSON.parse(confirmationStr);
       const products: PaymentProduct[] = JSON.parse(productsStr);

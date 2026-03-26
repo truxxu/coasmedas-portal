@@ -1,7 +1,7 @@
 /**
  * Status of a savings product
  */
-export type SavingsStatus = 'activo' | 'bloqueado' | 'inactivo';
+export type SavingsStatus = "activo" | "bloqueado" | "inactivo";
 
 /**
  * Savings product information for carousel display

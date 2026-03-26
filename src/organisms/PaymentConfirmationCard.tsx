@@ -30,7 +30,9 @@ export const PaymentConfirmationCard: React.FC<
       {/* User Info */}
       <div className="space-y-3 mb-6">
         <div className="flex justify-between items-center">
-          <span className="text-sm md:text-base text-brand-text-black">Titular:</span>
+          <span className="text-sm md:text-base text-brand-text-black">
+            Titular:
+          </span>
           <span className="text-sm md:text-base text-brand-text-black font-medium">
             {confirmationData.titular}
           </span>

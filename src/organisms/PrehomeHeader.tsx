@@ -1,4 +1,4 @@
-import { NavBar } from '@/src/molecules';
+import { NavBar } from "@/src/molecules";
 
 export function PrehomeHeader() {
   return (

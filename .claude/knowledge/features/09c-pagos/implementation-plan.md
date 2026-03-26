@@ -16,6 +16,7 @@ This plan outlines the step-by-step implementation of the **Pago de Obligaciones
 ## Prerequisites
 
 Before starting implementation, ensure the following exist:
+
 - [x] `Stepper` molecule (from 09a-pagos) - `src/molecules/Stepper.tsx`
 - [x] `CurrencyInput` atom (from 09b-pagos) - `src/atoms/CurrencyInput.tsx`
 - [x] `TransactionResultCard` organism - `src/organisms/TransactionResultCard.tsx`
@@ -33,6 +34,7 @@ Before starting implementation, ensure the following exist:
 **File**: `src/types/obligacion-payment.ts`
 
 Create the following types:
+
 - `ObligacionPaymentProduct` - Loan/credit product for payment selection
 - `ObligacionPaymentDetailsData` - Step 1 form data
 - `ObligacionConfirmationData` - Step 2 confirmation data
@@ -47,8 +49,9 @@ Create the following types:
 **File**: `src/types/index.ts`
 
 Add export for `obligacion-payment.ts`:
+
 ```typescript
-export * from './obligacion-payment';
+export * from "./obligacion-payment";
 ```
 
 #### Step 1.3: Create Mock Data
@@ -56,6 +59,7 @@ export * from './obligacion-payment';
 **File**: `src/mocks/mockObligacionPaymentData.ts`
 
 Create mock data:
+
 - `mockObligacionProducts` - Array of 2 loan products (Crédito de Inversión, Tarjeta de Crédito)
 - `mockUserData` - User name and masked document
 - `mockObligacionTransactionResult` - Success result
@@ -79,6 +83,7 @@ Add exports for new mock data.
 **File**: `src/molecules/ObligacionPaymentCard.tsx`
 
 A selectable card displaying loan/credit product information:
+
 - Product name (e.g., "Crédito de Inversión")
 - Product number (masked)
 - Total balance
@@ -86,6 +91,7 @@ A selectable card displaying loan/credit product information:
 - Selected state with blue border
 
 **Props**:
+
 ```typescript
 interface ObligacionPaymentCardProps {
   product: ObligacionPaymentProduct;
@@ -96,6 +102,7 @@ interface ObligacionPaymentCardProps {
 ```
 
 **Design Notes**:
+
 - Selected: `border-2 border-[#007FFF]` (blue)
 - Unselected: `border border-[#E4E6EA]` (gray)
 - Status colors: Green `#00A44C` for "Al día", Red `#E1172B` for "En mora"
@@ -107,10 +114,12 @@ interface ObligacionPaymentCardProps {
 **File**: `src/molecules/PaymentTypeButton.tsx`
 
 A small button for quick payment selection:
+
 - "Pago Mínimo" - Sets value to minimum payment
 - "Pago Total" - Sets value to total balance
 
 **Props**:
+
 ```typescript
 interface PaymentTypeButtonProps {
   label: string;
@@ -120,6 +129,7 @@ interface PaymentTypeButtonProps {
 ```
 
 **Design Notes**:
+
 - Default: `bg-[#E4E6EA]` (gray)
 - Active: `bg-[#007FFF]` (blue) with white text
 - Font size: 10px
@@ -132,9 +142,10 @@ interface PaymentTypeButtonProps {
 **File**: `src/molecules/index.ts`
 
 Add exports:
+
 ```typescript
-export { ObligacionPaymentCard } from './ObligacionPaymentCard';
-export { PaymentTypeButton } from './PaymentTypeButton';
+export { ObligacionPaymentCard } from "./ObligacionPaymentCard";
+export { PaymentTypeButton } from "./PaymentTypeButton";
 ```
 
 ---
@@ -146,6 +157,7 @@ export { PaymentTypeButton } from './PaymentTypeButton';
 **File**: `src/organisms/ObligacionDetailsCard.tsx`
 
 Main card for Step 1 containing:
+
 1. Title: "Pago de Obligaciones"
 2. Payment method selector (PSE dropdown, disabled)
 3. "¿Necesitas más saldo?" link
@@ -160,6 +172,7 @@ Main card for Step 1 containing:
 8. Total a Pagar display
 
 **Props**:
+
 ```typescript
 interface ObligacionDetailsCardProps {
   products: ObligacionPaymentProduct[];
@@ -181,6 +194,7 @@ interface ObligacionDetailsCardProps {
 **File**: `src/organisms/ObligacionConfirmationCard.tsx`
 
 Confirmation card for Step 2 displaying:
+
 1. Title: "Confirmación de Pagos"
 2. Description text
 3. User info section:
@@ -193,6 +207,7 @@ Confirmation card for Step 2 displaying:
    - Valor a Pagar
 
 **Props**:
+
 ```typescript
 interface ObligacionConfirmationCardProps {
   confirmationData: ObligacionConfirmationData;
@@ -207,6 +222,7 @@ interface ObligacionConfirmationCardProps {
 **File**: `src/organisms/ObligacionResultCard.tsx`
 
 Result card for Step 4 displaying:
+
 1. Success/Error icon (centered)
 2. Result title ("Transacción Exitosa" / "Transacción Fallida")
 3. Transaction details:
@@ -221,6 +237,7 @@ Result card for Step 4 displaying:
    - Descripción (green for success, red for error)
 
 **Props**:
+
 ```typescript
 interface ObligacionResultCardProps {
   result: ObligacionTransactionResult;
@@ -235,10 +252,11 @@ interface ObligacionResultCardProps {
 **File**: `src/organisms/index.ts`
 
 Add exports:
+
 ```typescript
-export { ObligacionDetailsCard } from './ObligacionDetailsCard';
-export { ObligacionConfirmationCard } from './ObligacionConfirmationCard';
-export { ObligacionResultCard } from './ObligacionResultCard';
+export { ObligacionDetailsCard } from "./ObligacionDetailsCard";
+export { ObligacionConfirmationCard } from "./ObligacionConfirmationCard";
+export { ObligacionResultCard } from "./ObligacionResultCard";
 ```
 
 ---
@@ -250,6 +268,7 @@ export { ObligacionResultCard } from './ObligacionResultCard';
 **File**: `app/(authenticated)/pagos/pago-obligaciones/page.tsx`
 
 Main details page with:
+
 1. Header with BackButton, title, HideBalancesToggle
 2. Breadcrumbs
 3. Stepper (currentStep=1)
@@ -258,22 +277,26 @@ Main details page with:
 6. Action buttons (Volver / Continuar)
 
 **State Management**:
+
 - `selectedProductId` - Currently selected product
 - `valorAPagar` - Payment amount
 - `activePaymentType` - Which quick button is active
 - `error` - Validation error message
 
 **Validations**:
+
 - Product must be selected
 - Value must be > 0
 - Value must be >= minimum payment
 - Value must be <= total balance
 
 **Navigation**:
+
 - "Volver" -> `/pagos/pagar-mis-productos`
 - "Continuar" -> `/pagos/pago-obligaciones/confirmacion`
 
 **SessionStorage Keys**:
+
 - `obligacionPaymentProductId`
 - `obligacionPaymentValor`
 - `obligacionPaymentProduct`
@@ -285,6 +308,7 @@ Main details page with:
 **File**: `app/(authenticated)/pagos/pago-obligaciones/confirmacion/page.tsx`
 
 Confirmation page with:
+
 1. Header with BackButton, title, HideBalancesToggle
 2. Breadcrumbs
 3. Stepper (currentStep=2)
@@ -292,14 +316,17 @@ Confirmation page with:
 5. Action buttons (Volver / Confirmar Pago)
 
 **Data Loading**:
+
 - Load from sessionStorage on mount
 - Redirect to Step 1 if data missing
 
 **Navigation**:
+
 - "Volver" -> `/pagos/pago-obligaciones`
 - "Confirmar Pago" -> `/pagos/pago-obligaciones/pse`
 
 **SessionStorage Keys**:
+
 - Read: `obligacionPaymentProduct`, `obligacionPaymentValor`
 - Write: `obligacionPaymentConfirmation`
 
@@ -310,6 +337,7 @@ Confirmation page with:
 **File**: `app/(authenticated)/pagos/pago-obligaciones/pse/page.tsx`
 
 PSE loading page with:
+
 1. Header with title
 2. Breadcrumbs
 3. Stepper (currentStep=3)
@@ -319,11 +347,13 @@ PSE loading page with:
    - Instruction text
 
 **Behavior**:
+
 - Check for sessionStorage data on mount
 - Redirect to Step 1 if data missing
 - Auto-navigate to Step 4 after 3 second delay (simulating PSE connection)
 
 **Navigation**:
+
 - Auto -> `/pagos/pago-obligaciones/resultado`
 
 **Estimated Lines**: ~70 lines
@@ -333,6 +363,7 @@ PSE loading page with:
 **File**: `app/(authenticated)/pagos/pago-obligaciones/resultado/page.tsx`
 
 Result page with:
+
 1. Header with title, HideBalancesToggle
 2. Breadcrumbs
 3. Stepper (currentStep=4)
@@ -340,14 +371,17 @@ Result page with:
 5. Action buttons (Imprimir/Guardar / Finalizar)
 
 **Data Loading**:
+
 - Load from sessionStorage on mount
 - Build result from stored data + mock result
 
 **Actions**:
+
 - "Imprimir/Guardar" -> `window.print()`
 - "Finalizar" -> Clear sessionStorage, navigate to `/pagos`
 
 **Cleanup**:
+
 - Clear all obligacion sessionStorage keys on unmount or finish
 
 **Estimated Lines**: ~100 lines
@@ -361,6 +395,7 @@ Result page with:
 **File**: `src/schemas/obligacionPaymentSchemas.ts`
 
 Create yup schemas:
+
 - `obligacionPaymentDetailsSchema` - Step 1 validation
 - `validatePaymentAmount()` - Custom amount validation function
 
@@ -372,31 +407,31 @@ Create yup schemas:
 
 ### New Files (10 files)
 
-| File | Type | Lines (Est.) |
-|------|------|--------------|
-| `src/types/obligacion-payment.ts` | Types | ~70 |
-| `src/mocks/mockObligacionPaymentData.ts` | Mock Data | ~80 |
-| `src/molecules/ObligacionPaymentCard.tsx` | Molecule | ~60 |
-| `src/molecules/PaymentTypeButton.tsx` | Molecule | ~30 |
-| `src/organisms/ObligacionDetailsCard.tsx` | Organism | ~150 |
-| `src/organisms/ObligacionConfirmationCard.tsx` | Organism | ~80 |
-| `src/organisms/ObligacionResultCard.tsx` | Organism | ~120 |
-| `app/(authenticated)/pagos/pago-obligaciones/page.tsx` | Page | ~120 |
-| `app/(authenticated)/pagos/pago-obligaciones/confirmacion/page.tsx` | Page | ~100 |
-| `app/(authenticated)/pagos/pago-obligaciones/pse/page.tsx` | Page | ~70 |
-| `app/(authenticated)/pagos/pago-obligaciones/resultado/page.tsx` | Page | ~100 |
-| `src/schemas/obligacionPaymentSchemas.ts` | Schema | ~40 |
+| File                                                                | Type      | Lines (Est.) |
+| ------------------------------------------------------------------- | --------- | ------------ |
+| `src/types/obligacion-payment.ts`                                   | Types     | ~70          |
+| `src/mocks/mockObligacionPaymentData.ts`                            | Mock Data | ~80          |
+| `src/molecules/ObligacionPaymentCard.tsx`                           | Molecule  | ~60          |
+| `src/molecules/PaymentTypeButton.tsx`                               | Molecule  | ~30          |
+| `src/organisms/ObligacionDetailsCard.tsx`                           | Organism  | ~150         |
+| `src/organisms/ObligacionConfirmationCard.tsx`                      | Organism  | ~80          |
+| `src/organisms/ObligacionResultCard.tsx`                            | Organism  | ~120         |
+| `app/(authenticated)/pagos/pago-obligaciones/page.tsx`              | Page      | ~120         |
+| `app/(authenticated)/pagos/pago-obligaciones/confirmacion/page.tsx` | Page      | ~100         |
+| `app/(authenticated)/pagos/pago-obligaciones/pse/page.tsx`          | Page      | ~70          |
+| `app/(authenticated)/pagos/pago-obligaciones/resultado/page.tsx`    | Page      | ~100         |
+| `src/schemas/obligacionPaymentSchemas.ts`                           | Schema    | ~40          |
 
 **Total Estimated Lines**: ~1020 lines
 
 ### Files to Update (4 files)
 
-| File | Changes |
-|------|---------|
-| `src/types/index.ts` | Add export for obligacion-payment |
-| `src/mocks/index.ts` | Add exports for mock data |
-| `src/molecules/index.ts` | Add 2 new component exports |
-| `src/organisms/index.ts` | Add 3 new component exports |
+| File                     | Changes                           |
+| ------------------------ | --------------------------------- |
+| `src/types/index.ts`     | Add export for obligacion-payment |
+| `src/mocks/index.ts`     | Add exports for mock data         |
+| `src/molecules/index.ts` | Add 2 new component exports       |
+| `src/organisms/index.ts` | Add 3 new component exports       |
 
 ---
 
@@ -464,10 +499,10 @@ Pages
 ```typescript
 // Keys for Pago de Obligaciones flow
 const STORAGE_KEYS = {
-  productId: 'obligacionPaymentProductId',      // string
-  valor: 'obligacionPaymentValor',              // string (number as string)
-  product: 'obligacionPaymentProduct',          // JSON string
-  confirmation: 'obligacionPaymentConfirmation' // JSON string
+  productId: "obligacionPaymentProductId", // string
+  valor: "obligacionPaymentValor", // string (number as string)
+  product: "obligacionPaymentProduct", // JSON string
+  confirmation: "obligacionPaymentConfirmation", // JSON string
 };
 ```
 
@@ -476,6 +511,7 @@ const STORAGE_KEYS = {
 ## Testing Checklist
 
 ### Step 1: Details Page
+
 - [ ] Stepper shows step 1 as active
 - [ ] PSE dropdown shows and is disabled
 - [ ] Product cards render correctly (2 cards)
@@ -490,6 +526,7 @@ const STORAGE_KEYS = {
 - [ ] "Continuar" navigates to confirmation with valid data
 
 ### Step 2: Confirmation Page
+
 - [ ] Stepper shows step 2 active, step 1 completed
 - [ ] User info displays correctly
 - [ ] Payment info displays correctly
@@ -499,6 +536,7 @@ const STORAGE_KEYS = {
 - [ ] Redirects to step 1 if no sessionStorage data
 
 ### Step 3: PSE Loading Page
+
 - [ ] Stepper shows step 3 active
 - [ ] Loading spinner animates
 - [ ] Message displays correctly
@@ -506,6 +544,7 @@ const STORAGE_KEYS = {
 - [ ] Redirects to step 1 if no sessionStorage data
 
 ### Step 4: Result Page
+
 - [ ] Stepper shows all steps completed
 - [ ] Success icon displays for success
 - [ ] Transaction details display correctly
@@ -514,6 +553,7 @@ const STORAGE_KEYS = {
 - [ ] "Finalizar" clears session and navigates to /pagos
 
 ### Responsive Testing
+
 - [ ] Desktop layout correct
 - [ ] Tablet layout adapts
 - [ ] Mobile layout stacks properly

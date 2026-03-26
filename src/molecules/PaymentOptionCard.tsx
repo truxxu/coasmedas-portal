@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 interface PaymentOptionCardProps {
   title: string;
   description: string;
-  variant?: 'featured' | 'standard';
+  variant?: "featured" | "standard";
   onClick: () => void;
   className?: string;
 }
@@ -11,11 +11,11 @@ interface PaymentOptionCardProps {
 export function PaymentOptionCard({
   title,
   description,
-  variant = 'standard',
+  variant = "standard",
   onClick,
-  className = '',
+  className = "",
 }: PaymentOptionCardProps) {
-  const isFeatured = variant === 'featured';
+  const isFeatured = variant === "featured";
 
   return (
     <button
@@ -26,8 +26,8 @@ export function PaymentOptionCard({
         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
         ${
           isFeatured
-            ? 'bg-brand-navy shadow-md hover:shadow-lg hover:scale-[1.02] active:shadow-sm'
-            : 'bg-white border border-gray-200 shadow-md hover:border-brand-navy hover:bg-blue-50 hover:shadow-lg active:border-blue-500 active:bg-blue-100'
+            ? "bg-brand-navy shadow-md hover:shadow-lg hover:scale-[1.02] active:shadow-sm"
+            : "bg-white border border-gray-200 shadow-md hover:border-brand-navy hover:bg-blue-50 hover:shadow-lg active:border-blue-500 active:bg-blue-100"
         }
         ${className}
       `}
@@ -36,7 +36,7 @@ export function PaymentOptionCard({
       <h3
         className={`
           text-xl font-medium mb-3
-          ${isFeatured ? 'text-blue-400' : 'text-brand-navy'}
+          ${isFeatured ? "text-blue-400" : "text-brand-navy"}
         `}
       >
         {title}
@@ -44,7 +44,7 @@ export function PaymentOptionCard({
       <p
         className={`
           text-[15px] leading-relaxed
-          ${isFeatured ? 'text-white' : 'text-gray-900'}
+          ${isFeatured ? "text-white" : "text-gray-900"}
         `}
       >
         {description}

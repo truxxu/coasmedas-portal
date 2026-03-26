@@ -108,9 +108,7 @@ export function NetworkTransferResultCard({
         </div>
         {result.concept && (
           <div className="flex justify-between items-center py-2">
-            <span className="text-[15px] text-brand-text-black">
-              Concepto:
-            </span>
+            <span className="text-[15px] text-brand-text-black">Concepto:</span>
             <span className="text-[15px] font-medium text-brand-text-black text-right">
               {result.concept}
             </span>
@@ -155,7 +153,9 @@ export function NetworkTransferResultCard({
           </span>
         </div>
         <div className="flex justify-between items-center py-2">
-          <span className="text-[15px] text-brand-text-black">Descripción:</span>
+          <span className="text-[15px] text-brand-text-black">
+            Descripción:
+          </span>
           <span
             className={`text-[15px] font-medium ${isSuccess ? "text-brand-success-icon" : "text-brand-error"}`}
           >

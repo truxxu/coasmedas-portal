@@ -12,6 +12,7 @@
 The **Inversiones** (Investments) feature provides authenticated users access to their CDAT (Certificado de Depósito de Ahorro a Término) investment products through a horizontally scrollable carousel with an extended card design. Users can view multiple investment accounts with detailed financial information, select one to see its transaction history, and download monthly statements.
 
 **Key Purpose**:
+
 - View all CDAT investment products in a scrollable carousel
 - See detailed investment information including interest rate, term, and maturity date
 - Select a product to see its transaction history
@@ -19,6 +20,7 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 - Download monthly PDF reports/statements
 
 **Key Differences from Other Products**:
+
 - **Ahorros**: Simple card with balance and status
 - **Obligaciones**: Extended card with loan-specific info (disbursed amount, next payment)
 - **Inversiones**: Extended card with investment-specific info (interest rate, term, creation/maturity dates)
@@ -28,11 +30,13 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 ## User Stories
 
 ### US-06.1: View Investment Products Carousel
+
 **As an** authenticated user
 **I want** to see all my CDAT investment products in a carousel
 **So that** I can quickly overview all my investments
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/inversiones`
 - [ ] Carousel shows all user's CDAT products
 - [ ] First product is selected by default (white background, blue border)
@@ -43,11 +47,13 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 - [ ] Responsive: 1 card on mobile, 2 on tablet, 3 on desktop
 
 ### US-06.2: Select Investment Product
+
 **As an** authenticated user
 **I want** to select an investment product from the carousel
 **So that** I can view its transaction history and details
 
 **Acceptance Criteria**:
+
 - [ ] Clicking a card selects it (shows white background, blue border)
 - [ ] Only one card can be selected at a time
 - [ ] Previously selected card reverts to gray background
@@ -56,13 +62,15 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 - [ ] Selection persists during page session
 
 ### US-06.3: View Investment Product Card Information
+
 **As an** authenticated user
 **I want** to see detailed information on each investment product card
 **So that** I can understand my investment status and terms
 
 **Acceptance Criteria**:
+
 - [ ] Card shows product title (e.g., "CDTA Tradicional")
-- [ ] Card shows masked product number with prefix (e.g., "DTA-******123")
+- [ ] Card shows masked product number with prefix (e.g., "DTA-**\*\***123")
 - [ ] Card shows amount label "Monto del CDAT"
 - [ ] Card shows CDAT amount (respects "Ocultar saldos" toggle)
 - [ ] Card shows status: "Activo" (green) or "Vencido" (red)
@@ -73,13 +81,15 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 - [ ] Card shows "F. Vencimiento" (maturity date)
 
 ### US-06.4: Transaction History for Selected Product
+
 **As an** authenticated user
 **I want** to filter and view transaction history for my selected investment product
 **So that** I can track my investment activity
 
 **Acceptance Criteria**:
+
 - [ ] Transaction history updates when different product is selected
-- [ ] Title dynamically shows selected product name and number (CDAT-*****123 format)
+- [ ] Title dynamically shows selected product name and number (CDAT-**\***123 format)
 - [ ] Date range filter with start and end date inputs
 - [ ] Maximum range limited to 3 months
 - [ ] "Aplicar" button triggers filter
@@ -87,11 +97,13 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 - [ ] Shows empty state when no transactions found
 
 ### US-06.5: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements for my investment accounts
 **So that** I can keep records of my investment activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months (last 12 months)
 - [ ] Selecting month triggers PDF download
 - [ ] Clear description of functionality
@@ -102,8 +114,8 @@ The **Inversiones** (Investments) feature provides authenticated users access to
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
+| Path                     | Description                            |
+| ------------------------ | -------------------------------------- |
 | `/productos/inversiones` | Inversiones (Investments) product page |
 
 ### File Structure
@@ -130,16 +142,16 @@ src/
 
 The following components will be **reused** from previous features:
 
-| Component | Source | Purpose |
-|-----------|--------|---------|
-| `TransactionHistoryCard` | 03-products | Transaction list with date filter |
-| `DownloadReportsCard` | 03-products | Monthly report download |
-| `Breadcrumbs` | 03-products | Breadcrumb navigation |
-| `BackButton` | 03-products | Back navigation |
-| `HideBalancesToggle` | existing | Balance visibility toggle |
-| `CarouselArrow` | 04-ahorros | Carousel navigation arrows |
-| `CarouselDots` | 04-ahorros | Carousel pagination dots |
-| Carousel utilities | 04-ahorros | `calculateTotalPages`, `getVisibleItems` |
+| Component                | Source      | Purpose                                  |
+| ------------------------ | ----------- | ---------------------------------------- |
+| `TransactionHistoryCard` | 03-products | Transaction list with date filter        |
+| `DownloadReportsCard`    | 03-products | Monthly report download                  |
+| `Breadcrumbs`            | 03-products | Breadcrumb navigation                    |
+| `BackButton`             | 03-products | Back navigation                          |
+| `HideBalancesToggle`     | existing    | Balance visibility toggle                |
+| `CarouselArrow`          | 04-ahorros  | Carousel navigation arrows               |
+| `CarouselDots`           | 04-ahorros  | Carousel pagination dots                 |
+| Carousel utilities       | 04-ahorros  | `calculateTotalPages`, `getVisibleItems` |
 
 ### Sidebar Navigation
 
@@ -147,11 +159,11 @@ Inversiones is already in the Products accordion in the sidebar:
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },  // Already exists
-  { label: 'Protección', href: '/productos/proteccion' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" }, // Already exists
+  { label: "Protección", href: "/productos/proteccion" },
 ];
 ```
 
@@ -162,6 +174,7 @@ const productSubItems = [
 ### Molecules
 
 #### InversionProductCard
+
 Individual CDAT investment card for the carousel with extended information.
 
 ```typescript
@@ -174,21 +187,22 @@ interface InversionProductCardProps {
 
 interface InversionProduct {
   id: string;
-  title: string;                    // "CDTA Tradicional", "CDTA Plus"
-  productNumber: string;            // "123" (will be masked as DTA-******123)
-  productPrefix?: string;           // "DTA-" (default for investments)
-  amount: number;                   // 25000000 (monto del CDAT)
-  status: InversionStatus;          // 'activo' | 'vencido'
-  interestRate: string;             // "12.5% E.A" (tasa E.A.)
-  termDays: number;                 // 180 (plazo in days)
-  creationDate: string;             // "2025-08-15" ISO date (F. Creación)
-  maturityDate: string;             // "2025-02-11" ISO date (F. Vencimiento)
+  title: string; // "CDTA Tradicional", "CDTA Plus"
+  productNumber: string; // "123" (will be masked as DTA-******123)
+  productPrefix?: string; // "DTA-" (default for investments)
+  amount: number; // 25000000 (monto del CDAT)
+  status: InversionStatus; // 'activo' | 'vencido'
+  interestRate: string; // "12.5% E.A" (tasa E.A.)
+  termDays: number; // 180 (plazo in days)
+  creationDate: string; // "2025-08-15" ISO date (F. Creación)
+  maturityDate: string; // "2025-02-11" ISO date (F. Vencimiento)
 }
 
-type InversionStatus = 'activo' | 'vencido';
+type InversionStatus = "activo" | "vencido";
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ CDTA Tradicional                                │
@@ -206,6 +220,7 @@ type InversionStatus = 'activo' | 'vencido';
 ```
 
 **Styling**:
+
 - Width: `280px` minimum (same as ObligacionProductCard)
 - Height: Auto (~250px due to 4 detail fields)
 - Border radius: `16px`
@@ -214,15 +229,18 @@ type InversionStatus = 'activo' | 'vencido';
 - Transition: `all 0.2s ease`
 
 **Selected State**:
+
 - Background: `#FFFFFF` (white)
 - Border: `2px solid #194E8D` (navy blue)
 
 **Unselected State**:
+
 - Background: `#E4E6EA` (light gray - slightly different from Obligaciones)
 - Border: `1px solid #E4E6EA` (gray)
 - Hover: Border `#B1B1B1`
 
 **Internal Divider**:
+
 - Position: Between status and investment details
 - Style: `1px solid #E4E6EA`
 - Margin: `12px 0`
@@ -240,14 +258,18 @@ type InversionStatus = 'activo' | 'vencido';
 | Detail Value | Ubuntu | 14px | Medium | Black |
 
 **Hide Balances Integration**:
+
 ```typescript
 const { hideBalances } = useUIContext();
 
 // Only one monetary value to mask (simpler than Obligaciones)
-{hideBalances ? maskCurrency() : formatCurrency(product.amount)}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.amount);
+}
 ```
 
 **Tailwind Classes**:
+
 ```css
 /* Base card */
 bg-[#E4E6EA] rounded-2xl p-5 cursor-pointer
@@ -277,25 +299,28 @@ text-[14px] font-medium text-black
 ### Organisms
 
 #### InversionCarousel
+
 Carousel component specifically for investment/CDAT product cards.
 
 ```typescript
 interface InversionCarouselProps {
-  title: string;                                    // "Resumen de Inversiones"
-  products: InversionProduct[];                     // Array of investment products
-  selectedProductId?: string;                       // ID of selected product
+  title: string; // "Resumen de Inversiones"
+  products: InversionProduct[]; // Array of investment products
+  selectedProductId?: string; // ID of selected product
   onProductSelect: (product: InversionProduct) => void;
   className?: string;
 }
 ```
 
 **Implementation Notes**:
+
 - Reuses `CarouselArrow` and `CarouselDots` atoms from 04-ahorros
 - Reuses carousel utilities (`calculateTotalPages`, `getVisibleItems`)
 - Uses `InversionProductCard` instead of `SavingsProductCard` or `ObligacionProductCard`
 - Same scroll behavior, responsive breakpoints, and accessibility features as other carousels
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Resumen de Inversiones                                                       │
@@ -313,6 +338,7 @@ interface InversionCarouselProps {
 ```
 
 **Styling**:
+
 - Container: `bg-white rounded-2xl p-6`
 - Title: `text-[20px] font-bold text-[#194E8D] mb-4`
 - Cards container: `flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide`
@@ -335,7 +361,7 @@ interface InversionCarouselProps {
 /**
  * Status of an investment product (CDAT)
  */
-export type InversionStatus = 'activo' | 'vencido';
+export type InversionStatus = "activo" | "vencido";
 
 /**
  * Investment/CDAT product information for carousel display
@@ -344,13 +370,13 @@ export interface InversionProduct {
   id: string;
   title: string;
   productNumber: string;
-  productPrefix?: string;           // e.g., "DTA-" for CDATs
-  amount: number;                   // Monto del CDAT
+  productPrefix?: string; // e.g., "DTA-" for CDATs
+  amount: number; // Monto del CDAT
   status: InversionStatus;
-  interestRate: string;             // Tasa E.A. (e.g., "12.5% E.A")
-  termDays: number;                 // Plazo in days (e.g., 180)
-  creationDate: string;             // F. Creación (ISO date)
-  maturityDate: string;             // F. Vencimiento (ISO date)
+  interestRate: string; // Tasa E.A. (e.g., "12.5% E.A")
+  termDays: number; // Plazo in days (e.g., 180)
+  creationDate: string; // F. Creación (ISO date)
+  maturityDate: string; // F. Vencimiento (ISO date)
 }
 
 /**
@@ -363,7 +389,7 @@ export type OnInversionSelect = (product: InversionProduct) => void;
 
 ```typescript
 // Add export
-export * from './inversiones';
+export * from "./inversiones";
 ```
 
 ---
@@ -379,7 +405,7 @@ Use the existing `maskNumber` function with prefix support:
  * Mask product number with prefix for display
  * @example maskNumber("123", "DTA-") => "DTA-******123"
  */
-import { maskNumber } from '@/src/utils';
+import { maskNumber } from "@/src/utils";
 
 // In InversionProductCard:
 const displayProductNumber = product.productPrefix
@@ -404,11 +430,11 @@ export function formatTermDays(days: number): string {
 Use the existing `formatDate` utility:
 
 ```typescript
-import { formatDate } from '@/src/utils';
+import { formatDate } from "@/src/utils";
 
 // Display dates
-formatDate(product.creationDate)  // "15 Ago 2025"
-formatDate(product.maturityDate)  // "11 Feb 2025"
+formatDate(product.creationDate); // "15 Ago 2025"
+formatDate(product.maturityDate); // "11 Feb 2025"
 ```
 
 ---
@@ -418,49 +444,49 @@ formatDate(product.maturityDate)  // "11 Feb 2025"
 ### File: `src/mocks/inversiones.ts`
 
 ```typescript
-import { InversionProduct } from '@/src/types/inversiones';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { InversionProduct } from "@/src/types/inversiones";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock CDAT investment products for carousel
  */
 export const mockInversionProducts: InversionProduct[] = [
   {
-    id: '1',
-    title: 'CDTA Tradicional',
-    productNumber: '123',
-    productPrefix: 'DTA-',
+    id: "1",
+    title: "CDTA Tradicional",
+    productNumber: "123",
+    productPrefix: "DTA-",
     amount: 25000000,
-    status: 'activo',
-    interestRate: '12.5% E.A',
+    status: "activo",
+    interestRate: "12.5% E.A",
     termDays: 180,
-    creationDate: '2025-08-15',
-    maturityDate: '2025-02-11',
+    creationDate: "2025-08-15",
+    maturityDate: "2025-02-11",
   },
   {
-    id: '2',
-    title: 'CDTA Plus',
-    productNumber: '456',
-    productPrefix: 'DTA-',
+    id: "2",
+    title: "CDTA Plus",
+    productNumber: "456",
+    productPrefix: "DTA-",
     amount: 50000000,
-    status: 'activo',
-    interestRate: '13.0% E.A',
+    status: "activo",
+    interestRate: "13.0% E.A",
     termDays: 360,
-    creationDate: '2025-10-01',
-    maturityDate: '2025-09-26',
+    creationDate: "2025-10-01",
+    maturityDate: "2025-09-26",
   },
   {
-    id: '3',
-    title: 'CDTA Flexible',
-    productNumber: '789',
-    productPrefix: 'DTA-',
+    id: "3",
+    title: "CDTA Flexible",
+    productNumber: "789",
+    productPrefix: "DTA-",
     amount: 15000000,
-    status: 'vencido',
-    interestRate: '11.0% E.A',
+    status: "vencido",
+    interestRate: "11.0% E.A",
     termDays: 90,
-    creationDate: '2025-06-01',
-    maturityDate: '2025-08-30',
+    creationDate: "2025-06-01",
+    maturityDate: "2025-08-30",
   },
 ];
 
@@ -469,31 +495,32 @@ export const mockInversionProducts: InversionProduct[] = [
  */
 export const mockInversionesTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-08-15',
-    description: 'Apertura CDAT',
+    id: "1",
+    date: "2024-08-15",
+    description: "Apertura CDAT",
     amount: 25000000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2024-11-15',
-    description: 'Liquidación intereses',
+    id: "2",
+    date: "2024-11-15",
+    description: "Liquidación intereses",
     amount: 937500,
-    type: 'credit',
+    type: "credit",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockInversionesAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockInversionesAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './inversiones';
+export * from "./inversiones";
 // ... other exports
 ```
 
@@ -609,11 +636,11 @@ export default function InversionesPage() {
 
 ### Carousel Responsive Behavior
 
-| Breakpoint | Visible Cards | Arrow Position | Dots |
-|------------|---------------|----------------|------|
-| Mobile (<640px) | 1 | Hidden (swipe) | Show |
-| Tablet (640-1023px) | 2 | Show | Show |
-| Desktop (>=1024px) | 3 | Show | Show |
+| Breakpoint          | Visible Cards | Arrow Position | Dots |
+| ------------------- | ------------- | -------------- | ---- |
+| Mobile (<640px)     | 1             | Hidden (swipe) | Show |
+| Tablet (640-1023px) | 2             | Show           | Show |
+| Desktop (>=1024px)  | 3             | Show           | Show |
 
 ### Card Responsive Adjustments
 
@@ -678,14 +705,14 @@ Follows same patterns as previous carousel implementations:
 For screen readers, the status should be clearly communicated:
 
 ```typescript
-const statusAnnouncement = product.status === 'activo'
-  ? 'Estado: Activo'
-  : 'Estado: Vencido';
+const statusAnnouncement =
+  product.status === "activo" ? "Estado: Activo" : "Estado: Vencido";
 ```
 
 ### Color Contrast
 
 All text colors meet WCAG AA standards:
+
 - Green status (#00A44C) on white/gray background
 - Red status (#FF0000) on white/gray background
 - Blue amount (#004680) on white/gray background
@@ -717,7 +744,7 @@ The sidebar should highlight "Inversiones" when on `/productos/inversiones`:
 ```typescript
 // In Sidebar.tsx - handled by pathname check
 const pathname = usePathname();
-const isInversionesActive = pathname === '/productos/inversiones';
+const isInversionesActive = pathname === "/productos/inversiones";
 ```
 
 ---
@@ -725,10 +752,12 @@ const isInversionesActive = pathname === '/productos/inversiones';
 ## Implementation Checklist
 
 ### Phase 1: Types
+
 - [ ] Create `src/types/inversiones.ts`
 - [ ] Update `src/types/index.ts` exports
 
 ### Phase 2: Molecule - InversionProductCard
+
 - [ ] Create `src/molecules/InversionProductCard.tsx`
 - [ ] Implement selected/unselected visual states
 - [ ] Add divider and investment details section
@@ -739,6 +768,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Update `src/molecules/index.ts` exports
 
 ### Phase 3: Organism - InversionCarousel
+
 - [ ] Create `src/organisms/InversionCarousel.tsx`
 - [ ] Reuse `CarouselArrow` and `CarouselDots` from atoms
 - [ ] Reuse carousel utilities from `src/utils/carousel.ts`
@@ -749,10 +779,12 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Update `src/organisms/index.ts` exports
 
 ### Phase 4: Mock Data
+
 - [ ] Create `src/mocks/inversiones.ts`
 - [ ] Update `src/mocks/index.ts` exports
 
 ### Phase 5: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/inversiones/page.tsx`
 - [ ] Wire up carousel with mock data
 - [ ] Reuse `TransactionHistoryCard` from 03-products
@@ -761,6 +793,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Use correct prefix format (CDAT- for transaction title)
 
 ### Phase 6: Polish
+
 - [ ] Add responsive styles for all breakpoints
 - [ ] Add hover/focus states
 - [ ] Add loading state for carousel
@@ -773,6 +806,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] Page loads at `/productos/inversiones`
 - [ ] First product is selected by default (white bg, blue border)
 - [ ] Unselected products have gray background (#E4E6EA)
@@ -790,6 +824,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] "Ocultar saldos" masks the CDAT amount
 
 ### Visual Testing
+
 - [ ] Selected card: White background, blue border
 - [ ] Unselected card: Gray background (#E4E6EA), gray border
 - [ ] "Activo" status displays in green
@@ -803,6 +838,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Dates formatted correctly (e.g., "15 Ago 2025")
 
 ### Responsive Testing
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
@@ -811,6 +847,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Gap between cards is consistent (20px)
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through carousel
 - [ ] Arrow keys move between cards
 - [ ] Enter/Space selects card
@@ -820,6 +857,7 @@ const isInversionesActive = pathname === '/productos/inversiones';
 - [ ] Color contrast passes WCAG AA
 
 ### Integration Testing
+
 - [ ] Page loads at `/productos/inversiones`
 - [ ] Sidebar shows "Inversiones" as active
 - [ ] Back button navigates to `/home`
@@ -851,11 +889,11 @@ const isInversionesActive = pathname === '/productos/inversiones';
 
 When connecting to the backend API:
 
-| Endpoint | Purpose | When Called |
-|----------|---------|-------------|
-| `GET /balances?type=inversiones` | Fetch CDAT products | Page load |
-| `GET /movements?productId={id}` | Fetch transactions | Product selection |
-| `GET /reports/{productId}/{month}` | Download PDF | Month selection |
+| Endpoint                           | Purpose             | When Called       |
+| ---------------------------------- | ------------------- | ----------------- |
+| `GET /balances?type=inversiones`   | Fetch CDAT products | Page load         |
+| `GET /movements?productId={id}`    | Fetch transactions  | Product selection |
+| `GET /reports/{productId}/{month}` | Download PDF        | Month selection   |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 
@@ -872,20 +910,20 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 
 ## Comparison with Other Product Pages
 
-| Aspect | Ahorros (04) | Obligaciones (05) | Inversiones (06) |
-|--------|--------------|-------------------|------------------|
-| Card Component | `SavingsProductCard` | `ObligacionProductCard` | `InversionProductCard` |
-| Product Type | Savings accounts | Loans/Credits | CDATs |
-| Amount Label | "Saldo Total" | "Saldo a la fecha" | "Monto del CDAT" |
-| Amount Color | Navy #112E7F | Navy #112E7F | Blue #004680 |
-| Product Prefix | None | Optional "CR-" | "DTA-" |
-| Transaction Prefix | None | Product prefix | "CDAT-" |
-| Status Values | activo/bloqueado | al_dia/en_mora | activo/vencido |
-| Has Divider | No | Yes | Yes |
-| Detail Fields | None | 3 (disbursed, next payment) | 4 (rate, term, dates) |
-| Monetary Values | 1 (balance) | 3 (balance, disbursed, next) | 1 (amount) |
-| Card Min Width | 250px | 280px | 280px |
-| Unselected BG | White | #F3F4F6 | #E4E6EA |
+| Aspect             | Ahorros (04)         | Obligaciones (05)            | Inversiones (06)       |
+| ------------------ | -------------------- | ---------------------------- | ---------------------- |
+| Card Component     | `SavingsProductCard` | `ObligacionProductCard`      | `InversionProductCard` |
+| Product Type       | Savings accounts     | Loans/Credits                | CDATs                  |
+| Amount Label       | "Saldo Total"        | "Saldo a la fecha"           | "Monto del CDAT"       |
+| Amount Color       | Navy #112E7F         | Navy #112E7F                 | Blue #004680           |
+| Product Prefix     | None                 | Optional "CR-"               | "DTA-"                 |
+| Transaction Prefix | None                 | Product prefix               | "CDAT-"                |
+| Status Values      | activo/bloqueado     | al_dia/en_mora               | activo/vencido         |
+| Has Divider        | No                   | Yes                          | Yes                    |
+| Detail Fields      | None                 | 3 (disbursed, next payment)  | 4 (rate, term, dates)  |
+| Monetary Values    | 1 (balance)          | 3 (balance, disbursed, next) | 1 (amount)             |
+| Card Min Width     | 250px                | 280px                        | 280px                  |
+| Unselected BG      | White                | #F3F4F6                      | #E4E6EA                |
 
 ---
 
@@ -911,28 +949,27 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 
 ```typescript
 // Interest rate - display as-is from backend
-product.interestRate  // "12.5% E.A"
-
+product.interestRate // "12.5% E.A"
 // Term - format with "días" suffix
-`${product.termDays} días`  // "180 días"
+`${product.termDays} días`; // "180 días"
 
 // Dates - format using formatDate utility
-formatDate(product.creationDate)  // "15 Ago 2025"
-formatDate(product.maturityDate)  // "11 Feb 2025"
+formatDate(product.creationDate); // "15 Ago 2025"
+formatDate(product.maturityDate); // "11 Feb 2025"
 ```
 
 ### Product Number vs Transaction Title Prefixes
 
 Important distinction:
-- **Product number display**: Uses "DTA-" prefix (e.g., "DTA-******123")
-- **Transaction title**: Uses "CDAT-" prefix (e.g., "CDAT-*****123")
+
+- **Product number display**: Uses "DTA-" prefix (e.g., "DTA-**\*\***123")
+- **Transaction title**: Uses "CDAT-" prefix (e.g., "CDAT-**\***123")
 
 ```typescript
 // Product card display
-`DTA-${maskNumber(product.productNumber)}`  // "DTA-******123"
-
+`DTA-${maskNumber(product.productNumber)}` // "DTA-******123"
 // Transaction history title
-`CDAT-${maskNumber(product.productNumber)}`  // "CDAT-*****123"
+`CDAT-${maskNumber(product.productNumber)}`; // "CDAT-*****123"
 ```
 
 ---

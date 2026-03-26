@@ -28,8 +28,10 @@ export default function PSERedirectPage() {
       }
       const valor = sessionStorage.getItem("aportesPaymentValor");
       const contributionsStr = sessionStorage.getItem("aportesContributions");
-      const tipoProducto = sessionStorage.getItem("aportesTargetTipoProducto") || '';
-      if (!valor || !contributionsStr) throw new Error("Datos de pago no encontrados");
+      const tipoProducto =
+        sessionStorage.getItem("aportesTargetTipoProducto") || "";
+      if (!valor || !contributionsStr)
+        throw new Error("Datos de pago no encontrados");
 
       const contributions: ContributionsResponse = JSON.parse(contributionsStr);
       const vlrPagoTotal = parseInt(valor, 10);
@@ -47,7 +49,9 @@ export default function PSERedirectPage() {
           mobile: user.mobile ?? "",
         },
         merchantComment: "Pago de Aportes",
-        cuentas: [buildAportesTarget(contributions, vlrPagoTotal, tipoProducto)],
+        cuentas: [
+          buildAportesTarget(contributions, vlrPagoTotal, tipoProducto),
+        ],
       });
       return result.paymentUrl;
     },

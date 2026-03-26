@@ -1,13 +1,13 @@
-'use server';
+"use server";
 
-import { getAuthCookie, getUserProfileCookie } from '@/lib/auth/tokens';
-import { parseTokenClaims, isTokenExpired } from '@/lib/auth/session';
-import type { LoginResponse } from '@/types/api/auth';
+import { getAuthCookie, getUserProfileCookie } from "@/lib/auth/tokens";
+import { parseTokenClaims, isTokenExpired } from "@/lib/auth/session";
+import type { LoginResponse } from "@/types/api/auth";
 
 interface SessionData {
   token: string;
   exp: number;
-  userProfile: Omit<LoginResponse, 'token'> | null;
+  userProfile: Omit<LoginResponse, "token"> | null;
 }
 
 interface SessionResult {
@@ -42,7 +42,7 @@ export async function getSessionAction(): Promise<SessionResult> {
     data: {
       token,
       exp: claims.exp || 0,
-      userProfile: profileData as Omit<LoginResponse, 'token'> | null,
+      userProfile: profileData as Omit<LoginResponse, "token"> | null,
     },
   };
 }

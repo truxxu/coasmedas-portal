@@ -47,9 +47,7 @@ export function TransferDetailsCard({
     onAmountChange(value);
   };
 
-  const formattedAmount = amount
-    ? Number(amount).toLocaleString("es-CO")
-    : "0";
+  const formattedAmount = amount ? Number(amount).toLocaleString("es-CO") : "0";
 
   return (
     <Card className="space-y-6 p-8">
@@ -137,9 +135,7 @@ export function TransferDetailsCard({
         </div>
       </div>
 
-      {error && (
-        <p className="text-sm text-brand-error text-center">{error}</p>
-      )}
+      {error && <p className="text-sm text-brand-error text-center">{error}</p>}
     </Card>
   );
 }

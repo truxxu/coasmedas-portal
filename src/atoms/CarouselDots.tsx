@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface CarouselDotsProps {
   totalDots: number;
@@ -11,7 +11,7 @@ export function CarouselDots({
   totalDots,
   activeDot,
   onDotClick,
-  className = '',
+  className = "",
 }: CarouselDotsProps) {
   if (totalDots <= 1) return null;
 
@@ -31,9 +31,10 @@ export function CarouselDots({
           onClick={() => onDotClick?.(index)}
           className={`
             w-2 h-2 rounded-full transition-colors cursor-pointer
-            ${index === activeDot
-              ? 'bg-brand-navy-dark'
-              : 'border border-brand-border bg-white hover:border-brand-footer-text'
+            ${
+              index === activeDot
+                ? "bg-brand-navy-dark"
+                : "border border-brand-border bg-white hover:border-brand-footer-text"
             }
           `}
         />

@@ -12,6 +12,7 @@
 The **Prehome** is the initial landing page of the Coasmedas Portal, displayed to unauthenticated users before login. It serves as the entry point to the banking portal, providing access to authentication (login/register) and basic information about the service.
 
 **Key Purpose**:
+
 - First impression for users
 - Access to login and registration
 - Marketing/information about Coasmedas services
@@ -24,12 +25,14 @@ The **Prehome** is the initial landing page of the Coasmedas Portal, displayed t
 **Figma Design**: [Prehome Design](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=1668-229)
 
 **Design Assets**:
+
 - Prehome layout: `./attachments/designs/prehome.svg`
 - Logo: `./attachments/designs/logo.svg`
 
 See [references.md](./references.md) for all design resources and implementation guidance.
 
 ### Page Sections (from Figma review)
+
 1. **Header** - Logo + "Vinculación Digital" + "Iniciar Sesión" buttons
 2. **Hero Section** - Navy blue background with headline and 3 CTAs
 3. **Welcome Section** - "Hola, Bienvenido" + "Siempre cercanos"
@@ -44,11 +47,13 @@ See [references.md](./references.md) for all design resources and implementation
 ## User Stories
 
 ### US-00.1: Landing Page Access
+
 **As a** potential user
 **I want** to see an attractive landing page when I visit the portal
 **So that** I understand what services are available and can access login/registration
 
 **Acceptance Criteria**:
+
 - [ ] Page loads at root URL `/`
 - [ ] Responsive design (mobile, tablet, desktop)
 - [ ] Follows Figma design specifications
@@ -57,33 +62,39 @@ See [references.md](./references.md) for all design resources and implementation
 - [ ] Accessible (WCAG 2.1 Level AA)
 
 ### US-00.2: Login Access
+
 **As a** registered user
 **I want** to access the login form from the prehome
 **So that** I can authenticate and access my account
 
 **Acceptance Criteria**:
+
 - [ ] Visible "Ingresar" / "Iniciar Sesión" button/link
 - [ ] Clicking navigates to login page or opens login modal
 - [ ] Clear visual hierarchy for primary CTA
 - [ ] Works on all device sizes
 
 ### US-00.3: Registration Access
+
 **As a** new user
 **I want** to access the registration form from the prehome
 **So that** I can create a new account
 
 **Acceptance Criteria**:
+
 - [ ] Visible "Registrarse" / "Crear Cuenta" button/link
 - [ ] Clicking navigates to registration page or opens registration modal
 - [ ] Secondary CTA styling (less prominent than login)
 - [ ] Works on all device sizes
 
 ### US-00.4: Information Display
+
 **As a** potential user
 **I want** to see information about Coasmedas services
 **So that** I can understand what the portal offers
 
 **Acceptance Criteria**:
+
 - [ ] Clear value proposition
 - [ ] Service highlights (if applicable)
 - [ ] Trust indicators (security, licensing, etc.)
@@ -94,6 +105,7 @@ See [references.md](./references.md) for all design resources and implementation
 ## Technical Approach
 
 ### Route
+
 - **Path**: `/` (root)
 - **File**: `app/page.tsx`
 - **Type**: Public route (no authentication required)
@@ -101,24 +113,28 @@ See [references.md](./references.md) for all design resources and implementation
 ### Components (Atomic Design)
 
 #### Atoms
+
 - `Button` - Primary/secondary CTA buttons
 - `Logo` - Coasmedas logo component
 - `Icon` - UI icons (security, mobile, etc.)
 - `Link` - Navigation links
 
 #### Molecules
+
 - `NavBar` - Top navigation with login/register links
 - `HeroSection` - Main hero/banner area
 - `FeatureCard` - Service highlight cards
 - `Footer` - Page footer
 
 #### Organisms
+
 - `PrehomeHeader` - Complete header with nav and logo
 - `PrehomeHero` - Hero section with CTAs
 - `PrehomeFeaturesGrid` - Grid of service features
 - `PrehomeFooter` - Complete footer
 
 ### Page Structure
+
 ```tsx
 // app/page.tsx
 export default function PrehomePage() {
@@ -134,17 +150,20 @@ export default function PrehomePage() {
 ```
 
 ### Styling
+
 - Use Tailwind CSS v4
 - Follow theme variables from `app/globals.css`
 - Responsive breakpoints: mobile-first
 - Dark mode support via `prefers-color-scheme`
 
 ### Navigation
+
 - **Login**: Navigate to `/login` or open modal
 - **Register**: Navigate to `/register` or open modal
 - **Links**: Smooth scroll to sections (if one-page design)
 
 ### Performance
+
 - Static page (no dynamic data)
 - Image optimization with Next.js Image component
 - SVG logo/icons for crispness
@@ -155,12 +174,14 @@ export default function PrehomePage() {
 ## Dependencies
 
 ### Frontend
+
 - Next.js 16 (App Router)
 - React 19
 - Tailwind CSS v4
 - TypeScript
 
 ### Future Integration
+
 - Will link to authentication pages/modals (Feature 01-auth)
 - May include contact form (future feature)
 
@@ -169,6 +190,7 @@ export default function PrehomePage() {
 ## Acceptance Criteria
 
 ### Functional
+
 - [ ] Page renders at `/` route
 - [ ] "Ingresar" button navigates to `/login`
 - [ ] "Registrarse" button navigates to `/register`
@@ -177,6 +199,7 @@ export default function PrehomePage() {
 - [ ] Matches Figma design specifications
 
 ### Technical
+
 - [ ] Uses Atomic Design component structure
 - [ ] Components in appropriate directories (atoms/, molecules/, organisms/)
 - [ ] TypeScript types for all props
@@ -186,12 +209,14 @@ export default function PrehomePage() {
 - [ ] Passes ESLint validation
 
 ### Performance
+
 - [ ] Lighthouse score: Performance > 90
 - [ ] First Contentful Paint < 1.5s
 - [ ] Largest Contentful Paint < 2.5s
 - [ ] No layout shifts (CLS = 0)
 
 ### Content
+
 - [ ] All text in Spanish
 - [ ] Correct spelling and grammar
 - [ ] Brand-consistent messaging
@@ -202,12 +227,15 @@ export default function PrehomePage() {
 ## Implementation Plan
 
 ### Phase 1: Component Structure (0.5 day)
+
 **Deliverables**:
+
 - Create atomic components (Button, Logo, Icon, Link)
 - Create molecule components (NavBar, HeroSection, Footer)
 - Export from index files
 
 **Files**:
+
 - `src/atoms/Button.tsx`
 - `src/atoms/Logo.tsx`
 - `src/atoms/Icon.tsx`
@@ -219,12 +247,15 @@ export default function PrehomePage() {
 - `src/molecules/index.ts`
 
 ### Phase 2: Page Layout (0.5 day)
+
 **Deliverables**:
+
 - Create organism components
 - Assemble page layout
 - Implement responsive design
 
 **Files**:
+
 - `src/organisms/PrehomeHeader.tsx`
 - `src/organisms/PrehomeHero.tsx`
 - `src/organisms/PrehomeFooter.tsx`
@@ -232,25 +263,31 @@ export default function PrehomePage() {
 - `app/page.tsx` (update from placeholder)
 
 ### Phase 3: Content & Styling (0.5 day)
+
 **Deliverables**:
+
 - Add actual content (copy from design)
 - Implement Tailwind styling per design
 - Add images/SVG assets (copy logo.svg to public/)
 - Responsive refinements
 
 **Files**:
+
 - `public/logo.svg` (copy from attachments/designs/logo.svg)
 - `public/` (other images as needed)
 - Update component files with content
 
 ### Phase 4: Polish & Testing (0.5 day)
+
 **Deliverables**:
+
 - Accessibility improvements
 - Performance optimization
 - Cross-browser testing
 - Dark mode testing
 
 **Tasks**:
+
 - Run Lighthouse audit
 - Fix accessibility issues
 - Test on mobile devices
@@ -263,6 +300,7 @@ export default function PrehomePage() {
 ## Design Specifications
 
 ### Colors (from Figma)
+
 - **Primary Blue**: `#007FFF` - Main CTAs, links
 - **Navy Blue**: `#1D4E8F` - Headlines, hero background
 - **Text Black**: `#111827` - Body text
@@ -272,12 +310,14 @@ export default function PrehomePage() {
 - **White**: `#FFFFFF` - Cards, backgrounds
 
 ### Typography
+
 - **Font Family**: Ubuntu (Bold, Medium, Regular)
 - Headings: Ubuntu Bold
 - Subheadings: Ubuntu Medium
 - Body: Ubuntu Regular
 
 ### Responsive Breakpoints
+
 ```css
 sm: 640px   /* Small devices */
 md: 768px   /* Tablets */
@@ -287,6 +327,7 @@ xl: 1280px  /* Desktops */
 ```
 
 ### Layout
+
 - Mobile-first approach
 - Max width container: 1280px (xl)
 - Padding: Consistent spacing scale
@@ -297,12 +338,14 @@ xl: 1280px  /* Desktops */
 ## Content Guidelines
 
 ### Tone & Voice
+
 - Professional yet approachable
 - Clear and concise
 - Trust-building
 - Spanish language (Colombia)
 
 ### Required Sections
+
 1. **Header/Navigation**
    - Logo
    - "Ingresar" button
@@ -352,6 +395,7 @@ xl: 1280px  /* Desktops */
 ## Testing Checklist
 
 ### Manual Testing
+
 - [ ] Desktop (Chrome, Firefox, Safari)
 - [ ] Mobile (iOS Safari, Android Chrome)
 - [ ] Tablet (iPad, Android)
@@ -361,6 +405,7 @@ xl: 1280px  /* Desktops */
 - [ ] Screen reader (NVDA/VoiceOver)
 
 ### Automated Testing
+
 - [ ] ESLint passes
 - [ ] TypeScript compilation successful
 - [ ] Build succeeds (`npm run build`)
@@ -372,11 +417,13 @@ xl: 1280px  /* Desktops */
 ## Known Limitations / Future Enhancements
 
 ### Current Scope (MVP)
+
 - Static content only
 - Basic navigation to auth pages
 - No dynamic features
 
 ### Future Enhancements (Out of Scope)
+
 - Marketing content CMS integration
 - Contact form
 - Live chat widget
@@ -397,6 +444,7 @@ xl: 1280px  /* Desktops */
 ## References
 
 See [references.md](./references.md) for:
+
 - Figma design link
 - Design assets
 - External resources
@@ -406,6 +454,7 @@ See [references.md](./references.md) for:
 ## Implementation Notes
 
 ### When Implementing
+
 1. Start with atoms (Button, Logo, etc.)
 2. Build up to molecules (NavBar, HeroSection)
 3. Assemble organisms (PrehomeHeader, etc.)
@@ -413,15 +462,17 @@ See [references.md](./references.md) for:
 5. Test responsiveness at each step
 
 ### Component Export Pattern
+
 ```typescript
 // src/atoms/index.ts
-export { Button } from './Button';
-export { Logo } from './Logo';
-export { Icon } from './Icon';
-export { Link } from './Link';
+export { Button } from "./Button";
+export { Logo } from "./Logo";
+export { Icon } from "./Icon";
+export { Link } from "./Link";
 ```
 
 ### Logo Component Implementation
+
 ```typescript
 // src/atoms/Logo.tsx
 import Image from 'next/image';
@@ -443,6 +494,7 @@ export function Logo({ className }: { className?: string }) {
 **Note**: Copy `logo.svg` from `.claude/knowledge/features/00-prehome/attachments/designs/logo.svg` to `public/logo.svg` for Next.js Image optimization.
 
 ### Usage in Page
+
 ```typescript
 // app/page.tsx
 import { PrehomeHeader, PrehomeHero, PrehomeFooter } from '@/src/organisms';

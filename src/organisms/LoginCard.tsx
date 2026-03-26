@@ -1,5 +1,5 @@
-import { Logo, Link, AppStoreButton, GooglePlayButton } from '@/src/atoms';
-import { LoginForm } from './LoginForm';
+import { Logo, Link, AppStoreButton, GooglePlayButton } from "@/src/atoms";
+import { LoginForm } from "./LoginForm";
 
 export function LoginCard() {
   return (

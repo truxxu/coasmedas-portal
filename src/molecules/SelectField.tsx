@@ -1,5 +1,5 @@
-import { forwardRef, SelectHTMLAttributes } from 'react';
-import { Label, Select, SelectOption, ErrorMessage } from '@/src/atoms';
+import { forwardRef, SelectHTMLAttributes } from "react";
+import { Label, Select, SelectOption, ErrorMessage } from "@/src/atoms";
 
 interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
@@ -10,7 +10,19 @@ interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
-  ({ label, name, options, error, placeholder, required, className = '', ...props }, ref) => {
+  (
+    {
+      label,
+      name,
+      options,
+      error,
+      placeholder,
+      required,
+      className = "",
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <div className={`flex flex-col ${className}`}>
         <Label htmlFor={name} required={required}>
@@ -28,7 +40,7 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
         <ErrorMessage message={error} />
       </div>
     );
-  }
+  },
 );
 
-SelectField.displayName = 'SelectField';
+SelectField.displayName = "SelectField";

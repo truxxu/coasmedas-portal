@@ -7,7 +7,7 @@
  * @see /services/_template.ts for implementation patterns
  */
 
-import { apiPost } from '@/lib/api/client';
+import { apiPost } from "@/lib/api/client";
 import type {
   BalancesRequest,
   BalanceSummary,
@@ -19,7 +19,7 @@ import type {
   InvestmentAccountResponse,
   ContributionsResponse,
   ProtectionAccountResponse,
-} from '@/types/api/products';
+} from "@/types/api/products";
 
 // ─── Balances ───
 
@@ -30,8 +30,10 @@ import type {
  * @auth JWT
  * @status ✅ Used in mobile (dashboard)
  */
-export async function getBalances(params: BalancesRequest): Promise<BalanceSummary[]> {
-  return apiPost<BalanceSummary[]>('/balances', params);
+export async function getBalances(
+  params: BalancesRequest,
+): Promise<BalanceSummary[]> {
+  return apiPost<BalanceSummary[]>("/balances", params);
 }
 
 // ─── Movements ───
@@ -43,8 +45,10 @@ export async function getBalances(params: BalancesRequest): Promise<BalanceSumma
  * @auth JWT
  * @status ✅ Used in mobile (product details)
  */
-export async function getMovements(params: MovementsRequest): Promise<MovementItem[]> {
-  return apiPost<MovementItem[]>('/movements', params);
+export async function getMovements(
+  params: MovementsRequest,
+): Promise<MovementItem[]> {
+  return apiPost<MovementItem[]>("/movements", params);
 }
 
 // ─── Products ───
@@ -56,8 +60,10 @@ export async function getMovements(params: MovementsRequest): Promise<MovementIt
  * @auth JWT
  * @status ✅ Used in mobile (ahorros page)
  */
-export async function getProductsSavings(params: ProductsRequest): Promise<SavingsAccountResponse[]> {
-  return apiPost<SavingsAccountResponse[]>('/products/savings', params);
+export async function getProductsSavings(
+  params: ProductsRequest,
+): Promise<SavingsAccountResponse[]> {
+  return apiPost<SavingsAccountResponse[]>("/products/savings", params);
 }
 
 /**
@@ -67,8 +73,10 @@ export async function getProductsSavings(params: ProductsRequest): Promise<Savin
  * @auth JWT
  * @status ✅ Used in mobile (obligaciones page)
  */
-export async function getProductsCredits(params: ProductsRequest): Promise<CreditAccountResponse[]> {
-  return apiPost<CreditAccountResponse[]>('/products/credits', params);
+export async function getProductsCredits(
+  params: ProductsRequest,
+): Promise<CreditAccountResponse[]> {
+  return apiPost<CreditAccountResponse[]>("/products/credits", params);
 }
 
 /**
@@ -78,8 +86,10 @@ export async function getProductsCredits(params: ProductsRequest): Promise<Credi
  * @auth JWT
  * @status ✅ Used in mobile (inversiones page)
  */
-export async function getProductsInvestments(params: ProductsRequest): Promise<InvestmentAccountResponse[]> {
-  return apiPost<InvestmentAccountResponse[]>('/products/investments', params);
+export async function getProductsInvestments(
+  params: ProductsRequest,
+): Promise<InvestmentAccountResponse[]> {
+  return apiPost<InvestmentAccountResponse[]>("/products/investments", params);
 }
 
 /**
@@ -90,8 +100,10 @@ export async function getProductsInvestments(params: ProductsRequest): Promise<I
  * @auth JWT
  * @status ✅ Used in mobile (aportes page)
  */
-export async function getProductsContributions(params: ProductsRequest): Promise<ContributionsResponse> {
-  return apiPost<ContributionsResponse>('/products/contributions', params);
+export async function getProductsContributions(
+  params: ProductsRequest,
+): Promise<ContributionsResponse> {
+  return apiPost<ContributionsResponse>("/products/contributions", params);
 }
 
 /**
@@ -101,6 +113,8 @@ export async function getProductsContributions(params: ProductsRequest): Promise
  * @auth JWT
  * @status ✅ Used in mobile (proteccion page)
  */
-export async function getProductsProtection(params: ProductsRequest): Promise<ProtectionAccountResponse[]> {
-  return apiPost<ProtectionAccountResponse[]>('/products/protection', params);
+export async function getProductsProtection(
+  params: ProductsRequest,
+): Promise<ProtectionAccountResponse[]> {
+  return apiPost<ProtectionAccountResponse[]>("/products/protection", params);
 }

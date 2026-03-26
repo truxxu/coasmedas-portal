@@ -9,7 +9,7 @@ export interface Step {
 /**
  * Step status
  */
-export type StepStatus = 'pending' | 'active' | 'completed';
+export type StepStatus = "pending" | "active" | "completed";
 
 /**
  * Stepper props

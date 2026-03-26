@@ -72,12 +72,16 @@ export function LoginForm() {
       ]);
 
       if (!saltResult.success || !saltResult.data) {
-        setError(saltResult.error || "Error al obtener información de seguridad");
+        setError(
+          saltResult.error || "Error al obtener información de seguridad",
+        );
         return;
       }
 
       if (!otpResult.success || !otpResult.data) {
-        setError(otpResult.error || "Error al enviar el código de verificación");
+        setError(
+          otpResult.error || "Error al enviar el código de verificación",
+        );
         return;
       }
 
@@ -224,7 +228,10 @@ export function LoginForm() {
 
   // ── Credentials Step ──
   return (
-    <form onSubmit={handleSubmit(onCredentialsSubmit)} className="flex flex-col gap-5">
+    <form
+      onSubmit={handleSubmit(onCredentialsSubmit)}
+      className="flex flex-col gap-5"
+    >
       {/* Required fields note */}
       <p className="text-xs text-gray-600">* Campos obligatorios</p>
 

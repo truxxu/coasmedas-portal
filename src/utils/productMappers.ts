@@ -9,7 +9,7 @@ import type {
   ProtectionAccountResponse,
 } from "@/types/api/products";
 import type { Transaction, TransactionType } from "@/src/types/transaction";
-import type { SavingsProduct } from "@/src/types/savings";
+import type { SavingsProduct, SavingsStatus } from "@/src/types/savings";
 import type {
   ObligacionProduct,
   ObligacionStatus,
@@ -62,7 +62,8 @@ export function mapMovementToTransaction(
 ): Transaction {
   const amount = normalizeMoney(item.valorTransaccion);
   const tipo = item.tipoTransaccion.toUpperCase();
-  const type: TransactionType = tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
+  const type: TransactionType =
+    tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
   const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
 
   const date = parseApiDate(item.fechaTransaccion);
@@ -70,7 +71,7 @@ export function mapMovementToTransaction(
 
   return {
     id: item.referencia || String(index + 1),
-    description: item.descripcion.replace(/_+$/, '').trim(),
+    description: item.descripcion.replace(/_+$/, "").trim(),
     date: time ? `${date} ${time}` : date,
     amount: signedAmount,
     type,
@@ -78,10 +79,23 @@ export function mapMovementToTransaction(
 }
 
 export function mapMovements(items: MovementItem[]): Transaction[] {
-  return items.map(mapMovementToTransaction).sort((a, b) => b.date.localeCompare(a.date));
+  return items
+    .map(mapMovementToTransaction)
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 // ─── Savings ───
+
+function mapSavingsStatus(estado?: string): SavingsStatus {
+  switch (estado?.toUpperCase()) {
+    case "BLOQUEADA":
+      return "bloqueado";
+    case "INACTIVA":
+      return "inactivo";
+    default:
+      return "activo";
+  }
+}
 
 export function mapSavingsResponse(
   item: SavingsAccountResponse,
@@ -91,8 +105,8 @@ export function mapSavingsResponse(
     title: item.nombreProducto,
     accountType: item.nombreProducto,
     productNumber: item.numeroCuenta,
-    balance: normalizeMoney(item.saldoDisponible),
-    status: "activo",
+    balance: normalizeMoney(item.saldoTotal),
+    status: mapSavingsStatus(item.estado),
   };
 }
 
@@ -188,7 +202,7 @@ export function mapContributionsResponse(
   };
 }
 
-// ─── Protection / Proteccion ───
+// ─── Protection / Protección ───
 
 export function mapProtectionResponse(
   item: ProtectionAccountResponse,

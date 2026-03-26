@@ -13,6 +13,7 @@ The Transferencias (Transfers) feature enables users to move money between their
 ### Sidebar Navigation Structure
 
 When "Transferencias" is clicked in the sidebar, an accordion expands showing:
+
 - **Internas** (Internal transfers)
 - Inscribir cuentas (Register accounts)
 - A otros bancos (To other banks)
@@ -22,6 +23,7 @@ When "Transferencias" is clicked in the sidebar, an accordion expands showing:
 ### Internas Sub-flows
 
 The "Internas" category contains 4 different flows:
+
 1. **Entre mis cuentas** - Transfer between user's own accounts (THIS DOCUMENT)
 2. A cuentas de mi red - Transfer to previously registered associate accounts
 3. Desde cupos rotativos - Transfer from credit lines to accounts
@@ -31,13 +33,13 @@ The "Internas" category contains 4 different flows:
 
 ## Figma References
 
-| Screen | Figma URL | Node ID |
-|--------|-----------|---------|
-| Flow Selection | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=772-1203) | `772:1203` |
-| Step 1: Details | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-2) | `789:2` |
-| Step 2: Confirmation | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-222) | `789:222` |
-| Step 3: SMS Code | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-333) | `789:333` |
-| Step 4: Response | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-441) | `789:441` |
+| Screen               | Figma URL                                                                                  | Node ID    |
+| -------------------- | ------------------------------------------------------------------------------------------ | ---------- |
+| Flow Selection       | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=772-1203) | `772:1203` |
+| Step 1: Details      | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-2)    | `789:2`    |
+| Step 2: Confirmation | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-222)  | `789:222`  |
+| Step 3: SMS Code     | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-333)  | `789:333`  |
+| Step 4: Response     | [Link](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=789-441)  | `789:441`  |
 
 ---
 
@@ -46,18 +48,21 @@ The "Internas" category contains 4 different flows:
 **Route**: `/transferencias/internas`
 
 ### Layout
+
 - Standard authenticated layout with Sidebar and TopBar
 - Page title: "Internas" with back button (arrow left)
 - Breadcrumbs: `Inicio / Transferencias / Internas`
 - Hide balances toggle in top right
 
 ### Content Card
+
 - Background: White (`#FFFFFF`)
 - Border radius: `16px`
 - Padding: `24px`
 - Shadow: Standard card shadow
 
 ### Header Section
+
 - Title: "Transferencias Internas"
   - Font: Ubuntu Bold, 21px
   - Color: `#1D4E8F` (Primary Navy)
@@ -68,6 +73,7 @@ The "Internas" category contains 4 different flows:
 ### Flow Option Cards (2x2 Grid)
 
 Each option card:
+
 - Border: `1px dashed #B1B1B1`
 - Border radius: `8px`
 - Padding: `20px`
@@ -75,6 +81,7 @@ Each option card:
 - Layout: Centered text
 
 #### Card 1: Entre mis cuentas
+
 - Title: "Entre mis cuentas"
   - Font: Ubuntu Medium, 20px
   - Color: `#1D4E8F`
@@ -83,6 +90,7 @@ Each option card:
   - Color: `#000000`
 
 #### Card 2: A cuentas de mi red
+
 - Title: "A cuentas de mi red"
   - Font: Ubuntu Medium, 20px
   - Color: `#1D4E8F`
@@ -91,6 +99,7 @@ Each option card:
   - Color: `#000000`
 
 #### Card 3: Desde cupos rotativos
+
 - Title: "Desde cupos rotativos"
   - Font: Ubuntu Medium, 20px
   - Color: `#1D4E8F`
@@ -99,6 +108,7 @@ Each option card:
   - Color: `#000000`
 
 #### Card 4: Recargar con PSE
+
 - Title: "Recargar con PSE"
   - Font: Ubuntu Medium, 20px
   - Color: `#1D4E8F`
@@ -113,6 +123,7 @@ Each option card:
 **Route**: `/transferencias/internas/entre-mis-cuentas`
 
 ### Page Header
+
 - Back button (arrow left icon)
 - Title: "Entre mis Cuentas"
   - Font: Ubuntu Medium, 20px
@@ -122,11 +133,13 @@ Each option card:
 ### Stepper Component (4 Steps)
 
 Horizontal stepper positioned below breadcrumbs:
+
 - Background: White with shadow
 - Height: `76px`
 - Steps connected by lines
 
 #### Step States
+
 - **Active/Completed**:
   - Circle: `40px` diameter, background `#007FFF`
   - Number: Ubuntu Bold, 16px, White
@@ -140,22 +153,26 @@ Horizontal stepper positioned below breadcrumbs:
   - Connecting line: `#E4E6EA`, 4px height
 
 #### Step Labels
+
 1. "Detalle" (Detail)
 2. "Confirmación" (Confirmation)
 3. "SMS"
 4. "Finalización" (Completion)
 
 ### Form Card
+
 - Background: White (`#FFFFFF`)
 - Border radius: `16px`
 - Padding: `24px`
 
 #### Card Title
+
 - Text: "Transferencias entre mis productos"
 - Font: Ubuntu Bold, 18px
 - Color: `#1D4E8F`
 
 #### Card Description
+
 - Text: "Mueve dinero entre tus cuentas de ahorro, bolsillos, inversiones y más."
 - Font: Ubuntu Regular, 15px
 - Color: `#000000`
@@ -163,6 +180,7 @@ Horizontal stepper positioned below breadcrumbs:
 ### Form Fields
 
 #### Field 1: Source Account
+
 - Label: "¿De cuál cuenta quieres transferir?"
   - Font: Ubuntu Regular, 15px
   - Color: `#000000`
@@ -170,10 +188,11 @@ Horizontal stepper positioned below breadcrumbs:
   - Border: `1px solid #B1B1B1`
   - Border radius: `6px`
   - Height: `44px`
-  - Placeholder example: "Cuenta de Ahorros (***4428) - Saldo: $ 8.730.500"
+  - Placeholder example: "Cuenta de Ahorros (\*\*\*4428) - Saldo: $ 8.730.500"
   - Chevron icon on right
 
 #### Field 2: Destination Product
+
 - Label: "¿A qué producto quieres abonar?"
   - Font: Ubuntu Regular, 15px
   - Color: `#000000`
@@ -181,10 +200,11 @@ Horizontal stepper positioned below breadcrumbs:
   - Border: `1px solid #B1B1B1`
   - Border radius: `6px`
   - Height: `44px`
-  - Placeholder example: "Ahorro Programado (***1234)"
+  - Placeholder example: "Ahorro Programado (\*\*\*1234)"
   - Chevron icon on right
 
 #### Field 3: Amount
+
 - Label: "¿Qué valor deseas transferir?"
   - Font: Ubuntu Regular, 15px
   - Color: `#000000`
@@ -197,12 +217,14 @@ Horizontal stepper positioned below breadcrumbs:
 ### Action Buttons
 
 #### Back Link
+
 - Text: "Volver"
 - Font: Ubuntu Medium, 14px
 - Color: `#004266`
 - Position: Bottom left
 
 #### Confirm Button
+
 - Text: "Confirmar"
 - Font: Ubuntu Bold, 14px
 - Background: `#A6C4FF` (disabled state) / `#007FFF` (enabled)
@@ -219,19 +241,23 @@ Horizontal stepper positioned below breadcrumbs:
 **Route**: `/transferencias/internas/entre-mis-cuentas/confirmacion`
 
 ### Page Header
+
 Same as Step 1 with stepper showing Step 2 active
 
 ### Confirmation Card
+
 - Background: White (`#FFFFFF`)
 - Border radius: `16px`
 - Padding: `24px`
 
 #### Card Title
+
 - Text: "Confirmación de Pago"
 - Font: Ubuntu Bold, 18px
 - Color: `#004266`
 
 #### Card Description
+
 - Text: "Por favor, verifica que los datos de la transacción sean correctos antes de continuar."
 - Font: Ubuntu Regular, 15px
 - Color: `#000000`
@@ -240,37 +266,42 @@ Same as Step 1 with stepper showing Step 2 active
 
 Two-column layout with labels on left, values on right:
 
-| Label | Value Style |
-|-------|-------------|
+| Label               | Value Style                    |
+| ------------------- | ------------------------------ |
 | Nombre del Titular: | Ubuntu Medium, 15px, `#000000` |
-| Documento Titular: | Ubuntu Medium, 15px, `#000000` |
-| Cuenta Origen: | Ubuntu Medium, 15px, `#000000` |
-| Cuenta Destino: | Ubuntu Medium, 15px, `#000000` |
+| Documento Titular:  | Ubuntu Medium, 15px, `#000000` |
+| Cuenta Origen:      | Ubuntu Medium, 15px, `#000000` |
+| Cuenta Destino:     | Ubuntu Medium, 15px, `#000000` |
 | Valor a Transferir: | Ubuntu Medium, 18px, `#000000` |
 
 Labels:
+
 - Font: Ubuntu Regular, 15px
 - Color: `#000000`
 
 Divider lines:
+
 - Color: `#E4E6EA`
 - Between sections (after Documento, after Cuenta Destino)
 
 #### Example Values
+
 - Nombre del Titular: "CAMILO ANDRÉS CRUZ"
 - Documento Titular: "CC 1.***.***234"
-- Cuenta Origen: "Cuenta de Ahorros (***4428)"
-- Cuenta Destino: "Ahorro Programado (***1234)"
+- Cuenta Origen: "Cuenta de Ahorros (\*\*\*4428)"
+- Cuenta Destino: "Ahorro Programado (\*\*\*1234)"
 - Valor a Transferir: "$ 50.000"
 
 ### Action Buttons
 
 #### Back Link
+
 - Text: "Volver"
 - Font: Ubuntu Medium, 14px
 - Color: `#004266`
 
 #### Confirm Button
+
 - Text: "Confirmar Pago"
 - Font: Ubuntu Bold, 14px
 - Background: Gradient `#007FFF` to `#007FFF`
@@ -286,31 +317,37 @@ Divider lines:
 **Route**: `/transferencias/internas/entre-mis-cuentas/sms`
 
 ### Page Header
+
 Same as previous steps with stepper showing Step 3 active
 
 ### SMS Verification Card
+
 - Background: White (`#FFFFFF`)
 - Border radius: `16px`
 - Padding: `24px`
 - Centered content
 
 #### Card Title
+
 - Text: "Código Enviado a tu Teléfono"
 - Font: Ubuntu Bold, 17px
 - Color: `#1D4E8F`
 - Text align: Center
 
 #### Card Description
+
 - Text: "Ingresa la clave de 6 dígitos enviada a tu dispositivo para autorizar la transacción"
 - Font: Ubuntu Regular, 15px
 - Color: `#000000`
 - Text align: Center
 
 ### OTP Input
+
 - 6 individual digit input boxes (not shown in detail, implied by description)
 - Centered layout
 
 ### Resend Code Section
+
 - Text: "¿No recibiste la clave?"
   - Font: Ubuntu Regular, 15px
   - Color: `#000000`
@@ -322,11 +359,13 @@ Same as previous steps with stepper showing Step 3 active
 ### Action Buttons
 
 #### Back Link
+
 - Text: "Volver"
 - Font: Ubuntu Medium, 14px
 - Color: `#004266`
 
 #### Submit Button
+
 - Text: "Pagar"
 - Font: Ubuntu Bold, 14px
 - Background: `#007FFF`
@@ -342,14 +381,17 @@ Same as previous steps with stepper showing Step 3 active
 **Route**: `/transferencias/internas/entre-mis-cuentas/resultado`
 
 ### Page Header
+
 Same as previous steps with stepper showing all 4 steps completed (all blue)
 
 ### Result Card
+
 - Background: White (`#FFFFFF`)
 - Border radius: `16px`
 - Padding: `24px`
 
 ### Success Icon
+
 - Large checkmark in circle
 - Circle: Border `#00AFA9` (Teal)
 - Checkmark: `#00AFA9` (Teal)
@@ -357,6 +399,7 @@ Same as previous steps with stepper showing all 4 steps completed (all blue)
 - Centered at top
 
 ### Success Title
+
 - Text: "Transacción Exitosa"
 - Font: Ubuntu Bold, 22px
 - Color: `#1D4E8F`
@@ -367,30 +410,34 @@ Same as previous steps with stepper showing all 4 steps completed (all blue)
 Two-column layout with divider lines:
 
 #### Section 1: Account Info
-| Label | Value |
-|-------|-------|
-| Línea crédito: | Cuenta de Ahorros |
+
+| Label               | Value             |
+| ------------------- | ----------------- |
+| Línea crédito:      | Cuenta de Ahorros |
 | Número de producto: | Ahorro Programado |
 
 #### Section 2: Amount Info
-| Label | Value |
-|-------|-------|
-| Valor pagado: | $ 50.000 |
-| Costo transacción: | $ 0 |
+
+| Label              | Value    |
+| ------------------ | -------- |
+| Valor pagado:      | $ 50.000 |
+| Costo transacción: | $ 0      |
 
 Divider: `#E4E6EA`
 
 #### Section 3: Transaction Details
-| Label | Value |
-|-------|-------|
-| Fecha de Transmisión: | 1 de septiembre de 2025 |
-| Hora de Transacción: | 7:21 pm |
-| Número de Aprobación: | 950606 |
-| Descripción: | Transferencia Exitosa (green `#00A44C`) |
+
+| Label                 | Value                                   |
+| --------------------- | --------------------------------------- |
+| Fecha de Transmisión: | 1 de septiembre de 2025                 |
+| Hora de Transacción:  | 7:21 pm                                 |
+| Número de Aprobación: | 950606                                  |
+| Descripción:          | Transferencia Exitosa (green `#00A44C`) |
 
 ### Action Buttons (3 buttons)
 
 #### Print/Save Button (Secondary)
+
 - Text: "Imprimir/Guardar"
 - Font: Ubuntu Bold, 16px
 - Background: White
@@ -401,6 +448,7 @@ Divider: `#E4E6EA`
 - Shadow: `0px 2px 4px rgba(0,0,0,0.1)`
 
 #### New Transaction Button (Secondary)
+
 - Text: "Realizar otra transacción"
 - Font: Ubuntu Bold, 16px
 - Background: White
@@ -411,6 +459,7 @@ Divider: `#E4E6EA`
 - Shadow: `0px 2px 4px rgba(0,0,0,0.1)`
 
 #### Finish Button (Primary)
+
 - Text: "Finalizar"
 - Font: Ubuntu Bold, 14px
 - Background: `#007FFF`
@@ -438,17 +487,19 @@ interface StepperProps {
 ```
 
 #### Step States
+
 - `completed`: Blue circle, white number, blue connecting line
 - `active`: Blue circle, white number
 - `pending`: Gray circle, gray number, gray connecting line
 
 #### Default Steps for Transfers
+
 ```typescript
 const transferSteps = [
-  { number: 1, label: 'Detalle' },
-  { number: 2, label: 'Confirmación' },
-  { number: 3, label: 'SMS' },
-  { number: 4, label: 'Finalización' },
+  { number: 1, label: "Detalle" },
+  { number: 2, label: "Confirmación" },
+  { number: 3, label: "SMS" },
+  { number: 4, label: "Finalización" },
 ];
 ```
 
@@ -465,6 +516,7 @@ interface FlowOptionCardProps {
 ```
 
 #### Styling
+
 - Border: `1px dashed #B1B1B1`
 - Border radius: `8px`
 - Padding: `20px`
@@ -503,7 +555,7 @@ Success/Error result display:
 
 ```typescript
 interface TransactionResultProps {
-  status: 'success' | 'error';
+  status: "success" | "error";
   title: string;
   details: {
     sourceType: string;
@@ -528,6 +580,7 @@ interface TransactionResultProps {
 ### Page Header Pattern
 
 All transfer pages use consistent header:
+
 - Back button (arrow left)
 - Page title (Ubuntu Medium, 20px)
 - Breadcrumbs below
@@ -536,6 +589,7 @@ All transfer pages use consistent header:
 ### Card Container Pattern
 
 All content cards use:
+
 - Background: White
 - Border radius: `16px`
 - Padding: `24px`
@@ -544,6 +598,7 @@ All content cards use:
 ### Button Layout Pattern
 
 Footer actions:
+
 - "Volver" link on bottom left
 - Primary action button on bottom right
 - Multiple buttons: Right-aligned with gap
@@ -552,53 +607,54 @@ Footer actions:
 
 ## Colors Used
 
-| Usage | Color | Hex |
-|-------|-------|-----|
-| Primary Navy | Titles, buttons | `#1D4E8F` |
-| Primary Blue | Active steps, buttons | `#007FFF` |
-| Disabled Button | Confirm disabled | `#A6C4FF` |
-| Link Text | Volver link | `#004266` |
-| Success Green | Checkmark, status | `#00A44C` / `#00AFA9` |
-| Gray Text | Step labels | `#6B7280` / `#808284` |
-| Gray Lines | Dividers, step lines | `#E4E6EA` |
-| Border Gray | Input borders | `#B1B1B1` |
-| Black | Body text | `#000000` |
-| White | Backgrounds | `#FFFFFF` |
+| Usage           | Color                 | Hex                   |
+| --------------- | --------------------- | --------------------- |
+| Primary Navy    | Titles, buttons       | `#1D4E8F`             |
+| Primary Blue    | Active steps, buttons | `#007FFF`             |
+| Disabled Button | Confirm disabled      | `#A6C4FF`             |
+| Link Text       | Volver link           | `#004266`             |
+| Success Green   | Checkmark, status     | `#00A44C` / `#00AFA9` |
+| Gray Text       | Step labels           | `#6B7280` / `#808284` |
+| Gray Lines      | Dividers, step lines  | `#E4E6EA`             |
+| Border Gray     | Input borders         | `#B1B1B1`             |
+| Black           | Body text             | `#000000`             |
+| White           | Backgrounds           | `#FFFFFF`             |
 
 ---
 
 ## Typography Summary
 
-| Element | Font | Size | Weight |
-|---------|------|------|--------|
-| Page Title | Ubuntu | 20px | Medium |
-| Card Title | Ubuntu | 18-21px | Bold |
-| Card Description | Ubuntu | 15px | Regular |
-| Form Labels | Ubuntu | 15px | Regular |
-| Form Values | Ubuntu | 15px-18px | Medium |
-| Step Labels | Ubuntu | 12px | Regular |
-| Step Numbers | Ubuntu | 16px | Bold |
-| Button Text | Ubuntu | 14-16px | Bold |
-| Link Text | Ubuntu | 14px | Medium |
-| Breadcrumbs | Ubuntu | 15px | Regular/Medium |
+| Element          | Font   | Size      | Weight         |
+| ---------------- | ------ | --------- | -------------- |
+| Page Title       | Ubuntu | 20px      | Medium         |
+| Card Title       | Ubuntu | 18-21px   | Bold           |
+| Card Description | Ubuntu | 15px      | Regular        |
+| Form Labels      | Ubuntu | 15px      | Regular        |
+| Form Values      | Ubuntu | 15px-18px | Medium         |
+| Step Labels      | Ubuntu | 12px      | Regular        |
+| Step Numbers     | Ubuntu | 16px      | Bold           |
+| Button Text      | Ubuntu | 14-16px   | Bold           |
+| Link Text        | Ubuntu | 14px      | Medium         |
+| Breadcrumbs      | Ubuntu | 15px      | Regular/Medium |
 
 ---
 
 ## Routes Summary
 
-| Route | Description |
-|-------|-------------|
-| `/transferencias/internas` | Flow selection page |
-| `/transferencias/internas/entre-mis-cuentas` | Step 1: Details form |
-| `/transferencias/internas/entre-mis-cuentas/confirmacion` | Step 2: Confirmation |
-| `/transferencias/internas/entre-mis-cuentas/sms` | Step 3: SMS verification |
-| `/transferencias/internas/entre-mis-cuentas/resultado` | Step 4: Result |
+| Route                                                     | Description              |
+| --------------------------------------------------------- | ------------------------ |
+| `/transferencias/internas`                                | Flow selection page      |
+| `/transferencias/internas/entre-mis-cuentas`              | Step 1: Details form     |
+| `/transferencias/internas/entre-mis-cuentas/confirmacion` | Step 2: Confirmation     |
+| `/transferencias/internas/entre-mis-cuentas/sms`          | Step 3: SMS verification |
+| `/transferencias/internas/entre-mis-cuentas/resultado`    | Step 4: Result           |
 
 ---
 
 ## State Management Considerations
 
 ### Transfer Form State
+
 ```typescript
 interface TransferFormState {
   sourceAccountId: string;
@@ -608,6 +664,7 @@ interface TransferFormState {
 ```
 
 ### Transfer Flow State
+
 ```typescript
 interface TransferFlowState {
   currentStep: 1 | 2 | 3 | 4;
@@ -623,11 +680,13 @@ interface TransferFlowState {
 ## Validation Rules
 
 ### Amount Field
+
 - Must be greater than 0
 - Must not exceed source account balance
 - Format: Colombian peso format ($ X.XXX.XXX)
 
 ### SMS Code
+
 - Must be exactly 6 digits
 - Must be numeric only
 - Resend available after timeout

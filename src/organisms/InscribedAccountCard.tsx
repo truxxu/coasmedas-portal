@@ -26,7 +26,9 @@ export function InscribedAccountCard({
         <p className="text-sm text-brand-gray-high">
           {accountTypeLabel} - {account.accountNumberMasked}
         </p>
-        <p className="text-sm text-brand-text-black uppercase">{account.holderName}</p>
+        <p className="text-sm text-brand-text-black uppercase">
+          {account.holderName}
+        </p>
       </div>
 
       {/* Right side: Action buttons */}

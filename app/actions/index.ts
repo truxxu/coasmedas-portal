@@ -6,6 +6,6 @@ export {
   validateUserAction,
   registerAction,
   updatePasswordAction,
-} from './auth';
+} from "./auth";
 
-export { getSessionAction } from './session';
+export { getSessionAction } from "./session";

@@ -85,25 +85,41 @@ export function AccountRegistrationForm({
     onSubmit(data);
   };
 
-  const bankOptions = useMemo(() => banks.map((bank) => ({
-    value: bank.value,
-    label: bank.label,
-  })), [banks]);
+  const bankOptions = useMemo(
+    () =>
+      banks.map((bank) => ({
+        value: bank.value,
+        label: bank.label,
+      })),
+    [banks],
+  );
 
-  const cooperativaOptions = useMemo(() => cooperativas.map((coop) => ({
-    value: coop.value,
-    label: coop.label,
-  })), [cooperativas]);
+  const cooperativaOptions = useMemo(
+    () =>
+      cooperativas.map((coop) => ({
+        value: coop.value,
+        label: coop.label,
+      })),
+    [cooperativas],
+  );
 
-  const documentTypeOptions = useMemo(() => documentTypes.map((doc) => ({
-    value: doc.value,
-    label: doc.label,
-  })), [documentTypes]);
+  const documentTypeOptions = useMemo(
+    () =>
+      documentTypes.map((doc) => ({
+        value: doc.value,
+        label: doc.label,
+      })),
+    [documentTypes],
+  );
 
-  const accountTypeOptions = useMemo(() => accountTypes.map((acc) => ({
-    value: acc.value,
-    label: acc.label,
-  })), [accountTypes]);
+  const accountTypeOptions = useMemo(
+    () =>
+      accountTypes.map((acc) => ({
+        value: acc.value,
+        label: acc.label,
+      })),
+    [accountTypes],
+  );
 
   return (
     <Card className="p-6 md:p-8">

@@ -11,7 +11,7 @@ export default function UtilityPaymentPSEPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const [isPSEMethodValid] = useState(() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
     const detailsData = sessionStorage.getItem("utilityPaymentDetails");
     if (detailsData) {
       const details = JSON.parse(detailsData);
@@ -40,7 +40,7 @@ export default function UtilityPaymentPSEPage() {
 
   const handleBeforeRedirect = () => {
     const confirmationStr = sessionStorage.getItem(
-      "utilityPaymentConfirmation"
+      "utilityPaymentConfirmation",
     );
     if (confirmationStr) {
       const confirmation = JSON.parse(confirmationStr);
@@ -52,7 +52,7 @@ export default function UtilityPaymentPSEPage() {
     } else {
       sessionStorage.setItem(
         "utilityPaymentResult",
-        JSON.stringify(mockUtilityPaymentResult)
+        JSON.stringify(mockUtilityPaymentResult),
       );
     }
   };

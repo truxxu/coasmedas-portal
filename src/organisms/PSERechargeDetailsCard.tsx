@@ -35,9 +35,7 @@ export function PSERechargeDetailsCard({
     onAmountChange(value);
   };
 
-  const formattedAmount = amount
-    ? Number(amount).toLocaleString("es-CO")
-    : "0";
+  const formattedAmount = amount ? Number(amount).toLocaleString("es-CO") : "0";
 
   return (
     <Card className="space-y-6 p-8">
@@ -46,7 +44,8 @@ export function PSERechargeDetailsCard({
           Recargar mis cuentas con PSE
         </h2>
         <p className="text-[15px] text-brand-text-black">
-          Trae dinero desde cualquier otra entidad financiera de forma facil y segura.
+          Trae dinero desde cualquier otra entidad financiera de forma facil y
+          segura.
         </p>
       </div>
 
@@ -99,9 +98,7 @@ export function PSERechargeDetailsCard({
         </div>
       </div>
 
-      {error && (
-        <p className="text-sm text-brand-error text-center">{error}</p>
-      )}
+      {error && <p className="text-sm text-brand-error text-center">{error}</p>}
     </Card>
   );
 }

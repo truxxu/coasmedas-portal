@@ -7,10 +7,6 @@ export {
   clearAuthCookie,
   AUTH_TOKEN_KEY,
   AUTH_TOKEN_MAX_AGE,
-} from './tokens';
+} from "./tokens";
 
-export {
-  hasSession,
-  parseTokenClaims,
-  isTokenExpired,
-} from './session';
+export { hasSession, parseTokenClaims, isTokenExpired } from "./session";

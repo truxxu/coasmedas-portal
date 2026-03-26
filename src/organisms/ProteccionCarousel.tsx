@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { CarouselArrow, CarouselDots } from '@/src/atoms';
-import { ProteccionProductCard } from '@/src/molecules';
-import { ProteccionProduct } from '@/src/types';
-import { calculateTotalPages, getVisibleItems } from '@/src/utils';
+import { useRef, useState, useEffect, useCallback } from "react";
+import { CarouselArrow, CarouselDots } from "@/src/atoms";
+import { ProteccionProductCard } from "@/src/molecules";
+import { ProteccionProduct } from "@/src/types";
+import { calculateTotalPages, getVisibleItems } from "@/src/utils";
 
 const SCROLLBAR_HIDE_STYLE: React.CSSProperties = {
-  scrollbarWidth: 'none',
-  msOverflowStyle: 'none',
+  scrollbarWidth: "none",
+  msOverflowStyle: "none",
 };
 
 interface ProteccionCarouselProps {
@@ -24,7 +24,7 @@ export function ProteccionCarousel({
   products,
   selectedProductId,
   onProductSelect,
-  className = '',
+  className = "",
 }: ProteccionCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -44,8 +44,8 @@ export function ProteccionCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener('resize', updateVisibleItems, { passive: true });
-    return () => window.removeEventListener('resize', updateVisibleItems);
+    window.addEventListener("resize", updateVisibleItems, { passive: true });
+    return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
   // Update scroll state
@@ -66,10 +66,10 @@ export function ProteccionCarousel({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('scroll', updateScrollState, { passive: true });
+    container.addEventListener("scroll", updateScrollState, { passive: true });
     updateScrollState();
 
-    return () => container.removeEventListener('scroll', updateScrollState);
+    return () => container.removeEventListener("scroll", updateScrollState);
   }, [updateScrollState]);
 
   // Scroll handlers
@@ -79,7 +79,7 @@ export function ProteccionCarousel({
     const gap = 20; // gap-5 = 20px
     containerRef.current.scrollTo({
       left: page * (cardWidth + gap),
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -94,6 +94,19 @@ export function ProteccionCarousel({
       scrollToPage(currentPage + 1);
     }
   };
+
+  if (products.length === 0) {
+    return (
+      <div className={`bg-white rounded-2xl p-6 ${className}`}>
+        <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
+          {title}
+        </h2>
+        <p className="text-[#58585B] text-center py-8">
+          No hay productos disponibles en esta categoria.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className={`bg-white rounded-2xl p-6 ${className}`}>

@@ -22,6 +22,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 ## Page Structure
 
 ### Route
+
 - **Path**: `/pagos/pagar-mis-productos`
 - **Route Group**: `app/(authenticated)/pagos/pagar-mis-productos/page.tsx`
 - **Layout**: Uses authenticated layout with Sidebar and TopBar
@@ -48,12 +49,14 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 ### Page Header
 
 #### Back Button
+
 - **Component**: `BackButton` (existing atom)
 - **Position**: Top left of content area
 - **Icon**: Left-pointing arrow
 - **Color**: `#111827` (Text Black)
 
 #### Page Title
+
 - **Text**: "Pagar mis productos"
 - **Font**: Ubuntu Medium
 - **Size**: `20px` / `1.25rem`
@@ -61,6 +64,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Position**: Next to back button
 
 #### Breadcrumbs
+
 - **Component**: `Breadcrumbs` (existing molecule)
 - **Pattern**: Inicio / Pagos / Pagar mis productos
 - **Font**: Ubuntu Regular
@@ -71,6 +75,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Separator**: Forward slash `/`
 
 #### Hide Balances Toggle
+
 - **Component**: `HideBalancesToggle` (existing molecule)
 - **Position**: Top right corner
 - **Label**: "Ocultar saldos"
@@ -82,6 +87,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 ### Main Content Section
 
 #### Section Heading
+
 - **Title**: "Pago mis productos"
 - **Font**: Ubuntu Bold
 - **Size**: `21px` / `1.3125rem`
@@ -89,6 +95,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Margin Bottom**: `12px` / `0.75rem`
 
 #### Section Description
+
 - **Text**: "¿Qué producto deseas pagar hoy?"
 - **Font**: Ubuntu Regular
 - **Size**: `15px` / `0.9375rem`
@@ -100,6 +107,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 ### Payment Option Cards
 
 #### Grid Layout
+
 - **Structure**: 2x2 grid (2 columns, 2 rows)
 - **Gap**: `24px` / `1.5rem` (between cards)
 - **Responsive**: Stack vertically on mobile (1 column)
@@ -112,6 +120,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 **Type**: Featured/Primary card
 
 **Visual Design**:
+
 - **Background**: `#1D4E8F` (Primary Navy) - solid color
 - **Border**: None
 - **Border Radius**: `16px` / `1rem` (rounded-2xl)
@@ -120,6 +129,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Cursor**: `pointer`
 
 **Content**:
+
 - **Title**: "Pago Unificado"
   - Font: Ubuntu Medium
   - Size: `20px` / `1.25rem`
@@ -134,11 +144,13 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
   - Max Lines: 3
 
 **Hover State**:
+
 - Slight shadow increase
 - Subtle scale transform: `scale(1.02)`
 - Transition: `all 300ms ease`
 
 **Active State**:
+
 - Darker background shade
 - Shadow decrease
 
@@ -150,6 +162,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 **Type**: Standard card
 
 **Visual Design**:
+
 - **Background**: `#FFFFFF` (White)
 - **Border**: `1px solid #E4E6EA`
 - **Border Radius**: `16px` / `1rem` (rounded-2xl)
@@ -158,6 +171,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Cursor**: `pointer`
 
 **Content**:
+
 - **Title**: "Aportes"
   - Font: Ubuntu Medium
   - Size: `20px` / `1.25rem`
@@ -171,12 +185,14 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
   - Line Height: `1.5`
 
 **Hover State**:
+
 - Border color: `#1D4E8F`
 - Background: `#F0F9FF` (Light Blue)
 - Slight shadow increase
 - Transition: `all 300ms ease`
 
 **Active State**:
+
 - Border color: `#007FFF`
 - Background: `#E3F2FD`
 
@@ -188,6 +204,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 **Type**: Standard card
 
 **Visual Design**:
+
 - **Background**: `#FFFFFF` (White)
 - **Border**: `1px solid #E4E6EA`
 - **Border Radius**: `16px` / `1rem` (rounded-2xl)
@@ -196,6 +213,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Cursor**: `pointer`
 
 **Content**:
+
 - **Title**: "Obligaciones"
   - Font: Ubuntu Medium
   - Size: `20px` / `1.25rem`
@@ -209,12 +227,14 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
   - Line Height: `1.5`
 
 **Hover State**:
+
 - Border color: `#1D4E8F`
 - Background: `#F0F9FF` (Light Blue)
 - Slight shadow increase
 - Transition: `all 300ms ease`
 
 **Active State**:
+
 - Border color: `#007FFF`
 - Background: `#E3F2FD`
 
@@ -226,6 +246,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 **Type**: Standard card
 
 **Visual Design**:
+
 - **Background**: `#FFFFFF` (White)
 - **Border**: `1px solid #E4E6EA`
 - **Border Radius**: `16px` / `1rem` (rounded-2xl)
@@ -234,6 +255,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 - **Cursor**: `pointer`
 
 **Content**:
+
 - **Title**: "Protección"
   - Font: Ubuntu Medium
   - Size: `20px` / `1.25rem`
@@ -247,12 +269,14 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
   - Line Height: `1.5`
 
 **Hover State**:
+
 - Border color: `#1D4E8F`
 - Background: `#F0F9FF` (Light Blue)
 - Slight shadow increase
 - Transition: `all 300ms ease`
 
 **Active State**:
+
 - Border color: `#007FFF`
 - Background: `#E3F2FD`
 
@@ -265,6 +289,7 @@ This document focuses on the **Pagar mis productos** page, which serves as the e
 The "Pagos" menu item in the sidebar should be **expandable** (accordion style) with three sub-items:
 
 #### Parent Item
+
 - **Text**: "Pagos"
 - **Icon**: Payment/wallet icon (to be defined)
 - **State**: Expandable (has chevron down/up icon)
@@ -272,6 +297,7 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 - **Color**: `#FFFFFF` (White)
 
 #### Sub-Items (when expanded)
+
 1. **Pagar mis productos**
    - **Active**: Yes (current page)
    - **Background**: `#007FFF` (Blue) or lighter highlight
@@ -297,14 +323,17 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ### New Components Required
 
 #### Molecules
+
 - **`PaymentOptionCard`** - Reusable payment option card with two variants:
   - `featured`: Navy background (Pago Unificado)
   - `standard`: White background with border (Aportes, Obligaciones, Protección)
 
 #### Organisms
+
 - **`PaymentOptionsGrid`** - Grid container for payment option cards
 
 ### Existing Components to Use
+
 - `BackButton` (atom)
 - `Breadcrumbs` (molecule)
 - `HideBalancesToggle` (molecule)
@@ -319,16 +348,19 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Responsive Design
 
 ### Desktop (≥1024px)
+
 - 2x2 grid layout for payment cards
 - Full sidebar visible
 - Standard spacing and padding
 
 ### Tablet (640px - 1023px)
+
 - 2x2 grid layout (may be tighter spacing)
 - Collapsible sidebar
 - Adjusted card sizes
 
 ### Mobile (<640px)
+
 - Single column layout (cards stack vertically)
 - Mobile sidebar (drawer/overlay)
 - Full-width cards
@@ -341,11 +373,13 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ### Payment Option Cards
 
 #### Click Behavior
+
 - Each card is clickable and navigates to its respective payment flow
 - Click target: Entire card surface
 - Visual feedback: Active state on click
 
 #### Navigation Routes (to be defined later)
+
 - **Pago Unificado**: TBD
 - **Aportes**: TBD
 - **Obligaciones**: TBD
@@ -354,6 +388,7 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ### Sidebar Accordion
 
 #### Behavior
+
 - Click "Pagos" to expand/collapse sub-items
 - Chevron icon rotates 180° on toggle
 - Smooth expand/collapse animation (300ms)
@@ -364,16 +399,19 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Accessibility
 
 ### Keyboard Navigation
+
 - All payment cards must be keyboard accessible (Tab navigation)
 - Focus states clearly visible (2px blue outline)
 - Enter/Space to activate card
 
 ### ARIA Labels
+
 - Cards: `aria-label="Pagar [product-name]"`
 - Accordion: `aria-expanded="true/false"`
 - Current page: `aria-current="page"` on breadcrumb and sidebar item
 
 ### Screen Reader Support
+
 - Descriptive labels for all interactive elements
 - Breadcrumb navigation properly announced
 - Card descriptions read on focus
@@ -383,11 +421,13 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Color Palette Reference
 
 ### Primary Colors
+
 - **Primary Navy**: `#1D4E8F` - Featured card background, titles
 - **Primary Blue**: `#007FFF` - Active states, featured card title
 - **Light Blue**: `#F0F9FF` - Main content background, hover states
 
 ### Grays & Neutrals
+
 - **Text Black**: `#111827` - Primary text
 - **Gray High**: `#374151` - Secondary text
 - **Border Gray**: `#E4E6EA` - Card borders
@@ -398,11 +438,13 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Typography Reference
 
 ### Fonts Used
+
 - **Ubuntu Bold**: Section headings, sidebar items
 - **Ubuntu Medium**: Card titles, page title, labels
 - **Ubuntu Regular**: Descriptions, breadcrumbs, body text
 
 ### Font Sizes
+
 - `21px` - Section heading
 - `20px` - Page title, card titles
 - `15px` - Descriptions, breadcrumbs
@@ -413,16 +455,19 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Spacing & Layout
 
 ### Content Container
+
 - **Max Width**: `1200px` (or as per design system)
 - **Padding**: `24px` / `1.5rem` (horizontal and vertical)
 - **Background**: `#F0F9FF` (Light Blue)
 
 ### Card Grid
+
 - **Columns**: 2 (desktop), 1 (mobile)
 - **Gap**: `24px` / `1.5rem`
 - **Card Min Height**: `180px` (approximately)
 
 ### Section Spacing
+
 - Header to Content: `24px`
 - Heading to Description: `12px`
 - Description to Cards: `32px`
@@ -432,11 +477,13 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Animation & Transitions
 
 ### Card Hover
+
 - **Duration**: `300ms`
 - **Easing**: `ease`
 - **Properties**: `background-color`, `border-color`, `box-shadow`, `transform`
 
 ### Sidebar Accordion
+
 - **Duration**: `300ms`
 - **Easing**: `cubic-bezier(0.4, 0, 0.2, 1)`
 - **Properties**: `height`, `transform` (chevron rotation)
@@ -446,16 +493,19 @@ The "Pagos" menu item in the sidebar should be **expandable** (accordion style) 
 ## Future Considerations
 
 ### Payment Flows (to be defined)
+
 - Pago Unificado flow
 - Aportes payment flow
 - Obligaciones payment flow
 - Protección payment flow
 
 ### Additional Pagos Pages
+
 - Pago a otros asociado
 - Pagar servicios públicos
 
 ### Enhanced Features
+
 - Recent payments section
 - Scheduled payments
 - Payment history integration

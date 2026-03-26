@@ -12,6 +12,7 @@
 The **Obligaciones** (Obligations/Loans) feature provides authenticated users access to their loan and credit products through a horizontally scrollable carousel with an extended card design. Users can view multiple loan accounts with detailed payment information, select one to see its transaction history, and download monthly statements.
 
 **Key Purpose**:
+
 - View all loan/credit products in a scrollable carousel
 - See detailed loan information including disbursed amount and next payment details
 - Select a product to see its transaction history
@@ -19,6 +20,7 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 - Download monthly PDF reports/statements
 
 **Key Differences from Ahorros**:
+
 - Ahorros: Simple card with balance and status
 - Obligaciones: Extended card with additional loan-specific info (disbursed amount, next payment date, next payment value)
 - Different visual styling (gray background for unselected cards)
@@ -29,11 +31,13 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 ## User Stories
 
 ### US-05.1: View Loan Products Carousel
+
 **As an** authenticated user
 **I want** to see all my loan/credit products in a carousel
 **So that** I can quickly overview all my obligations
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/obligaciones`
 - [ ] Carousel shows all user's loan/credit products
 - [ ] First product is selected by default (white background, blue border)
@@ -44,11 +48,13 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 - [ ] Responsive: 1 card on mobile, 2 on tablet, 3 on desktop
 
 ### US-05.2: Select Loan Product
+
 **As an** authenticated user
 **I want** to select a loan product from the carousel
 **So that** I can view its transaction history and details
 
 **Acceptance Criteria**:
+
 - [ ] Clicking a card selects it (shows white background, blue border)
 - [ ] Only one card can be selected at a time
 - [ ] Previously selected card reverts to gray background
@@ -57,13 +63,15 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 - [ ] Selection persists during page session
 
 ### US-05.3: View Loan Product Card Information
+
 **As an** authenticated user
 **I want** to see detailed information on each loan product card
 **So that** I can understand my loan status and upcoming payments
 
 **Acceptance Criteria**:
+
 - [ ] Card shows product title (e.g., "Crédito de Libre Inversión")
-- [ ] Card shows masked product number with optional prefix (e.g., "CR-***1010")
+- [ ] Card shows masked product number with optional prefix (e.g., "CR-\*\*\*1010")
 - [ ] Card shows current balance as "Saldo a la fecha" (respects "Ocultar saldos" toggle)
 - [ ] Card shows payment status: "Al día" (green) or "En mora" (red)
 - [ ] Card shows horizontal divider separating main info from details
@@ -72,11 +80,13 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 - [ ] Card shows "Valor próximo pago" (next payment amount) in blue
 
 ### US-05.4: Transaction History for Selected Product
+
 **As an** authenticated user
 **I want** to filter and view transaction history for my selected loan product
 **So that** I can track my payment activity
 
 **Acceptance Criteria**:
+
 - [ ] Transaction history updates when different product is selected
 - [ ] Title dynamically shows selected product name and number
 - [ ] Date range filter with start and end date inputs
@@ -86,11 +96,13 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 - [ ] Shows empty state when no transactions found
 
 ### US-05.5: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements for my loan accounts
 **So that** I can keep records of my payment activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months (last 12 months)
 - [ ] Selecting month triggers PDF download
 - [ ] Clear description of functionality
@@ -101,8 +113,8 @@ The **Obligaciones** (Obligations/Loans) feature provides authenticated users ac
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
+| Path                      | Description                       |
+| ------------------------- | --------------------------------- |
 | `/productos/obligaciones` | Obligaciones (Loans) product page |
 
 ### File Structure
@@ -129,16 +141,16 @@ src/
 
 The following components will be **reused** from features 03-products and 04-ahorros:
 
-| Component | Source | Purpose |
-|-----------|--------|---------|
-| `TransactionHistoryCard` | 03-products | Transaction list with date filter |
-| `DownloadReportsCard` | 03-products | Monthly report download |
-| `Breadcrumbs` | 03-products | Breadcrumb navigation |
-| `BackButton` | 03-products | Back navigation |
-| `HideBalancesToggle` | existing | Balance visibility toggle |
-| `CarouselArrow` | 04-ahorros | Carousel navigation arrows |
-| `CarouselDots` | 04-ahorros | Carousel pagination dots |
-| Carousel utilities | 04-ahorros | `calculateTotalPages`, `getVisibleItems` |
+| Component                | Source      | Purpose                                  |
+| ------------------------ | ----------- | ---------------------------------------- |
+| `TransactionHistoryCard` | 03-products | Transaction list with date filter        |
+| `DownloadReportsCard`    | 03-products | Monthly report download                  |
+| `Breadcrumbs`            | 03-products | Breadcrumb navigation                    |
+| `BackButton`             | 03-products | Back navigation                          |
+| `HideBalancesToggle`     | existing    | Balance visibility toggle                |
+| `CarouselArrow`          | 04-ahorros  | Carousel navigation arrows               |
+| `CarouselDots`           | 04-ahorros  | Carousel pagination dots                 |
+| Carousel utilities       | 04-ahorros  | `calculateTotalPages`, `getVisibleItems` |
 
 ### Sidebar Navigation Update
 
@@ -146,11 +158,11 @@ Add "Obligaciones" to the Products accordion menu:
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },  // NEW
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" }, // NEW
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
 ];
 ```
 
@@ -161,6 +173,7 @@ const productSubItems = [
 ### Molecules
 
 #### ObligacionProductCard
+
 Individual loan/credit card for the carousel with extended information.
 
 ```typescript
@@ -173,20 +186,21 @@ interface ObligacionProductCardProps {
 
 interface ObligacionProduct {
   id: string;
-  title: string;                    // "Crédito de Libre Inversión"
-  productNumber: string;            // "5678" (will be masked as ***5678)
-  productPrefix?: string;           // "CR-" for some products like "Cupo Rotativo"
-  currentBalance: number;           // 12500000 (saldo a la fecha)
-  status: ObligacionStatus;         // 'al_dia' | 'en_mora'
-  disbursedAmount: number;          // 20000000 (valor desembolsado)
-  nextPaymentDate: string;          // "2025-11-30" ISO date (próximo pago)
-  nextPaymentAmount: number;        // 850000 (valor próximo pago)
+  title: string; // "Crédito de Libre Inversión"
+  productNumber: string; // "5678" (will be masked as ***5678)
+  productPrefix?: string; // "CR-" for some products like "Cupo Rotativo"
+  currentBalance: number; // 12500000 (saldo a la fecha)
+  status: ObligacionStatus; // 'al_dia' | 'en_mora'
+  disbursedAmount: number; // 20000000 (valor desembolsado)
+  nextPaymentDate: string; // "2025-11-30" ISO date (próximo pago)
+  nextPaymentAmount: number; // 850000 (valor próximo pago)
 }
 
-type ObligacionStatus = 'al_dia' | 'en_mora';
+type ObligacionStatus = "al_dia" | "en_mora";
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Crédito de Libre Inversión                      │
@@ -203,6 +217,7 @@ type ObligacionStatus = 'al_dia' | 'en_mora';
 ```
 
 **Styling**:
+
 - Width: `280px` minimum (wider than SavingsProductCard for extra content)
 - Height: Auto (~240px due to extra fields)
 - Border radius: `16px`
@@ -211,15 +226,18 @@ type ObligacionStatus = 'al_dia' | 'en_mora';
 - Transition: `all 0.2s ease`
 
 **Selected State**:
+
 - Background: `#FFFFFF` (white)
 - Border: `2px solid #194E8D` (navy blue)
 
 **Unselected State**:
+
 - Background: `#F3F4F6` (light gray)
 - Border: `1px solid #E4E6EA` (gray)
 - Hover: Border `#B1B1B1`
 
 **Internal Divider**:
+
 - Position: Between status and additional info
 - Style: `1px solid #E4E6EA`
 - Margin: `12px 0`
@@ -238,16 +256,24 @@ type ObligacionStatus = 'al_dia' | 'en_mora';
 | Detail Value (date) | Ubuntu | 14px | Medium | Black |
 
 **Hide Balances Integration**:
+
 ```typescript
 const { hideBalances } = useUIContext();
 
 // Mask all monetary values
-{hideBalances ? maskCurrency() : formatCurrency(product.currentBalance)}
-{hideBalances ? maskCurrency() : formatCurrency(product.disbursedAmount)}
-{hideBalances ? maskCurrency() : formatCurrency(product.nextPaymentAmount)}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.currentBalance);
+}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.disbursedAmount);
+}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.nextPaymentAmount);
+}
 ```
 
 **Tailwind Classes**:
+
 ```css
 /* Base card */
 bg-[#F3F4F6] rounded-2xl p-5 cursor-pointer
@@ -280,25 +306,28 @@ text-[14px] font-medium text-black
 ### Organisms
 
 #### ObligacionCarousel
+
 Carousel component specifically for loan/credit product cards.
 
 ```typescript
 interface ObligacionCarouselProps {
-  title: string;                                    // "Resumen de Obligaciones"
-  products: ObligacionProduct[];                    // Array of loan products
-  selectedProductId?: string;                       // ID of selected product
+  title: string; // "Resumen de Obligaciones"
+  products: ObligacionProduct[]; // Array of loan products
+  selectedProductId?: string; // ID of selected product
   onProductSelect: (product: ObligacionProduct) => void;
   className?: string;
 }
 ```
 
 **Implementation Notes**:
+
 - Reuses `CarouselArrow` and `CarouselDots` atoms from 04-ahorros
 - Reuses carousel utilities (`calculateTotalPages`, `getVisibleItems`)
 - Uses `ObligacionProductCard` instead of `SavingsProductCard`
 - Same scroll behavior, responsive breakpoints, and accessibility features as `ProductCarousel`
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Resumen de Obligaciones                                                      │
@@ -316,6 +345,7 @@ interface ObligacionCarouselProps {
 ```
 
 **Styling**:
+
 - Container: `bg-white rounded-2xl p-6`
 - Title: `text-[20px] font-bold text-[#194E8D] mb-4`
 - Cards container: `flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide`
@@ -338,7 +368,7 @@ interface ObligacionCarouselProps {
 /**
  * Status of an obligation/loan product
  */
-export type ObligacionStatus = 'al_dia' | 'en_mora';
+export type ObligacionStatus = "al_dia" | "en_mora";
 
 /**
  * Obligation/loan product information for carousel display
@@ -347,12 +377,12 @@ export interface ObligacionProduct {
   id: string;
   title: string;
   productNumber: string;
-  productPrefix?: string;           // e.g., "CR-" for Cupo Rotativo
-  currentBalance: number;           // Saldo a la fecha
+  productPrefix?: string; // e.g., "CR-" for Cupo Rotativo
+  currentBalance: number; // Saldo a la fecha
   status: ObligacionStatus;
-  disbursedAmount: number;          // Valor desembolsado
-  nextPaymentDate: string;          // Próximo pago (ISO date)
-  nextPaymentAmount: number;        // Valor próximo pago
+  disbursedAmount: number; // Valor desembolsado
+  nextPaymentDate: string; // Próximo pago (ISO date)
+  nextPaymentAmount: number; // Valor próximo pago
 }
 
 /**
@@ -365,7 +395,7 @@ export type OnObligacionSelect = (product: ObligacionProduct) => void;
 
 ```typescript
 // Add export
-export * from './obligaciones';
+export * from "./obligaciones";
 ```
 
 ---
@@ -382,7 +412,11 @@ The existing `maskNumber` function should handle the optional product prefix:
  * @example maskNumber("5678") => "***5678"
  * @example maskNumber("1010", "CR-") => "CR-***1010"
  */
-export function maskNumber(number: string, prefix?: string, visibleDigits = 4): string {
+export function maskNumber(
+  number: string,
+  prefix?: string,
+  visibleDigits = 4,
+): string {
   if (number.length <= visibleDigits) {
     return prefix ? `${prefix}${number}` : number;
   }
@@ -398,43 +432,43 @@ export function maskNumber(number: string, prefix?: string, visibleDigits = 4): 
 ### File: `src/mocks/obligaciones.ts`
 
 ```typescript
-import { ObligacionProduct } from '@/src/types/obligaciones';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { ObligacionProduct } from "@/src/types/obligaciones";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock loan/credit products for carousel
  */
 export const mockObligacionProducts: ObligacionProduct[] = [
   {
-    id: '1',
-    title: 'Crédito de Libre Inversión',
-    productNumber: '5678',
+    id: "1",
+    title: "Crédito de Libre Inversión",
+    productNumber: "5678",
     currentBalance: 12500000,
-    status: 'al_dia',
+    status: "al_dia",
     disbursedAmount: 20000000,
-    nextPaymentDate: '2025-11-30',
+    nextPaymentDate: "2025-11-30",
     nextPaymentAmount: 850000,
   },
   {
-    id: '2',
-    title: 'Cupo Rotativo Personal',
-    productNumber: '1010',
-    productPrefix: 'CR-',
+    id: "2",
+    title: "Cupo Rotativo Personal",
+    productNumber: "1010",
+    productPrefix: "CR-",
     currentBalance: 3000000,
-    status: 'al_dia',
+    status: "al_dia",
     disbursedAmount: 5000000,
-    nextPaymentDate: '2025-12-20',
+    nextPaymentDate: "2025-12-20",
     nextPaymentAmount: 150000,
   },
   {
-    id: '3',
-    title: 'Crédito de Vivienda',
-    productNumber: '2233',
+    id: "3",
+    title: "Crédito de Vivienda",
+    productNumber: "2233",
     currentBalance: 85000000,
-    status: 'en_mora',
+    status: "en_mora",
     disbursedAmount: 120000000,
-    nextPaymentDate: '2025-11-15',
+    nextPaymentDate: "2025-11-15",
     nextPaymentAmount: 1250000,
   },
 ];
@@ -444,38 +478,39 @@ export const mockObligacionProducts: ObligacionProduct[] = [
  */
 export const mockObligacionesTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-25',
-    description: 'Pago cuota mensual',
+    id: "1",
+    date: "2024-11-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '2',
-    date: '2024-10-25',
-    description: 'Pago cuota mensual',
+    id: "2",
+    date: "2024-10-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
   {
-    id: '3',
-    date: '2024-09-25',
-    description: 'Pago cuota mensual',
+    id: "3",
+    date: "2024-09-25",
+    description: "Pago cuota mensual",
     amount: 850000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockObligacionesAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockObligacionesAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './obligaciones';
+export * from "./obligaciones";
 // ... other exports
 ```
 
@@ -586,15 +621,16 @@ export default function ObligacionesPage() {
 
 ### Carousel Responsive Behavior
 
-| Breakpoint | Visible Cards | Arrow Position | Dots |
-|------------|---------------|----------------|------|
-| Mobile (<640px) | 1 | Hidden (swipe) | Show |
-| Tablet (640-1023px) | 2 | Show | Show |
-| Desktop (>=1024px) | 3 | Show | Show |
+| Breakpoint          | Visible Cards | Arrow Position | Dots |
+| ------------------- | ------------- | -------------- | ---- |
+| Mobile (<640px)     | 1             | Hidden (swipe) | Show |
+| Tablet (640-1023px) | 2             | Show           | Show |
+| Desktop (>=1024px)  | 3             | Show           | Show |
 
 ### Card Responsive Adjustments
 
 Since `ObligacionProductCard` is taller due to additional info:
+
 - On mobile, single card should be comfortably viewable
 - Cards maintain minimum width of `280px`
 - Scroll snapping ensures cards don't get cut off
@@ -655,14 +691,16 @@ Follows same patterns as 04-ahorros carousel:
 For screen readers, the status should be clearly communicated:
 
 ```typescript
-const statusAnnouncement = product.status === 'al_dia'
-  ? 'Estado: Al día'
-  : 'Estado: En mora - requiere atención';
+const statusAnnouncement =
+  product.status === "al_dia"
+    ? "Estado: Al día"
+    : "Estado: En mora - requiere atención";
 ```
 
 ### Color Contrast
 
 All text colors meet WCAG AA standards:
+
 - Green status (#00A44C) on white/gray background
 - Red status (#FF0000) on white/gray background
 - Blue values (#004680) on white/gray background
@@ -702,7 +740,7 @@ The sidebar should highlight "Obligaciones" when on `/productos/obligaciones`:
 ```typescript
 // In Sidebar.tsx - handled by pathname check
 const pathname = usePathname();
-const isObligacionesActive = pathname === '/productos/obligaciones';
+const isObligacionesActive = pathname === "/productos/obligaciones";
 ```
 
 ---
@@ -710,10 +748,12 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 ## Implementation Checklist
 
 ### Phase 1: Types
+
 - [ ] Create `src/types/obligaciones.ts`
 - [ ] Update `src/types/index.ts` exports
 
 ### Phase 2: Molecule - ObligacionProductCard
+
 - [ ] Create `src/molecules/ObligacionProductCard.tsx`
 - [ ] Implement selected/unselected visual states
 - [ ] Add divider and additional info section
@@ -722,6 +762,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Update `src/molecules/index.ts` exports
 
 ### Phase 3: Organism - ObligacionCarousel
+
 - [ ] Create `src/organisms/ObligacionCarousel.tsx`
 - [ ] Reuse `CarouselArrow` and `CarouselDots` from atoms
 - [ ] Reuse carousel utilities from `src/utils/carousel.ts`
@@ -732,14 +773,17 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Update `src/organisms/index.ts` exports
 
 ### Phase 4: Mock Data
+
 - [ ] Create `src/mocks/obligaciones.ts`
 - [ ] Update `src/mocks/index.ts` exports
 
 ### Phase 5: Sidebar Update
+
 - [ ] Add "Obligaciones" to sidebar product sub-items
 - [ ] Position between "Ahorros" and "Inversiones"
 
 ### Phase 6: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/obligaciones/page.tsx`
 - [ ] Wire up carousel with mock data
 - [ ] Reuse `TransactionHistoryCard` from 03-products
@@ -747,6 +791,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Connect selection logic to transaction history title
 
 ### Phase 7: Polish
+
 - [ ] Add responsive styles for all breakpoints
 - [ ] Add hover/focus states
 - [ ] Add loading state for carousel
@@ -759,6 +804,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] Page loads at `/productos/obligaciones`
 - [ ] First product is selected by default (white bg, blue border)
 - [ ] Unselected products have gray background
@@ -775,6 +821,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] "Ocultar saldos" masks ALL monetary values (balance, disbursed, next payment)
 
 ### Visual Testing
+
 - [ ] Selected card: White background, blue border
 - [ ] Unselected card: Gray background (#F3F4F6), gray border
 - [ ] "Al día" status displays in green
@@ -785,6 +832,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Detail labels in gray (#636363)
 
 ### Responsive Testing
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
@@ -793,6 +841,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Gap between cards is consistent (20px)
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through carousel
 - [ ] Arrow keys move between cards
 - [ ] Enter/Space selects card
@@ -802,6 +851,7 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 - [ ] Color contrast passes WCAG AA
 
 ### Integration Testing
+
 - [ ] Page loads at `/productos/obligaciones`
 - [ ] Sidebar shows "Obligaciones" as active
 - [ ] Back button navigates to `/home`
@@ -833,11 +883,11 @@ const isObligacionesActive = pathname === '/productos/obligaciones';
 
 When connecting to the backend API:
 
-| Endpoint | Purpose | When Called |
-|----------|---------|-------------|
-| `GET /balances?type=obligaciones` | Fetch loan products | Page load |
-| `GET /movements?productId={id}` | Fetch transactions | Product selection |
-| `GET /reports/{productId}/{month}` | Download PDF | Month selection |
+| Endpoint                           | Purpose             | When Called       |
+| ---------------------------------- | ------------------- | ----------------- |
+| `GET /balances?type=obligaciones`  | Fetch loan products | Page load         |
+| `GET /movements?productId={id}`    | Fetch transactions  | Product selection |
+| `GET /reports/{productId}/{month}` | Download PDF        | Month selection   |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 
@@ -853,17 +903,17 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 
 ## Comparison with Ahorros Feature
 
-| Aspect | Ahorros (04) | Obligaciones (05) |
-|--------|--------------|-------------------|
-| Card Component | `SavingsProductCard` | `ObligacionProductCard` |
-| Card Height | ~180px | ~240px (taller) |
-| Card Min Width | 250px | 280px (wider) |
-| Balance Label | "Saldo Total" | "Saldo a la fecha" |
-| Status Values | activo/bloqueado/inactivo | al_dia/en_mora |
-| Additional Fields | None | Valor desembolsado, Próximo pago, Valor próximo pago |
-| Divider | None | Horizontal divider before details |
-| Unselected Background | White | Gray (#F3F4F6) |
-| Product Prefix | None | Optional (e.g., "CR-") |
+| Aspect                | Ahorros (04)              | Obligaciones (05)                                    |
+| --------------------- | ------------------------- | ---------------------------------------------------- |
+| Card Component        | `SavingsProductCard`      | `ObligacionProductCard`                              |
+| Card Height           | ~180px                    | ~240px (taller)                                      |
+| Card Min Width        | 250px                     | 280px (wider)                                        |
+| Balance Label         | "Saldo Total"             | "Saldo a la fecha"                                   |
+| Status Values         | activo/bloqueado/inactivo | al_dia/en_mora                                       |
+| Additional Fields     | None                      | Valor desembolsado, Próximo pago, Valor próximo pago |
+| Divider               | None                      | Horizontal divider before details                    |
+| Unselected Background | White                     | Gray (#F3F4F6)                                       |
+| Product Prefix        | None                      | Optional (e.g., "CR-")                               |
 
 ---
 

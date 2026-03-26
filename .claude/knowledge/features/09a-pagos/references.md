@@ -2,6 +2,7 @@
 
 **Feature**: Unified Payment Flow (Pago Unificado)
 **Figma References**:
+
 - [Step 1 - Details](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3349-1360)
 - [Step 2 - Confirmation](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3349-1520)
 - [Step 3 - Code Input](https://www.figma.com/design/zuAxL3sGgRg5IWt5OKQ70x/Portal_C_CERP?node-id=3349-1843)
@@ -45,6 +46,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ### Atoms
 
 #### `StepperCircle`
+
 - **Purpose**: Individual step indicator in the stepper
 - **Variants**:
   - `pending`: Gray circle with white background
@@ -62,6 +64,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 - **Label**: Step name below circle (14px)
 
 #### `StepperConnector`
+
 - **Purpose**: Line connecting stepper circles
 - **Width**: Variable (responsive)
 - **Height**: `2px`
@@ -70,6 +73,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - Active/Completed: `#007FFF` (blue)
 
 #### `CodeInput`
+
 - **Purpose**: Single digit input field for security code
 - **Size**: `48px × 56px` (approx)
 - **Border**: `1px solid #B1B1B1`
@@ -82,6 +86,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ### Molecules
 
 #### `Stepper`
+
 - **Purpose**: Multi-step progress indicator
 - **Layout**: Horizontal flex layout
 - **Elements**: StepperCircle + StepperConnector + StepperCircle...
@@ -95,6 +100,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - `steps: Array<{label: string, number: number}>`
 
 #### `PaymentSummaryRow`
+
 - **Purpose**: Single row in payment breakdown list
 - **Layout**: Label (left) + Amount (right)
 - **Font Size**: 16px
@@ -106,6 +112,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - `total`: Bold text, larger spacing, divider above
 
 #### `CodeInputGroup`
+
 - **Purpose**: Group of 6 CodeInput fields for SMS verification
 - **Layout**: Horizontal flex with gap
 - **Inputs**: 6 individual CodeInput components
@@ -115,6 +122,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - Paste support (auto-distribute digits)
 
 #### `TransactionDetailRow`
+
 - **Purpose**: Key-value pair for transaction result display
 - **Layout**: Label (left) + Value (right)
 - **Font Size**: 16px
@@ -127,6 +135,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ### Organisms
 
 #### `PaymentDetailsCard`
+
 - **Purpose**: Main card for Step 1 - Payment details
 - **Components**:
   - Card container (white, rounded-2xl)
@@ -138,6 +147,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - Total to pay (PaymentSummaryRow variant="total")
 
 #### `PaymentConfirmationCard`
+
 - **Purpose**: Main card for Step 2 - Confirmation
 - **Components**:
   - Card container
@@ -152,6 +162,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
     - Total amount
 
 #### `CodeInputCard`
+
 - **Purpose**: Main card for Step 3 - SMS code verification
 - **Components**:
   - Card container (centered, smaller width)
@@ -161,6 +172,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - Resend link: "¿No recibiste la clave? Reenviar"
 
 #### `TransactionResultCard`
+
 - **Purpose**: Main card for Step 4 - Transaction result
 - **Components**:
   - Card container
@@ -178,10 +190,12 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ## Page Routes
 
 ### Step 1: Details Page
+
 **Route**: `/pagos/pago-unificado/detalle` or `/pagos/pago-unificado`
 **File**: `app/(authenticated)/pagos/pago-unificado/page.tsx`
 
 **Layout**:
+
 ```
 <div className="space-y-6">
   {/* Top Bar with Stepper */}
@@ -202,6 +216,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ```
 
 **Data Required**:
+
 - Available accounts with balances
 - Pending payment amounts:
   - Total Aportes
@@ -210,6 +225,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
   - Total to Pay
 
 **Interactions**:
+
 - Account selector dropdown
 - "¿Necesitas más saldo?" link (opens modal or navigates)
 - "Volver" button: Navigate back to Pagos menu
@@ -218,10 +234,12 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ---
 
 ### Step 2: Confirmation Page
+
 **Route**: `/pagos/pago-unificado/confirmacion`
 **File**: `app/(authenticated)/pagos/pago-unificado/confirmacion/page.tsx`
 
 **Layout**:
+
 ```
 <div className="space-y-6">
   <div className="space-y-4">
@@ -239,6 +257,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ```
 
 **Data Required**:
+
 - User name (Titular)
 - User document number (masked)
 - Payment breakdown by product
@@ -246,16 +265,19 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 - Total amount
 
 **Interactions**:
+
 - "Volver" button: Navigate back to Step 1
 - "Confirmar Pago" button: Submit payment, send SMS code, navigate to Step 3
 
 ---
 
 ### Step 3: Code Input Page
+
 **Route**: `/pagos/pago-unificado/verificacion`
 **File**: `app/(authenticated)/pagos/pago-unificado/verificacion/page.tsx`
 
 **Layout**:
+
 ```
 <div className="space-y-6">
   <div className="space-y-4">
@@ -273,16 +295,19 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ```
 
 **Data Required**:
+
 - SMS code sent to user's phone
 - Timer/cooldown for resend link
 
 **Interactions**:
+
 - 6-digit code input (auto-focus, auto-advance)
 - "Reenviar" link: Request new SMS code
 - "Volver" button: Navigate back to Step 2
 - "Pagar" button: Validate code, process payment, navigate to Step 4
 
 **Validations**:
+
 - Code must be exactly 6 digits
 - Code must match sent SMS
 - Handle error states (invalid code, expired code)
@@ -290,10 +315,12 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ---
 
 ### Step 4: Response Page
+
 **Route**: `/pagos/pago-unificado/resultado`
 **File**: `app/(authenticated)/pagos/pago-unificado/resultado/page.tsx`
 
 **Layout**:
+
 ```
 <div className="space-y-6">
   <div className="space-y-4">
@@ -311,6 +338,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ```
 
 **Data Required**:
+
 - Transaction result (success/error)
 - Transaction cost
 - Transaction date and time
@@ -318,10 +346,12 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 - Transaction description/status
 
 **Interactions**:
+
 - "Imprimir/Guardar" button: Generate PDF or print transaction details
 - "Finalizar" button: Navigate back to Pagos menu or Home
 
 **States**:
+
 - **Success**: Green checkmark icon, "Transacción Exitosa" title, success description
 - **Error**: Red X icon, "Transacción Fallida" title, error description
 
@@ -353,12 +383,14 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
    - Connector: Blue `#007FFF`
 
 ### Step Labels
+
 1. "Detalle"
 2. "Confirmación"
 3. "SMS"
 4. "Finalización"
 
 ### Layout
+
 - Horizontal layout
 - Evenly spaced across width
 - Responsive: Stack vertically on mobile (optional)
@@ -368,6 +400,7 @@ The **Pago Unificado** (Unified Payment) flow allows users to pay all their pend
 ## Form Data Structure
 
 ### Step 1 Data
+
 ```typescript
 interface PaymentDetailsFormData {
   selectedAccountId: string;
@@ -379,6 +412,7 @@ interface PaymentDetailsFormData {
 ```
 
 ### Step 2 Data (Confirmation)
+
 ```typescript
 interface PaymentConfirmationData {
   titular: string;
@@ -392,6 +426,7 @@ interface PaymentConfirmationData {
 ```
 
 ### Step 3 Data (Code Input)
+
 ```typescript
 interface CodeVerificationData {
   code: string; // 6 digits
@@ -399,9 +434,10 @@ interface CodeVerificationData {
 ```
 
 ### Step 4 Data (Result)
+
 ```typescript
 interface TransactionResult {
-  status: 'success' | 'error';
+  status: "success" | "error";
   transactionCost: number;
   transactionDate: string;
   transactionTime: string;
@@ -415,6 +451,7 @@ interface TransactionResult {
 ## State Management
 
 ### Flow State
+
 ```typescript
 interface PaymentFlowState {
   currentStep: 1 | 2 | 3 | 4;
@@ -426,6 +463,7 @@ interface PaymentFlowState {
 ```
 
 ### Navigation Between Steps
+
 - Use Next.js routing for each step
 - Store form data in Context or URL state
 - Prevent direct access to later steps without completing previous steps
@@ -436,6 +474,7 @@ interface PaymentFlowState {
 ## Design System Values
 
 ### Colors
+
 - **Primary Blue**: `#007FFF` (stepper active, buttons)
 - **Navy**: `#1D4E8F` (text, labels)
 - **Text Black**: `#111827` (primary text)
@@ -449,6 +488,7 @@ interface PaymentFlowState {
 - **White**: `#FFFFFF` (cards)
 
 ### Typography
+
 - **Section Title**: 24px (1.5rem), Bold
 - **Description**: 16px (1rem), Regular
 - **Labels**: 16px (1rem), Medium
@@ -456,12 +496,14 @@ interface PaymentFlowState {
 - **Small Text**: 14px (0.875rem), Regular
 
 ### Spacing
+
 - Card padding: `24px` (p-6)
 - Section spacing: `24px` (space-y-6)
 - Row spacing: `16px` (space-y-4)
 - Button gap: `16px` (gap-4)
 
 ### Border Radius
+
 - Cards: `16px` (rounded-2xl)
 - Inputs: `6px` (rounded-md)
 - Stepper circles: `50%` (rounded-full)
@@ -471,6 +513,7 @@ interface PaymentFlowState {
 ## Interactions & Validations
 
 ### Step 1 - Details
+
 - **Validation**:
   - Account must be selected
   - Selected account must have sufficient balance
@@ -479,6 +522,7 @@ interface PaymentFlowState {
   - Highlight account selector in red
 
 ### Step 2 - Confirmation
+
 - **Validation**:
   - All data must be present from Step 1
 - **Behavior**:
@@ -486,6 +530,7 @@ interface PaymentFlowState {
   - Allow user to go back and change account
 
 ### Step 3 - Code Input
+
 - **Validation**:
   - Code must be exactly 6 digits
   - All inputs must be filled
@@ -500,6 +545,7 @@ interface PaymentFlowState {
   - Support paste (distribute digits across inputs)
 
 ### Step 4 - Result
+
 - **Behavior**:
   - Display transaction details
   - No validation needed
@@ -531,17 +577,20 @@ interface PaymentFlowState {
 ## Responsive Behavior
 
 ### Desktop (≥1024px)
+
 - Full sidebar visible
 - Stepper horizontal layout
 - Cards max-width `800px`, centered
 - Buttons right-aligned
 
 ### Tablet (640px - 1023px)
+
 - Collapsed sidebar
 - Stepper horizontal (smaller spacing)
 - Cards full width with padding
 
 ### Mobile (<640px)
+
 - Mobile sidebar (toggle)
 - Stepper: Consider vertical or compact horizontal
 - Code inputs: Smaller size
@@ -552,50 +601,54 @@ interface PaymentFlowState {
 ## Mock Data Requirements
 
 ### Mock Accounts
+
 ```typescript
 const mockAccounts = [
   {
-    id: '1',
-    name: 'Cuenta de Ahorros',
+    id: "1",
+    name: "Cuenta de Ahorros",
     balance: 8730500,
-    number: '****4428'
+    number: "****4428",
   },
   {
-    id: '2',
-    name: 'Cuenta Corriente',
+    id: "2",
+    name: "Cuenta Corriente",
     balance: 5200000,
-    number: '****7891'
-  }
+    number: "****7891",
+  },
 ];
 ```
 
 ### Mock Pending Payments
+
 ```typescript
 const mockPendingPayments = {
   aportes: 170058,
   obligaciones: 1100000,
   proteccion: 205000,
-  total: 1475058 // sum of above
+  total: 1475058, // sum of above
 };
 ```
 
 ### Mock User Data
+
 ```typescript
 const mockUser = {
-  name: 'CAMILO ANDRÉS CRUZ',
-  document: 'CC 1.***.***234'
+  name: "CAMILO ANDRÉS CRUZ",
+  document: "CC 1.***.***234",
 };
 ```
 
 ### Mock Transaction Result
+
 ```typescript
 const mockTransactionResult = {
-  status: 'success',
+  status: "success",
   transactionCost: 0,
-  transactionDate: '19 de diciembre de 2025',
-  transactionTime: '11:04 a.m',
-  approvalNumber: '102450',
-  description: 'Exitosa'
+  transactionDate: "19 de diciembre de 2025",
+  transactionTime: "11:04 a.m",
+  approvalNumber: "102450",
+  description: "Exitosa",
 };
 ```
 
@@ -603,12 +656,12 @@ const mockTransactionResult = {
 
 ## Routes Summary
 
-| Step | Route                                  | Purpose                     |
-|------|----------------------------------------|-----------------------------|
-| 1    | `/pagos/pago-unificado`                | Payment details & selection |
-| 2    | `/pagos/pago-unificado/confirmacion`   | Review and confirm          |
-| 3    | `/pagos/pago-unificado/verificacion`   | SMS code verification       |
-| 4    | `/pagos/pago-unificado/resultado`      | Transaction result          |
+| Step | Route                                | Purpose                     |
+| ---- | ------------------------------------ | --------------------------- |
+| 1    | `/pagos/pago-unificado`              | Payment details & selection |
+| 2    | `/pagos/pago-unificado/confirmacion` | Review and confirm          |
+| 3    | `/pagos/pago-unificado/verificacion` | SMS code verification       |
+| 4    | `/pagos/pago-unificado/resultado`    | Transaction result          |
 
 ---
 

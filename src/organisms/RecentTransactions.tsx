@@ -6,7 +6,10 @@ interface RecentTransactionsProps {
   loading?: boolean;
 }
 
-export function RecentTransactions({ transactions, loading }: RecentTransactionsProps) {
+export function RecentTransactions({
+  transactions,
+  loading,
+}: RecentTransactionsProps) {
   if (loading) {
     return (
       <div>

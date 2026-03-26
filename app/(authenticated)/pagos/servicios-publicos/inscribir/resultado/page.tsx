@@ -15,7 +15,7 @@ export default function ResultadoPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [result] = useState<UtilityRegistrationResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     const storedResult = sessionStorage.getItem(RESULT_STORAGE_KEY);
     if (!storedResult) return null;
     try {

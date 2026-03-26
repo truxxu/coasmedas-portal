@@ -8,26 +8,18 @@ import {
   RecentTransactions,
 } from "@/src/organisms";
 import { useUserContext } from "@/src/contexts";
-import { Transaction } from "@/src/types";
-import {
-  parseBalanceSummary,
-  mapMovements,
-  getDateMonthsAgo,
-  formatApiDate,
-} from "@/src/utils";
-import {
-  getBalances,
-  getProductsSavings,
-  getMovements,
-} from "@/services/products.service";
+import { parseBalanceSummary } from "@/src/utils";
+import { getBalances } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
+import { mockConsolidatedTransactions } from "@/src/mocks";
 
 export default function HomePage() {
   const { user } = useUserContext();
   const { documentType, documentNumber } = user ?? {};
   const router = useRouter();
-  const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,27 +32,11 @@ export default function HomePage() {
 
       const params = { documentType, documentNumber };
 
-      // Fetch balances and savings in parallel
-      const [balancesRaw, savings] = await Promise.all([
-        getBalances(params),
-        getProductsSavings(params),
-      ]);
+      const balancesRaw = await getBalances(params);
 
       // Parse consolidated balance summary and extract savings total
       const summary = parseBalanceSummary(balancesRaw);
       setConsolidatedSavings(summary.ahorro);
-
-      // Fetch movements for the first savings account
-      if (savings.length > 0) {
-        const s = savings[0];
-        const movements = await getMovements({
-          ...params,
-          codigoProductoCobis: s.codigoProductoCobis,
-          idCuenta: s.idCuenta,
-          fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
-        });
-        setTransactions(mapMovements(movements));
-      }
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -100,7 +76,10 @@ export default function HomePage() {
         loading={loading}
       />
       <QuickAccessGrid />
-      <RecentTransactions transactions={transactions} loading={loading} />
+      <RecentTransactions
+        transactions={mockConsolidatedTransactions}
+        loading={loading}
+      />
     </>
   );
 }

@@ -47,7 +47,7 @@ export default function DesdeCuposRotativosPage() {
     }
 
     const selectedCupo = mockCuposRotativos.find(
-      (cupo) => cupo.id === selectedCupoId
+      (cupo) => cupo.id === selectedCupoId,
     );
 
     if (selectedCupo && Number(amount) > selectedCupo.availableAmount) {

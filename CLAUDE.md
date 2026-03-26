@@ -764,8 +764,8 @@ The Transferencias feature handles multiple transfer types between accounts.
 | Desde cupos rotativos | `/transferencias/internas/desde-cupos-rotativos` | SMS          | From rotating credit lines      |
 | Recargar PSE          | `/transferencias/internas/recargar-pse`          | PSE          | Top-up via PSE gateway          |
 | Cuentas mi red        | `/transferencias/internas/cuentas-mi-red`        | SMS          | To Coopcentral network accounts |
-| Otros bancos          | `/transferencias/externas/otros-bancos`           | SMS          | Inter-bank transfers (ACH)      |
-| Red Coopcentral       | `/transferencias/externas/red-coopcentral`        | SMS          | Coopcentral network transfers   |
+| Otros bancos          | `/transferencias/externas/otros-bancos`          | SMS          | Inter-bank transfers (ACH)      |
+| Red Coopcentral       | `/transferencias/externas/red-coopcentral`       | SMS          | Coopcentral network transfers   |
 | Inscribir cuentas     | `/transferencias/inscribir-cuentas`              | -            | Register external accounts      |
 
 ### Transfer Flow Structure

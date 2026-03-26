@@ -58,8 +58,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
             hasError
               ? "border-brand-error focus:border-brand-error focus:ring-2 focus:ring-brand-error"
               : disabled
-              ? "border-brand-gray-low"
-              : "border-brand-navy focus:border-brand-primary focus:ring-2 focus:ring-brand-primary"
+                ? "border-brand-gray-low"
+                : "border-brand-navy focus:border-brand-primary focus:ring-2 focus:ring-brand-primary"
           }
           ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}
           focus:outline-none

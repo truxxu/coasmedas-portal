@@ -44,11 +44,18 @@ export default function VerificacionPage() {
       });
       // Map and store result
       const mappedResult = mapResultToTransaction(result);
-      sessionStorage.setItem("unifiedPaymentResult", JSON.stringify(mappedResult));
+      sessionStorage.setItem(
+        "unifiedPaymentResult",
+        JSON.stringify(mappedResult),
+      );
     },
     onResend: async () => {
       if (!documentType || !documentNumber) return;
-      await sendTransactionOtp({ documentType, documentNumber, trnType: "PaymentInternal" });
+      await sendTransactionOtp({
+        documentType,
+        documentNumber,
+        trnType: "PaymentInternal",
+      });
     },
   });
 

@@ -14,7 +14,7 @@ export default function ResultadoPage() {
   const { hideBalances } = useUIContext();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<PSERechargeResult | null>(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
 
     const resultData = sessionStorage.getItem("pseRechargeTransactionResult");
     if (!resultData) return null;

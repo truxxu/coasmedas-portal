@@ -23,8 +23,9 @@ export default function DetallePage() {
   const [amount, setAmount] = useState("");
   const [concept, setConcept] = useState("");
   const [error, setError] = useState("");
-  const [recipient, setRecipient] =
-    useState<RegisteredNetworkAccount | null>(null);
+  const [recipient, setRecipient] = useState<RegisteredNetworkAccount | null>(
+    null,
+  );
 
   useEffect(() => {
     // Read selected recipient from sessionStorage

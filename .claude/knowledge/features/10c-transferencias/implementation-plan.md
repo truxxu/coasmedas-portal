@@ -26,6 +26,7 @@ Create TypeScript interfaces for the PSE recharge flow:
 ```
 
 **Details**:
+
 - Follow existing pattern from `src/types/transfer.ts`
 - PSERechargeDestination: id, name, maskedNumber, balance, accountType
 - PSERechargeResult: status, productRecharged, amountRecharged, method ("PSE"), transactionCost, transactionDate, transactionTime, approvalNumber, description
@@ -65,6 +66,7 @@ Create mock data following existing pattern from `mockTransferData.ts`:
 ```
 
 **Mock Data**:
+
 - 2 savings accounts with balances (***4428, ***5512)
 - User: "CAMILO ANDRES CRUZ", document "CC 1.***.***234"
 - Success result: approvalNumber "150606", description "Recarga Exitosa"
@@ -98,6 +100,7 @@ export {
 Main form card for Step 1 - destination account dropdown and amount input.
 
 **Props Interface**:
+
 ```typescript
 interface PSERechargeDetailsCardProps {
   destinations: PSERechargeDestination[];
@@ -111,16 +114,18 @@ interface PSERechargeDetailsCardProps {
 ```
 
 **Layout**:
+
 1. Title: "Recargar mis cuentas con PSE" (18px, Bold, navy)
 2. Description: "Trae dinero desde cualquier otra entidad financiera de forma facil y segura."
 3. Destination select: "A que producto quieres abonar?" + dropdown
-   - Format: "Cuenta de Ahorros (***4428) - Saldo: $ 8.730.500"
+   - Format: "Cuenta de Ahorros (\*\*\*4428) - Saldo: $ 8.730.500"
 4. Amount input: "Que valor deseas recargar?" + currency input
    - "$" prefix left-aligned, amount right-aligned
    - Underline border style (not full border)
 5. Error display at bottom
 
 **Styling**:
+
 - Card with p-8 padding
 - Select: h-11, border-brand-footer-text, rounded-md
 - Amount: text-[19px] font-medium, underline border
@@ -134,6 +139,7 @@ interface PSERechargeDetailsCardProps {
 Confirmation details card for Step 2.
 
 **Props Interface**:
+
 ```typescript
 interface PSERechargeConfirmationCardProps {
   confirmationData: PSERechargeConfirmationData;
@@ -142,7 +148,8 @@ interface PSERechargeConfirmationCardProps {
 ```
 
 **Layout**:
-1. Title: "Confirmacion de Pago" (18px, Bold, navy)
+
+1. Title: "Confirmación de Pago" (18px, Bold, navy)
 2. Description: "Por favor, verificar que los datos de la transaccion sean correctos antes de continuar."
 3. Two-column label/value pairs:
    - Titular → [holder name]
@@ -153,6 +160,7 @@ interface PSERechargeConfirmationCardProps {
    - Metodo → PSE (17px, Medium)
 
 **Reuse**:
+
 - `Card` atom for container
 - `Divider` atom for separator
 
@@ -165,6 +173,7 @@ interface PSERechargeConfirmationCardProps {
 Transaction result card for Step 4.
 
 **Props Interface**:
+
 ```typescript
 interface PSERechargeResultCardProps {
   result: PSERechargeResult;
@@ -176,6 +185,7 @@ interface PSERechargeResultCardProps {
 ```
 
 **Layout**:
+
 1. Status icon (centered): green checkmark for success, red X for error
 2. Title: "Transaccion Exitosa" / "Transaccion Fallida"
 3. Section 1 - Recharge info:
@@ -221,6 +231,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
 **Pattern**: Follow existing `entre-mis-cuentas/page.tsx`
 
 **Behavior**:
+
 1. Set WelcomeBar: title "Recargar con PSE", backHref "/transferencias/internas"
 2. Breadcrumbs: "Inicio / Transferencias / Recargar con PSE"
 3. Stepper at step 1 (reuse `TRANSFER_STEPS` from mocks)
@@ -234,6 +245,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
    - "Confirmar" button (disabled until valid) → save to sessionStorage → navigate to confirmation
 
 **Session Storage Keys**:
+
 - `pseRechargeDestinationId`
 - `pseRechargeAmount`
 
@@ -246,6 +258,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
 **Pattern**: Follow existing `entre-mis-cuentas/confirmacion/page.tsx`
 
 **Behavior**:
+
 1. Read from sessionStorage (redirect to step 1 if missing)
 2. Set WelcomeBar: same as step 1
 3. Breadcrumbs: same as step 1
@@ -265,6 +278,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
 **Pattern**: Similar to existing PSE flows in pagos feature
 
 **Behavior**:
+
 1. Read from sessionStorage (redirect if missing)
 2. Set WelcomeBar
 3. Breadcrumbs
@@ -287,6 +301,7 @@ export { PSERechargeResultCard } from "./PSERechargeResultCard";
 **Pattern**: Follow existing `entre-mis-cuentas/resultado/page.tsx`
 
 **Behavior**:
+
 1. Read transaction result from sessionStorage (redirect if missing)
 2. Set WelcomeBar
 3. Breadcrumbs
@@ -328,6 +343,7 @@ Update the "recargar-pse" option to enable it:
 Verify the `handleSelectFlow` function routes correctly to the new flow. The existing pattern should work since `FlowOptionCard` uses `onSelectFlow(flow.id)` and navigation is handled via `router.push(flow.href)`.
 
 If direct routing is needed, ensure:
+
 ```typescript
 else if (flowId === "recargar-pse") {
   router.push("/transferencias/internas/recargar-pse");
@@ -341,6 +357,7 @@ else if (flowId === "recargar-pse") {
 ### Step 15: Manual Testing Checklist
 
 **Happy Path**:
+
 1. [ ] Navigate to /transferencias/internas
 2. [ ] Click "Recargar con PSE" card
 3. [ ] Select destination account from dropdown
@@ -355,16 +372,19 @@ else if (flowId === "recargar-pse") {
 12. [ ] Test "Realizar otra transaccion" → navigates to step 1
 
 **Validation**:
+
 1. [ ] Button disabled when no account selected
 2. [ ] Button disabled when amount is 0 or empty
 3. [ ] Error displays when validation fails
 
 **Edge Cases**:
+
 1. [ ] Direct navigation to step 2/3/4 without data → redirects to step 1
 2. [ ] Hide balances toggle masks amounts correctly
 3. [ ] Back button navigation works correctly
 
 **Error State**:
+
 1. [ ] Test with mock error result
 2. [ ] Verify error icon and message display
 
@@ -405,38 +425,38 @@ app/(authenticated)/transferencias/internas/
 
 ## Components Reused
 
-| Component | Source | Usage |
-|-----------|--------|-------|
-| Card | atoms | Container cards |
-| Button | atoms | Primary/secondary buttons |
-| Divider | atoms | Horizontal separators |
-| Breadcrumbs | molecules | Navigation trail |
-| Stepper | molecules | 4-step progress |
-| HideBalancesToggle | molecules | Balance visibility |
-| PSELoadingCard | organisms | PSE redirect loading |
-| TRANSFER_STEPS | mocks | Stepper labels |
+| Component          | Source    | Usage                     |
+| ------------------ | --------- | ------------------------- |
+| Card               | atoms     | Container cards           |
+| Button             | atoms     | Primary/secondary buttons |
+| Divider            | atoms     | Horizontal separators     |
+| Breadcrumbs        | molecules | Navigation trail          |
+| Stepper            | molecules | 4-step progress           |
+| HideBalancesToggle | molecules | Balance visibility        |
+| PSELoadingCard     | organisms | PSE redirect loading      |
+| TRANSFER_STEPS     | mocks     | Stepper labels            |
 
 ---
 
 ## Session Storage Keys
 
-| Key | Type | Step | Description |
-|-----|------|------|-------------|
-| `pseRechargeDestinationId` | string | 1→2 | Selected destination account ID |
-| `pseRechargeAmount` | string | 1→2 | Recharge amount |
-| `pseRechargeTransactionResult` | JSON | 3→4 | Transaction result object |
+| Key                            | Type   | Step | Description                     |
+| ------------------------------ | ------ | ---- | ------------------------------- |
+| `pseRechargeDestinationId`     | string | 1→2  | Selected destination account ID |
+| `pseRechargeAmount`            | string | 1→2  | Recharge amount                 |
+| `pseRechargeTransactionResult` | JSON   | 3→4  | Transaction result object       |
 
 ---
 
 ## Key Differences from Other Flows
 
-| Aspect | Entre mis cuentas (10) | Recargar PSE (10c) |
-|--------|------------------------|-------------------|
-| Source selection | Yes (own accounts) | No (external via PSE) |
-| Destination | Products | Savings accounts only |
-| Step 3 | SMS verification | PSE redirect |
-| Method label | N/A | "PSE" |
-| Result labels | Linea credito, Numero producto | Producto Recargado, Valor Recargado |
+| Aspect           | Entre mis cuentas (10)         | Recargar PSE (10c)                  |
+| ---------------- | ------------------------------ | ----------------------------------- |
+| Source selection | Yes (own accounts)             | No (external via PSE)               |
+| Destination      | Products                       | Savings accounts only               |
+| Step 3           | SMS verification               | PSE redirect                        |
+| Method label     | N/A                            | "PSE"                               |
+| Result labels    | Linea credito, Numero producto | Producto Recargado, Valor Recargado |
 
 ---
 

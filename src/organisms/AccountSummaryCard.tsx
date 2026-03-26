@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import { formatCurrency, maskCurrency } from '@/src/utils';
-import { useHideBalances } from '@/src/hooks';
+import { formatCurrency, maskCurrency } from "@/src/utils";
+import { useHideBalances } from "@/src/hooks";
 
 interface AccountSummaryCardProps {
   consolidatedSavings?: number;
   loading?: boolean;
 }
 
-export function AccountSummaryCard({ consolidatedSavings, loading }: AccountSummaryCardProps) {
+export function AccountSummaryCard({
+  consolidatedSavings,
+  loading,
+}: AccountSummaryCardProps) {
   const { hideBalances } = useHideBalances();
 
   if (loading) {
@@ -38,12 +41,18 @@ export function AccountSummaryCard({ consolidatedSavings, loading }: AccountSumm
     <div className="bg-white rounded-[5px] p-6 mb-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-[19px] font-bold text-brand-navy">Consolidado de Ahorros</h2>
-          <p className="text-sm text-brand-gray-secondary">Total de tus cuentas de ahorro</p>
+          <h2 className="text-[19px] font-bold text-brand-navy">
+            Consolidado de Ahorros
+          </h2>
+          <p className="text-sm text-brand-gray-secondary">
+            Total de tus cuentas de ahorro
+          </p>
         </div>
         <div className="text-right">
           <p className="text-sm text-brand-gray-secondary">Saldo Total</p>
-          <p className="text-2xl font-medium text-brand-navy">{displayBalance}</p>
+          <p className="text-2xl font-medium text-brand-navy">
+            {displayBalance}
+          </p>
         </div>
       </div>
     </div>

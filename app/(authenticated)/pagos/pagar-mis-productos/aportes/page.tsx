@@ -14,7 +14,10 @@ import {
   isPSEPayment,
   getPaymentMethod,
 } from "@/src/mocks/mockAportesPaymentData";
-import { getPaymentSourcesSavings, getPaymentProducts } from "@/services/payments.service";
+import {
+  getPaymentSourcesSavings,
+  getPaymentProducts,
+} from "@/services/payments.service";
 import { getProductsContributions } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 import {
@@ -48,7 +51,9 @@ export default function PagoAportesPage() {
   >([]);
   const [contributionsApiData, setContributionsApiData] =
     useState<ContributionsResponse | null>(null);
-  const [paymentProductsData, setPaymentProductsData] = useState<PaymentProduct[]>([]);
+  const [paymentProductsData, setPaymentProductsData] = useState<
+    PaymentProduct[]
+  >([]);
 
   // Set welcome bar on mount
   useEffect(() => {
@@ -69,11 +74,12 @@ export default function PagoAportesPage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, contributionsRes, paymentProductsRes] = await Promise.all([
-        getPaymentSourcesSavings(params),
-        getProductsContributions(params),
-        getPaymentProducts(params),
-      ]);
+      const [savingsRes, contributionsRes, paymentProductsRes] =
+        await Promise.all([
+          getPaymentSourcesSavings(params),
+          getProductsContributions(params),
+          getPaymentProducts(params),
+        ]);
 
       // Store raw API data
       setSavingsApiData(savingsRes);
@@ -167,10 +173,13 @@ export default function PagoAportesPage() {
     const aportesIdCuenta = contributionsApiData?.aportes?.idCuentaAportes;
     if (aportesIdCuenta) {
       const matchingProduct = paymentProductsData.find(
-        (p) => String(p.idCuenta) === String(aportesIdCuenta)
+        (p) => String(p.idCuenta) === String(aportesIdCuenta),
       );
       if (matchingProduct) {
-        sessionStorage.setItem("aportesTargetTipoProducto", matchingProduct.tipoProducto);
+        sessionStorage.setItem(
+          "aportesTargetTipoProducto",
+          matchingProduct.tipoProducto,
+        );
       }
     }
 
@@ -204,7 +213,7 @@ export default function PagoAportesPage() {
     );
   }
 
-  if (loading || !paymentBreakdown) {
+  if (loading) {
     return (
       <div className="space-y-6">
         <Breadcrumbs
@@ -214,6 +223,27 @@ export default function PagoAportesPage() {
           <div className="h-6 w-48 bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
           <div className="h-32 w-full bg-gray-200 rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!paymentBreakdown) {
+    return (
+      <div className="space-y-6">
+        <Breadcrumbs
+          items={["Inicio", "Pagos", "Pagar mis productos", "Pago de Aportes"]}
+        />
+        <div className="bg-white rounded-2xl p-8 text-center space-y-4">
+          <p className="text-gray-500 text-base">
+            No tienes aportes pendientes por pagar en este momento.
+          </p>
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium text-brand-navy hover:underline"
+          >
+            Volver a Pagos
+          </button>
         </div>
       </div>
     );

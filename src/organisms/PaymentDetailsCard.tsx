@@ -21,10 +21,14 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
   onNeedMoreBalance,
   hideBalances,
 }) => {
-  const accountOptions = useMemo(() => accounts.map((account) => ({
-    value: account.id,
-    label: `${account.name} - Saldo: ${formatCurrency(account.balance)}`,
-  })), [accounts]);
+  const accountOptions = useMemo(
+    () =>
+      accounts.map((account) => ({
+        value: account.id,
+        label: `${account.name} - Saldo: ${formatCurrency(account.balance)}`,
+      })),
+    [accounts],
+  );
 
   return (
     <Card className="space-y-6 p-8">

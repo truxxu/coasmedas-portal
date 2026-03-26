@@ -1,7 +1,10 @@
 /**
  * Calculate total pages for carousel pagination
  */
-export function calculateTotalPages(totalItems: number, visibleItems: number): number {
+export function calculateTotalPages(
+  totalItems: number,
+  visibleItems: number,
+): number {
   if (visibleItems <= 0) return 0;
   return Math.ceil(totalItems / visibleItems);
 }
@@ -12,7 +15,7 @@ export function calculateTotalPages(totalItems: number, visibleItems: number): n
 export function getCurrentPage(
   scrollLeft: number,
   cardWidth: number,
-  gap: number
+  gap: number,
 ): number {
   const itemWidth = cardWidth + gap;
   if (itemWidth <= 0) return 0;
@@ -25,7 +28,7 @@ export function getCurrentPage(
 export function getScrollPositionForPage(
   page: number,
   cardWidth: number,
-  gap: number
+  gap: number,
 ): number {
   return page * (cardWidth + gap);
 }
@@ -34,7 +37,7 @@ export function getScrollPositionForPage(
  * Get number of visible items based on container width
  */
 export function getVisibleItems(containerWidth: number): number {
-  if (containerWidth < 640) return 1;      // Mobile
-  if (containerWidth < 1024) return 2;     // Tablet
-  return 3;                                 // Desktop
+  if (containerWidth < 640) return 1; // Mobile
+  if (containerWidth < 1024) return 2; // Tablet
+  return 3; // Desktop
 }
