@@ -176,9 +176,7 @@ export function mapProtectionToPaymentProduct(
 export function mapPaymentProductsToPendingPayments(
   items: PaymentProduct[],
 ): PendingPayments {
-  const puItem = items.find(
-    (item) => item.tipoProducto.toUpperCase() === "PU",
-  );
+  const puItem = items.find((item) => item.tipoProducto.toUpperCase() === "PU");
 
   if (puItem) {
     return {

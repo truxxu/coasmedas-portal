@@ -207,7 +207,6 @@ export default function ProteccionDetallePage() {
           JSON.stringify(protectionApi),
         );
       }
-
     }
 
     router.push("/pagos/pagar-mis-productos/proteccion/confirmacion");
