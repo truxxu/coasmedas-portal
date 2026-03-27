@@ -14,10 +14,7 @@ import {
   isPSEPayment,
   getPaymentMethod,
 } from "@/src/mocks/mockAportesPaymentData";
-import {
-  getPaymentSourcesSavings,
-  getPaymentProducts,
-} from "@/services/payments.service";
+import { getPaymentSourcesSavings } from "@/services/payments.service";
 import { getProductsContributions } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 import {
@@ -28,7 +25,6 @@ import type {
   SavingsAccountResponse,
   ContributionsResponse,
 } from "@/types/api/products";
-import type { PaymentProduct } from "@/types/api/payments";
 
 export default function PagoAportesPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
@@ -51,9 +47,6 @@ export default function PagoAportesPage() {
   >([]);
   const [contributionsApiData, setContributionsApiData] =
     useState<ContributionsResponse | null>(null);
-  const [paymentProductsData, setPaymentProductsData] = useState<
-    PaymentProduct[]
-  >([]);
 
   // Set welcome bar on mount
   useEffect(() => {
@@ -74,17 +67,14 @@ export default function PagoAportesPage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, contributionsRes, paymentProductsRes] =
-        await Promise.all([
-          getPaymentSourcesSavings(params),
-          getProductsContributions(params),
-          getPaymentProducts(params),
-        ]);
+      const [savingsRes, contributionsRes] = await Promise.all([
+        getPaymentSourcesSavings(params),
+        getProductsContributions(params),
+      ]);
 
       // Store raw API data
       setSavingsApiData(savingsRes);
       setContributionsApiData(contributionsRes);
-      setPaymentProductsData(paymentProductsRes);
 
       // Map to UI types
       const mappedAccounts = savingsRes.map(mapSavingsToPaymentAccount);
@@ -167,20 +157,6 @@ export default function PagoAportesPage() {
         "aportesContributions",
         JSON.stringify(contributionsApiData),
       );
-    }
-
-    // Cross-reference payment products to find tipoProducto for aportes target
-    const aportesIdCuenta = contributionsApiData?.aportes?.idCuentaAportes;
-    if (aportesIdCuenta) {
-      const matchingProduct = paymentProductsData.find(
-        (p) => String(p.idCuenta) === String(aportesIdCuenta),
-      );
-      if (matchingProduct) {
-        sessionStorage.setItem(
-          "aportesTargetTipoProducto",
-          matchingProduct.tipoProducto,
-        );
-      }
     }
 
     router.push("/pagos/pagar-mis-productos/aportes/confirmacion");
