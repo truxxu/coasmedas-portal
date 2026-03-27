@@ -15,6 +15,7 @@ interface TransferDetailsCardProps {
   onAmountChange: (amount: string) => void;
   hideBalances: boolean;
   error?: string;
+  loadingDestinations?: boolean;
 }
 
 export function TransferDetailsCard({
@@ -28,6 +29,7 @@ export function TransferDetailsCard({
   onAmountChange,
   hideBalances,
   error,
+  loadingDestinations,
 }: TransferDetailsCardProps) {
   const formatAccountOption = (account: TransferAccount) => {
     const maskedNumber = maskNumber(account.productNumber);
@@ -97,9 +99,16 @@ export function TransferDetailsCard({
             id="destination-product"
             value={selectedDestinationId}
             onChange={(e) => onDestinationChange(e.target.value)}
-            className="w-full h-11 px-3 rounded-md border border-brand-footer-text text-base text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none"
+            disabled={!selectedSourceId || loadingDestinations}
+            className="w-full h-11 px-3 rounded-md border border-brand-footer-text text-base text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none disabled:bg-gray-100 disabled:text-brand-gray-medium disabled:cursor-not-allowed"
           >
-            <option value="">Seleccionar producto</option>
+            <option value="">
+              {!selectedSourceId
+                ? "Selecciona una cuenta origen primero"
+                : loadingDestinations
+                  ? "Cargando productos..."
+                  : "Seleccionar producto"}
+            </option>
             {destinations
               .filter((d) => d.id !== selectedSourceId)
               .map((product) => (
