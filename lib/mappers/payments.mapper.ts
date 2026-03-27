@@ -170,11 +170,24 @@ export function mapProtectionToPaymentProduct(
 
 /**
  * Map PaymentProduct[] → PendingPayments (Pago Unificado).
- * Groups products by tipoProducto and sums pagoMinimo per category.
+ * Looks for tipoProducto "PU" (Pago Único) whose pagoMinimo is the total.
+ * Falls back to summing by category if no PU item is found.
  */
 export function mapPaymentProductsToPendingPayments(
   items: PaymentProduct[],
 ): PendingPayments {
+  const puItem = items.find((item) => item.tipoProducto.toUpperCase() === "PU");
+
+  if (puItem) {
+    return {
+      aportes: 0,
+      obligaciones: 0,
+      proteccion: 0,
+      total: normalizeMoney(puItem.pagoMinimo),
+    };
+  }
+
+  // Fallback: sum by category if no PU item exists
   let aportes = 0;
   let obligaciones = 0;
   let proteccion = 0;

@@ -10,8 +10,6 @@ import { TRANSFER_STEPS } from "@/src/mocks";
 import {
   getTransferSourcesSavings,
   getTransferSourcesCredits,
-} from "@/services/transfers.service";
-import {
   getTransferTargetsSavings,
   getTransferTargetsCredits,
   getTransferTargetsInvestments,
@@ -48,6 +46,7 @@ export default function EntreMisCuentasPage() {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingDestinations, setLoadingDestinations] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   // Raw API data for building transaction request later
@@ -57,14 +56,11 @@ export default function EntreMisCuentasPage() {
   const [creditsApiData, setCreditsApiData] = useState<CreditAccountResponse[]>(
     [],
   );
-  const [targetSavingsApi, setTargetSavingsApi] = useState<
-    TransferTargetSavings[]
-  >([]);
-  const [targetCreditsApi, setTargetCreditsApi] = useState<
-    TransferTargetCredits[]
-  >([]);
-  const [targetInvestmentsApi, setTargetInvestmentsApi] = useState<
-    TransferTargetInvestments[]
+  const [sourceCategory, setSourceCategory] = useState<string>("");
+  const [targetApiData, setTargetApiData] = useState<
+    | TransferTargetSavings[]
+    | TransferTargetCredits[]
+    | TransferTargetInvestments[]
   >([]);
 
   useEffect(() => {
@@ -77,7 +73,8 @@ export default function EntreMisCuentasPage() {
 
   const { documentType, documentNumber } = user ?? {};
 
-  const fetchData = useCallback(async () => {
+  // Phase 1: Fetch sources on mount
+  const fetchSources = useCallback(async () => {
     if (!documentType || !documentNumber) return;
 
     try {
@@ -85,40 +82,19 @@ export default function EntreMisCuentasPage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [
-        savingsRes,
-        creditsRes,
-        targetSavingsRes,
-        targetCreditsRes,
-        targetInvestmentsRes,
-      ] = await Promise.all([
+      const [savingsRes, creditsRes] = await Promise.all([
         getTransferSourcesSavings(params),
         getTransferSourcesCredits(params),
-        getTransferTargetsSavings(params),
-        getTransferTargetsCredits(params),
-        getTransferTargetsInvestments(params),
       ]);
 
-      // Store raw API data
       setSavingsApiData(savingsRes);
       setCreditsApiData(creditsRes);
-      setTargetSavingsApi(targetSavingsRes);
-      setTargetCreditsApi(targetCreditsRes);
-      setTargetInvestmentsApi(targetInvestmentsRes);
 
-      // Map to UI types
       const mappedSources = [
         ...savingsRes.map(mapSavingsToTransferAccount),
         ...creditsRes.map(mapCreditsToTransferAccount),
       ];
       setAccounts(mappedSources);
-
-      const mappedDestinations = [
-        ...targetSavingsRes.map(mapTargetSavingsToDestination),
-        ...targetCreditsRes.map(mapTargetCreditsToDestination),
-        ...targetInvestmentsRes.map(mapTargetInvestmentsToDestination),
-      ];
-      setDestinations(mappedDestinations);
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -130,9 +106,66 @@ export default function EntreMisCuentasPage() {
     }
   }, [documentType, documentNumber, router]);
 
+  // Phase 2: Fetch destinations after source selection
+  const fetchDestinations = useCallback(
+    async (accountType: string) => {
+      if (!documentType || !documentNumber) return;
+
+      try {
+        setLoadingDestinations(true);
+        setError("");
+
+        const params = { documentType, documentNumber };
+
+        if (accountType === "Ahorros") {
+          const res = await getTransferTargetsSavings(params);
+          setTargetApiData(res);
+          setSourceCategory("savings");
+          setDestinations(res.map(mapTargetSavingsToDestination));
+        } else if (accountType === "Credito") {
+          const res = await getTransferTargetsCredits(params);
+          console.log(res);
+          setTargetApiData(res);
+          setSourceCategory("credits");
+          setDestinations(res.map(mapTargetCreditsToDestination));
+        } else {
+          const res = await getTransferTargetsInvestments(params);
+          setTargetApiData(res);
+          setSourceCategory("investments");
+          setDestinations(res.map(mapTargetInvestmentsToDestination));
+        }
+      } catch (err) {
+        if (isAuthError(err)) {
+          router.push("/login");
+          return;
+        }
+        setError(
+          "No fue posible cargar los productos destino. Intente nuevamente.",
+        );
+      } finally {
+        setLoadingDestinations(false);
+      }
+    },
+    [documentType, documentNumber, router],
+  );
+
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchSources();
+  }, [fetchSources]);
+
+  const handleSourceChange = (accountId: string) => {
+    setSelectedSourceId(accountId);
+    setSelectedDestinationId("");
+    setDestinations([]);
+    setTargetApiData([]);
+
+    if (accountId) {
+      const account = accounts.find((a) => String(a.id) === accountId);
+      if (account) {
+        fetchDestinations(account.accountType);
+      }
+    }
+  };
 
   const handleConfirm = () => {
     setError("");
@@ -150,7 +183,9 @@ export default function EntreMisCuentasPage() {
       return;
     }
 
-    const sourceAccount = accounts.find((acc) => acc.id === selectedSourceId);
+    const sourceAccount = accounts.find(
+      (acc) => String(acc.id) === selectedSourceId,
+    );
 
     if (sourceAccount && Number(amount) > sourceAccount.balance) {
       setError("Saldo insuficiente en la cuenta seleccionada");
@@ -171,17 +206,10 @@ export default function EntreMisCuentasPage() {
       "transferSourcesCreditsApi",
       JSON.stringify(creditsApiData),
     );
+    sessionStorage.setItem("transferSourceCategory", sourceCategory);
     sessionStorage.setItem(
-      "transferTargetSavingsApi",
-      JSON.stringify(targetSavingsApi),
-    );
-    sessionStorage.setItem(
-      "transferTargetCreditsApi",
-      JSON.stringify(targetCreditsApi),
-    );
-    sessionStorage.setItem(
-      "transferTargetInvestmentsApi",
-      JSON.stringify(targetInvestmentsApi),
+      "transferTargetApiData",
+      JSON.stringify(targetApiData),
     );
 
     router.push("/transferencias/internas/entre-mis-cuentas/confirmacion");
@@ -200,7 +228,7 @@ export default function EntreMisCuentasPage() {
         <div className="bg-white rounded-2xl p-6 text-center">
           <p className="text-red-600 mb-4">{loadError}</p>
           <button
-            onClick={fetchData}
+            onClick={fetchSources}
             className="text-sm font-medium text-white bg-brand-navy px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
           >
             Reintentar
@@ -246,11 +274,12 @@ export default function EntreMisCuentasPage() {
         selectedSourceId={selectedSourceId}
         selectedDestinationId={selectedDestinationId}
         amount={amount}
-        onSourceChange={setSelectedSourceId}
+        onSourceChange={handleSourceChange}
         onDestinationChange={setSelectedDestinationId}
         onAmountChange={setAmount}
         hideBalances={hideBalances}
         error={error}
+        loadingDestinations={loadingDestinations}
       />
 
       {/* Actions */}
