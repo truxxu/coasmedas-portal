@@ -72,21 +72,6 @@ export const PaymentDetailsCard: React.FC<PaymentDetailsCardProps> = ({
 
       <div className="space-y-2">
         <PaymentSummaryRow
-          label="Total Aportes:"
-          amount={pendingPayments.aportes}
-          hideAmount={hideBalances}
-        />
-        <PaymentSummaryRow
-          label="Total Obligaciones (pago mínimo):"
-          amount={pendingPayments.obligaciones}
-          hideAmount={hideBalances}
-        />
-        <PaymentSummaryRow
-          label="Total Protección:"
-          amount={pendingPayments.proteccion}
-          hideAmount={hideBalances}
-        />
-        <PaymentSummaryRow
           label="Total a Pagar:"
           amount={pendingPayments.total}
           variant="total"
