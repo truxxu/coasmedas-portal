@@ -12,8 +12,6 @@ export const UTILITY_PAYMENT_STEPS: Step[] = [
   { number: 4, label: "Finalización" },
 ];
 
-export const UTILITY_MOCK_VALID_CODE = "123456";
-
 export const mockUtilitySourceAccounts: UtilitySourceAccount[] = [
   {
     id: "1",

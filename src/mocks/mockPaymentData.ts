@@ -80,8 +80,3 @@ export const PAYMENT_STEPS: Step[] = [
   { number: 3, label: "SMS" },
   { number: 4, label: "Finalización" },
 ];
-
-/**
- * Mock SMS verification code (for testing)
- */
-export const MOCK_VALID_CODE = "123456";

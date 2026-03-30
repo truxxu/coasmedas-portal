@@ -97,11 +97,6 @@ export const mockRedCoopResultError: RedCoopTransferResult = {
 };
 
 /**
- * Valid SMS code for testing
- */
-export const RED_COOP_MOCK_VALID_CODE = "123456";
-
-/**
  * Red Coopcentral transfer flow steps
  */
 export const RED_COOP_TRANSFER_STEPS: Step[] = [

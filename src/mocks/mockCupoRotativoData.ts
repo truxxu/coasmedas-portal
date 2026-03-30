@@ -77,8 +77,3 @@ export const mockCupoRotativoResultError: CupoRotativoTransferResult = {
   approvalNumber: "-",
   description: "Cupo no disponible",
 };
-
-/**
- * Valid SMS code for testing
- */
-export const CUPO_ROTATIVO_MOCK_VALID_CODE = "123456";

@@ -97,11 +97,6 @@ export const APORTES_PAYMENT_STEPS: Step[] = [
 ];
 
 /**
- * Mock SMS verification code (for testing)
- */
-export const APORTES_MOCK_VALID_CODE = "123456";
-
-/**
  * Helper to determine payment method from selected ID
  */
 export function getPaymentMethod(selectedId: string): AportesPaymentMethod {

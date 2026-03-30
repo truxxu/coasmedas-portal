@@ -151,8 +151,3 @@ export const OTROS_ASOCIADOS_PAYMENT_STEPS_PSE: Step[] = [
   { number: 3, label: "PSE" },
   { number: 4, label: "Finalización" },
 ];
-
-/**
- * Mock SMS verification code (for testing)
- */
-export const OTROS_ASOCIADOS_MOCK_VALID_CODE = "123456";

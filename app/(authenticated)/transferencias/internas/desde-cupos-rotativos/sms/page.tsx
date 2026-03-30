@@ -8,7 +8,6 @@ import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 import {
   TRANSFER_STEPS,
-  CUPO_ROTATIVO_MOCK_VALID_CODE,
   mockCuposRotativos,
   mockCupoRotativoDestinations,
   mockCupoRotativoResultSuccess,
@@ -79,37 +78,31 @@ export default function SMSVerificationPage() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      if (code === CUPO_ROTATIVO_MOCK_VALID_CODE) {
-        // Build result from stored data
-        const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
-        const destinationId = sessionStorage.getItem(
-          "cupoRotativoDestinationId",
-        );
-        const amount = sessionStorage.getItem("cupoRotativoAmount");
+      // Build result from stored data
+      const cupoId = sessionStorage.getItem("cupoRotativoSelectedCupoId");
+      const destinationId = sessionStorage.getItem("cupoRotativoDestinationId");
+      const amount = sessionStorage.getItem("cupoRotativoAmount");
 
-        const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
-        const selectedDestination = mockCupoRotativoDestinations.find(
-          (d) => d.id === destinationId,
-        );
+      const selectedCupo = mockCuposRotativos.find((c) => c.id === cupoId);
+      const selectedDestination = mockCupoRotativoDestinations.find(
+        (d) => d.id === destinationId,
+      );
 
-        const result: CupoRotativoTransferResult = {
-          ...mockCupoRotativoResultSuccess,
-          sourceAccount: selectedCupo?.name || "Cupo Rotativo Personal",
-          destinationAccount: selectedDestination
-            ? `${selectedDestination.name} (${selectedDestination.maskedNumber})`
-            : "Cuenta de Ahorros",
-          amountTransferred: Number(amount) || 0,
-        };
+      const result: CupoRotativoTransferResult = {
+        ...mockCupoRotativoResultSuccess,
+        sourceAccount: selectedCupo?.name || "Cupo Rotativo Personal",
+        destinationAccount: selectedDestination
+          ? `${selectedDestination.name} (${selectedDestination.maskedNumber})`
+          : "Cuenta de Ahorros",
+        amountTransferred: Number(amount) || 0,
+      };
 
-        sessionStorage.setItem(
-          "cupoRotativoTransferResult",
-          JSON.stringify(result),
-        );
+      sessionStorage.setItem(
+        "cupoRotativoTransferResult",
+        JSON.stringify(result),
+      );
 
-        router.push("/transferencias/internas/desde-cupos-rotativos/resultado");
-      } else {
-        setError("El codigo ingresado es incorrecto.");
-      }
+      router.push("/transferencias/internas/desde-cupos-rotativos/resultado");
     } catch {
       // Store error result
       sessionStorage.setItem(

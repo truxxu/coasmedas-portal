@@ -110,11 +110,6 @@ export const mockExternalTransferResultError: ExternalTransferResult = {
 };
 
 /**
- * Valid SMS code for testing
- */
-export const EXTERNAL_TRANSFER_MOCK_VALID_CODE = "123456";
-
-/**
  * External transfer flow steps
  */
 export const EXTERNAL_TRANSFER_STEPS: Step[] = [

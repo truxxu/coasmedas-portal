@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 const RESEND_COOLDOWN_SECONDS = 60;
 
 export interface SMSCodeVerificationConfig {
-  /** Valid code for mock validation (optional when using onSubmit) */
-  validCode?: string;
   /** Session storage key to check for session validation */
   sessionKey: string;
   /** Path to redirect if session is invalid */
@@ -103,16 +101,10 @@ export function useSMSCodeVerification(
         config.onSuccess?.(code);
         router.push(config.successPath);
       } else {
-        // Legacy mock flow: compare against validCode
+        // Mock flow: accept any 6-digit code
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        if (code === config.validCode) {
-          config.onSuccess?.(code);
-          router.push(config.successPath);
-        } else {
-          config.onError?.(code);
-          setError("Codigo incorrecto. Por favor intenta nuevamente.");
-        }
+        config.onSuccess?.(code);
+        router.push(config.successPath);
       }
     } catch (err) {
       config.onError?.(code);
