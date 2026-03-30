@@ -197,10 +197,8 @@ export async function getExternalSourcesCredits(
  * @auth JWT
  * @status ✅ Used in mobile (bank selection)
  */
-export async function listBanks(
-  params?: UserIdentification,
-): Promise<BankListItem[]> {
-  return apiPost<BankListItem[]>("/transfer/external/listBanks", params ?? {});
+export async function listBanks(): Promise<BankListItem[]> {
+  return apiPost<BankListItem[]>("/transfer/external/listBanks");
 }
 
 /**
@@ -244,13 +242,8 @@ export async function createExternalBankTransfer(
  * @auth JWT
  * @status ✅ Used in mobile (entity selection)
  */
-export async function listEntities(
-  params?: UserIdentification,
-): Promise<EntityListItem[]> {
-  return apiPost<EntityListItem[]>(
-    "/transfer/external/listEntities",
-    params ?? {},
-  );
+export async function listEntities(): Promise<EntityListItem[]> {
+  return apiPost<EntityListItem[]>("/transfer/external/listEntities");
 }
 
 /**

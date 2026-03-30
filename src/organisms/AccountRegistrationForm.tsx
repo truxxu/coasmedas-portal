@@ -127,7 +127,7 @@ export function AccountRegistrationForm({
       <div className="mb-6">
         <h2 className="text-xl font-bold text-brand-navy mb-2">
           {mode === "register"
-            ? "Inscripcion de Cuentas Externas"
+            ? "Inscripción de Cuentas Externas"
             : "Editar Cuentas Externas"}
         </h2>
         <p className="text-sm text-brand-gray-high">
