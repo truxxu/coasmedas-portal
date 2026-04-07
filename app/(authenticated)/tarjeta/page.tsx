@@ -60,12 +60,14 @@ export default function TarjetaCreditoPage() {
         <>
           <TarjetaCreditoDetailsCard product={selectedProduct} />
 
-          <TransactionHistoryCard
-            title={transactionTitle}
-            subtitle="Últimos movimientos registrados."
-            transactions={transactions}
-            onFilter={() => {}}
-          />
+          {selectedProduct.status === "activa" && (
+            <TransactionHistoryCard
+              title={transactionTitle}
+              subtitle="Últimos movimientos registrados."
+              transactions={transactions}
+              onFilter={() => {}}
+            />
+          )}
 
           <DownloadReportsCard
             availableMonths={mockTarjetaCreditoAvailableMonths}

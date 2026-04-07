@@ -18,12 +18,18 @@ const STATUS_BADGE: Record<
   TarjetaCreditoProduct["status"],
   { label: string; className: string }
 > = {
-  activa: { label: "Activa", className: "bg-[#E6F7EE] text-[#00a44c]" },
+  activa: {
+    label: "Activa",
+    className: "bg-brand-gray-light text-brand-success-icon",
+  },
   pendiente_activacion: {
     label: "Pendiente",
-    className: "bg-[#FFF8E1] text-brand-navy-alt",
+    className: "bg-brand-gray-light text-brand-navy-alt",
   },
-  bloqueada: { label: "Bloqueada", className: "bg-[#FFEBEE] text-[#e1182c]" },
+  bloqueada: {
+    label: "Bloqueada",
+    className: "bg-brand-gray-light text-brand-error",
+  },
 };
 
 export function TarjetaCreditoDetailsCard({
@@ -81,9 +87,9 @@ export function TarjetaCreditoDetailsCard({
                   Disponible: {fmt(product.cupoDisponible)}
                 </span>
               </div>
-              <div className="h-[10px] w-full rounded-full bg-[#E4E6EA] overflow-hidden">
+              <div className="h-[10px] w-full rounded-full bg-brand-border overflow-hidden">
                 <div
-                  className="h-full bg-[#00B8ED] rounded-full transition-all"
+                  className="h-full bg-brand-primary rounded-full transition-all"
                   style={{ width: `${usagePct}%` }}
                 />
               </div>
@@ -126,9 +132,18 @@ export function TarjetaCreditoDetailsCard({
               </div>
             </>
           ) : (
-            <p className="text-[14px] text-brand-gray-muted py-6 text-center">
-              No hay información disponible para esta tarjeta.
-            </p>
+            <div className="bg-brand-gray-light rounded-lg px-6 py-10 text-center">
+              <p className="text-[14px] text-black">
+                Esta tarjeta no está activa. No puedes realizar pagos ni
+                avances.
+              </p>
+              {product.status === "pendiente_activacion" && (
+                <p className="text-[14px] text-black mt-1">
+                  Dirígete a la opción &ldquo;Bloquear/ Activar&rdquo; para
+                  habilitarla.
+                </p>
+              )}
+            </div>
           )}
         </div>
       ) : (
@@ -137,11 +152,13 @@ export function TarjetaCreditoDetailsCard({
             title="Pagar Tarjeta"
             description="Realiza el pago de tu tarjeta."
             onClick={noop}
+            disabled={!isActiva}
           />
           <CardActionOptionCard
             title="Realizar Avance"
             description="Transfiere de tu cupo a tu cuenta."
             onClick={noop}
+            disabled={!isActiva}
           />
           <CardActionOptionCard
             title="Bloquear / Activar"

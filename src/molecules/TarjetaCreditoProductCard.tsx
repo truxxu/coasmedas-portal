@@ -57,7 +57,9 @@ export function TarjetaCreditoProductCard({
           <p className="text-[18.5px] font-bold text-black">
             {hideBalances ? maskCurrency() : formatCurrency(product.deudaTotal)}
           </p>
-          <p className="text-[14px] font-medium text-[#00a44c] mt-2">Activa</p>
+          <p className="text-[14px] font-medium text-brand-success-icon mt-2">
+            Activa
+          </p>
         </>
       ) : (
         <>
@@ -65,7 +67,7 @@ export function TarjetaCreditoProductCard({
           <p className="text-[18.5px] font-bold text-black">-</p>
           <p
             className={`text-[14px] font-medium mt-2 ${
-              isBloqueada ? "text-[#e1182c]" : "text-brand-navy-alt"
+              isBloqueada ? "text-brand-error" : "text-brand-navy-alt"
             }`}
           >
             {isPendiente ? "Pendiente de activación" : "Bloqueada"}
