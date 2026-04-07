@@ -82,3 +82,5 @@ export { ScheduleTransferSelectionCard } from "./ScheduleTransferSelectionCard";
 export { ScheduleTransferForm } from "./ScheduleTransferForm";
 export { ScheduleSuccessModal } from "./ScheduleSuccessModal";
 export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
+export { TarjetaCreditoCarousel } from "./TarjetaCreditoCarousel";
+export { TarjetaCreditoDetailsCard } from "./TarjetaCreditoDetailsCard";
