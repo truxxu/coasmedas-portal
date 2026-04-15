@@ -6,6 +6,7 @@ export * from "./savings";
 export * from "./obligaciones";
 export * from "./inversiones";
 export * from "./proteccion";
+export * from "./coaspocket";
 export * from "./payment";
 export * from "./stepper";
 export * from "./aportes-payment";

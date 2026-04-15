@@ -50,7 +50,12 @@
 
 ```typescript
 // Product types
-export type ProductType = "aportes" | "ahorros" | "inversiones" | "proteccion";
+export type ProductType =
+  | "aportes"
+  | "ahorros"
+  | "inversiones"
+  | "proteccion"
+  | "coaspocket";
 
 // Aportes-specific types
 export interface AportesProduct {
@@ -178,6 +183,7 @@ const productSubItems = [
   { label: "Ahorros", href: "/productos/ahorros" },
   { label: "Inversiones", href: "/productos/inversiones" },
   { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" },
 ];
 ```
 
@@ -815,6 +821,7 @@ The following pages will reuse components from this feature:
 | `/productos/ahorros`     | TransactionHistoryCard, DownloadReportsCard, ProductPageHeader |
 | `/productos/inversiones` | TransactionHistoryCard, DownloadReportsCard, ProductPageHeader |
 | `/productos/proteccion`  | ProductPageHeader, custom info card                            |
+| `/productos/coaspocket`  | TransactionHistoryCard, DownloadReportsCard, ProductPageHeader |
 
 ---
 

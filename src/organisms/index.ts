@@ -24,6 +24,7 @@ export { ObligacionCarousel } from "./ObligacionCarousel";
 export { ObligacionInfoCard } from "./ObligacionInfoCard";
 export { InversionCarousel } from "./InversionCarousel";
 export { ProteccionCarousel } from "./ProteccionCarousel";
+export { CoaspocketCarousel } from "./CoaspocketCarousel";
 export { PaymentOptionsGrid } from "./PaymentOptionsGrid";
 export { PaymentDetailsCard } from "./PaymentDetailsCard";
 export { PaymentConfirmationCard } from "./PaymentConfirmationCard";
