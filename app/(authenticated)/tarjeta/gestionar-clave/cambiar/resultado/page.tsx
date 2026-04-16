@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveCambiarResultCard } from "@/src/organisms";
+import { TarjetaClaveResultCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
-import { TarjetaClaveCambiarResult } from "@/src/types/tarjeta-clave";
+import { TarjetaClaveResult } from "@/src/types/tarjeta-clave";
 import { TARJETA_CLAVE_STEPS } from "@/src/mocks";
 
 const BREADCRUMBS = ["Inicio", "Gestionar Clave", "Cambiar Clave"];
@@ -23,12 +23,12 @@ export default function CambiarResultadoPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [result] = useState<TarjetaClaveCambiarResult | null>(() => {
+  const [result] = useState<TarjetaClaveResult | null>(() => {
     if (typeof window === "undefined") return null;
     const stored = sessionStorage.getItem("tarjetaClaveCambiarResult");
     if (!stored) return null;
     try {
-      return JSON.parse(stored) as TarjetaClaveCambiarResult;
+      return JSON.parse(stored) as TarjetaClaveResult;
     } catch {
       return null;
     }
@@ -62,7 +62,7 @@ export default function CambiarResultadoPage() {
         <Stepper currentStep={4} steps={TARJETA_CLAVE_STEPS} />
       </div>
 
-      <TarjetaClaveCambiarResultCard result={result} />
+      <TarjetaClaveResultCard mode="cambiar" result={result} />
 
       <div className="flex justify-end">
         <Button variant="primary" onClick={handleFinish}>

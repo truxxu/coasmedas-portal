@@ -4,7 +4,7 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveCambiarDetailsCard } from "@/src/organisms";
+import { TarjetaClaveDetailsCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 import { TarjetaClaveCambiarFormData } from "@/src/schemas/tarjetaClaveCambiarSchema";
 import { TARJETA_CLAVE_STEPS, mockTarjetaCreditoProducts } from "@/src/mocks";
@@ -65,7 +65,8 @@ function CambiarDetalleContent() {
         <Stepper currentStep={1} steps={TARJETA_CLAVE_STEPS} />
       </div>
 
-      <TarjetaClaveCambiarDetailsCard
+      <TarjetaClaveDetailsCard
+        mode="cambiar"
         product={product}
         formId={FORM_ID}
         onSubmit={handleSubmit}

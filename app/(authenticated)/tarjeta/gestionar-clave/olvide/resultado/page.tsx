@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveOlvideResultCard } from "@/src/organisms";
+import { TarjetaClaveResultCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
-import { TarjetaClaveOlvideResult } from "@/src/types/tarjeta-clave";
+import { TarjetaClaveResult } from "@/src/types/tarjeta-clave";
 import { TARJETA_CLAVE_STEPS } from "@/src/mocks";
 
 const BREADCRUMBS = ["Inicio", "Gestionar Clave", "Olvidé mi Clave"];
@@ -23,12 +23,12 @@ export default function OlvideResultadoPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [result] = useState<TarjetaClaveOlvideResult | null>(() => {
+  const [result] = useState<TarjetaClaveResult | null>(() => {
     if (typeof window === "undefined") return null;
     const stored = sessionStorage.getItem("tarjetaClaveOlvideResult");
     if (!stored) return null;
     try {
-      return JSON.parse(stored) as TarjetaClaveOlvideResult;
+      return JSON.parse(stored) as TarjetaClaveResult;
     } catch {
       return null;
     }
@@ -62,7 +62,7 @@ export default function OlvideResultadoPage() {
         <Stepper currentStep={4} steps={TARJETA_CLAVE_STEPS} />
       </div>
 
-      <TarjetaClaveOlvideResultCard result={result} />
+      <TarjetaClaveResultCard mode="olvide" result={result} />
 
       <div className="flex justify-end">
         <Button variant="primary" onClick={handleFinish}>

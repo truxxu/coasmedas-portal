@@ -94,7 +94,7 @@ export const TarjetaAvanceConfirmationCard: React.FC<
           onChange={onTermsChange}
           aria-label="Aceptar términos y condiciones"
         />
-        <span className="text-[11px] text-brand-navy">
+        <span className="text-[14px] text-brand-navy">
           Acepto los términos y condiciones y el pagaré asociado a este avance.
         </span>
       </label>

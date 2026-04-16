@@ -100,12 +100,7 @@ export { TarjetaActivacionConfirmationCard } from "./TarjetaActivacionConfirmati
 export { TarjetaActivacionResultCard } from "./TarjetaActivacionResultCard";
 export { TarjetaClaveActionsCard } from "./TarjetaClaveActionsCard";
 export { TarjetaClaveCardList } from "./TarjetaClaveCardList";
-export { TarjetaClaveAsignarDetailsCard } from "./TarjetaClaveAsignarDetailsCard";
-export { TarjetaClaveAsignarConfirmationCard } from "./TarjetaClaveAsignarConfirmationCard";
-export { TarjetaClaveAsignarResultCard } from "./TarjetaClaveAsignarResultCard";
-export { TarjetaClaveCambiarDetailsCard } from "./TarjetaClaveCambiarDetailsCard";
-export { TarjetaClaveCambiarConfirmationCard } from "./TarjetaClaveCambiarConfirmationCard";
-export { TarjetaClaveCambiarResultCard } from "./TarjetaClaveCambiarResultCard";
-export { TarjetaClaveOlvideDetailsCard } from "./TarjetaClaveOlvideDetailsCard";
-export { TarjetaClaveOlvideConfirmationCard } from "./TarjetaClaveOlvideConfirmationCard";
-export { TarjetaClaveOlvideResultCard } from "./TarjetaClaveOlvideResultCard";
+export { TarjetaClaveDetailsCard } from "./TarjetaClaveDetailsCard";
+export { TarjetaClaveConfirmationCard } from "./TarjetaClaveConfirmationCard";
+export { TarjetaClaveResultCard } from "./TarjetaClaveResultCard";
+export { TarjetaSmsCodePage } from "./TarjetaSmsCodePage";
