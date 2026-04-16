@@ -25,8 +25,9 @@ export default function GestionarClavePage() {
     router.push("/tarjeta/gestionar-clave/cambiar");
   };
 
-  // TODO: wire when flows are implemented.
-  const handleNoop = () => {};
+  const handleOlvide = () => {
+    router.push("/tarjeta/gestionar-clave/olvide");
+  };
 
   const handleBack = () => {
     router.push("/tarjeta");
@@ -39,7 +40,7 @@ export default function GestionarClavePage() {
       <TarjetaClaveActionsCard
         onAsignar={handleAsignar}
         onCambiar={handleCambiar}
-        onOlvide={handleNoop}
+        onOlvide={handleOlvide}
       />
 
       <div className="flex justify-start">

@@ -29,3 +29,18 @@ export interface TarjetaClaveCambiarResult {
   direccionIp: string;
   descripcion?: string;
 }
+
+export interface TarjetaClaveOlvideConfirmationData {
+  cardId: string;
+  cardDisplay: string;
+}
+
+export interface TarjetaClaveOlvideResult {
+  status: "success" | "error";
+  cardDisplay: string;
+  fechaTransaccion: string;
+  horaTransaccion: string;
+  numeroAprobacion: string;
+  direccionIp: string;
+  descripcion?: string;
+}

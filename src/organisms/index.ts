@@ -106,3 +106,6 @@ export { TarjetaClaveAsignarResultCard } from "./TarjetaClaveAsignarResultCard";
 export { TarjetaClaveCambiarDetailsCard } from "./TarjetaClaveCambiarDetailsCard";
 export { TarjetaClaveCambiarConfirmationCard } from "./TarjetaClaveCambiarConfirmationCard";
 export { TarjetaClaveCambiarResultCard } from "./TarjetaClaveCambiarResultCard";
+export { TarjetaClaveOlvideDetailsCard } from "./TarjetaClaveOlvideDetailsCard";
+export { TarjetaClaveOlvideConfirmationCard } from "./TarjetaClaveOlvideConfirmationCard";
+export { TarjetaClaveOlvideResultCard } from "./TarjetaClaveOlvideResultCard";
