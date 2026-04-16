@@ -63,8 +63,9 @@ export function TarjetaCreditoDetailsCard({
     router.push("/tarjeta/bloqueo-activacion");
   };
 
-  // TODO: wire remaining actions to real flows when available (e.g. /tarjeta/clave)
-  const noop = () => {};
+  const handleGestionarClave = () => {
+    router.push("/tarjeta/gestionar-clave");
+  };
 
   return (
     <div className="bg-white rounded-2xl p-6">
@@ -181,7 +182,7 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Gestionar Clave"
             description="Asigna, cambia u olvida tu clave."
-            onClick={noop}
+            onClick={handleGestionarClave}
           />
         </div>
       )}

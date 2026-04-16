@@ -98,3 +98,8 @@ export { TarjetaBloqueoResultCard } from "./TarjetaBloqueoResultCard";
 export { TarjetaActivacionDetailsCard } from "./TarjetaActivacionDetailsCard";
 export { TarjetaActivacionConfirmationCard } from "./TarjetaActivacionConfirmationCard";
 export { TarjetaActivacionResultCard } from "./TarjetaActivacionResultCard";
+export { TarjetaClaveActionsCard } from "./TarjetaClaveActionsCard";
+export { TarjetaClaveCardList } from "./TarjetaClaveCardList";
+export { TarjetaClaveAsignarDetailsCard } from "./TarjetaClaveAsignarDetailsCard";
+export { TarjetaClaveAsignarConfirmationCard } from "./TarjetaClaveAsignarConfirmationCard";
+export { TarjetaClaveAsignarResultCard } from "./TarjetaClaveAsignarResultCard";

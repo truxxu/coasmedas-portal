@@ -30,8 +30,10 @@ export function CardActionOptionCard({
         }
       `}
     >
-      <h4 className="text-[16px] font-bold text-black">{title}</h4>
-      <p className="text-[12px] text-black mt-1">{description}</p>
+      <h4 className="text-[16px] font-bold text-brand-navy text-center">
+        {title}
+      </h4>
+      <p className="text-[14px] text-black mt-1 text-center">{description}</p>
     </button>
   );
 }
