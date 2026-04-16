@@ -63,10 +63,6 @@ export function TarjetaCreditoDetailsCard({
     router.push("/tarjeta/bloqueo-activacion");
   };
 
-  const handleGestionarClave = () => {
-    router.push("/tarjeta/gestionar-clave");
-  };
-
   return (
     <div className="bg-white rounded-2xl p-6">
       <Tabs
@@ -182,7 +178,6 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Gestionar Clave"
             description="Asigna, cambia u olvida tu clave."
-            // onClick={handleGestionarClave}
             onClick={() => {}}
           />
         </div>

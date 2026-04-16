@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
@@ -22,8 +22,8 @@ export default function PagarTarjetaConfirmacionPage() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const confirmationData =
-    useMemo<TarjetaPaymentConfirmationData | null>(() => {
+  const [confirmationData] = useState<TarjetaPaymentConfirmationData | null>(
+    () => {
       if (typeof window === "undefined") return null;
 
       const productStr = sessionStorage.getItem("tarjetaPaymentProduct");
@@ -43,7 +43,8 @@ export default function PagarTarjetaConfirmacionPage() {
         newEstimatedBalance: Math.max(0, product.deudaTotal - valor),
         valorAPagar: valor,
       };
-    }, []);
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({

@@ -31,7 +31,6 @@ import type {
   CreditAccountResponse,
   InvestmentAccountResponse,
 } from "@/types/api/products";
-import type { UserIdentification } from "@/types/api/common";
 
 // ─── Internal Transfer Sources ───
 
