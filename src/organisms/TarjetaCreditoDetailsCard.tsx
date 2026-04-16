@@ -59,8 +59,11 @@ export function TarjetaCreditoDetailsCard({
     router.push(`/tarjeta/avance?cardId=${product.id}`);
   };
 
-  // TODO: wire remaining actions to real flows when available
-  // (e.g. /tarjeta/bloquear, /tarjeta/clave)
+  const handleBloquearActivar = () => {
+    router.push("/tarjeta/bloqueo-activacion");
+  };
+
+  // TODO: wire remaining actions to real flows when available (e.g. /tarjeta/clave)
   const noop = () => {};
 
   return (
@@ -173,7 +176,7 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Bloquear / Activar"
             description="Gestiona la seguridad de tu tarjeta."
-            onClick={noop}
+            onClick={handleBloquearActivar}
           />
           <CardActionOptionCard
             title="Gestionar Clave"

@@ -91,3 +91,7 @@ export { TarjetaPaymentResultCard } from "./TarjetaPaymentResultCard";
 export { TarjetaAvanceDetailsCard } from "./TarjetaAvanceDetailsCard";
 export { TarjetaAvanceConfirmationCard } from "./TarjetaAvanceConfirmationCard";
 export { TarjetaAvanceResultCard } from "./TarjetaAvanceResultCard";
+export { CardBlockActivateList } from "./CardBlockActivateList";
+export { TarjetaBloqueoDetailsCard } from "./TarjetaBloqueoDetailsCard";
+export { TarjetaBloqueoConfirmationCard } from "./TarjetaBloqueoConfirmationCard";
+export { TarjetaBloqueoResultCard } from "./TarjetaBloqueoResultCard";
