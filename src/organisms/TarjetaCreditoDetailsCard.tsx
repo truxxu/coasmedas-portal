@@ -182,7 +182,8 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Gestionar Clave"
             description="Asigna, cambia u olvida tu clave."
-            onClick={handleGestionarClave}
+            // onClick={handleGestionarClave}
+            onClick={() => {}}
           />
         </div>
       )}
