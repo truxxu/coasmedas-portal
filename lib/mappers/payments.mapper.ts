@@ -310,7 +310,7 @@ export function buildAccountReference(
   account: SavingsAccountResponse,
 ): AccountReference {
   return {
-    codigoProductoCobis: account.codigoProductoCobis,
+    codigoProductoCobis: String(account.codigoProductoCobis),
     idCuenta: account.idCuenta,
     numeroCuenta: account.numeroCuenta,
   };

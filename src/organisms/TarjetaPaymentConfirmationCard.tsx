@@ -24,33 +24,29 @@ export const TarjetaPaymentConfirmationCard: React.FC<
         Confirmación de Pago
       </h2>
 
-      <p className="text-[14px] text-brand-navy-alt">
+      <p className="text-[14px] text-brand-navy">
         Por favor, verifica que los datos de la transacción sean correctos antes
         de continuar.
       </p>
 
       <div className="space-y-3">
         <div className="flex justify-between py-2">
-          <span className="text-[14px] text-brand-navy-alt">
-            Cuenta Origen:
-          </span>
-          <span className="text-[14px] font-medium text-brand-navy-alt">
+          <span className="text-[14px] text-brand-navy">Cuenta Origen:</span>
+          <span className="text-[14px] font-medium text-brand-navy">
             {confirmationData.sourceAccount}
           </span>
         </div>
         <div className="flex justify-between py-2">
-          <span className="text-[14px] text-brand-navy-alt">
-            Tarjeta a Pagar:
-          </span>
-          <span className="text-[14px] font-medium text-brand-navy-alt">
+          <span className="text-[14px] text-brand-navy">Tarjeta a Pagar:</span>
+          <span className="text-[14px] font-medium text-brand-navy">
             {confirmationData.tarjetaDisplay}
           </span>
         </div>
         <div className="flex justify-between py-2">
-          <span className="text-[14px] text-brand-navy-alt">
+          <span className="text-[14px] text-brand-navy">
             Nuevo Saldo Estimado:
           </span>
-          <span className="text-[14px] font-medium text-brand-navy-alt">
+          <span className="text-[14px] font-medium text-brand-navy">
             {displayAmount(confirmationData.newEstimatedBalance)}
           </span>
         </div>
@@ -59,8 +55,8 @@ export const TarjetaPaymentConfirmationCard: React.FC<
       <Divider />
 
       <div className="flex justify-between py-2">
-        <span className="text-[14px] text-brand-navy-alt">Valor a Pagar:</span>
-        <span className="text-[14px] font-medium text-brand-navy-alt">
+        <span className="text-[14px] text-brand-navy">Valor a Pagar:</span>
+        <span className="text-[14px] font-medium text-brand-navy">
           {displayAmount(confirmationData.valorAPagar)}
         </span>
       </div>
@@ -72,7 +68,7 @@ export const TarjetaPaymentConfirmationCard: React.FC<
           onChange={onTermsChange}
           aria-label="Aceptar términos y condiciones"
         />
-        <span className="text-[11px] text-brand-navy-alt">
+        <span className="text-[14px] text-brand-navy">
           Acepto los términos y condiciones y el pagaré asociado a este pago.
         </span>
       </label>

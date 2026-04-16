@@ -6,6 +6,10 @@ export interface TarjetaAvanceFormData {
   cvv: string;
 }
 
+export type TarjetaAvanceFormErrors = Partial<
+  Record<keyof TarjetaAvanceFormData, string>
+>;
+
 export interface TarjetaAvanceConfirmationData {
   destinationAccount: string;
   tarjetaDisplay: string;

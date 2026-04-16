@@ -7,6 +7,10 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { TarjetaAvanceDetailsCard } from "@/src/organisms";
 import { useUserContext, useWelcomeBar } from "@/src/contexts";
 import {
+  TarjetaAvanceFormData,
+  TarjetaAvanceFormErrors,
+} from "@/src/types/tarjeta-avance";
+import {
   TARJETA_AVANCE_STEPS,
   mockTarjetaCreditoProducts,
   mockTarjetaSourceAccounts,
@@ -25,6 +29,14 @@ const DOCUMENT_LABEL: Record<string, string> = {
 
 const VENCIMIENTO_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
 
+const INITIAL_VALUES: TarjetaAvanceFormData = {
+  destinationAccountId: "",
+  cuotas: 0,
+  valor: 0,
+  vencimiento: "",
+  cvv: "",
+};
+
 function AvanceDetalleContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,17 +49,19 @@ function AvanceDetalleContent() {
     [cardId],
   );
 
-  const [destinationAccountId, setDestinationAccountId] = useState("");
-  const [cuotas, setCuotas] = useState(0);
-  const [valor, setValor] = useState(0);
-  const [vencimiento, setVencimiento] = useState("");
-  const [cvv, setCvv] = useState("");
+  const [values, setValues] = useState<TarjetaAvanceFormData>(INITIAL_VALUES);
+  const [errors, setErrors] = useState<TarjetaAvanceFormErrors>({});
 
-  const [destinationError, setDestinationError] = useState("");
-  const [cuotasError, setCuotasError] = useState("");
-  const [valorError, setValorError] = useState("");
-  const [vencimientoError, setVencimientoError] = useState("");
-  const [cvvError, setCvvError] = useState("");
+  const handleChange = (patch: Partial<TarjetaAvanceFormData>) => {
+    setValues((prev) => ({ ...prev, ...patch }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      for (const key of Object.keys(patch) as (keyof TarjetaAvanceFormData)[]) {
+        delete next[key];
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     setWelcomeBar({ title: "Realizar Avance", backHref: "/tarjeta" });
@@ -76,60 +90,43 @@ function AvanceDetalleContent() {
   };
 
   const handleContinue = () => {
-    let hasError = false;
+    const nextErrors: TarjetaAvanceFormErrors = {};
 
-    if (!destinationAccountId) {
-      setDestinationError("Selecciona una cuenta destino");
-      hasError = true;
-    } else {
-      setDestinationError("");
+    if (!values.destinationAccountId) {
+      nextErrors.destinationAccountId = "Selecciona una cuenta destino";
+    }
+    if (!values.vencimiento || !VENCIMIENTO_REGEX.test(values.vencimiento)) {
+      nextErrors.vencimiento = "Formato inválido (MM/AA)";
+    }
+    if (values.cvv.length < 3) {
+      nextErrors.cvv = "CVV inválido";
+    }
+    if (!values.cuotas || values.cuotas < 1 || values.cuotas > 36) {
+      nextErrors.cuotas = "Selecciona el número de cuotas";
+    }
+    if (values.valor <= 0) {
+      nextErrors.valor = "El valor debe ser mayor a 0";
+    } else if (values.valor > product.cupoDisponible) {
+      nextErrors.valor = "El valor no puede exceder tu cupo disponible";
     }
 
-    if (!vencimiento || !VENCIMIENTO_REGEX.test(vencimiento)) {
-      setVencimientoError("Formato inválido (MM/AA)");
-      hasError = true;
-    } else {
-      setVencimientoError("");
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
     }
-
-    if (cvv.length < 3) {
-      setCvvError("CVV inválido");
-      hasError = true;
-    } else {
-      setCvvError("");
-    }
-
-    if (!cuotas || cuotas < 1 || cuotas > 36) {
-      setCuotasError("Selecciona el número de cuotas");
-      hasError = true;
-    } else {
-      setCuotasError("");
-    }
-
-    if (valor <= 0) {
-      setValorError("El valor debe ser mayor a 0");
-      hasError = true;
-    } else if (valor > product.cupoDisponible) {
-      setValorError("El valor no puede exceder tu cupo disponible");
-      hasError = true;
-    } else {
-      setValorError("");
-    }
-
-    if (hasError) return;
 
     const account = mockTarjetaSourceAccounts.find(
-      (a) => a.id === destinationAccountId,
+      (a) => a.id === values.destinationAccountId,
     );
     if (!account) {
-      setDestinationError("Cuenta destino no válida");
+      setErrors({ destinationAccountId: "Cuenta destino no válida" });
       return;
     }
 
     sessionStorage.setItem("tarjetaAvanceCardId", product.id);
     sessionStorage.setItem("tarjetaAvanceProduct", JSON.stringify(product));
-    sessionStorage.setItem("tarjetaAvanceValor", String(valor));
-    sessionStorage.setItem("tarjetaAvanceCuotas", String(cuotas));
+    sessionStorage.setItem("tarjetaAvanceValor", String(values.valor));
+    sessionStorage.setItem("tarjetaAvanceCuotas", String(values.cuotas));
     sessionStorage.setItem("tarjetaAvanceDestinationId", account.id);
     sessionStorage.setItem(
       "tarjetaAvanceDestinationDisplay",
@@ -150,37 +147,10 @@ function AvanceDetalleContent() {
       <TarjetaAvanceDetailsCard
         product={product}
         destinationAccounts={mockTarjetaSourceAccounts}
-        destinationAccountId={destinationAccountId}
-        cuotas={cuotas}
-        valor={valor}
-        vencimiento={vencimiento}
-        cvv={cvv}
         documentDisplay={documentDisplay}
-        destinationError={destinationError}
-        cuotasError={cuotasError}
-        valorError={valorError}
-        vencimientoError={vencimientoError}
-        cvvError={cvvError}
-        onDestinationAccountChange={(id) => {
-          setDestinationAccountId(id);
-          setDestinationError("");
-        }}
-        onCuotasChange={(c) => {
-          setCuotas(c);
-          setCuotasError("");
-        }}
-        onValorChange={(v) => {
-          setValor(v);
-          setValorError("");
-        }}
-        onVencimientoChange={(v) => {
-          setVencimiento(v);
-          setVencimientoError("");
-        }}
-        onCvvChange={(v) => {
-          setCvv(v);
-          setCvvError("");
-        }}
+        values={values}
+        errors={errors}
+        onChange={handleChange}
       />
 
       <div className="flex justify-between items-center">

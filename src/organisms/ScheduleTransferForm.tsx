@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DateInput } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
@@ -35,7 +35,7 @@ export function ScheduleTransferForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isValid },
   } = useForm<ScheduledTransferFormValues>({
@@ -53,7 +53,8 @@ export function ScheduleTransferForm({
     },
   });
 
-  const periodicity = watch("periodicity");
+  const periodicity = useWatch({ control, name: "periodicity" });
+  const startDate = useWatch({ control, name: "startDate" });
   const isRecurring = periodicity === "mensual" || periodicity === "quincenal";
 
   // Clear conditional fields when switching to "unica"
@@ -143,7 +144,7 @@ export function ScheduleTransferForm({
             onChange={(value) =>
               setValue("startDate", value, { shouldValidate: true })
             }
-            value={watch("startDate")}
+            value={startDate}
             error={errors.startDate?.message}
             className="w-full"
           />

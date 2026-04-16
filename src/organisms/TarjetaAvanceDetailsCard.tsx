@@ -5,26 +5,18 @@ import { Card, CurrencyInput } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
 import { TarjetaSourceAccount } from "@/src/types/tarjeta-payment";
+import {
+  TarjetaAvanceFormData,
+  TarjetaAvanceFormErrors,
+} from "@/src/types/tarjeta-avance";
 
 interface TarjetaAvanceDetailsCardProps {
   product: TarjetaCreditoProduct;
   destinationAccounts: TarjetaSourceAccount[];
-  destinationAccountId: string;
-  cuotas: number;
-  valor: number;
-  vencimiento: string;
-  cvv: string;
   documentDisplay: string;
-  destinationError?: string;
-  vencimientoError?: string;
-  cvvError?: string;
-  cuotasError?: string;
-  valorError?: string;
-  onDestinationAccountChange: (accountId: string) => void;
-  onCuotasChange: (cuotas: number) => void;
-  onValorChange: (valor: number) => void;
-  onVencimientoChange: (vencimiento: string) => void;
-  onCvvChange: (cvv: string) => void;
+  values: TarjetaAvanceFormData;
+  errors: TarjetaAvanceFormErrors;
+  onChange: (patch: Partial<TarjetaAvanceFormData>) => void;
 }
 
 const CUOTAS_OPTIONS = Array.from({ length: 36 }, (_, i) => ({
@@ -43,22 +35,10 @@ export const TarjetaAvanceDetailsCard: React.FC<
 > = ({
   product,
   destinationAccounts,
-  destinationAccountId,
-  cuotas,
-  valor,
-  vencimiento,
-  cvv,
   documentDisplay,
-  destinationError,
-  vencimientoError,
-  cvvError,
-  cuotasError,
-  valorError,
-  onDestinationAccountChange,
-  onCuotasChange,
-  onValorChange,
-  onVencimientoChange,
-  onCvvChange,
+  values,
+  errors,
+  onChange,
 }) => {
   const destinationOptions = destinationAccounts.map((account) => ({
     value: account.id,
@@ -94,10 +74,10 @@ export const TarjetaAvanceDetailsCard: React.FC<
           label="Abonar a la cuenta:"
           name="destinationAccount"
           options={destinationOptions}
-          value={destinationAccountId}
-          onChange={(e) => onDestinationAccountChange(e.target.value)}
+          value={values.destinationAccountId}
+          onChange={(e) => onChange({ destinationAccountId: e.target.value })}
           placeholder="Selecciona una cuenta"
-          error={destinationError}
+          error={errors.destinationAccountId}
           required
         />
       </div>
@@ -114,11 +94,11 @@ export const TarjetaAvanceDetailsCard: React.FC<
           inputMode="numeric"
           placeholder="12/28"
           maxLength={5}
-          value={vencimiento}
+          value={values.vencimiento}
           onChange={(e) =>
-            onVencimientoChange(formatVencimiento(e.target.value))
+            onChange({ vencimiento: formatVencimiento(e.target.value) })
           }
-          error={vencimientoError}
+          error={errors.vencimiento}
           required
         />
 
@@ -129,11 +109,11 @@ export const TarjetaAvanceDetailsCard: React.FC<
           inputMode="numeric"
           placeholder="***"
           maxLength={4}
-          value={cvv}
+          value={values.cvv}
           onChange={(e) =>
-            onCvvChange(e.target.value.replace(/\D/g, "").slice(0, 4))
+            onChange({ cvv: e.target.value.replace(/\D/g, "").slice(0, 4) })
           }
-          error={cvvError}
+          error={errors.cvv}
           required
         />
 
@@ -141,10 +121,12 @@ export const TarjetaAvanceDetailsCard: React.FC<
           label="Número de Cuotas"
           name="cuotas"
           options={CUOTAS_OPTIONS}
-          value={cuotas ? String(cuotas) : ""}
-          onChange={(e) => onCuotasChange(parseInt(e.target.value, 10) || 0)}
+          value={values.cuotas ? String(values.cuotas) : ""}
+          onChange={(e) =>
+            onChange({ cuotas: parseInt(e.target.value, 10) || 0 })
+          }
           placeholder="Selecciona"
-          error={cuotasError}
+          error={errors.cuotas}
           required
         />
 
@@ -153,14 +135,14 @@ export const TarjetaAvanceDetailsCard: React.FC<
             Valor del Avance
           </label>
           <CurrencyInput
-            value={valor}
-            onChange={onValorChange}
+            value={values.valor}
+            onChange={(v) => onChange({ valor: v })}
             prefix="$"
-            hasError={Boolean(valorError)}
+            hasError={Boolean(errors.valor)}
             className="w-full"
           />
-          {valorError && (
-            <p className="text-sm text-brand-error mt-1">{valorError}</p>
+          {errors.valor && (
+            <p className="text-sm text-brand-error mt-1">{errors.valor}</p>
           )}
         </div>
       </div>

@@ -54,17 +54,18 @@ export function useSMSCodeVerification(
     }
   }, [router, config.sessionKey, config.fallbackPath]);
 
-  // Countdown timer for resend button
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (resendCountdown > 0) {
-      timer = setTimeout(() => {
-        setResendCountdown((prev) => prev - 1);
-      }, 1000);
-    } else if (resendCountdown === 0 && isResendDisabled) {
+    if (resendCountdown <= 0) return;
+    const timer = setTimeout(() => {
+      setResendCountdown((prev) => prev - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [resendCountdown]);
+
+  useEffect(() => {
+    if (resendCountdown === 0 && isResendDisabled) {
       setIsResendDisabled(false);
     }
-    return () => clearTimeout(timer);
   }, [resendCountdown, isResendDisabled]);
 
   const handleCodeChange = useCallback((newCode: string) => {

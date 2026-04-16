@@ -3,17 +3,54 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Card, ErrorIcon, SuccessIcon } from "@/src/atoms";
-import { TarjetaClaveCambiarResult } from "@/src/types/tarjeta-clave";
+import {
+  TarjetaClaveAction,
+  TarjetaClaveResult,
+} from "@/src/types/tarjeta-clave";
 
-interface TarjetaClaveCambiarResultCardProps {
-  result: TarjetaClaveCambiarResult;
+const COPY: Record<
+  TarjetaClaveAction,
+  {
+    successTitle: string;
+    errorTitle: string;
+    successMessage: string;
+    errorFallback: string;
+  }
+> = {
+  asignar: {
+    successTitle: "¡Clave Asignada!",
+    errorTitle: "No pudimos asignar tu clave",
+    successMessage:
+      "Tu clave ha sido asignada exitosamente. Ya puedes usar tu tarjeta.",
+    errorFallback: "Ocurrió un error al asignar la clave. Intenta nuevamente.",
+  },
+  cambiar: {
+    successTitle: "¡Clave Cambiada!",
+    errorTitle: "No pudimos cambiar tu clave",
+    successMessage: "Tu clave ha sido cambiada exitosamente por seguridad.",
+    errorFallback: "Ocurrió un error al cambiar la clave. Intenta nuevamente.",
+  },
+  olvide: {
+    successTitle: "¡Clave Actualizada!",
+    errorTitle: "No pudimos recuperar tu clave",
+    successMessage: "Tu clave ha sido actualizada exitosamente.",
+    errorFallback:
+      "Ocurrió un error al recuperar la clave. Intenta nuevamente.",
+  },
+};
+
+interface TarjetaClaveResultCardProps {
+  mode: TarjetaClaveAction;
+  result: TarjetaClaveResult;
 }
 
-export const TarjetaClaveCambiarResultCard: React.FC<
-  TarjetaClaveCambiarResultCardProps
-> = ({ result }) => {
+export const TarjetaClaveResultCard: React.FC<TarjetaClaveResultCardProps> = ({
+  mode,
+  result,
+}) => {
   const router = useRouter();
   const isSuccess = result.status === "success";
+  const copy = COPY[mode];
 
   const handleBlockCard = () => {
     router.push("/tarjeta/bloqueo-activacion");
@@ -24,13 +61,12 @@ export const TarjetaClaveCambiarResultCard: React.FC<
       <div className="flex flex-col items-center gap-4">
         {isSuccess ? <SuccessIcon size="md" /> : <ErrorIcon size="md" />}
         <h2 className="text-[22px] font-bold text-brand-navy text-center">
-          {isSuccess ? "¡Clave Cambiada!" : "No pudimos cambiar tu clave"}
+          {isSuccess ? copy.successTitle : copy.errorTitle}
         </h2>
         <p className="text-[14px] text-brand-navy text-center">
           {isSuccess
-            ? "Tu clave ha sido cambiada exitosamente por seguridad."
-            : (result.descripcion ??
-              "Ocurrió un error al cambiar la clave. Intenta nuevamente.")}
+            ? copy.successMessage
+            : (result.descripcion ?? copy.errorFallback)}
         </p>
       </div>
 

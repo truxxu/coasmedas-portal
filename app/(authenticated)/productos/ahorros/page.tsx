@@ -105,7 +105,7 @@ export default function AhorrosPage() {
       apiProducts.forEach((p: SavingsAccountResponse) => {
         metaMap[p.idCuenta] = {
           idCuenta: p.idCuenta,
-          codigoProductoCobis: p.codigoProductoCobis,
+          codigoProductoCobis: String(p.codigoProductoCobis),
         };
       });
       setProductMetaMap(metaMap);

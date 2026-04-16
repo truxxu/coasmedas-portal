@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveCambiarConfirmationCard } from "@/src/organisms";
+import { TarjetaClaveConfirmationCard } from "@/src/organisms";
 import { useUserContext, useWelcomeBar } from "@/src/contexts";
-import { TarjetaClaveCambiarConfirmationData } from "@/src/types/tarjeta-clave";
+import { TarjetaClaveConfirmationData } from "@/src/types/tarjeta-clave";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
 import { TARJETA_CLAVE_STEPS } from "@/src/mocks";
 import { sendTransactionOtp } from "@/services/auth.service";
@@ -20,8 +20,8 @@ export default function CambiarConfirmacionPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [confirmationData] =
-    useState<TarjetaClaveCambiarConfirmationData | null>(() => {
+  const [confirmationData] = useState<TarjetaClaveConfirmationData | null>(
+    () => {
       if (typeof window === "undefined") return null;
 
       const productStr = sessionStorage.getItem("tarjetaClaveCambiarProduct");
@@ -37,7 +37,8 @@ export default function CambiarConfirmacionPage() {
       } catch {
         return null;
       }
-    });
+    },
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -96,7 +97,7 @@ export default function CambiarConfirmacionPage() {
         <Stepper currentStep={2} steps={TARJETA_CLAVE_STEPS} />
       </div>
 
-      <TarjetaClaveCambiarConfirmationCard />
+      <TarjetaClaveConfirmationCard mode="cambiar" />
 
       <div className="flex justify-between items-center">
         <button
