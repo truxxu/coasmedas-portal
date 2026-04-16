@@ -1,10 +1,14 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { CarouselArrow, CarouselDots } from '@/src/atoms';
-import { CoaspocketProductCard, CreatePocketCard } from '@/src/molecules';
-import { CoaspocketProduct, OnCoaspocketSelect, OnCreatePocket } from '@/src/types';
-import { calculateTotalPages, getVisibleItems } from '@/src/utils';
+import { useRef, useState, useEffect, useCallback } from "react";
+import { CarouselArrow, CarouselDots } from "@/src/atoms";
+import { CoaspocketProductCard, CreatePocketCard } from "@/src/molecules";
+import {
+  CoaspocketProduct,
+  OnCoaspocketSelect,
+  OnCreatePocket,
+} from "@/src/types";
+import { calculateTotalPages, getVisibleItems } from "@/src/utils";
 
 interface CoaspocketCarouselProps {
   title: string;
@@ -21,7 +25,7 @@ export function CoaspocketCarousel({
   selectedProductId,
   onProductSelect,
   onCreatePocket,
-  className = '',
+  className = "",
 }: CoaspocketCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -43,8 +47,8 @@ export function CoaspocketCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener('resize', updateVisibleItems);
-    return () => window.removeEventListener('resize', updateVisibleItems);
+    window.addEventListener("resize", updateVisibleItems);
+    return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
   // Update scroll state
@@ -65,10 +69,10 @@ export function CoaspocketCarousel({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('scroll', updateScrollState);
+    container.addEventListener("scroll", updateScrollState);
     updateScrollState();
 
-    return () => container.removeEventListener('scroll', updateScrollState);
+    return () => container.removeEventListener("scroll", updateScrollState);
   }, [updateScrollState]);
 
   // Scroll handlers
@@ -78,7 +82,7 @@ export function CoaspocketCarousel({
     const gap = 20; // gap-5 = 20px
     containerRef.current.scrollTo({
       left: page * (cardWidth + gap),
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -123,8 +127,8 @@ export function CoaspocketCarousel({
             px-1 py-1
           "
           style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
           {/* Product Cards */}

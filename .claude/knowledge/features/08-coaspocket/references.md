@@ -21,6 +21,7 @@
 The Coaspocket page follows the authenticated layout template and contains:
 
 ### Page Header
+
 - Back arrow + "Coaspocket" title (Ubuntu Medium, 20px, black)
 - Breadcrumb: "Inicio / Productos / Coaspocket"
 - "Ocultar saldos" toggle on the right
@@ -32,6 +33,7 @@ The Coaspocket page follows the authenticated layout template and contains:
 A horizontally scrollable carousel displaying pocket cards with a special action card:
 
 #### Carousel Behavior (Same as other product carousels)
+
 - First pocket card is **selected by default** (blue border, white background)
 - Unselected cards have gray background
 - Navigation arrows on left and right sides
@@ -42,8 +44,9 @@ A horizontally scrollable carousel displaying pocket cards with a special action
 #### Pocket Cards
 
 **Card 1: Vacaciones (SELECTED)**
+
 - **Title**: "Vacaciones" (Ubuntu Medium, 16px, black)
-- **Pocket Number**: "Número de bolsillo: ***1234" (Ubuntu Regular, 14px, black)
+- **Pocket Number**: "Número de bolsillo: \*\*\*1234" (Ubuntu Regular, 14px, black)
 - **Balance Label**: "Saldo" (Ubuntu Regular, 15px, black)
 - **Balance Amount**: "$ 1.500.000" (Ubuntu Bold, 21px, navy #004680)
 - **Status**: "Activo" (Ubuntu Regular, 15px, green #00A44C)
@@ -51,8 +54,9 @@ A horizontally scrollable carousel displaying pocket cards with a special action
 - **Background**: White (selected)
 
 **Card 2: Imprevistos (UNSELECTED)**
+
 - **Title**: "Imprevistos"
-- **Pocket Number**: "Número de bolsillo: ***5678"
+- **Pocket Number**: "Número de bolsillo: \*\*\*5678"
 - **Balance Label**: "Saldo"
 - **Balance Amount**: "$ 500.000"
 - **Status**: "Activo" (green)
@@ -62,6 +66,7 @@ A horizontally scrollable carousel displaying pocket cards with a special action
 #### NEW COMPONENT: Create Pocket Action Card
 
 **"Crear Nuevo Bolsillo" Card**
+
 - **Visual Style**: Dashed border, lighter background
 - **Icon**: Plus (+) icon centered or at top
 - **Text**: "Crear Nuevo Bolsillo" (Ubuntu Medium, 14-16px)
@@ -74,7 +79,7 @@ A horizontally scrollable carousel displaying pocket cards with a special action
 
 Reuses `TransactionHistoryCard` from feature 03-products, with a **new info box component**.
 
-- Title: "Consulta de Movimientos - Arreglos para la Casa (***4567)"
+- Title: "Consulta de Movimientos - Arreglos para la Casa (\*\*\*4567)"
 - Subtitle: "Últimos movimientos registrados."
 - Date range filter with "Aplicar" button
 - Helper text: "El filtro de fecha solo permite un rango de los últimos 3 meses."
@@ -93,6 +98,7 @@ A blue informational box below the transaction list:
 - **Text**: "Para agregar o retirar dinero de tus bolsillos, ve a la sección de Transferencias Internas y selecciona 'Entre mis cuentas'." (Ubuntu Regular, 14px, navy #1D4E8F)
 
 ### Section 3: Download Reports (EXISTING COMPONENT)
+
 Reuses `DownloadReportsCard` from feature 03-products.
 
 - Title: "Descargar extractos"
@@ -103,38 +109,38 @@ Reuses `DownloadReportsCard` from feature 03-products.
 
 ## Color Palette (from design)
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Navy Blue | `#194E8D` | Section titles, selected card border |
-| Balance Blue | `#004680` | Balance amounts in cards |
-| Active Green | `#00A44C` | "Activo" status |
-| Info Box Blue | `#007FFF` | Info box border |
-| Info Box BG | `#F0F9FF` | Info box background |
-| Info Text | `#1D4E8F` | Info box text color |
-| Gray Text | `#6A717F` | Labels, subtitles |
-| Light Gray | `#9AA1AD` | Helper text |
-| Black | `#000000` | Body text, card titles |
-| Border Gray | `#E4E6EA` | Unselected card borders, dividers |
-| Dashed Border | `#B1B1B1` | Create pocket card border |
-| Background | `#F0F9FF` | Light blue page background |
-| White | `#FFFFFF` | Selected card backgrounds |
+| Color         | Hex       | Usage                                |
+| ------------- | --------- | ------------------------------------ |
+| Navy Blue     | `#194E8D` | Section titles, selected card border |
+| Balance Blue  | `#004680` | Balance amounts in cards             |
+| Active Green  | `#00A44C` | "Activo" status                      |
+| Info Box Blue | `#007FFF` | Info box border                      |
+| Info Box BG   | `#F0F9FF` | Info box background                  |
+| Info Text     | `#1D4E8F` | Info box text color                  |
+| Gray Text     | `#6A717F` | Labels, subtitles                    |
+| Light Gray    | `#9AA1AD` | Helper text                          |
+| Black         | `#000000` | Body text, card titles               |
+| Border Gray   | `#E4E6EA` | Unselected card borders, dividers    |
+| Dashed Border | `#B1B1B1` | Create pocket card border            |
+| Background    | `#F0F9FF` | Light blue page background           |
+| White         | `#FFFFFF` | Selected card backgrounds            |
 
 ---
 
 ## Typography
 
-| Element | Font | Size | Weight | Color |
-|---------|------|------|--------|-------|
-| Page Title | Ubuntu | 20px | Medium | Black |
-| Section Title | Ubuntu | 20px | Bold | Navy #194E8D |
-| Card Title | Ubuntu | 16px | Medium | Black |
-| Pocket Number | Ubuntu | 14px | Regular | Black |
-| Balance Label | Ubuntu | 15px | Regular | Black |
-| Balance Amount | Ubuntu | 21px | Bold | Blue #004680 |
-| Status (Activo) | Ubuntu | 15px | Regular | Green #00A44C |
-| Create Card Text | Ubuntu | 14-16px | Medium | Gray #636363 |
-| Info Label | Ubuntu | 14px | Bold | Navy #1D4E8F |
-| Info Text | Ubuntu | 14px | Regular | Navy #1D4E8F |
+| Element          | Font   | Size    | Weight  | Color         |
+| ---------------- | ------ | ------- | ------- | ------------- |
+| Page Title       | Ubuntu | 20px    | Medium  | Black         |
+| Section Title    | Ubuntu | 20px    | Bold    | Navy #194E8D  |
+| Card Title       | Ubuntu | 16px    | Medium  | Black         |
+| Pocket Number    | Ubuntu | 14px    | Regular | Black         |
+| Balance Label    | Ubuntu | 15px    | Regular | Black         |
+| Balance Amount   | Ubuntu | 21px    | Bold    | Blue #004680  |
+| Status (Activo)  | Ubuntu | 15px    | Regular | Green #00A44C |
+| Create Card Text | Ubuntu | 14-16px | Medium  | Gray #636363  |
+| Info Label       | Ubuntu | 14px    | Bold    | Navy #1D4E8F  |
+| Info Text        | Ubuntu | 14px    | Regular | Navy #1D4E8F  |
 
 ---
 
@@ -154,13 +160,13 @@ interface CoaspocketProductCardProps {
 
 interface CoaspocketProduct {
   id: string;
-  title: string;                    // "Vacaciones", "Imprevistos"
-  pocketNumber: string;             // "1234" (will be masked as ***1234)
-  balance: number;                  // 1500000
-  status: CoaspocketStatus;         // 'activo' | 'inactivo'
+  title: string; // "Vacaciones", "Imprevistos"
+  pocketNumber: string; // "1234" (will be masked as ***1234)
+  balance: number; // 1500000
+  status: CoaspocketStatus; // 'activo' | 'inactivo'
 }
 
-type CoaspocketStatus = 'activo' | 'inactivo';
+type CoaspocketStatus = "activo" | "inactivo";
 ```
 
 ### 2. CreatePocketCard (Molecule)
@@ -176,6 +182,7 @@ interface CreatePocketCardProps {
 ```
 
 **Styling**:
+
 - Dashed border: `border-2 border-dashed border-[#B1B1B1]`
 - Background: `bg-[#F5F5F5]` or `bg-transparent`
 - Plus icon: Centered, gray color
@@ -189,14 +196,15 @@ Informational message box component.
 
 ```typescript
 interface InfoBoxProps {
-  label?: string;                   // "Sugerencia:"
+  label?: string; // "Sugerencia:"
   message: string;
-  variant?: 'info' | 'warning' | 'success';
+  variant?: "info" | "warning" | "success";
   className?: string;
 }
 ```
 
 **Styling (Info variant)**:
+
 - Background: `bg-[#F0F9FF]`
 - Border: `border border-[#007FFF] rounded-lg`
 - Padding: `p-4`
@@ -209,11 +217,11 @@ Carousel for pocket cards including the create action card.
 
 ```typescript
 interface CoaspocketCarouselProps {
-  title: string;                              // "Mis Bolsillos Coas"
+  title: string; // "Mis Bolsillos Coas"
   products: CoaspocketProduct[];
   selectedProductId?: string;
   onProductSelect: (product: CoaspocketProduct) => void;
-  onCreatePocket?: () => void;                // Handler for create button
+  onCreatePocket?: () => void; // Handler for create button
   className?: string;
 }
 ```
@@ -223,20 +231,25 @@ interface CoaspocketCarouselProps {
 ## Component Hierarchy (Atomic Design)
 
 ### Atoms (New)
+
 - `InfoBox` - Blue informational/suggestion box (could also be a molecule)
 
 ### Atoms (Existing - Reuse)
+
 - `CarouselArrow` - Navigation arrow button
 - `CarouselDots` - Dot indicators for pagination
 
 ### Molecules (New)
+
 - `CoaspocketProductCard` - Pocket card for carousel (similar to SavingsProductCard)
 - `CreatePocketCard` - Action card with plus icon to create new pocket
 
 ### Organisms (New)
+
 - `CoaspocketCarousel` - Carousel including pocket cards + create card
 
 ### Organisms (Existing - Reuse)
+
 - `TransactionHistoryCard` - Transaction list with date filter
 - `DownloadReportsCard` - Monthly report download
 
@@ -274,30 +287,38 @@ src/
 
 ```tsx
 // app/(authenticated)/productos/coaspocket/page.tsx
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { Breadcrumbs, InfoBox } from '@/src/molecules';
+import { useState, useEffect, useMemo } from "react";
+import { Breadcrumbs, InfoBox } from "@/src/molecules";
 import {
   CoaspocketCarousel,
   TransactionHistoryCard,
   DownloadReportsCard,
-} from '@/src/organisms';
-import { useWelcomeBar } from '@/src/contexts';
-import { CoaspocketProduct } from '@/src/types';
-import { mockCoaspocketProducts, mockCoaspocketTransactions, mockCoaspocketAvailableMonths } from '@/src/mocks';
-import { maskNumber } from '@/src/utils';
+} from "@/src/organisms";
+import { useWelcomeBar } from "@/src/contexts";
+import { CoaspocketProduct } from "@/src/types";
+import {
+  mockCoaspocketProducts,
+  mockCoaspocketTransactions,
+  mockCoaspocketAvailableMonths,
+} from "@/src/mocks";
+import { maskNumber } from "@/src/utils";
 
 export default function CoaspocketPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-  const [selectedProduct, setSelectedProduct] = useState<CoaspocketProduct>(mockCoaspocketProducts[0]);
+  const [selectedProduct, setSelectedProduct] = useState<CoaspocketProduct>(
+    mockCoaspocketProducts[0],
+  );
   const [transactions] = useState(mockCoaspocketTransactions);
-  const [selectedMonth, setSelectedMonth] = useState(mockCoaspocketAvailableMonths[0]?.value);
+  const [selectedMonth, setSelectedMonth] = useState(
+    mockCoaspocketAvailableMonths[0]?.value,
+  );
 
   useEffect(() => {
     setWelcomeBar({
-      title: 'Coaspocket',
-      backHref: '/home',
+      title: "Coaspocket",
+      backHref: "/home",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -310,14 +331,14 @@ export default function CoaspocketPage() {
 
   const handleCreatePocket = () => {
     // TODO: Navigate to pocket creation flow or open modal
-    console.log('Create new pocket');
+    console.log("Create new pocket");
   };
 
   // ... handlers
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={['Inicio', 'Productos', 'Coaspocket']} />
+      <Breadcrumbs items={["Inicio", "Productos", "Coaspocket"]} />
 
       {/* Section 1: Product Carousel with Create Pocket */}
       <CoaspocketCarousel
@@ -362,29 +383,29 @@ export default function CoaspocketPage() {
 
 ```typescript
 // src/mocks/coaspocket.ts
-import { CoaspocketProduct } from '@/src/types/coaspocket';
+import { CoaspocketProduct } from "@/src/types/coaspocket";
 
 export const mockCoaspocketProducts: CoaspocketProduct[] = [
   {
-    id: '1',
-    title: 'Vacaciones',
-    pocketNumber: '1234',
+    id: "1",
+    title: "Vacaciones",
+    pocketNumber: "1234",
     balance: 1500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Imprevistos',
-    pocketNumber: '5678',
+    id: "2",
+    title: "Imprevistos",
+    pocketNumber: "5678",
     balance: 500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '3',
-    title: 'Arreglos para la Casa',
-    pocketNumber: '4567',
+    id: "3",
+    title: "Arreglos para la Casa",
+    pocketNumber: "4567",
     balance: 2000000,
-    status: 'activo',
+    status: "activo",
   },
 ];
 ```
@@ -399,7 +420,7 @@ export const mockCoaspocketProducts: CoaspocketProduct[] = [
 /**
  * Status of a Coaspocket product (pocket/bolsillo)
  */
-export type CoaspocketStatus = 'activo' | 'inactivo';
+export type CoaspocketStatus = "activo" | "inactivo";
 
 /**
  * Coaspocket product information for carousel display
@@ -422,29 +443,31 @@ export type OnCoaspocketSelect = (product: CoaspocketProduct) => void;
 
 ## Comparison with Other Product Pages
 
-| Aspect | Ahorros (04) | Obligaciones (05) | Inversiones (06) | Proteccion (07) | Coaspocket (08) |
-|--------|--------------|-------------------|------------------|-----------------|-----------------|
-| Card Component | SavingsProductCard | ObligacionProductCard | InversionProductCard | ProteccionProductCard | CoaspocketProductCard |
-| Product Type | Savings | Loans | CDATs | Insurance | Digital Pockets |
-| Balance Label | "Saldo Total" | "Saldo a la fecha" | "Monto del CDAT" | "Valor protegido" | "Saldo" |
-| Balance Color | Navy #112E7F | Navy #112E7F | Blue #004680 | Blue #004680 | Blue #004680 |
-| Status Values | activo/bloqueado | al_dia/en_mora | activo/vencido | vigente/vencida | activo/inactivo |
-| Has Divider | No | Yes | Yes | Yes | No |
-| Extra Detail Fields | None | 3 (loan details) | 4 (investment details) | 3 (policy details) | None |
-| **Special Feature** | - | - | - | - | Create Pocket Card |
-| **Info Box** | No | No | No | No | Yes (suggestion) |
+| Aspect              | Ahorros (04)       | Obligaciones (05)     | Inversiones (06)       | Proteccion (07)       | Coaspocket (08)       |
+| ------------------- | ------------------ | --------------------- | ---------------------- | --------------------- | --------------------- |
+| Card Component      | SavingsProductCard | ObligacionProductCard | InversionProductCard   | ProteccionProductCard | CoaspocketProductCard |
+| Product Type        | Savings            | Loans                 | CDATs                  | Insurance             | Digital Pockets       |
+| Balance Label       | "Saldo Total"      | "Saldo a la fecha"    | "Monto del CDAT"       | "Valor protegido"     | "Saldo"               |
+| Balance Color       | Navy #112E7F       | Navy #112E7F          | Blue #004680           | Blue #004680          | Blue #004680          |
+| Status Values       | activo/bloqueado   | al_dia/en_mora        | activo/vencido         | vigente/vencida       | activo/inactivo       |
+| Has Divider         | No                 | Yes                   | Yes                    | Yes                   | No                    |
+| Extra Detail Fields | None               | 3 (loan details)      | 4 (investment details) | 3 (policy details)    | None                  |
+| **Special Feature** | -                  | -                     | -                      | -                     | Create Pocket Card    |
+| **Info Box**        | No                 | No                    | No                     | No                    | Yes (suggestion)      |
 
 ---
 
 ## Unique Coaspocket Elements
 
 ### 1. Create Pocket Action Card
+
 - Positioned as last item in carousel
 - Dashed border style differentiates from product cards
 - Plus icon indicates action
 - Clicking triggers pocket creation flow (TBD)
 
 ### 2. Suggestion Info Box
+
 - Blue-themed informational message
 - Positioned after transaction history section
 - Guides users to internal transfers feature
@@ -455,21 +478,27 @@ export type OnCoaspocketSelect = (product: CoaspocketProduct) => void;
 ## Implementation Considerations
 
 ### Create Pocket Card Position
+
 The "Crear Nuevo Bolsillo" card should be:
+
 - The last item in the carousel
 - Always visible (not filtered out)
 - Same height as pocket cards for visual alignment
 - Not selectable (different from pocket cards)
 
 ### Info Box Placement Options
+
 Two possible implementations:
+
 1. **Inside TransactionHistoryCard**: Add prop to TransactionHistoryCard for infoBox content
 2. **Separate component below**: Keep InfoBox as separate component after TransactionHistoryCard
 
 Recommendation: Option 2 (separate component) for better reusability and separation of concerns.
 
 ### Pocket Creation Flow
+
 The `onCreatePocket` handler should:
+
 - Navigate to a pocket creation page, OR
 - Open a modal for quick pocket creation
 
@@ -483,12 +512,12 @@ Coaspocket should already be in the Products accordion in the sidebar:
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },  // Already exists
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" }, // Already exists
 ];
 ```
 
@@ -497,27 +526,33 @@ const productSubItems = [
 ## Implementation Priority
 
 ### Phase 1: Types
+
 1. Create `src/types/coaspocket.ts`
 2. Update `src/types/index.ts`
 
 ### Phase 2: New Atoms/Molecules
+
 1. Create `InfoBox` atom/molecule
 2. Create `CoaspocketProductCard` molecule
 3. Create `CreatePocketCard` molecule
 
 ### Phase 3: Carousel Organism
+
 1. Create `CoaspocketCarousel` organism (includes CreatePocketCard)
 
 ### Phase 4: Mock Data
+
 1. Create `src/mocks/coaspocket.ts`
 2. Update `src/mocks/index.ts`
 
 ### Phase 5: Coaspocket Page
+
 1. Create `app/(authenticated)/productos/coaspocket/page.tsx`
 2. Wire up with mock data and existing components
 3. Add InfoBox below TransactionHistoryCard
 
 ### Phase 6: Polish
+
 1. Test responsive behavior
 2. Test hide balances integration
 3. Verify accessibility

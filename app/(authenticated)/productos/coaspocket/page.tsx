@@ -1,40 +1,40 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { Breadcrumbs } from '@/src/molecules';
-import { InfoBox } from '@/src/atoms';
+import { useState, useEffect, useMemo } from "react";
+import { Breadcrumbs } from "@/src/molecules";
+import { InfoBox } from "@/src/atoms";
 import {
   CoaspocketCarousel,
   TransactionHistoryCard,
   DownloadReportsCard,
-} from '@/src/organisms';
-import { useWelcomeBar } from '@/src/contexts';
-import { CoaspocketProduct } from '@/src/types';
+} from "@/src/organisms";
+import { useWelcomeBar } from "@/src/contexts";
+import { CoaspocketProduct } from "@/src/types";
 import {
   mockCoaspocketProducts,
   mockCoaspocketTransactions,
   mockCoaspocketAvailableMonths,
   mockCoaspocketInfoText,
-} from '@/src/mocks';
-import { maskNumber } from '@/src/utils';
+} from "@/src/mocks";
+import { maskNumber } from "@/src/utils";
 
 export default function CoaspocketPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   // First product selected by default
   const [selectedProduct, setSelectedProduct] = useState<CoaspocketProduct>(
-    mockCoaspocketProducts[0]
+    mockCoaspocketProducts[0],
   );
   const [transactions] = useState(mockCoaspocketTransactions);
   const [selectedMonth, setSelectedMonth] = useState(
-    mockCoaspocketAvailableMonths[0]?.value || ''
+    mockCoaspocketAvailableMonths[0]?.value || "",
   );
 
   // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
     setWelcomeBar({
-      title: 'Coaspocket',
-      backHref: '/home',
+      title: "Coaspocket",
+      backHref: "/home",
     });
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
@@ -47,32 +47,39 @@ export default function CoaspocketPage() {
   const handleProductSelect = (product: CoaspocketProduct) => {
     setSelectedProduct(product);
     // TODO: Fetch transactions for selected product
-    console.log('Selected product:', product.id);
+    console.log("Selected product:", product.id);
   };
 
   const handleCreatePocket = () => {
     // TODO: Navigate to create pocket flow or open modal
-    console.log('Create new pocket');
+    console.log("Create new pocket");
   };
 
   const handleFilter = (startDate: string, endDate: string) => {
     // TODO: Call API to filter transactions
-    console.log('Filtering:', { startDate, endDate, productId: selectedProduct.id });
+    console.log("Filtering:", {
+      startDate,
+      endDate,
+      productId: selectedProduct.id,
+    });
   };
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
-    console.log('Selected month:', month);
+    console.log("Selected month:", month);
   };
 
   const handleDownload = () => {
     // TODO: Trigger PDF download
-    console.log('Downloading:', { month: selectedMonth, productId: selectedProduct.id });
+    console.log("Downloading:", {
+      month: selectedMonth,
+      productId: selectedProduct.id,
+    });
   };
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={['Inicio', 'Productos', 'Coaspocket']} />
+      <Breadcrumbs items={["Inicio", "Productos", "Coaspocket"]} />
 
       {/* Section 1: Product Carousel with Create Pocket Card */}
       <CoaspocketCarousel
@@ -89,11 +96,7 @@ export default function CoaspocketPage() {
         subtitle="Últimos movimientos registrados."
         transactions={transactions}
         onFilter={handleFilter}
-        infoBox={
-          <InfoBox>
-            {mockCoaspocketInfoText}
-          </InfoBox>
-        }
+        infoBox={<InfoBox>{mockCoaspocketInfoText}</InfoBox>}
       />
 
       {/* Section 3: Download Reports */}

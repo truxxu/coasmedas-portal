@@ -1,7 +1,7 @@
 /**
  * Status of a Coaspocket (digital pocket) product
  */
-export type CoaspocketStatus = 'activo' | 'inactivo';
+export type CoaspocketStatus = "activo" | "inactivo";
 
 /**
  * Coaspocket (digital pocket) product information for carousel display
@@ -9,8 +9,8 @@ export type CoaspocketStatus = 'activo' | 'inactivo';
 export interface CoaspocketProduct {
   id: string;
   title: string;
-  pocketNumber: string;           // e.g., "1234" (will be masked as No.***1234)
-  balance: number;                // Saldo del bolsillo
+  pocketNumber: string; // e.g., "1234" (will be masked as No.***1234)
+  balance: number; // Saldo del bolsillo
   status: CoaspocketStatus;
 }
 
