@@ -103,3 +103,6 @@ export { TarjetaClaveCardList } from "./TarjetaClaveCardList";
 export { TarjetaClaveAsignarDetailsCard } from "./TarjetaClaveAsignarDetailsCard";
 export { TarjetaClaveAsignarConfirmationCard } from "./TarjetaClaveAsignarConfirmationCard";
 export { TarjetaClaveAsignarResultCard } from "./TarjetaClaveAsignarResultCard";
+export { TarjetaClaveCambiarDetailsCard } from "./TarjetaClaveCambiarDetailsCard";
+export { TarjetaClaveCambiarConfirmationCard } from "./TarjetaClaveCambiarConfirmationCard";
+export { TarjetaClaveCambiarResultCard } from "./TarjetaClaveCambiarResultCard";

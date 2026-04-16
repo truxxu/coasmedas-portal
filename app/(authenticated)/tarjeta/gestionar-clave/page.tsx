@@ -21,6 +21,10 @@ export default function GestionarClavePage() {
     router.push("/tarjeta/gestionar-clave/asignar");
   };
 
+  const handleCambiar = () => {
+    router.push("/tarjeta/gestionar-clave/cambiar");
+  };
+
   // TODO: wire when flows are implemented.
   const handleNoop = () => {};
 
@@ -34,7 +38,7 @@ export default function GestionarClavePage() {
 
       <TarjetaClaveActionsCard
         onAsignar={handleAsignar}
-        onCambiar={handleNoop}
+        onCambiar={handleCambiar}
         onOlvide={handleNoop}
       />
 
