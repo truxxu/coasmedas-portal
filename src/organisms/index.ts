@@ -85,3 +85,6 @@ export { ScheduleSuccessModal } from "./ScheduleSuccessModal";
 export { ScheduledTransfersTable } from "./ScheduledTransfersTable";
 export { TarjetaCreditoCarousel } from "./TarjetaCreditoCarousel";
 export { TarjetaCreditoDetailsCard } from "./TarjetaCreditoDetailsCard";
+export { TarjetaPaymentDetailsCard } from "./TarjetaPaymentDetailsCard";
+export { TarjetaPaymentConfirmationCard } from "./TarjetaPaymentConfirmationCard";
+export { TarjetaPaymentResultCard } from "./TarjetaPaymentResultCard";

@@ -9,6 +9,7 @@
 ## Prerequisites
 
 ### Before You Start
+
 - [x] Feature spec reviewed (spec.md)
 - [x] Design references analyzed (references.md)
 - [x] Figma design reviewed
@@ -18,39 +19,41 @@
 
 **Components from previous features are ALREADY IMPLEMENTED**:
 
-| Component | Location | Status |
-|-----------|----------|--------|
-| `CarouselArrow` | `src/atoms/CarouselArrow.tsx` | Ready to reuse |
-| `CarouselDots` | `src/atoms/CarouselDots.tsx` | Ready to reuse |
-| `SavingsProductCard` | `src/molecules/SavingsProductCard.tsx` | Reference |
-| `ProteccionProductCard` | `src/molecules/ProteccionProductCard.tsx` | Reference |
-| `ProductCarousel` | `src/organisms/ProductCarousel.tsx` | Reference |
-| `ProteccionCarousel` | `src/organisms/ProteccionCarousel.tsx` | Reference |
+| Component                | Location                                   | Status         |
+| ------------------------ | ------------------------------------------ | -------------- |
+| `CarouselArrow`          | `src/atoms/CarouselArrow.tsx`              | Ready to reuse |
+| `CarouselDots`           | `src/atoms/CarouselDots.tsx`               | Ready to reuse |
+| `SavingsProductCard`     | `src/molecules/SavingsProductCard.tsx`     | Reference      |
+| `ProteccionProductCard`  | `src/molecules/ProteccionProductCard.tsx`  | Reference      |
+| `ProductCarousel`        | `src/organisms/ProductCarousel.tsx`        | Reference      |
+| `ProteccionCarousel`     | `src/organisms/ProteccionCarousel.tsx`     | Reference      |
 | `TransactionHistoryCard` | `src/organisms/TransactionHistoryCard.tsx` | Ready to reuse |
-| `DownloadReportsCard` | `src/organisms/DownloadReportsCard.tsx` | Ready to reuse |
-| `Breadcrumbs` | `src/molecules/Breadcrumbs.tsx` | Ready to reuse |
+| `DownloadReportsCard`    | `src/organisms/DownloadReportsCard.tsx`    | Ready to reuse |
+| `Breadcrumbs`            | `src/molecules/Breadcrumbs.tsx`            | Ready to reuse |
 
 **Existing Utilities**:
+
 - `src/utils/carousel.ts` - `calculateTotalPages`, `getVisibleItems`
 - `src/utils/formatCurrency.ts` - `formatCurrency`, `maskCurrency`, `maskNumber`
 - `src/utils/dates.ts` - `generateMonthOptions`, `formatDate`
 
 **Existing Patterns**:
+
 - Proteccion page at `app/(authenticated)/productos/proteccion/page.tsx`
 - WelcomeBar context for page title/back button
 - Sidebar already includes "Coaspocket" in productSubItems
 
 ### What Needs to Be Created
 
-| Type | Component | Purpose |
-|------|-----------|---------|
-| Type | `coaspocket.ts` | CoaspocketProduct, CoaspocketStatus types |
-| Atom | `InfoBox` | Informational message box with accent |
-| Molecule | `CoaspocketProductCard` | Pocket card for carousel |
-| Molecule | `CreatePocketCard` | Action card for creating new pocket |
-| Organism | `CoaspocketCarousel` | Carousel with products + action card |
-| Mock | `coaspocket.ts` | Mock data for pockets |
-| Page | `coaspocket/page.tsx` | Coaspocket page |
+| Type     | Component               | Purpose                                   |
+| -------- | ----------------------- | ----------------------------------------- |
+| Type     | `coaspocket.ts`         | CoaspocketProduct, CoaspocketStatus types |
+| Atom     | `InfoBox`               | Informational message box with accent     |
+| Molecule | `CoaspocketProductCard` | Pocket card for carousel                  |
+| Molecule | `CreatePocketCard`      | Action card for creating new pocket       |
+| Organism | `CoaspocketCarousel`    | Carousel with products + action card      |
+| Mock     | `coaspocket.ts`         | Mock data for pockets                     |
+| Page     | `coaspocket/page.tsx`   | Coaspocket page                           |
 
 ---
 
@@ -58,14 +61,14 @@
 
 **IMPORTANT**: Coaspocket has unique elements not present in other product pages:
 
-| Aspect | Other Products | Coaspocket |
-|--------|----------------|------------|
-| Action Card | No | **"Crear Nuevo Bolsillo" card at end** |
-| InfoBox | No | **Suggestion message below carousel** |
-| Card Design | Extended details | **Simple: name + balance + status only** |
-| Number Format | Various | **`No.***1234` format** |
-| Status Values | 2-3 options | **2: activo/inactivo** |
-| Card Height | ~180-250px | **~140px (simpler)** |
+| Aspect        | Other Products   | Coaspocket                               |
+| ------------- | ---------------- | ---------------------------------------- |
+| Action Card   | No               | **"Crear Nuevo Bolsillo" card at end**   |
+| InfoBox       | No               | **Suggestion message below carousel**    |
+| Card Design   | Extended details | **Simple: name + balance + status only** |
+| Number Format | Various          | **`No.\***1234` format\*\*               |
+| Status Values | 2-3 options      | **2: activo/inactivo**                   |
+| Card Height   | ~180-250px       | **~140px (simpler)**                     |
 
 ---
 
@@ -79,16 +82,16 @@
 /**
  * Status of a digital pocket
  */
-export type CoaspocketStatus = 'activo' | 'inactivo';
+export type CoaspocketStatus = "activo" | "inactivo";
 
 /**
  * Digital pocket product information for carousel display
  */
 export interface CoaspocketProduct {
   id: string;
-  title: string;                    // "Mi Bolsillo Viajes", "Ahorro Emergencia"
-  pocketNumber: string;             // "1234" (will be masked as No.***1234)
-  balance: number;                  // Current pocket balance
+  title: string; // "Mi Bolsillo Viajes", "Ahorro Emergencia"
+  pocketNumber: string; // "1234" (will be masked as No.***1234)
+  balance: number; // Current pocket balance
   status: CoaspocketStatus;
 }
 
@@ -108,7 +111,7 @@ export type OnCreatePocket = () => void;
 **File**: `src/types/index.ts` - Add export:
 
 ```typescript
-export * from './coaspocket';
+export * from "./coaspocket";
 ```
 
 ---
@@ -162,7 +165,7 @@ export function InfoBox({
 **File**: `src/atoms/index.ts` - Add export:
 
 ```typescript
-export { InfoBox } from './InfoBox';
+export { InfoBox } from "./InfoBox";
 ```
 
 ---
@@ -330,8 +333,8 @@ export function CreatePocketCard({
 **File**: `src/molecules/index.ts` - Add exports:
 
 ```typescript
-export { CoaspocketProductCard } from './CoaspocketProductCard';
-export { CreatePocketCard } from './CreatePocketCard';
+export { CoaspocketProductCard } from "./CoaspocketProductCard";
+export { CreatePocketCard } from "./CreatePocketCard";
 ```
 
 ---
@@ -528,7 +531,7 @@ export function CoaspocketCarousel({
 **File**: `src/organisms/index.ts` - Add export:
 
 ```typescript
-export { CoaspocketCarousel } from './CoaspocketCarousel';
+export { CoaspocketCarousel } from "./CoaspocketCarousel";
 ```
 
 ---
@@ -540,34 +543,34 @@ export { CoaspocketCarousel } from './CoaspocketCarousel';
 **File**: `src/mocks/coaspocket.ts`
 
 ```typescript
-import { CoaspocketProduct } from '@/src/types/coaspocket';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { CoaspocketProduct } from "@/src/types/coaspocket";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock digital pocket products for carousel
  */
 export const mockCoaspocketProducts: CoaspocketProduct[] = [
   {
-    id: '1',
-    title: 'Mi Bolsillo Viajes',
-    pocketNumber: '1234',
+    id: "1",
+    title: "Mi Bolsillo Viajes",
+    pocketNumber: "1234",
     balance: 1500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Ahorro Emergencia',
-    pocketNumber: '5678',
+    id: "2",
+    title: "Ahorro Emergencia",
+    pocketNumber: "5678",
     balance: 3200000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '3',
-    title: 'Fondo Navidad',
-    pocketNumber: '9012',
+    id: "3",
+    title: "Fondo Navidad",
+    pocketNumber: "9012",
     balance: 850000,
-    status: 'inactivo',
+    status: "inactivo",
   },
 ];
 
@@ -576,32 +579,33 @@ export const mockCoaspocketProducts: CoaspocketProduct[] = [
  */
 export const mockCoaspocketTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-15',
-    description: 'Transferencia a Bolsillo Viajes',
+    id: "1",
+    date: "2024-11-15",
+    description: "Transferencia a Bolsillo Viajes",
     amount: 200000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '2',
-    date: '2024-11-01',
-    description: 'Transferencia a Bolsillo Viajes',
+    id: "2",
+    date: "2024-11-01",
+    description: "Transferencia a Bolsillo Viajes",
     amount: 150000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '3',
-    date: '2024-10-20',
-    description: 'Retiro para gastos viaje',
+    id: "3",
+    date: "2024-10-20",
+    description: "Retiro para gastos viaje",
     amount: 300000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockCoaspocketAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockCoaspocketAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 ```
 
 ### Step 5.2: Update Mocks Index
@@ -609,7 +613,7 @@ export const mockCoaspocketAvailableMonths: MonthOption[] = generateMonthOptions
 **File**: `src/mocks/index.ts` - Add export:
 
 ```typescript
-export * from './coaspocket';
+export * from "./coaspocket";
 ```
 
 ---
@@ -756,12 +760,13 @@ Check all index.ts files have the new exports:
 ### Step 7.2: Testing Checklist
 
 **Functional Tests**:
+
 - [ ] Page loads at `/productos/coaspocket`
 - [ ] First card is selected by default (white bg, blue border)
 - [ ] Unselected cards have gray background (#E4E6EA)
 - [ ] Clicking card changes selection
 - [ ] Transaction title updates on selection
-- [ ] Title uses "No.***XXXX" format
+- [ ] Title uses "No.\*\*\*XXXX" format
 - [ ] "Crear Nuevo Bolsillo" action card appears at end of carousel
 - [ ] Clicking create card triggers action (modal/alert)
 - [ ] Arrow buttons scroll carousel (including to action card)
@@ -771,6 +776,7 @@ Check all index.ts files have the new exports:
 - [ ] InfoBox displays below carousel
 
 **Visual Tests**:
+
 - [ ] "Activo" status displays in green (#00A44C)
 - [ ] "Inactivo" status displays in gray (#808284)
 - [ ] Balance value in navy blue (#194E8D)
@@ -781,12 +787,14 @@ Check all index.ts files have the new exports:
 - [ ] Cards are shorter/simpler than other product cards
 
 **Responsive Tests**:
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
 - [ ] Create action card scrolls into view properly
 
 **Accessibility Tests**:
+
 - [ ] Keyboard navigation (Tab, Enter, Space)
 - [ ] ARIA labels present on cards
 - [ ] Focus states visible
@@ -799,40 +807,40 @@ Check all index.ts files have the new exports:
 
 ### New Files to Create
 
-| File | Phase | Priority |
-|------|-------|----------|
-| `src/types/coaspocket.ts` | 1 | High |
-| `src/atoms/InfoBox.tsx` | 2 | High |
-| `src/molecules/CoaspocketProductCard.tsx` | 3 | High |
-| `src/molecules/CreatePocketCard.tsx` | 3 | High |
-| `src/organisms/CoaspocketCarousel.tsx` | 4 | High |
-| `src/mocks/coaspocket.ts` | 5 | High |
-| `app/(authenticated)/productos/coaspocket/page.tsx` | 6 | High |
+| File                                                | Phase | Priority |
+| --------------------------------------------------- | ----- | -------- |
+| `src/types/coaspocket.ts`                           | 1     | High     |
+| `src/atoms/InfoBox.tsx`                             | 2     | High     |
+| `src/molecules/CoaspocketProductCard.tsx`           | 3     | High     |
+| `src/molecules/CreatePocketCard.tsx`                | 3     | High     |
+| `src/organisms/CoaspocketCarousel.tsx`              | 4     | High     |
+| `src/mocks/coaspocket.ts`                           | 5     | High     |
+| `app/(authenticated)/productos/coaspocket/page.tsx` | 6     | High     |
 
 ### Files to Update
 
-| File | Changes | Phase |
-|------|---------|-------|
-| `src/types/index.ts` | Add coaspocket export | 1 |
-| `src/atoms/index.ts` | Add InfoBox export | 2 |
-| `src/molecules/index.ts` | Add CoaspocketProductCard, CreatePocketCard exports | 3 |
-| `src/organisms/index.ts` | Add CoaspocketCarousel export | 4 |
-| `src/mocks/index.ts` | Add coaspocket export | 5 |
+| File                     | Changes                                             | Phase |
+| ------------------------ | --------------------------------------------------- | ----- |
+| `src/types/index.ts`     | Add coaspocket export                               | 1     |
+| `src/atoms/index.ts`     | Add InfoBox export                                  | 2     |
+| `src/molecules/index.ts` | Add CoaspocketProductCard, CreatePocketCard exports | 3     |
+| `src/organisms/index.ts` | Add CoaspocketCarousel export                       | 4     |
+| `src/mocks/index.ts`     | Add coaspocket export                               | 5     |
 
 ---
 
 ## Time Estimates
 
-| Phase | Description | Time |
-|-------|-------------|------|
-| Phase 1 | Types | 10 min |
-| Phase 2 | InfoBox Atom | 30-45 min |
-| Phase 3 | Product Cards (2) | 1-1.5 hrs |
-| Phase 4 | CoaspocketCarousel | 1-1.5 hrs |
-| Phase 5 | Mock Data | 10 min |
-| Phase 6 | Page Assembly | 45 min - 1 hr |
-| Phase 7 | Polish & Testing | 30-45 min |
-| **Total** | | **~4.5-6 hrs (1.5-2 days)** |
+| Phase     | Description        | Time                        |
+| --------- | ------------------ | --------------------------- |
+| Phase 1   | Types              | 10 min                      |
+| Phase 2   | InfoBox Atom       | 30-45 min                   |
+| Phase 3   | Product Cards (2)  | 1-1.5 hrs                   |
+| Phase 4   | CoaspocketCarousel | 1-1.5 hrs                   |
+| Phase 5   | Mock Data          | 10 min                      |
+| Phase 6   | Page Assembly      | 45 min - 1 hr               |
+| Phase 7   | Polish & Testing   | 30-45 min                   |
+| **Total** |                    | **~4.5-6 hrs (1.5-2 days)** |
 
 ---
 
@@ -858,22 +866,23 @@ Phase 7: Polish & Testing
 
 ## Key Differences from Other Product Implementations
 
-| Aspect | Other Products | Coaspocket |
-|--------|----------------|------------|
-| Carousel Content | Products only | **Products + Action Card** |
-| Card Complexity | Extended details | **Simple: title + number + balance + status** |
-| InfoBox | No | **Yes (suggestion message)** |
-| Number Format | Various | **`No.***XXXX`** |
-| Card Height | ~180-250px | **~140px** |
-| Status Count | 2-3 | **2 (activo/inactivo)** |
-| New Atoms | No | **Yes (InfoBox)** |
-| New Action UI | No | **Yes (CreatePocketCard)** |
+| Aspect           | Other Products   | Coaspocket                                    |
+| ---------------- | ---------------- | --------------------------------------------- |
+| Carousel Content | Products only    | **Products + Action Card**                    |
+| Card Complexity  | Extended details | **Simple: title + number + balance + status** |
+| InfoBox          | No               | **Yes (suggestion message)**                  |
+| Number Format    | Various          | **`No.\***XXXX`\*\*                           |
+| Card Height      | ~180-250px       | **~140px**                                    |
+| Status Count     | 2-3              | **2 (activo/inactivo)**                       |
+| New Atoms        | No               | **Yes (InfoBox)**                             |
+| New Action UI    | No               | **Yes (CreatePocketCard)**                    |
 
 ---
 
 ## Code Reuse Strategy
 
 ### Components Reused Without Changes
+
 - `CarouselArrow` - Navigation arrows
 - `CarouselDots` - Pagination dots
 - `TransactionHistoryCard` - Transaction list
@@ -881,6 +890,7 @@ Phase 7: Polish & Testing
 - `Breadcrumbs` - Navigation breadcrumbs
 
 ### Utilities Reused
+
 - `calculateTotalPages()` - Carousel pagination (note: +1 for action card)
 - `getVisibleItems()` - Responsive card count
 - `formatCurrency()` - Currency formatting
@@ -888,6 +898,7 @@ Phase 7: Polish & Testing
 - `generateMonthOptions()` - Month dropdown options
 
 ### Patterns Followed
+
 - WelcomeBar context for page title
 - UIContext for hideBalances
 - Carousel scroll behavior
@@ -901,12 +912,12 @@ Like Inversiones and Proteccion, there is **no sidebar update needed** because "
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },  // Already exists!
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" }, // Already exists!
 ];
 ```
 

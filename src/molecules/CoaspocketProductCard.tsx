@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useUIContext } from '@/src/contexts';
-import { CoaspocketProduct } from '@/src/types';
-import { formatCurrency, maskCurrency } from '@/src/utils';
+import { useUIContext } from "@/src/contexts";
+import { CoaspocketProduct } from "@/src/types";
+import { formatCurrency, maskCurrency } from "@/src/utils";
 
 interface CoaspocketProductCardProps {
   product: CoaspocketProduct;
@@ -15,18 +15,18 @@ export function CoaspocketProductCard({
   product,
   isSelected = false,
   onClick,
-  className = '',
+  className = "",
 }: CoaspocketProductCardProps) {
   const { hideBalances } = useUIContext();
 
   const statusColor = {
-    activo: 'text-brand-success-icon',
-    inactivo: 'text-brand-gray-medium',
+    activo: "text-brand-success-icon",
+    inactivo: "text-brand-gray-medium",
   }[product.status];
 
   const statusLabel = {
-    activo: 'Activo',
-    inactivo: 'Inactivo',
+    activo: "Activo",
+    inactivo: "Inactivo",
   }[product.status];
 
   // Format product number with "No." prefix
@@ -39,7 +39,7 @@ export function CoaspocketProductCard({
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick?.();
         }
@@ -47,9 +47,10 @@ export function CoaspocketProductCard({
       className={`
         rounded-2xl p-5 cursor-pointer min-w-[280px]
         transition-all duration-200
-        ${isSelected
-          ? 'bg-white border-2 border-brand-navy-dark'
-          : 'bg-brand-border border border-brand-border hover:border-brand-footer-text'
+        ${
+          isSelected
+            ? "bg-white border-2 border-brand-navy-dark"
+            : "bg-brand-border border border-brand-border hover:border-brand-footer-text"
         }
         ${className}
       `}
@@ -71,9 +72,7 @@ export function CoaspocketProductCard({
       </p>
 
       {/* Status */}
-      <p className={`text-[15px] mt-2 ${statusColor}`}>
-        {statusLabel}
-      </p>
+      <p className={`text-[15px] mt-2 ${statusColor}`}>{statusLabel}</p>
     </div>
   );
 }

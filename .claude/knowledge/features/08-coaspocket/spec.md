@@ -12,6 +12,7 @@
 The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated users access to their digital savings pockets through a horizontally scrollable carousel. Users can view multiple pockets, create new pockets via an action card, select a pocket to see its transaction history, and download monthly statements. This feature also introduces an informational box component for displaying important messages.
 
 **Key Purpose**:
+
 - View all digital pockets (bolsillos) in a scrollable carousel
 - Create new pockets via a special action card
 - Select a pocket to see its details and transaction history
@@ -20,6 +21,7 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 - Download monthly PDF reports/statements
 
 **Key Differences from Other Product Pages**:
+
 - **Action card in carousel**: Special "Crear Nuevo Bolsillo" card for creating new pockets
 - **InfoBox component**: New informational message box displayed between transaction history and download reports
 - **Simpler card design**: Only shows title, pocket number, balance, and status (no additional detail fields)
@@ -30,11 +32,13 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 ## User Stories
 
 ### US-08.1: View Pockets Carousel
+
 **As an** authenticated user
 **I want** to see all my digital pockets in a carousel
 **So that** I can quickly overview all my savings pockets
 
 **Acceptance Criteria**:
+
 - [ ] Page displays at `/productos/coaspocket`
 - [ ] Carousel shows all user's pocket products
 - [ ] First pocket is selected by default (white background, blue border)
@@ -46,11 +50,13 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 - [ ] Responsive: 1 card on mobile, 2 on tablet, 3 on desktop
 
 ### US-08.2: Select Pocket
+
 **As an** authenticated user
 **I want** to select a pocket from the carousel
 **So that** I can view its transaction history and details
 
 **Acceptance Criteria**:
+
 - [ ] Clicking a pocket card selects it (shows white background, blue border)
 - [ ] Only one pocket can be selected at a time
 - [ ] Previously selected pocket reverts to gray background
@@ -60,34 +66,40 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 - [ ] Action card ("Crear Nuevo Bolsillo") cannot be selected
 
 ### US-08.3: View Pocket Card Information
+
 **As an** authenticated user
 **I want** to see key information on each pocket card
 **So that** I can quickly understand my pocket status
 
 **Acceptance Criteria**:
+
 - [ ] Card shows pocket title (e.g., "Bolsillo Vacaciones")
-- [ ] Card shows masked pocket number (e.g., "***4428")
+- [ ] Card shows masked pocket number (e.g., "\*\*\*4428")
 - [ ] Card shows balance (respects "Ocultar saldos" toggle)
 - [ ] Card shows status: "Activo" (green) or "Inactivo" (gray)
 - [ ] Card has simple design without additional detail section
 
 ### US-08.4: Create New Pocket Action
+
 **As an** authenticated user
 **I want** to see an option to create a new pocket in the carousel
 **So that** I can easily access the pocket creation flow
 
 **Acceptance Criteria**:
+
 - [ ] "Crear Nuevo Bolsillo" card appears at the end of the carousel
 - [ ] Card has distinct visual style (dashed border, plus icon)
 - [ ] Clicking the card triggers pocket creation action (modal or navigation)
 - [ ] Card cannot be selected as active pocket
 
 ### US-08.5: View Informational Message
+
 **As an** authenticated user
 **I want** to see important information about my pockets
 **So that** I can stay informed about pocket features and policies
 
 **Acceptance Criteria**:
+
 - [ ] InfoBox displays below transaction history section
 - [ ] InfoBox has light blue background (#F0F9FF)
 - [ ] InfoBox has blue left border accent (#007FFF)
@@ -95,11 +107,13 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 - [ ] InfoBox shows informational text content
 
 ### US-08.6: Transaction History for Selected Pocket
+
 **As an** authenticated user
 **I want** to filter and view transaction history for my selected pocket
 **So that** I can track my pocket activity
 
 **Acceptance Criteria**:
+
 - [ ] Transaction history updates when different pocket is selected
 - [ ] Title dynamically shows selected pocket name and number
 - [ ] Date range filter with start and end date inputs
@@ -109,11 +123,13 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 - [ ] Shows empty state when no transactions found
 
 ### US-08.7: Download Monthly Reports
+
 **As an** authenticated user
 **I want** to download monthly statements for my pockets
 **So that** I can keep records of my pocket activity
 
 **Acceptance Criteria**:
+
 - [ ] Month dropdown shows available months (last 12 months)
 - [ ] Selecting month triggers PDF download
 - [ ] Clear description of functionality
@@ -124,8 +140,8 @@ The **Coaspocket** (Digital Pockets/Bolsillos) feature provides authenticated us
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
+| Path                    | Description                               |
+| ----------------------- | ----------------------------------------- |
 | `/productos/coaspocket` | Coaspocket (Digital Pockets) product page |
 
 ### File Structure
@@ -156,14 +172,14 @@ src/
 
 The following components will be **reused** from previous features:
 
-| Component | Source | Purpose |
-|-----------|--------|---------|
-| `TransactionHistoryCard` | 03-products | Transaction list with date filter |
-| `DownloadReportsCard` | 03-products | Monthly report download |
-| `Breadcrumbs` | 03-products | Breadcrumb navigation |
-| `CarouselArrow` | 04-ahorros | Carousel navigation arrows |
-| `CarouselDots` | 04-ahorros | Carousel pagination dots |
-| Carousel utilities | 04-ahorros | `calculateTotalPages`, `getVisibleItems` |
+| Component                | Source      | Purpose                                  |
+| ------------------------ | ----------- | ---------------------------------------- |
+| `TransactionHistoryCard` | 03-products | Transaction list with date filter        |
+| `DownloadReportsCard`    | 03-products | Monthly report download                  |
+| `Breadcrumbs`            | 03-products | Breadcrumb navigation                    |
+| `CarouselArrow`          | 04-ahorros  | Carousel navigation arrows               |
+| `CarouselDots`           | 04-ahorros  | Carousel pagination dots                 |
+| Carousel utilities       | 04-ahorros  | `calculateTotalPages`, `getVisibleItems` |
 
 ### Sidebar Navigation
 
@@ -171,12 +187,12 @@ Coaspocket is already included in the Products accordion menu (no update require
 
 ```typescript
 const productSubItems = [
-  { label: 'Aportes', href: '/productos/aportes' },
-  { label: 'Ahorros', href: '/productos/ahorros' },
-  { label: 'Obligaciones', href: '/productos/obligaciones' },
-  { label: 'Inversiones', href: '/productos/inversiones' },
-  { label: 'Protección', href: '/productos/proteccion' },
-  { label: 'Coaspocket', href: '/productos/coaspocket' },  // Already exists
+  { label: "Aportes", href: "/productos/aportes" },
+  { label: "Ahorros", href: "/productos/ahorros" },
+  { label: "Obligaciones", href: "/productos/obligaciones" },
+  { label: "Inversiones", href: "/productos/inversiones" },
+  { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" }, // Already exists
 ];
 ```
 
@@ -187,6 +203,7 @@ const productSubItems = [
 ### Atoms
 
 #### InfoBox
+
 Informational message box with left border accent.
 
 ```typescript
@@ -198,6 +215,7 @@ interface InfoBoxProps {
 ```
 
 **Layout**:
+
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │ ℹ️ Lorem ipsum dolor sit amet, consectetur adipiscing elit.  │
@@ -206,6 +224,7 @@ interface InfoBoxProps {
 ```
 
 **Styling**:
+
 - Background: `#F0F9FF` (light blue)
 - Left border: `4px solid #007FFF` (blue)
 - Border radius: `8px` (rounded corners, except left edge)
@@ -215,6 +234,7 @@ interface InfoBoxProps {
 - Font: Ubuntu Regular, 14px
 
 **Tailwind Classes**:
+
 ```css
 bg-[#F0F9FF] border-l-4 border-[#007FFF] rounded-r-lg p-4
 flex items-start gap-3
@@ -225,6 +245,7 @@ flex items-start gap-3
 ### Molecules
 
 #### CoaspocketProductCard
+
 Individual pocket card for the carousel.
 
 ```typescript
@@ -237,16 +258,17 @@ interface CoaspocketProductCardProps {
 
 interface CoaspocketProduct {
   id: string;
-  title: string;                    // "Bolsillo Vacaciones"
-  pocketNumber: string;             // "4428" (will be masked as ***4428)
-  balance: number;                  // 1500000
-  status: CoaspocketStatus;         // 'activo' | 'inactivo'
+  title: string; // "Bolsillo Vacaciones"
+  pocketNumber: string; // "4428" (will be masked as ***4428)
+  balance: number; // 1500000
+  status: CoaspocketStatus; // 'activo' | 'inactivo'
 }
 
-type CoaspocketStatus = 'activo' | 'inactivo';
+type CoaspocketStatus = "activo" | "inactivo";
 ```
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Bolsillo Vacaciones                             │
@@ -258,6 +280,7 @@ type CoaspocketStatus = 'activo' | 'inactivo';
 ```
 
 **Styling**:
+
 - Width: `250px` minimum (same as SavingsProductCard)
 - Height: Auto (~150px - simpler design)
 - Border radius: `16px`
@@ -266,10 +289,12 @@ type CoaspocketStatus = 'activo' | 'inactivo';
 - Transition: `all 0.2s ease`
 
 **Selected State**:
+
 - Background: `#FFFFFF` (white)
 - Border: `2px solid #194E8D` (navy blue)
 
 **Unselected State**:
+
 - Background: `#E4E6EA` (light gray)
 - Border: `1px solid #E4E6EA` (gray)
 - Hover: Border `#B1B1B1`
@@ -284,14 +309,18 @@ type CoaspocketStatus = 'activo' | 'inactivo';
 | Status "Inactivo" | Ubuntu | 15px | Regular | Gray #808284 |
 
 **Hide Balances Integration**:
+
 ```typescript
 const { hideBalances } = useUIContext();
 
 // Mask balance value
-{hideBalances ? maskCurrency() : formatCurrency(product.balance)}
+{
+  hideBalances ? maskCurrency() : formatCurrency(product.balance);
+}
 ```
 
 **Tailwind Classes**:
+
 ```css
 /* Base card */
 bg-[#E4E6EA] rounded-2xl p-5 cursor-pointer min-w-[250px]
@@ -306,6 +335,7 @@ bg-white border-2 border-[#194E8D]
 ---
 
 #### CreatePocketCard
+
 Action card for creating new pockets.
 
 ```typescript
@@ -316,6 +346,7 @@ interface CreatePocketCardProps {
 ```
 
 **Layout**:
+
 ```
 ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
 │                                                 │
@@ -326,6 +357,7 @@ interface CreatePocketCardProps {
 ```
 
 **Styling**:
+
 - Width: `250px` minimum (same as pocket cards)
 - Height: Same as CoaspocketProductCard for visual consistency
 - Border: `2px dashed #B1B1B1` (gray dashed border)
@@ -341,11 +373,13 @@ interface CreatePocketCardProps {
 | Text | Ubuntu | 16px | Medium | Gray #636363 |
 
 **Hover State**:
+
 - Border: `2px dashed #194E8D` (navy blue)
 - Plus icon: Color `#194E8D`
 - Text: Color `#194E8D`
 
 **Tailwind Classes**:
+
 ```css
 /* Base card */
 min-w-[250px] rounded-2xl p-5 cursor-pointer
@@ -362,20 +396,22 @@ transition-all duration-200
 ### Organisms
 
 #### CoaspocketCarousel
+
 Carousel component for pocket cards including the action card.
 
 ```typescript
 interface CoaspocketCarouselProps {
-  title: string;                                    // "Resumen de Bolsillos Digitales"
-  products: CoaspocketProduct[];                    // Array of pocket products
-  selectedProductId?: string;                       // ID of selected pocket
+  title: string; // "Resumen de Bolsillos Digitales"
+  products: CoaspocketProduct[]; // Array of pocket products
+  selectedProductId?: string; // ID of selected pocket
   onProductSelect: (product: CoaspocketProduct) => void;
-  onCreatePocket: () => void;                       // Handler for create action
+  onCreatePocket: () => void; // Handler for create action
   className?: string;
 }
 ```
 
 **Implementation Notes**:
+
 - Reuses `CarouselArrow` and `CarouselDots` atoms from 04-ahorros
 - Reuses carousel utilities (`calculateTotalPages`, `getVisibleItems`)
 - Renders `CoaspocketProductCard` for each pocket
@@ -384,6 +420,7 @@ interface CoaspocketCarouselProps {
 - Same scroll behavior, responsive breakpoints, and accessibility features as other carousels
 
 **Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ Resumen de Bolsillos Digitales                                              │
@@ -401,6 +438,7 @@ interface CoaspocketCarouselProps {
 ```
 
 **Styling**:
+
 - Container: `bg-white rounded-2xl p-6`
 - Title: `text-[20px] font-bold text-[#194E8D] mb-4`
 - Cards container: `flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide`
@@ -423,7 +461,7 @@ interface CoaspocketCarouselProps {
 /**
  * Status of a digital pocket (bolsillo)
  */
-export type CoaspocketStatus = 'activo' | 'inactivo';
+export type CoaspocketStatus = "activo" | "inactivo";
 
 /**
  * Digital pocket product information for carousel display
@@ -431,7 +469,7 @@ export type CoaspocketStatus = 'activo' | 'inactivo';
 export interface CoaspocketProduct {
   id: string;
   title: string;
-  pocketNumber: string;            // e.g., "4428" (will be masked as ***4428)
+  pocketNumber: string; // e.g., "4428" (will be masked as ***4428)
   balance: number;
   status: CoaspocketStatus;
 }
@@ -451,7 +489,7 @@ export type OnCreatePocket = () => void;
 
 ```typescript
 // Add export
-export * from './coaspocket';
+export * from "./coaspocket";
 ```
 
 ---
@@ -461,34 +499,34 @@ export * from './coaspocket';
 ### File: `src/mocks/coaspocket.ts`
 
 ```typescript
-import { CoaspocketProduct } from '@/src/types/coaspocket';
-import { Transaction, MonthOption } from '@/src/types/products';
-import { generateMonthOptions } from '@/src/utils/dates';
+import { CoaspocketProduct } from "@/src/types/coaspocket";
+import { Transaction, MonthOption } from "@/src/types/products";
+import { generateMonthOptions } from "@/src/utils/dates";
 
 /**
  * Mock pocket products for carousel
  */
 export const mockCoaspocketProducts: CoaspocketProduct[] = [
   {
-    id: '1',
-    title: 'Bolsillo Vacaciones',
-    pocketNumber: '4428',
+    id: "1",
+    title: "Bolsillo Vacaciones",
+    pocketNumber: "4428",
     balance: 1500000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '2',
-    title: 'Bolsillo Emergencias',
-    pocketNumber: '5539',
+    id: "2",
+    title: "Bolsillo Emergencias",
+    pocketNumber: "5539",
     balance: 3200000,
-    status: 'activo',
+    status: "activo",
   },
   {
-    id: '3',
-    title: 'Bolsillo Navidad',
-    pocketNumber: '6640',
+    id: "3",
+    title: "Bolsillo Navidad",
+    pocketNumber: "6640",
     balance: 800000,
-    status: 'inactivo',
+    status: "inactivo",
   },
 ];
 
@@ -497,45 +535,46 @@ export const mockCoaspocketProducts: CoaspocketProduct[] = [
  */
 export const mockCoaspocketTransactions: Transaction[] = [
   {
-    id: '1',
-    date: '2024-11-15',
-    description: 'Transferencia a bolsillo',
+    id: "1",
+    date: "2024-11-15",
+    description: "Transferencia a bolsillo",
     amount: 200000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '2',
-    date: '2024-11-01',
-    description: 'Transferencia a bolsillo',
+    id: "2",
+    date: "2024-11-01",
+    description: "Transferencia a bolsillo",
     amount: 150000,
-    type: 'credit',
+    type: "credit",
   },
   {
-    id: '3',
-    date: '2024-10-20',
-    description: 'Retiro de bolsillo',
+    id: "3",
+    date: "2024-10-20",
+    description: "Retiro de bolsillo",
     amount: 50000,
-    type: 'DEBITO',
+    type: "DEBITO",
   },
 ];
 
 /**
  * Available months for report download
  */
-export const mockCoaspocketAvailableMonths: MonthOption[] = generateMonthOptions(12);
+export const mockCoaspocketAvailableMonths: MonthOption[] =
+  generateMonthOptions(12);
 
 /**
  * Informational text for the InfoBox
  */
 export const mockCoaspocketInfoText =
-  'Los bolsillos digitales te permiten organizar tu dinero de forma inteligente. ' +
-  'Crea diferentes bolsillos para tus metas de ahorro y mantén un control efectivo de tus finanzas.';
+  "Los bolsillos digitales te permiten organizar tu dinero de forma inteligente. " +
+  "Crea diferentes bolsillos para tus metas de ahorro y mantén un control efectivo de tus finanzas.";
 ```
 
 ### Update: `src/mocks/index.ts`
 
 ```typescript
-export * from './coaspocket';
+export * from "./coaspocket";
 // ... other exports
 ```
 
@@ -663,11 +702,11 @@ export default function CoaspocketPage() {
 
 ### Carousel Responsive Behavior
 
-| Breakpoint | Visible Cards | Arrow Position | Dots |
-|------------|---------------|----------------|------|
-| Mobile (<640px) | 1 | Hidden (swipe) | Show |
-| Tablet (640-1023px) | 2 | Show | Show |
-| Desktop (>=1024px) | 3 | Show | Show |
+| Breakpoint          | Visible Cards | Arrow Position | Dots |
+| ------------------- | ------------- | -------------- | ---- |
+| Mobile (<640px)     | 1             | Hidden (swipe) | Show |
+| Tablet (640-1023px) | 2             | Show           | Show |
+| Desktop (>=1024px)  | 3             | Show           | Show |
 
 ### Card Responsive Adjustments
 
@@ -742,14 +781,14 @@ Follows same patterns as other carousel implementations:
 For screen readers, the status should be clearly communicated:
 
 ```typescript
-const statusAnnouncement = product.status === 'activo'
-  ? 'Estado: Activo'
-  : 'Estado: Inactivo';
+const statusAnnouncement =
+  product.status === "activo" ? "Estado: Activo" : "Estado: Inactivo";
 ```
 
 ### Color Contrast
 
 All text colors meet WCAG AA standards:
+
 - Green status (#00A44C) on white/gray background
 - Gray status (#808284) on white/gray background
 - Navy balance (#194E8D) on white/gray background
@@ -781,7 +820,7 @@ The sidebar should highlight "Coaspocket" when on `/productos/coaspocket`:
 ```typescript
 // In Sidebar.tsx - handled by pathname check
 const pathname = usePathname();
-const isCoaspocketActive = pathname === '/productos/coaspocket';
+const isCoaspocketActive = pathname === "/productos/coaspocket";
 ```
 
 ---
@@ -789,10 +828,12 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 ## Implementation Checklist
 
 ### Phase 1: Types
+
 - [ ] Create `src/types/coaspocket.ts`
 - [ ] Update `src/types/index.ts` exports
 
 ### Phase 2: Atoms and Molecules
+
 - [ ] Create `src/atoms/InfoBox.tsx`
 - [ ] Create `src/molecules/CoaspocketProductCard.tsx`
 - [ ] Create `src/molecules/CreatePocketCard.tsx`
@@ -802,6 +843,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] Update `src/molecules/index.ts` exports
 
 ### Phase 3: Organism - CoaspocketCarousel
+
 - [ ] Create `src/organisms/CoaspocketCarousel.tsx`
 - [ ] Reuse `CarouselArrow` and `CarouselDots` from atoms
 - [ ] Reuse carousel utilities from `src/utils/carousel.ts`
@@ -813,10 +855,12 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] Update `src/organisms/index.ts` exports
 
 ### Phase 4: Mock Data
+
 - [ ] Create `src/mocks/coaspocket.ts`
 - [ ] Update `src/mocks/index.ts` exports
 
 ### Phase 5: Page Assembly
+
 - [ ] Create `app/(authenticated)/productos/coaspocket/page.tsx`
 - [ ] Wire up carousel with mock data
 - [ ] Include InfoBox component with informational text
@@ -825,6 +869,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] Connect selection logic to transaction history title
 
 ### Phase 6: Polish
+
 - [ ] Add responsive styles for all breakpoints
 - [ ] Add hover/focus states
 - [ ] Add loading state for carousel
@@ -837,6 +882,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 ## Testing Checklist
 
 ### Functional Testing
+
 - [ ] Page loads at `/productos/coaspocket`
 - [ ] First pocket is selected by default (white bg, blue border)
 - [ ] Unselected pockets have gray background (#E4E6EA)
@@ -857,6 +903,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] "Ocultar saldos" masks balance values
 
 ### Visual Testing
+
 - [ ] Selected card: White background, navy blue border (#194E8D)
 - [ ] Unselected card: Gray background (#E4E6EA), gray border
 - [ ] "Activo" status displays in green (#00A44C)
@@ -868,6 +915,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] InfoBox has blue left border (#007FFF)
 
 ### Responsive Testing
+
 - [ ] Mobile: 1 card visible, swipe works
 - [ ] Tablet: 2 cards visible, arrows work
 - [ ] Desktop: 3 cards visible, arrows work
@@ -877,6 +925,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] InfoBox is full width on all breakpoints
 
 ### Accessibility Testing
+
 - [ ] Keyboard navigation through carousel
 - [ ] Arrow keys move between cards
 - [ ] Enter/Space selects pocket card
@@ -888,6 +937,7 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 - [ ] Color contrast passes WCAG AA
 
 ### Integration Testing
+
 - [ ] Page loads at `/productos/coaspocket`
 - [ ] Sidebar shows "Coaspocket" as active
 - [ ] Back button navigates to `/home`
@@ -920,12 +970,12 @@ const isCoaspocketActive = pathname === '/productos/coaspocket';
 
 When connecting to the backend API:
 
-| Endpoint | Purpose | When Called |
-|----------|---------|-------------|
-| `GET /balances?type=coaspocket` | Fetch pocket products | Page load |
-| `GET /movements?productId={id}` | Fetch transactions | Pocket selection |
-| `GET /reports/{productId}/{month}` | Download PDF | Month selection |
-| `POST /coaspocket/create` | Create new pocket | Create button click |
+| Endpoint                           | Purpose               | When Called         |
+| ---------------------------------- | --------------------- | ------------------- |
+| `GET /balances?type=coaspocket`    | Fetch pocket products | Page load           |
+| `GET /movements?productId={id}`    | Fetch transactions    | Pocket selection    |
+| `GET /reports/{productId}/{month}` | Download PDF          | Month selection     |
+| `POST /coaspocket/create`          | Create new pocket     | Create button click |
 
 See `.claude/knowledge/api/README.md` for full API documentation.
 
@@ -942,18 +992,18 @@ See `.claude/knowledge/api/README.md` for full API documentation.
 
 ## Comparison with Other Product Cards
 
-| Aspect | Ahorros | Coaspocket |
-|--------|---------|------------|
-| Card Component | `SavingsProductCard` | `CoaspocketProductCard` |
-| Number Label | "Número de producto" | "Número de bolsillo" |
-| Balance Label | "Saldo Total" | None (just amount) |
-| Status Values | activo/bloqueado/inactivo | activo/inactivo |
-| Has Action Card | No | Yes ("Crear Nuevo Bolsillo") |
-| Has InfoBox | No | Yes |
-| Detail Fields | Account type | None |
-| Monetary Values | 1 (balance) | 1 (balance) |
-| Card Min Width | 250px | 250px |
-| Unselected BG | White | #E4E6EA |
+| Aspect          | Ahorros                   | Coaspocket                   |
+| --------------- | ------------------------- | ---------------------------- |
+| Card Component  | `SavingsProductCard`      | `CoaspocketProductCard`      |
+| Number Label    | "Número de producto"      | "Número de bolsillo"         |
+| Balance Label   | "Saldo Total"             | None (just amount)           |
+| Status Values   | activo/bloqueado/inactivo | activo/inactivo              |
+| Has Action Card | No                        | Yes ("Crear Nuevo Bolsillo") |
+| Has InfoBox     | No                        | Yes                          |
+| Detail Fields   | Account type              | None                         |
+| Monetary Values | 1 (balance)               | 1 (balance)                  |
+| Card Min Width  | 250px                     | 250px                        |
+| Unselected BG   | White                     | #E4E6EA                      |
 
 ---
 

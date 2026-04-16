@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface CreatePocketCardProps {
   onClick: () => void;
@@ -7,7 +7,7 @@ interface CreatePocketCardProps {
 
 export function CreatePocketCard({
   onClick,
-  className = '',
+  className = "",
 }: CreatePocketCardProps) {
   return (
     <div
@@ -15,7 +15,7 @@ export function CreatePocketCard({
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick();
         }

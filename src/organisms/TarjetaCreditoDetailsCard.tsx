@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Tabs } from "@/src/atoms";
 import { CardActionOptionCard } from "@/src/molecules";
 import { useUIContext } from "@/src/contexts";
@@ -37,6 +38,7 @@ export function TarjetaCreditoDetailsCard({
 }: TarjetaCreditoDetailsCardProps) {
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
   const { hideBalances } = useUIContext();
+  const router = useRouter();
 
   const isActiva = product.status === "activa";
   const badge = STATUS_BADGE[product.status];
@@ -49,8 +51,12 @@ export function TarjetaCreditoDetailsCard({
   const fmt = (n: number) =>
     hideBalances ? maskCurrency() : formatCurrency(n);
 
-  // TODO: wire these to real flows when available
-  // (e.g. /tarjeta/pagar, /tarjeta/avance, /tarjeta/bloquear, /tarjeta/clave)
+  const handlePagarTarjeta = () => {
+    router.push(`/tarjeta/pagar?cardId=${product.id}`);
+  };
+
+  // TODO: wire remaining actions to real flows when available
+  // (e.g. /tarjeta/avance, /tarjeta/bloquear, /tarjeta/clave)
   const noop = () => {};
 
   return (
@@ -151,7 +157,7 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Pagar Tarjeta"
             description="Realiza el pago de tu tarjeta."
-            onClick={noop}
+            onClick={handlePagarTarjeta}
             disabled={!isActiva}
           />
           <CardActionOptionCard

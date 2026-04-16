@@ -21,3 +21,4 @@ export * from "./mockRedCoopTransferData";
 export * from "./mockScheduledTransferData";
 export * from "./home";
 export * from "./tarjetaCredito";
+export * from "./mockTarjetaPaymentData";
