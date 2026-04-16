@@ -2,14 +2,14 @@
 
 import React from "react";
 import { Card, ErrorIcon, SuccessIcon } from "@/src/atoms";
-import { TarjetaBloqueoResult } from "@/src/types/tarjeta-bloqueo";
+import { TarjetaActivacionResult } from "@/src/types/tarjeta-activacion";
 
-interface TarjetaBloqueoResultCardProps {
-  result: TarjetaBloqueoResult;
+interface TarjetaActivacionResultCardProps {
+  result: TarjetaActivacionResult;
 }
 
-export const TarjetaBloqueoResultCard: React.FC<
-  TarjetaBloqueoResultCardProps
+export const TarjetaActivacionResultCard: React.FC<
+  TarjetaActivacionResultCardProps
 > = ({ result }) => {
   const isSuccess = result.status === "success";
 
@@ -18,25 +18,25 @@ export const TarjetaBloqueoResultCard: React.FC<
       <div className="flex flex-col items-center gap-4">
         {isSuccess ? <SuccessIcon size="md" /> : <ErrorIcon size="md" />}
         <h2 className="text-[22px] font-bold text-brand-navy text-center">
-          {isSuccess ? "¡Tarjeta Bloqueada!" : "No pudimos bloquear tu tarjeta"}
+          {isSuccess ? "¡Tarjeta Activada!" : "No pudimos activar tu tarjeta"}
         </h2>
         <p className="text-[14px] text-brand-navy text-center">
           {isSuccess
-            ? "Tu tarjeta ha sido bloqueada exitosamente."
+            ? "Tu tarjeta ha sido activada exitosamente."
             : (result.descripcion ??
-              "Ocurrió un error al bloquear la tarjeta. Intenta nuevamente.")}
+              "Ocurrió un error al activar la tarjeta. Intenta nuevamente.")}
         </p>
       </div>
 
       {isSuccess && (
         <div
           role="note"
-          className="rounded-lg border border-amber-400 bg-amber-50 px-4 py-3"
+          className="rounded-lg border border-brand-navy bg-[#f0faff] px-4 py-3"
         >
-          <p className="text-[14px] font-bold text-[#cc7900]">
-            Siguiente paso: Para solicitar una nueva tarjeta, por favor
-            comunícate con nuestra línea de atención o acércate a una de
-            nuestras oficinas.
+          <p className="text-[14px] text-brand-navy">
+            <span className="font-bold">Recomendación de seguridad: </span>
+            Por tu seguridad, te recomendamos cambiar la clave de tu tarjeta y
+            nunca compartirla con nadie.
           </p>
         </div>
       )}

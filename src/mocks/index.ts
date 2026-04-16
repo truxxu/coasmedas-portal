@@ -24,3 +24,4 @@ export * from "./tarjetaCredito";
 export * from "./mockTarjetaPaymentData";
 export * from "./mockTarjetaAvanceData";
 export * from "./mockTarjetaBloqueoData";
+export * from "./mockTarjetaActivacionData";

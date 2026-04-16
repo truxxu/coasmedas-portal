@@ -23,8 +23,8 @@ export default function BloqueoActivacionListPage() {
     router.push(`/tarjeta/bloqueo-activacion/bloquear?cardId=${product.id}`);
   };
 
-  const handleActivate = () => {
-    // TODO: wire activación flow when available.
+  const handleActivate = (product: TarjetaCreditoProduct) => {
+    router.push(`/tarjeta/bloqueo-activacion/activar?cardId=${product.id}`);
   };
 
   const handleBack = () => {

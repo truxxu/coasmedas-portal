@@ -95,3 +95,6 @@ export { CardBlockActivateList } from "./CardBlockActivateList";
 export { TarjetaBloqueoDetailsCard } from "./TarjetaBloqueoDetailsCard";
 export { TarjetaBloqueoConfirmationCard } from "./TarjetaBloqueoConfirmationCard";
 export { TarjetaBloqueoResultCard } from "./TarjetaBloqueoResultCard";
+export { TarjetaActivacionDetailsCard } from "./TarjetaActivacionDetailsCard";
+export { TarjetaActivacionConfirmationCard } from "./TarjetaActivacionConfirmationCard";
+export { TarjetaActivacionResultCard } from "./TarjetaActivacionResultCard";
