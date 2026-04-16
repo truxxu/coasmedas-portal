@@ -96,7 +96,7 @@ export function buildExternalSavingsSourceRef(
   account: SavingsAccountResponse,
 ): ExternalTransferSourceRef & { numeroCuenta: string } {
   return {
-    codigoProductoCobis: account.codigoProductoCobis,
+    codigoProductoCobis: String(account.codigoProductoCobis),
     tipoCartera: "",
     idCuenta: account.idCuenta,
     numeroCuenta: account.numeroCuenta,
