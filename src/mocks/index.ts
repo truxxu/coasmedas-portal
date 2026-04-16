@@ -22,3 +22,4 @@ export * from "./mockScheduledTransferData";
 export * from "./home";
 export * from "./tarjetaCredito";
 export * from "./mockTarjetaPaymentData";
+export * from "./mockTarjetaAvanceData";

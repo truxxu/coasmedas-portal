@@ -25,7 +25,7 @@ const STATUS_BADGE: Record<
   },
   pendiente_activacion: {
     label: "Pendiente",
-    className: "bg-brand-gray-light text-brand-navy-alt",
+    className: "bg-brand-gray-light text-brand-navy",
   },
   bloqueada: {
     label: "Bloqueada",
@@ -55,8 +55,12 @@ export function TarjetaCreditoDetailsCard({
     router.push(`/tarjeta/pagar?cardId=${product.id}`);
   };
 
+  const handleRealizarAvance = () => {
+    router.push(`/tarjeta/avance?cardId=${product.id}`);
+  };
+
   // TODO: wire remaining actions to real flows when available
-  // (e.g. /tarjeta/avance, /tarjeta/bloquear, /tarjeta/clave)
+  // (e.g. /tarjeta/bloquear, /tarjeta/clave)
   const noop = () => {};
 
   return (
@@ -86,7 +90,7 @@ export function TarjetaCreditoDetailsCard({
           {isActiva ? (
             <>
               <div className="flex items-end justify-between mb-1">
-                <span className="text-[12px] font-medium text-brand-navy-alt">
+                <span className="text-[12px] font-medium text-brand-navy">
                   Utilizado: {fmt(product.cupoUtilizado)}
                 </span>
                 <span className="text-[12px] text-brand-gray-muted">
@@ -105,7 +109,7 @@ export function TarjetaCreditoDetailsCard({
                   <p className="text-[12px] text-brand-gray-muted">
                     Deuda Total
                   </p>
-                  <p className="text-[15px] font-medium text-brand-navy-alt">
+                  <p className="text-[15px] font-medium text-brand-navy">
                     {fmt(product.deudaTotal)}
                   </p>
                 </div>
@@ -113,7 +117,7 @@ export function TarjetaCreditoDetailsCard({
                   <p className="text-[12px] text-brand-gray-muted">
                     Cupo Total
                   </p>
-                  <p className="text-[15px] font-medium text-brand-navy-alt">
+                  <p className="text-[15px] font-medium text-brand-navy">
                     {fmt(product.cupoTotal)}
                   </p>
                 </div>
@@ -121,7 +125,7 @@ export function TarjetaCreditoDetailsCard({
                   <p className="text-[12px] text-brand-gray-muted">
                     Pago Mínimo
                   </p>
-                  <p className="text-[15px] font-medium text-brand-navy-alt">
+                  <p className="text-[15px] font-medium text-brand-navy">
                     {fmt(product.pagoMinimo)}
                   </p>
                 </div>
@@ -129,7 +133,7 @@ export function TarjetaCreditoDetailsCard({
                   <p className="text-[12px] text-brand-gray-muted">
                     Fecha Límite de Pago
                   </p>
-                  <p className="text-[15px] font-medium text-brand-navy-alt">
+                  <p className="text-[15px] font-medium text-brand-navy">
                     {product.fechaLimitePago
                       ? formatDate(product.fechaLimitePago)
                       : "-"}
@@ -163,7 +167,7 @@ export function TarjetaCreditoDetailsCard({
           <CardActionOptionCard
             title="Realizar Avance"
             description="Transfiere de tu cupo a tu cuenta."
-            onClick={noop}
+            onClick={handleRealizarAvance}
             disabled={!isActiva}
           />
           <CardActionOptionCard

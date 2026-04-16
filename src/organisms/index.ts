@@ -88,3 +88,6 @@ export { TarjetaCreditoDetailsCard } from "./TarjetaCreditoDetailsCard";
 export { TarjetaPaymentDetailsCard } from "./TarjetaPaymentDetailsCard";
 export { TarjetaPaymentConfirmationCard } from "./TarjetaPaymentConfirmationCard";
 export { TarjetaPaymentResultCard } from "./TarjetaPaymentResultCard";
+export { TarjetaAvanceDetailsCard } from "./TarjetaAvanceDetailsCard";
+export { TarjetaAvanceConfirmationCard } from "./TarjetaAvanceConfirmationCard";
+export { TarjetaAvanceResultCard } from "./TarjetaAvanceResultCard";
