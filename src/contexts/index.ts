@@ -1,5 +1,11 @@
 export { UserProvider, useUserContext } from "./UserContext";
-export { UIProvider, useUIContext } from "./UIContext";
+export {
+  UIProvider,
+  useUIContext,
+  useHideBalancesContext,
+  useSidebarExpandedContext,
+  useMobileSidebarContext,
+} from "./UIContext";
 export {
   WelcomeBarProvider,
   useWelcomeBar,

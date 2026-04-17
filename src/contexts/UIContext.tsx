@@ -2,79 +2,163 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
-  useState,
   useEffect,
-  useRef,
+  useMemo,
+  useState,
   ReactNode,
 } from "react";
 
-interface UIContextType {
+interface HideBalancesContextType {
   hideBalances: boolean;
   setHideBalances: (value: boolean) => void;
   toggleHideBalances: () => void;
+}
+
+interface SidebarExpandedContextType {
   sidebarExpanded: Record<string, boolean>;
   toggleSidebarItem: (itemId: string) => void;
+}
+
+interface MobileSidebarContextType {
   mobileSidebarOpen: boolean;
   setMobileSidebarOpen: (value: boolean) => void;
   toggleMobileSidebar: () => void;
 }
 
-const UIContext = createContext<UIContextType | undefined>(undefined);
+const HideBalancesContext = createContext<HideBalancesContextType | undefined>(
+  undefined,
+);
+const SidebarExpandedContext = createContext<
+  SidebarExpandedContextType | undefined
+>(undefined);
+const MobileSidebarContext = createContext<
+  MobileSidebarContextType | undefined
+>(undefined);
 
-export function UIProvider({ children }: { children: ReactNode }) {
-  const [hideBalances, setHideBalances] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const stored = localStorage.getItem("hideBalances");
-    return stored ? JSON.parse(stored) : false;
-  });
-  const [sidebarExpanded, setSidebarExpanded] = useState<
-    Record<string, boolean>
-  >({});
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  // Use ref instead of state for hydration tracking to avoid cascading renders
-  const isHydrated = useRef(typeof window !== "undefined");
+const HIDE_BALANCES_STORAGE_KEY = "hideBalances";
 
-  // Persist hideBalances to localStorage when it changes
+function HideBalancesProvider({ children }: { children: ReactNode }) {
+  // Start with false on both server and client to avoid hydration mismatch,
+  // then hydrate from localStorage in an effect.
+  const [hideBalances, setHideBalancesState] = useState(false);
+
   useEffect(() => {
-    if (isHydrated.current) {
-      localStorage.setItem("hideBalances", JSON.stringify(hideBalances));
+    const stored = localStorage.getItem(HIDE_BALANCES_STORAGE_KEY);
+    if (stored) {
+      try {
+        setHideBalancesState(JSON.parse(stored));
+      } catch {
+        // ignore malformed value
+      }
     }
-  }, [hideBalances]);
+  }, []);
 
-  const toggleHideBalances = () => setHideBalances(!hideBalances);
+  const setHideBalances = useCallback((value: boolean) => {
+    setHideBalancesState(value);
+    localStorage.setItem(HIDE_BALANCES_STORAGE_KEY, JSON.stringify(value));
+  }, []);
 
-  const toggleSidebarItem = (itemId: string) => {
-    setSidebarExpanded((prev) => ({
-      ...prev,
-      [itemId]: !prev[itemId],
-    }));
-  };
+  const toggleHideBalances = useCallback(() => {
+    setHideBalancesState((prev) => {
+      const next = !prev;
+      localStorage.setItem(HIDE_BALANCES_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
 
-  const toggleMobileSidebar = () => setMobileSidebarOpen(!mobileSidebarOpen);
+  const value = useMemo(
+    () => ({ hideBalances, setHideBalances, toggleHideBalances }),
+    [hideBalances, setHideBalances, toggleHideBalances],
+  );
 
   return (
-    <UIContext.Provider
-      value={{
-        hideBalances,
-        setHideBalances,
-        toggleHideBalances,
-        sidebarExpanded,
-        toggleSidebarItem,
-        mobileSidebarOpen,
-        setMobileSidebarOpen,
-        toggleMobileSidebar,
-      }}
-    >
+    <HideBalancesContext.Provider value={value}>
       {children}
-    </UIContext.Provider>
+    </HideBalancesContext.Provider>
   );
 }
 
-export function useUIContext() {
-  const context = useContext(UIContext);
-  if (!context) {
-    throw new Error("useUIContext must be used within UIProvider");
-  }
-  return context;
+function SidebarExpandedProvider({ children }: { children: ReactNode }) {
+  const [sidebarExpanded, setSidebarExpanded] = useState<
+    Record<string, boolean>
+  >({});
+
+  const toggleSidebarItem = useCallback((itemId: string) => {
+    setSidebarExpanded((prev) => ({ ...prev, [itemId]: !prev[itemId] }));
+  }, []);
+
+  const value = useMemo(
+    () => ({ sidebarExpanded, toggleSidebarItem }),
+    [sidebarExpanded, toggleSidebarItem],
+  );
+
+  return (
+    <SidebarExpandedContext.Provider value={value}>
+      {children}
+    </SidebarExpandedContext.Provider>
+  );
 }
+
+function MobileSidebarProvider({ children }: { children: ReactNode }) {
+  const [mobileSidebarOpen, setMobileSidebarOpenState] = useState(false);
+
+  const setMobileSidebarOpen = useCallback((v: boolean) => {
+    setMobileSidebarOpenState(v);
+  }, []);
+
+  const toggleMobileSidebar = useCallback(() => {
+    setMobileSidebarOpenState((prev) => !prev);
+  }, []);
+
+  const value = useMemo(
+    () => ({ mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar }),
+    [mobileSidebarOpen, setMobileSidebarOpen, toggleMobileSidebar],
+  );
+
+  return (
+    <MobileSidebarContext.Provider value={value}>
+      {children}
+    </MobileSidebarContext.Provider>
+  );
+}
+
+export function UIProvider({ children }: { children: ReactNode }) {
+  return (
+    <HideBalancesProvider>
+      <SidebarExpandedProvider>
+        <MobileSidebarProvider>{children}</MobileSidebarProvider>
+      </SidebarExpandedProvider>
+    </HideBalancesProvider>
+  );
+}
+
+export function useHideBalancesContext() {
+  const ctx = useContext(HideBalancesContext);
+  if (!ctx) {
+    throw new Error("useHideBalancesContext must be used within UIProvider");
+  }
+  return ctx;
+}
+
+export function useSidebarExpandedContext() {
+  const ctx = useContext(SidebarExpandedContext);
+  if (!ctx) {
+    throw new Error("useSidebarExpandedContext must be used within UIProvider");
+  }
+  return ctx;
+}
+
+export function useMobileSidebarContext() {
+  const ctx = useContext(MobileSidebarContext);
+  if (!ctx) {
+    throw new Error("useMobileSidebarContext must be used within UIProvider");
+  }
+  return ctx;
+}
+
+// Back-compat: existing callers do `const { hideBalances } = useUIContext()`.
+// Preserve that surface by aliasing to the hide-balances context — the only
+// field they read in practice.
+export const useUIContext = useHideBalancesContext;

@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    optimizePackageImports: [
+      "@/src/atoms",
+      "@/src/molecules",
+      "@/src/organisms",
+    ],
+  },
 };
 
 export default nextConfig;
