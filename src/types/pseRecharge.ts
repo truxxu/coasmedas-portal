@@ -1,3 +1,9 @@
+import type {
+  FlowHolderInfoTransfer,
+  FlowTransactionMetadataEn,
+  FlowTransactionStatus,
+} from "./flow";
+
 /**
  * Destination account for PSE recharge
  */
@@ -20,9 +26,7 @@ export interface PSERechargeFormData {
 /**
  * Step 2: Confirmation display data
  */
-export interface PSERechargeConfirmationData {
-  holderName: string;
-  documentNumber: string;
+export interface PSERechargeConfirmationData extends FlowHolderInfoTransfer {
   productToRecharge: string;
   amount: number;
   method: string;
@@ -32,16 +36,12 @@ export interface PSERechargeConfirmationData {
 /**
  * Step 4: Transaction result
  */
-export interface PSERechargeResult {
-  status: "success" | "error";
+export interface PSERechargeResult
+  extends FlowTransactionStatus, FlowTransactionMetadataEn {
   productRecharged: string;
   amountRecharged: number;
   method: string;
   transactionCost: number;
-  transactionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
-  description: string;
 }
 
 /**

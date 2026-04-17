@@ -1,3 +1,5 @@
+import type { FlowHolderInfoEn, FlowPaymentResultEn } from "./flow";
+
 /**
  * Source account for protection payment
  */
@@ -47,9 +49,7 @@ export interface ProtectionPaymentDetailsFormData {
 /**
  * Step 2 - Confirmation data
  */
-export interface ProtectionPaymentConfirmationData {
-  holderName: string;
-  holderDocument: string;
+export interface ProtectionPaymentConfirmationData extends FlowHolderInfoEn {
   productToPay: string;
   policyNumber: string;
   productToDebit: string;
@@ -59,14 +59,6 @@ export interface ProtectionPaymentConfirmationData {
 /**
  * Step 4 - Transaction result
  */
-export interface ProtectionPaymentResultData {
-  success: boolean;
-  creditLine: string;
-  productNumber: string;
-  amountPaid: number;
-  transactionCost: number;
-  transmissionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
+export interface ProtectionPaymentResultData extends FlowPaymentResultEn {
   description: string;
 }

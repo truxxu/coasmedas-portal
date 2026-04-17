@@ -9,6 +9,7 @@ export * from "./proteccion";
 export * from "./coaspocket";
 export * from "./payment";
 export * from "./stepper";
+export * from "./flow";
 export * from "./aportes-payment";
 export * from "./obligacion-payment";
 export * from "./otros-asociados-payment";

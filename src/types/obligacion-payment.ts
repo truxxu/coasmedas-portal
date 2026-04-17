@@ -2,6 +2,8 @@
 // Obligacion Payment Flow Types (Feature 09c - Pago de Obligaciones)
 // ============================================================================
 
+import type { FlowHolderInfoEs, FlowTransactionMetadataEs } from "./flow";
+
 /**
  * Source account for obligacion payment
  */
@@ -50,9 +52,7 @@ export interface ObligacionPaymentDetailsData {
 /**
  * Step 2: Obligacion confirmation data
  */
-export interface ObligacionConfirmationData {
-  titular: string;
-  documento: string; // Masked
+export interface ObligacionConfirmationData extends FlowHolderInfoEs {
   // Credit details
   lineaCredito: string;
   fechaApertura: string;
@@ -71,17 +71,13 @@ export interface ObligacionConfirmationData {
 /**
  * Step 4: Obligacion transaction result
  */
-export interface ObligacionTransactionResult {
+export interface ObligacionTransactionResult extends FlowTransactionMetadataEs {
   status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
   costoTransaccion: number;
   abonoExcedente: string; // e.g., "Reducción de Cuota"
-  fechaTransmision: string;
-  horaTransaccion: string;
-  numeroAprobacion: string;
-  descripcion: string;
 }
 
 /**

@@ -104,3 +104,5 @@ export { TarjetaClaveDetailsCard } from "./TarjetaClaveDetailsCard";
 export { TarjetaClaveConfirmationCard } from "./TarjetaClaveConfirmationCard";
 export { TarjetaClaveResultCard } from "./TarjetaClaveResultCard";
 export { TarjetaSmsCodePage } from "./TarjetaSmsCodePage";
+export { TransferSmsCodePage } from "./TransferSmsCodePage";
+export type { TransferSmsCodePageProps } from "./TransferSmsCodePage";

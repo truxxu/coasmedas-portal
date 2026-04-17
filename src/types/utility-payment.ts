@@ -1,3 +1,5 @@
+import type { FlowHolderInfoEn, FlowPaymentResultEn } from "./flow";
+
 /**
  * Source account for utility payment
  */
@@ -56,9 +58,7 @@ export interface UtilityPaymentDetails {
 /**
  * Step 2 - Confirmation data (derived from step 1 + user context)
  */
-export interface UtilityPaymentConfirmation {
-  holderName: string;
-  holderDocument: string;
+export interface UtilityPaymentConfirmation extends FlowHolderInfoEn {
   serviceToPay: string;
   invoiceReference: string;
   productToDebit: string;
@@ -68,14 +68,6 @@ export interface UtilityPaymentConfirmation {
 /**
  * Step 4 - Transaction result
  */
-export interface UtilityPaymentResult {
-  success: boolean;
-  creditLine: string;
-  productNumber: string;
-  amountPaid: number;
-  transactionCost: number;
-  transmissionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
+export interface UtilityPaymentResult extends FlowPaymentResultEn {
   description: string;
 }

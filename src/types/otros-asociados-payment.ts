@@ -2,6 +2,8 @@
  * Types for Pago a Otros Asociados (Payment to Other Associates) feature
  */
 
+import type { FlowPaymentResultEn } from "./flow";
+
 /**
  * Registered beneficiary (other Coasmedas associate)
  */
@@ -70,15 +72,7 @@ export interface OtrosAsociadosConfirmationData {
 /**
  * Step 4: Transaction result
  */
-export interface OtrosAsociadosTransactionResult {
-  success: boolean;
-  creditLine: string;
-  productNumber: string;
-  amountPaid: number;
-  transactionCost: number;
-  transmissionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
+export interface OtrosAsociadosTransactionResult extends FlowPaymentResultEn {
   description: "Exitosa" | "Fallida" | "Pendiente";
 }
 

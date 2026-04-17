@@ -2,6 +2,8 @@
 // Aportes Payment Flow Types (Feature 09b - Pago de Aportes)
 // ============================================================================
 
+import type { FlowHolderInfoEs, FlowTransactionMetadataEs } from "./flow";
+
 /**
  * Payment method type
  */
@@ -32,9 +34,7 @@ export interface AportesPaymentDetailsData {
 /**
  * Step 2: Aportes confirmation data
  */
-export interface AportesConfirmationData {
-  titular: string;
-  documento: string; // Masked
+export interface AportesConfirmationData extends FlowHolderInfoEs {
   productoAPagar: string; // Plan name
   numeroProducto: string; // Masked
   productoADebitar: string; // Account name or "PSE - Pagos con otras entidades"
@@ -45,16 +45,12 @@ export interface AportesConfirmationData {
 /**
  * Step 4: Aportes transaction result
  */
-export interface AportesTransactionResult {
+export interface AportesTransactionResult extends FlowTransactionMetadataEs {
   status: "success" | "error";
   lineaCredito: string;
   numeroProducto: string;
   valorPagado: number;
   costoTransaccion: number;
-  fechaTransmision: string;
-  horaTransaccion: string;
-  numeroAprobacion: string;
-  descripcion: string;
 }
 
 /**

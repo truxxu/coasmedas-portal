@@ -1,3 +1,9 @@
+import type {
+  FlowHolderInfoEn,
+  FlowTransactionMetadataEn,
+  FlowTransactionStatus,
+} from "./flow";
+
 /**
  * Source account for Red Coopcentral transfer
  */
@@ -33,10 +39,7 @@ export interface RedCoopTransferFormData {
 /**
  * Step 2: Confirmation display data
  */
-export interface RedCoopTransferConfirmationData {
-  // Holder (user) info
-  holderName: string;
-  holderDocument: string;
+export interface RedCoopTransferConfirmationData extends FlowHolderInfoEn {
   sourceProduct: string;
 
   // Destination info
@@ -53,9 +56,8 @@ export interface RedCoopTransferConfirmationData {
 /**
  * Step 4: Transaction result
  */
-export interface RedCoopTransferResult {
-  status: "success" | "error";
-
+export interface RedCoopTransferResult
+  extends FlowTransactionStatus, FlowTransactionMetadataEn {
   // Transfer details
   sourceAccount: string;
   destinationBank: string;
@@ -63,13 +65,4 @@ export interface RedCoopTransferResult {
   amountTransferred: number;
   concept: string;
   transactionCost: number;
-
-  // Transaction metadata
-  transactionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
-  description: string;
-
-  // Error info (if failed)
-  errorMessage?: string;
 }

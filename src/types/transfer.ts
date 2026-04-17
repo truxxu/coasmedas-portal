@@ -1,3 +1,5 @@
+import type { FlowHolderInfoTransfer, FlowTransactionStatus } from "./flow";
+
 /**
  * User account available for transfers
  */
@@ -31,9 +33,7 @@ export interface TransferDetailsFormData {
 /**
  * Step 2: Confirmation data
  */
-export interface TransferConfirmationData {
-  holderName: string;
-  documentNumber: string;
+export interface TransferConfirmationData extends FlowHolderInfoTransfer {
   sourceAccount: string;
   destinationProduct: string;
   amount: number;
@@ -49,9 +49,11 @@ export interface SMSVerificationFormData {
 
 /**
  * Step 4: Transaction result
+ *
+ * Keeps `transmissionDate` (not `transactionDate`) — intentional per the
+ * existing sessionStorage contract used by mapTransferResult.
  */
-export interface TransferResult {
-  status: "success" | "error";
+export interface TransferResult extends FlowTransactionStatus {
   sourceType: string;
   productNumber: string;
   amountPaid: number;

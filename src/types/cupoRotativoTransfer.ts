@@ -1,3 +1,9 @@
+import type {
+  FlowHolderInfoTransfer,
+  FlowTransactionMetadataEn,
+  FlowTransactionStatus,
+} from "./flow";
+
 /**
  * Cupo Rotativo (Revolving Credit Line) product
  */
@@ -30,9 +36,7 @@ export interface CupoRotativoTransferFormData {
 /**
  * Step 2: Confirmation display data
  */
-export interface CupoRotativoConfirmationData {
-  holderName: string;
-  documentNumber: string;
+export interface CupoRotativoConfirmationData extends FlowHolderInfoTransfer {
   cupoOrigen: string;
   cuentaDestino: string;
   amount: number;
@@ -42,16 +46,12 @@ export interface CupoRotativoConfirmationData {
 /**
  * Step 4: Transaction result
  */
-export interface CupoRotativoTransferResult {
-  status: "success" | "error";
+export interface CupoRotativoTransferResult
+  extends FlowTransactionStatus, FlowTransactionMetadataEn {
   sourceAccount: string;
   destinationAccount: string;
   amountTransferred: number;
   transactionCost: number;
-  transactionDate: string;
-  transactionTime: string;
-  approvalNumber: string;
-  description: string;
 }
 
 /**

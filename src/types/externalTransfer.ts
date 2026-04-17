@@ -1,3 +1,9 @@
+import type {
+  FlowHolderInfoEn,
+  FlowTransactionMetadataEn,
+  FlowTransactionStatus,
+} from "./flow";
+
 /**
  * Source account for external transfer
  */
@@ -33,10 +39,7 @@ export interface ExternalTransferFormData {
 /**
  * Step 2: Confirmation display data
  */
-export interface ExternalTransferConfirmationData {
-  // Holder (user) info
-  holderName: string;
-  holderDocument: string; // Masked: "CC 1.***.***. 231"
+export interface ExternalTransferConfirmationData extends FlowHolderInfoEn {
   sourceProduct: string; // e.g., "Cuenta de Ahorros"
 
   // Destination info
@@ -53,9 +56,8 @@ export interface ExternalTransferConfirmationData {
 /**
  * Step 4: Transaction result
  */
-export interface ExternalTransferResult {
-  status: "success" | "error";
-
+export interface ExternalTransferResult
+  extends FlowTransactionStatus, FlowTransactionMetadataEn {
   // Transfer details
   sourceAccount: string;
   destinationBank: string;
@@ -63,15 +65,6 @@ export interface ExternalTransferResult {
   amountTransferred: number;
   concept: string;
   transactionCost: number;
-
-  // Transaction metadata
-  transactionDate: string; // e.g., "5 de Enero de 2025"
-  transactionTime: string; // e.g., "03:02 p.m."
-  approvalNumber: string; // e.g., "256606"
-  description: string; // e.g., "Transferencia Exitosa"
-
-  // Error info (if failed)
-  errorMessage?: string;
 }
 
 /**

@@ -1,3 +1,9 @@
+import type {
+  FlowHolderInfoEn,
+  FlowTransactionMetadataEn,
+  FlowTransactionStatus,
+} from "./flow";
+
 /**
  * Registered account in user's network (recipient)
  */
@@ -42,10 +48,7 @@ export interface NetworkTransferFormData {
 /**
  * Step 2: Network transfer confirmation data
  */
-export interface NetworkTransferConfirmationData {
-  // Holder (sender) info
-  holderName: string;
-  holderDocument: string; // Masked: "CC 1.***.***. 231"
+export interface NetworkTransferConfirmationData extends FlowHolderInfoEn {
   sourceProduct: string; // e.g., "Cuenta de Ahorros"
   sourceAccountMaskedNumber?: string; // e.g., "***4428"
 
@@ -64,8 +67,8 @@ export interface NetworkTransferConfirmationData {
 /**
  * Step 4: Network transfer result
  */
-export interface NetworkTransferResult {
-  status: "success" | "error";
+export interface NetworkTransferResult
+  extends FlowTransactionStatus, FlowTransactionMetadataEn {
   sourceAccount: string; // "Cuenta de Ahorros"
   destinationBank: string; // "Coopcentral"
   destinationAccountNumber: string; // "123-456789-01"
@@ -74,11 +77,6 @@ export interface NetworkTransferResult {
   amountTransferred: number;
   concept?: string; // Optional transfer concept
   transactionCost: number;
-  transactionDate: string; // "1 de septiembre de 2025"
-  transactionTime: string; // "7:21 pm"
-  approvalNumber: string; // "450606"
-  description: string; // "Transferencia Exitosa"
-  errorMessage?: string;
 }
 
 /**
