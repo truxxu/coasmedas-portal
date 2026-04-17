@@ -4,9 +4,9 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   ReactNode,
 } from "react";
 
@@ -39,33 +39,52 @@ const MobileSidebarContext = createContext<
 
 const HIDE_BALANCES_STORAGE_KEY = "hideBalances";
 
-function HideBalancesProvider({ children }: { children: ReactNode }) {
-  // Start with false on both server and client to avoid hydration mismatch,
-  // then hydrate from localStorage in an effect.
-  const [hideBalances, setHideBalancesState] = useState(false);
+const hideBalancesListeners = new Set<() => void>();
 
-  useEffect(() => {
-    const stored = localStorage.getItem(HIDE_BALANCES_STORAGE_KEY);
-    if (stored) {
-      try {
-        setHideBalancesState(JSON.parse(stored));
-      } catch {
-        // ignore malformed value
-      }
-    }
-  }, []);
+function subscribeHideBalances(listener: () => void) {
+  hideBalancesListeners.add(listener);
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === HIDE_BALANCES_STORAGE_KEY) listener();
+  };
+  window.addEventListener("storage", onStorage);
+  return () => {
+    hideBalancesListeners.delete(listener);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function getHideBalancesSnapshot(): boolean {
+  const stored = localStorage.getItem(HIDE_BALANCES_STORAGE_KEY);
+  if (!stored) return false;
+  try {
+    return JSON.parse(stored) === true;
+  } catch {
+    return false;
+  }
+}
+
+function getHideBalancesServerSnapshot(): boolean {
+  return false;
+}
+
+function writeHideBalances(value: boolean) {
+  localStorage.setItem(HIDE_BALANCES_STORAGE_KEY, JSON.stringify(value));
+  hideBalancesListeners.forEach((l) => l());
+}
+
+function HideBalancesProvider({ children }: { children: ReactNode }) {
+  const hideBalances = useSyncExternalStore(
+    subscribeHideBalances,
+    getHideBalancesSnapshot,
+    getHideBalancesServerSnapshot,
+  );
 
   const setHideBalances = useCallback((value: boolean) => {
-    setHideBalancesState(value);
-    localStorage.setItem(HIDE_BALANCES_STORAGE_KEY, JSON.stringify(value));
+    writeHideBalances(value);
   }, []);
 
   const toggleHideBalances = useCallback(() => {
-    setHideBalancesState((prev) => {
-      const next = !prev;
-      localStorage.setItem(HIDE_BALANCES_STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
+    writeHideBalances(!getHideBalancesSnapshot());
   }, []);
 
   const value = useMemo(
