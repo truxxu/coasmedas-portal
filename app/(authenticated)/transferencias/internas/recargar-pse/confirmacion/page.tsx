@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { PSERechargeConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  PSERechargeConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import type { PSERechargeConfirmationData } from "@/src/types/pseRecharge";
 import {
   mockPSERechargeAccounts,
@@ -16,7 +17,6 @@ import {
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [confirmationData] = useState<PSERechargeConfirmationData | null>(
     () => {
       if (typeof window === "undefined") return null;
@@ -24,17 +24,12 @@ export default function ConfirmacionPage() {
       const destinationId = sessionStorage.getItem("pseRechargeDestinationId");
       const amount = sessionStorage.getItem("pseRechargeAmount");
 
-      if (!destinationId || !amount) {
-        return null;
-      }
+      if (!destinationId || !amount) return null;
 
       const destination = mockPSERechargeAccounts.find(
         (acc) => acc.id === destinationId,
       );
-
-      if (!destination) {
-        return null;
-      }
+      if (!destination) return null;
 
       return {
         holderName: mockPSERechargeUserData.holderName,
@@ -47,20 +42,6 @@ export default function ConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Recargar con PSE",
-      backHref: "/transferencias/internas/recargar-pse",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/transferencias/internas/recargar-pse");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirmPayment = () => {
     if (confirmationData) {
       sessionStorage.setItem(
@@ -68,52 +49,26 @@ export default function ConfirmacionPage() {
         JSON.stringify(confirmationData),
       );
     }
-
     router.push("/transferencias/internas/recargar-pse/pse");
   };
 
-  const handleBack = () => {
-    router.push("/transferencias/internas/recargar-pse");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando...</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Transferencias", "Recargar con PSE"]} />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={TRANSFER_STEPS} />
-      </div>
-
-      {/* Confirmation Card */}
-      <PSERechargeConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      {/* Actions */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          className="text-sm font-medium text-brand-teal-dark hover:underline"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirmPayment}>
-          Confirmar Pago
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Transferencias", "Recargar con PSE"]}
+      welcomeBarTitle="Recargar con PSE"
+      welcomeBarBackHref="/transferencias/internas/recargar-pse"
+      fallbackPath="/transferencias/internas/recargar-pse"
+      steps={TRANSFER_STEPS}
+      hasData={!!confirmationData}
+      onBack={() => router.push("/transferencias/internas/recargar-pse")}
+      onConfirm={handleConfirmPayment}
+    >
+      {confirmationData && (
+        <PSERechargeConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

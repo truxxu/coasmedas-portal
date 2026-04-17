@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ExternalTransferConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar, useUserContext } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  ExternalTransferConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import type { ExternalTransferConfirmationData } from "@/src/types/externalTransfer";
 import {
   mockExternalTransferDestinations,
@@ -22,7 +23,6 @@ import type {
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,21 +37,15 @@ export default function ConfirmacionPage() {
       const amount = sessionStorage.getItem("externalTransferAmount");
       const concept = sessionStorage.getItem("externalTransferConcept");
 
-      if (!sourceId || !destinationId || !amount) {
-        return null;
-      }
+      if (!sourceId || !destinationId || !amount) return null;
 
-      // Read raw API data for source lookup
       const savingsApiStr = sessionStorage.getItem(
         "externalTransferSavingsApi",
       );
       const creditsApiStr = sessionStorage.getItem(
         "externalTransferCreditsApi",
       );
-
-      if (!savingsApiStr || !creditsApiStr) {
-        return null;
-      }
+      if (!savingsApiStr || !creditsApiStr) return null;
 
       const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
       const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
@@ -63,13 +57,11 @@ export default function ConfirmacionPage() {
       );
       if (!sourceInfo) return null;
 
-      // Destination still uses mock data (inscribed accounts API missing)
       const destination = mockExternalTransferDestinations.find(
         (acc) => acc.id === destinationId,
       );
       if (!destination) return null;
 
-      // Build and store transaction request for SMS step
       const txRequest = {
         origen: sourceInfo.sourceRef,
         destino: {
@@ -87,7 +79,6 @@ export default function ConfirmacionPage() {
         JSON.stringify(txRequest),
       );
 
-      // Store context for result mapping
       sessionStorage.setItem("externalTransferSourceName", sourceInfo.name);
       sessionStorage.setItem("externalTransferDestBank", destination.bankName);
       sessionStorage.setItem(
@@ -117,23 +108,8 @@ export default function ConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "A Otros Bancos",
-      backHref: "/transferencias/externas/otros-bancos",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/transferencias/externas/otros-bancos");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirmPayment = async () => {
     if (!confirmationData) return;
-
     setIsSubmitting(true);
     try {
       sessionStorage.setItem(
@@ -141,7 +117,6 @@ export default function ConfirmacionPage() {
         JSON.stringify(confirmationData),
       );
 
-      // Send OTP before navigating to SMS step
       const { documentType, documentNumber } = user ?? {};
       if (documentType && documentNumber) {
         await sendTransactionOtp({
@@ -153,60 +128,30 @@ export default function ConfirmacionPage() {
 
       router.push("/transferencias/externas/otros-bancos/sms");
     } catch {
-      // If OTP fails, still navigate — the SMS page can handle resend
       router.push("/transferencias/externas/otros-bancos/sms");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleBack = () => {
-    router.push("/transferencias/externas/otros-bancos");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando...</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Transferencias", "A Otros Bancos"]} />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={EXTERNAL_TRANSFER_STEPS} />
-      </div>
-
-      {/* Confirmation Card */}
-      <ExternalTransferConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      {/* Actions */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isSubmitting}
-          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button
-          variant="primary"
-          onClick={handleConfirmPayment}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Enviando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Transferencias", "A Otros Bancos"]}
+      welcomeBarTitle="A Otros Bancos"
+      welcomeBarBackHref="/transferencias/externas/otros-bancos"
+      fallbackPath="/transferencias/externas/otros-bancos"
+      steps={EXTERNAL_TRANSFER_STEPS}
+      hasData={!!confirmationData}
+      isSubmitting={isSubmitting}
+      onBack={() => router.push("/transferencias/externas/otros-bancos")}
+      onConfirm={handleConfirmPayment}
+    >
+      {confirmationData && (
+        <ExternalTransferConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

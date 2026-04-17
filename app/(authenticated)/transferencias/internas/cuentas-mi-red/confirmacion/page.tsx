@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { NetworkTransferConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  NetworkTransferConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import {
   NetworkTransferConfirmationData,
   RegisteredNetworkAccount,
@@ -21,7 +22,6 @@ import { maskNumber } from "@/src/utils";
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [confirmationData] = useState<NetworkTransferConfirmationData | null>(
     () => {
@@ -64,66 +64,29 @@ export default function ConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Red Coopcentral",
-      backHref: "/transferencias/internas/cuentas-mi-red/detalle",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/transferencias/internas/cuentas-mi-red");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirm = () => {
     router.push("/transferencias/internas/cuentas-mi-red/verificacion");
   };
 
-  const handleBack = () => {
-    router.push("/transferencias/internas/cuentas-mi-red/detalle");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-gray-500">Cargando...</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Transferencias", "Red Coopcentral"]} />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={NETWORK_TRANSFER_STEPS} />
-      </div>
-
-      {/* Confirmation Card */}
-      <NetworkTransferConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      {/* Footer Actions */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          className="text-sm font-medium text-brand-teal-dark hover:underline"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm}>
-          Confirmar Pago
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Transferencias", "Red Coopcentral"]}
+      welcomeBarTitle="Red Coopcentral"
+      welcomeBarBackHref="/transferencias/internas/cuentas-mi-red/detalle"
+      fallbackPath="/transferencias/internas/cuentas-mi-red"
+      steps={NETWORK_TRANSFER_STEPS}
+      hasData={!!confirmationData}
+      onBack={() =>
+        router.push("/transferencias/internas/cuentas-mi-red/detalle")
+      }
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <NetworkTransferConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

@@ -1,24 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ExternalTransferResultCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { ExternalTransferResultCard, ResultPageShell } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import type { ExternalTransferResult } from "@/src/types/externalTransfer";
 import { EXTERNAL_TRANSFER_STEPS } from "@/src/mocks";
+
+const SESSION_KEYS = [
+  "externalTransferSourceId",
+  "externalTransferDestinationId",
+  "externalTransferAmount",
+  "externalTransferConcept",
+  "externalTransferConfirmation",
+  "externalTransferResult",
+  "externalTransferSavingsApi",
+  "externalTransferCreditsApi",
+  "externalTransferTxRequest",
+  "externalTransferSourceName",
+  "externalTransferDestBank",
+  "externalTransferDestAccNum",
+];
 
 export default function ResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<ExternalTransferResult | null>(() => {
     if (typeof window === "undefined") return null;
-
     const resultData = sessionStorage.getItem("externalTransferResult");
     if (!resultData) return null;
-
     try {
       return JSON.parse(resultData) as ExternalTransferResult;
     } catch {
@@ -26,91 +37,32 @@ export default function ResultadoPage() {
     }
   });
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "A Otros Bancos",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!result) {
-      router.push("/transferencias/externas/otros-bancos");
-    }
-  }, [result, router]);
-
-  const clearSessionStorage = () => {
-    sessionStorage.removeItem("externalTransferSourceId");
-    sessionStorage.removeItem("externalTransferDestinationId");
-    sessionStorage.removeItem("externalTransferAmount");
-    sessionStorage.removeItem("externalTransferConcept");
-    sessionStorage.removeItem("externalTransferConfirmation");
-    sessionStorage.removeItem("externalTransferResult");
-    sessionStorage.removeItem("externalTransferSavingsApi");
-    sessionStorage.removeItem("externalTransferCreditsApi");
-    sessionStorage.removeItem("externalTransferTxRequest");
-    sessionStorage.removeItem("externalTransferSourceName");
-    sessionStorage.removeItem("externalTransferDestBank");
-    sessionStorage.removeItem("externalTransferDestAccNum");
-  };
-
-  const handlePrintSave = () => {
-    window.print();
-  };
-
-  const handleNewTransaction = () => {
-    clearSessionStorage();
-    router.push("/transferencias/externas/otros-bancos");
-  };
-
-  const handleFinish = () => {
-    clearSessionStorage();
-    router.push("/home");
-  };
+  const isSuccess = result?.status === "success";
 
   const handleRetry = () => {
-    // Go back to details to try again
     sessionStorage.removeItem("externalTransferConfirmation");
     sessionStorage.removeItem("externalTransferResult");
     router.push("/transferencias/externas/otros-bancos");
   };
 
-  if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando resultado...</span>
-      </div>
-    );
-  }
-
-  const isSuccess = result.status === "success";
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Transferencias", "A Otros Bancos"]} />
-      </div>
-
-      {/* Stepper - All completed */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={5} steps={EXTERNAL_TRANSFER_STEPS} />
-      </div>
-
-      {/* Result Card */}
-      <ExternalTransferResultCard result={result} hideBalances={hideBalances} />
-
-      {/* Actions */}
-      <div className="flex flex-wrap justify-end gap-3">
-        {isSuccess ? (
+    <ResultPageShell
+      breadcrumbs={["Inicio", "Transferencias", "A Otros Bancos"]}
+      welcomeBarTitle="A Otros Bancos"
+      startFlowPath="/transferencias/externas/otros-bancos"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={EXTERNAL_TRANSFER_STEPS}
+      hasResult={!!result}
+      renderActions={({ printSave, clearAndGoToStart, clearAndGoToHome }) =>
+        isSuccess ? (
           <>
-            <Button variant="secondary" onClick={handlePrintSave}>
+            <Button variant="secondary" onClick={printSave}>
               Imprimir/Guardar
             </Button>
-            <Button variant="secondary" onClick={handleNewTransaction}>
+            <Button variant="secondary" onClick={clearAndGoToStart}>
               Realizar otra transaccion
             </Button>
-            <Button variant="primary" onClick={handleFinish}>
+            <Button variant="primary" onClick={clearAndGoToHome}>
               Finalizar
             </Button>
           </>
@@ -119,12 +71,19 @@ export default function ResultadoPage() {
             <Button variant="secondary" onClick={handleRetry}>
               Reintentar
             </Button>
-            <Button variant="primary" onClick={handleFinish}>
+            <Button variant="primary" onClick={clearAndGoToHome}>
               Volver al inicio
             </Button>
           </>
-        )}
-      </div>
-    </div>
+        )
+      }
+    >
+      {result && (
+        <ExternalTransferResultCard
+          result={result}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ResultPageShell>
   );
 }

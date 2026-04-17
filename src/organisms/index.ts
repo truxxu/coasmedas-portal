@@ -106,3 +106,7 @@ export { TarjetaClaveResultCard } from "./TarjetaClaveResultCard";
 export { TarjetaSmsCodePage } from "./TarjetaSmsCodePage";
 export { TransferSmsCodePage } from "./TransferSmsCodePage";
 export type { TransferSmsCodePageProps } from "./TransferSmsCodePage";
+export { ConfirmationPageShell } from "./ConfirmationPageShell";
+export type { ConfirmationPageShellProps } from "./ConfirmationPageShell";
+export { ResultPageShell } from "./ResultPageShell";
+export type { ResultPageShellProps } from "./ResultPageShell";

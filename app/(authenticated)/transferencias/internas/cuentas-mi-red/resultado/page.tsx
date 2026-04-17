@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { NetworkTransferResultCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useState } from "react";
+import { NetworkTransferResultCard, ResultPageShell } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import {
   NetworkTransferResult,
   RegisteredNetworkAccount,
@@ -16,10 +13,16 @@ import {
   mockNetworkSourceAccounts,
 } from "@/src/mocks/mockNetworkTransferData";
 
+const SESSION_KEYS = [
+  "networkTransferRecipient",
+  "networkTransferDestination",
+  "networkTransferSourceId",
+  "networkTransferAmount",
+  "networkTransferConcept",
+];
+
 export default function ResultadoPage() {
-  const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [result] = useState<NetworkTransferResult | null>(() => {
     if (typeof window === "undefined") return null;
 
@@ -66,79 +69,24 @@ export default function ResultadoPage() {
     };
   });
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "A Cuentas de mi Red",
-      backHref: "/transferencias",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!result) {
-      router.push("/transferencias/internas/cuentas-mi-red");
-    }
-  }, [result, router]);
-
-  const clearNetworkTransferData = () => {
-    sessionStorage.removeItem("networkTransferRecipient");
-    sessionStorage.removeItem("networkTransferDestination");
-    sessionStorage.removeItem("networkTransferSourceId");
-    sessionStorage.removeItem("networkTransferAmount");
-    sessionStorage.removeItem("networkTransferConcept");
-  };
-
-  const handlePrintSave = () => {
-    window.print();
-  };
-
-  const handleNewTransaction = () => {
-    clearNetworkTransferData();
-    router.push("/transferencias/internas/cuentas-mi-red");
-  };
-
-  const handleFinish = () => {
-    clearNetworkTransferData();
-    router.push("/home");
-  };
-
-  if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-gray-500">Cargando resultado...</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "A Cuentas de mi Red"]}
+    <ResultPageShell
+      breadcrumbs={["Inicio", "Transferencias", "A Cuentas de mi Red"]}
+      welcomeBarTitle="A Cuentas de mi Red"
+      welcomeBarBackHref="/transferencias"
+      startFlowPath="/transferencias/internas/cuentas-mi-red"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={NETWORK_TRANSFER_STEPS}
+      stepperCurrentStep={4}
+      hasResult={!!result}
+      newTransactionLabel="Realizar otra transacción"
+    >
+      {result && (
+        <NetworkTransferResultCard
+          result={result}
+          hideBalances={hideBalances}
         />
-      </div>
-
-      {/* Stepper - All completed */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={4} steps={NETWORK_TRANSFER_STEPS} />
-      </div>
-
-      {/* Result Card */}
-      <NetworkTransferResultCard result={result} hideBalances={hideBalances} />
-
-      {/* Footer Actions */}
-      <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="secondary" onClick={handlePrintSave}>
-          Imprimir/Guardar
-        </Button>
-        <Button variant="secondary" onClick={handleNewTransaction}>
-          Realizar otra transacción
-        </Button>
-        <Button variant="primary" onClick={handleFinish}>
-          Finalizar
-        </Button>
-      </div>
-    </div>
+      )}
+    </ResultPageShell>
   );
 }

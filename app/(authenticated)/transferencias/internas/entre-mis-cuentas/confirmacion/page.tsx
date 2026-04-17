@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TransferConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar, useUserContext } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  TransferConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import type { TransferConfirmationData } from "@/src/types/transfer";
 import { TRANSFER_STEPS } from "@/src/mocks";
 import { maskNumber } from "@/src/utils";
@@ -31,7 +32,6 @@ import type {
 export default function ConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,7 +44,6 @@ export default function ConfirmacionPage() {
 
     if (!sourceId || !destinationId || !amount) return null;
 
-    // Read raw API data
     const savingsApiStr = sessionStorage.getItem("transferSourcesSavingsApi");
     const creditsApiStr = sessionStorage.getItem("transferSourcesCreditsApi");
     const category = sessionStorage.getItem("transferSourceCategory");
@@ -57,7 +56,6 @@ export default function ConfirmacionPage() {
     const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
     const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
 
-    // Only the matching target array is populated
     const targetSavings: TransferTargetSavings[] =
       category === "savings" ? JSON.parse(targetApiStr) : [];
     const targetCredits: TransferTargetCredits[] =
@@ -75,7 +73,6 @@ export default function ConfirmacionPage() {
 
     if (!sourceInfo || !destinationName) return null;
 
-    // Build origin/destination AccountReferences for createTransaction
     let origen;
     if (sourceInfo.type === "savings") {
       const savingsAccount = savingsData.find(
@@ -105,13 +102,11 @@ export default function ConfirmacionPage() {
     } else if (targetCred) {
       destino = buildTargetCreditsReference(targetCred);
     } else if (targetInv) {
-      // Investments use same structure as savings targets
       destino = buildTargetSavingsReference(targetInv);
     } else {
       return null;
     }
 
-    // Store transaction request for SMS step
     const txRequest = {
       origen,
       destino,
@@ -122,7 +117,6 @@ export default function ConfirmacionPage() {
       JSON.stringify(txRequest),
     );
 
-    // Store context for result mapping
     sessionStorage.setItem("transferSourceName", sourceInfo.name);
     sessionStorage.setItem("transferDestinationName", destinationName);
 
@@ -143,20 +137,6 @@ export default function ConfirmacionPage() {
     };
   });
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Entre mis Cuentas",
-      backHref: "/transferencias/internas/entre-mis-cuentas",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/transferencias/internas/entre-mis-cuentas");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirmPayment = async () => {
     if (!confirmationData) return;
 
@@ -167,7 +147,6 @@ export default function ConfirmacionPage() {
         JSON.stringify(confirmationData),
       );
 
-      // Send OTP before navigating to SMS step
       const { documentType, documentNumber } = user ?? {};
       if (documentType && documentNumber) {
         await sendTransactionOtp({
@@ -179,62 +158,30 @@ export default function ConfirmacionPage() {
 
       router.push("/transferencias/internas/entre-mis-cuentas/sms");
     } catch {
-      // If OTP fails, still navigate — the SMS page can handle resend
       router.push("/transferencias/internas/entre-mis-cuentas/sms");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleBack = () => {
-    router.push("/transferencias/internas/entre-mis-cuentas");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando...</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Transferencias", "Entre mis Cuentas"]}
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Transferencias", "Entre mis Cuentas"]}
+      welcomeBarTitle="Entre mis Cuentas"
+      welcomeBarBackHref="/transferencias/internas/entre-mis-cuentas"
+      fallbackPath="/transferencias/internas/entre-mis-cuentas"
+      steps={TRANSFER_STEPS}
+      hasData={!!confirmationData}
+      isSubmitting={isSubmitting}
+      onBack={() => router.push("/transferencias/internas/entre-mis-cuentas")}
+      onConfirm={handleConfirmPayment}
+    >
+      {confirmationData && (
+        <TransferConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
         />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={TRANSFER_STEPS} />
-      </div>
-
-      {/* Confirmation Card */}
-      <TransferConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      {/* Actions */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isSubmitting}
-          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button
-          variant="primary"
-          onClick={handleConfirmPayment}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Enviando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+      )}
+    </ConfirmationPageShell>
   );
 }
