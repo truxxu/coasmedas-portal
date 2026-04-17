@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { OtrosAsociadosResultCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import { OtrosAsociadosResultCard, ResultPageShell } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import {
   OTROS_ASOCIADOS_PAYMENT_STEPS,
   OTROS_ASOCIADOS_PAYMENT_STEPS_PSE,
@@ -18,10 +15,17 @@ import {
   FundingSourceType,
 } from "@/src/types";
 
+const SESSION_KEYS = [
+  "otrosAsociadosBeneficiary",
+  "otrosAsociadosAccountId",
+  "otrosAsociadosSourceType",
+  "otrosAsociadosProducts",
+  "otrosAsociadosTotalAmount",
+  "otrosAsociadosConfirmation",
+];
+
 export default function OtrosAsociadosResultadoPage() {
-  const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const [sourceType] = useState<FundingSourceType>(() => {
     if (typeof window === "undefined") return "cuenta";
     const stored = sessionStorage.getItem(
@@ -39,7 +43,6 @@ export default function OtrosAsociadosResultadoPage() {
     if (totalAmount && productsStr) {
       const products: PayableProduct[] = JSON.parse(productsStr);
       const firstProduct = products[0];
-
       return {
         ...mockOtrosAsociadosTransactionResult,
         amountPaid: parseInt(totalAmount, 10),
@@ -51,68 +54,36 @@ export default function OtrosAsociadosResultadoPage() {
     return mockOtrosAsociadosTransactionResult;
   });
 
-  // Determine which stepper to use based on funding source
   const paymentSteps =
     sourceType === "pse"
       ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
       : OTROS_ASOCIADOS_PAYMENT_STEPS;
 
-  // Current step is final step: 4 for both flows
-  const currentStep = 4;
-
-  // Configure WelcomeBar on mount, clear on unmount
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago a otros asociados",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  const handlePrintSave = () => {
-    window.print();
-  };
-
-  const handleFinish = () => {
-    // Clear session storage
-    sessionStorage.removeItem("otrosAsociadosBeneficiary");
-    sessionStorage.removeItem("otrosAsociadosAccountId");
-    sessionStorage.removeItem("otrosAsociadosSourceType");
-    sessionStorage.removeItem("otrosAsociadosProducts");
-    sessionStorage.removeItem("otrosAsociadosTotalAmount");
-    sessionStorage.removeItem("otrosAsociadosConfirmation");
-
-    router.push("/pagos/otros-asociados");
-  };
-
-  if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-brand-gray-high">Cargando resultado...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-      </div>
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={currentStep} steps={paymentSteps} />
-      </div>
-
-      <OtrosAsociadosResultCard result={result} hideBalances={hideBalances} />
-
-      <div className="flex justify-end gap-4">
-        <Button variant="secondary" onClick={handlePrintSave}>
-          Imprimir/Guardar
-        </Button>
-        <Button variant="primary" onClick={handleFinish}>
-          Finalizar
-        </Button>
-      </div>
-    </div>
+    <ResultPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pago a otros asociados"]}
+      welcomeBarTitle="Pago a otros asociados"
+      startFlowPath="/pagos/otros-asociados"
+      homePath="/pagos/otros-asociados"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={paymentSteps}
+      stepperCurrentStep={4}
+      hasResult={!!result}
+      actionsClassName="flex justify-end gap-4"
+      renderActions={({ printSave, clearAndGoToHome }) => (
+        <>
+          <Button variant="secondary" onClick={printSave}>
+            Imprimir/Guardar
+          </Button>
+          <Button variant="primary" onClick={clearAndGoToHome}>
+            Finalizar
+          </Button>
+        </>
+      )}
+    >
+      {result && (
+        <OtrosAsociadosResultCard result={result} hideBalances={hideBalances} />
+      )}
+    </ResultPageShell>
   );
 }

@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveConfirmationCard } from "@/src/organisms";
-import { useUserContext, useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  TarjetaClaveConfirmationCard,
+} from "@/src/organisms";
+import { useUserContext } from "@/src/contexts";
 import { TarjetaClaveConfirmationData } from "@/src/types/tarjeta-clave";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
 import { TARJETA_CLAVE_STEPS } from "@/src/mocks";
@@ -16,8 +17,6 @@ const BREADCRUMBS = ["Inicio", "Gestionar Clave", "Olvidé mi Clave"];
 export default function OlvideConfirmacionPage() {
   const router = useRouter();
   const { user } = useUserContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [confirmationData] = useState<TarjetaClaveConfirmationData | null>(
@@ -40,31 +39,15 @@ export default function OlvideConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Olvidé mi Clave",
-      backHref: "/tarjeta/gestionar-clave/olvide/detalle",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/tarjeta/gestionar-clave/olvide");
-    }
-  }, [confirmationData, router]);
-
-  if (!confirmationData) {
-    return null;
-  }
-
   const handleBack = () => {
+    if (!confirmationData) return;
     router.push(
       `/tarjeta/gestionar-clave/olvide/detalle?cardId=${confirmationData.cardId}`,
     );
   };
 
   const handleConfirm = async () => {
+    if (!confirmationData) return;
     setIsLoading(true);
     try {
       sessionStorage.setItem(
@@ -74,7 +57,6 @@ export default function OlvideConfirmacionPage() {
 
       const { documentType, documentNumber } = user ?? {};
       if (documentType && documentNumber) {
-        // TODO: swap trnType to card-clave-specific value when backend exposes it.
         await sendTransactionOtp({
           documentType,
           documentNumber,
@@ -90,27 +72,23 @@ export default function OlvideConfirmacionPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={BREADCRUMBS} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={TARJETA_CLAVE_STEPS} />
-      </div>
-
+    <ConfirmationPageShell
+      breadcrumbs={BREADCRUMBS}
+      welcomeBarTitle="Olvidé mi Clave"
+      welcomeBarBackHref="/tarjeta/gestionar-clave/olvide/detalle"
+      fallbackPath="/tarjeta/gestionar-clave/olvide"
+      steps={TARJETA_CLAVE_STEPS}
+      hasData={!!confirmationData}
+      isSubmitting={isLoading}
+      confirmLabel="Confirmar Clave"
+      submittingLabel="Procesando..."
+      volverColorClass="text-brand-navy"
+      breadcrumbsWrapped={false}
+      noDataFallback={null}
+      onBack={handleBack}
+      onConfirm={handleConfirm}
+    >
       <TarjetaClaveConfirmationCard mode="olvide" />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Confirmar Clave"}
-        </Button>
-      </div>
-    </div>
+    </ConfirmationPageShell>
   );
 }

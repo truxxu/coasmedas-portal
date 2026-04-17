@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaClaveResultCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { ResultPageShell, TarjetaClaveResultCard } from "@/src/organisms";
 import { TarjetaClaveResult } from "@/src/types/tarjeta-clave";
 import { TARJETA_CLAVE_STEPS } from "@/src/mocks";
 
 const BREADCRUMBS = ["Inicio", "Gestionar Clave", "Olvidé mi Clave"];
-
 const SESSION_KEYS = [
   "tarjetaClaveOlvideCardId",
   "tarjetaClaveOlvideProduct",
@@ -20,9 +16,6 @@ const SESSION_KEYS = [
 ];
 
 export default function OlvideResultadoPage() {
-  const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
   const [result] = useState<TarjetaClaveResult | null>(() => {
     if (typeof window === "undefined") return null;
     const stored = sessionStorage.getItem("tarjetaClaveOlvideResult");
@@ -34,41 +27,25 @@ export default function OlvideResultadoPage() {
     }
   });
 
-  useEffect(() => {
-    setWelcomeBar({ title: "Olvidé mi Clave", backHref: "/tarjeta" });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!result) {
-      router.push("/tarjeta/gestionar-clave/olvide");
-    }
-  }, [result, router]);
-
-  if (!result) {
-    return null;
-  }
-
-  const handleFinish = () => {
-    SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
-    router.push("/tarjeta");
-  };
-
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={BREADCRUMBS} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={4} steps={TARJETA_CLAVE_STEPS} />
-      </div>
-
-      <TarjetaClaveResultCard mode="olvide" result={result} />
-
-      <div className="flex justify-end">
-        <Button variant="primary" onClick={handleFinish}>
+    <ResultPageShell
+      breadcrumbs={BREADCRUMBS}
+      welcomeBarTitle="Olvidé mi Clave"
+      welcomeBarBackHref="/tarjeta"
+      startFlowPath="/tarjeta/gestionar-clave/olvide"
+      homePath="/tarjeta"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={TARJETA_CLAVE_STEPS}
+      stepperCurrentStep={4}
+      hasResult={!!result}
+      actionsClassName="flex justify-end"
+      renderActions={({ clearAndGoToHome }) => (
+        <Button variant="primary" onClick={clearAndGoToHome}>
           Finalizar
         </Button>
-      </div>
-    </div>
+      )}
+    >
+      {result && <TarjetaClaveResultCard mode="olvide" result={result} />}
+    </ResultPageShell>
   );
 }

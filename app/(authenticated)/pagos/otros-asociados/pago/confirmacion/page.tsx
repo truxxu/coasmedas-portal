@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { OtrosAsociadosConfirmationCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  OtrosAsociadosConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import {
   mockOtrosAsociadosUserData,
   mockOtrosAsociadosSourceAccounts,
@@ -23,7 +23,7 @@ import {
 export default function OtrosAsociadosConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+
   const [sourceType] = useState<FundingSourceType>(() => {
     if (typeof window === "undefined") return "cuenta";
     const stored = sessionStorage.getItem(
@@ -51,10 +51,7 @@ export default function OtrosAsociadosConfirmacionPage() {
       const account = mockOtrosAsociadosSourceAccounts.find(
         (a) => a.id === accountId,
       );
-
-      if (!account) {
-        return null;
-      }
+      if (!account) return null;
 
       return {
         titular: mockOtrosAsociadosUserData.name,
@@ -70,27 +67,10 @@ export default function OtrosAsociadosConfirmacionPage() {
     },
   );
 
-  // Determine which stepper to use based on funding source
   const paymentSteps =
     sourceType === "pse"
       ? OTROS_ASOCIADOS_PAYMENT_STEPS_PSE
       : OTROS_ASOCIADOS_PAYMENT_STEPS;
-
-  // Configure WelcomeBar on mount, clear on unmount
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago a otros asociados",
-      backHref: "/pagos/otros-asociados/pago",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  // Redirect if data is missing
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/pagos/otros-asociados/pago");
-    }
-  }, [confirmationData, router]);
 
   const handleConfirm = () => {
     if (confirmationData) {
@@ -99,58 +79,31 @@ export default function OtrosAsociadosConfirmacionPage() {
         JSON.stringify(confirmationData),
       );
     }
-
-    // Check funding source type to determine next step
     const storedSourceType = sessionStorage.getItem("otrosAsociadosSourceType");
-
     if (storedSourceType === "cuenta") {
-      // Accounts require SMS verification
       router.push("/pagos/otros-asociados/pago/sms");
     } else {
-      // PSE redirects to bank payment gateway
       router.push("/pagos/otros-asociados/pago/pse");
     }
   };
 
-  const handleBack = () => {
-    router.push("/pagos/otros-asociados/pago");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-brand-gray-high">Cargando...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago a otros asociados"]} />
-      </div>
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={paymentSteps} />
-      </div>
-
-      <OtrosAsociadosConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          className="text-sm font-medium text-brand-teal-dark hover:underline"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm}>
-          Confirmar Pago
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pago a otros asociados"]}
+      welcomeBarTitle="Pago a otros asociados"
+      welcomeBarBackHref="/pagos/otros-asociados/pago"
+      fallbackPath="/pagos/otros-asociados/pago"
+      steps={paymentSteps}
+      hasData={!!confirmationData}
+      onBack={() => router.push("/pagos/otros-asociados/pago")}
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <OtrosAsociadosConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

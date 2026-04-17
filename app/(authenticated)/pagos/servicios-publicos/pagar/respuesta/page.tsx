@@ -1,18 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { UtilityPaymentResultCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import { ResultPageShell, UtilityPaymentResultCard } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import { UTILITY_PAYMENT_STEPS } from "@/src/mocks";
 import type { UtilityPaymentResult } from "@/src/types";
+
+const SESSION_KEYS = [
+  "utilityPaymentDetails",
+  "utilityPaymentConfirmation",
+  "utilityPaymentResult",
+];
 
 export default function PagarServiciosRespuestaPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [result] = useState<UtilityPaymentResult | null>(() => {
     if (typeof window === "undefined") return null;
@@ -20,62 +23,32 @@ export default function PagarServiciosRespuestaPage() {
     return resultStr ? (JSON.parse(resultStr) as UtilityPaymentResult) : null;
   });
 
-  // Configure WelcomeBar on mount, clear on unmount
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago de Servicios Públicos",
-      backHref: "/home",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  // Redirect if result data is missing
-  useEffect(() => {
-    if (!result) {
-      router.push("/pagos/servicios-publicos/pagar/detalle");
-    }
-  }, [result, router]);
-
-  const handlePrint = () => {
-    window.print();
-  };
-
+  const handlePrint = () => window.print();
   const handleFinish = () => {
-    // Clear all session data
-    sessionStorage.removeItem("utilityPaymentDetails");
-    sessionStorage.removeItem("utilityPaymentConfirmation");
-    sessionStorage.removeItem("utilityPaymentResult");
-
+    for (const key of SESSION_KEYS) sessionStorage.removeItem(key);
     router.push("/pagos/servicios-publicos");
   };
 
-  if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-brand-gray-high">Cargando...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago Servicio Publico"]} />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={4} steps={UTILITY_PAYMENT_STEPS} />
-      </div>
-
-      {/* Result Card */}
-      <UtilityPaymentResultCard
-        result={result}
-        hideBalances={hideBalances}
-        onPrint={handlePrint}
-        onFinish={handleFinish}
-      />
-    </div>
+    <ResultPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pago Servicio Publico"]}
+      welcomeBarTitle="Pago de Servicios Públicos"
+      welcomeBarBackHref="/home"
+      startFlowPath="/pagos/servicios-publicos/pagar/detalle"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={UTILITY_PAYMENT_STEPS}
+      stepperCurrentStep={4}
+      hasResult={!!result}
+      hideActions
+    >
+      {result && (
+        <UtilityPaymentResultCard
+          result={result}
+          hideBalances={hideBalances}
+          onPrint={handlePrint}
+          onFinish={handleFinish}
+        />
+      )}
+    </ResultPageShell>
   );
 }

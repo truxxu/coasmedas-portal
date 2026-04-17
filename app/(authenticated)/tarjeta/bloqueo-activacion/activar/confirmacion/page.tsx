@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaActivacionConfirmationCard } from "@/src/organisms";
-import { useUserContext, useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  TarjetaActivacionConfirmationCard,
+} from "@/src/organisms";
+import { useUserContext } from "@/src/contexts";
 import { TarjetaActivacionConfirmationData } from "@/src/types/tarjeta-activacion";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
 import { TarjetaActivacionFormData } from "@/src/schemas/tarjetaActivacionSchema";
@@ -17,8 +18,6 @@ const BREADCRUMBS = ["Inicio", "Tarjeta de Crédito", "Bloqueo y Activación"];
 export default function ActivarConfirmacionPage() {
   const router = useRouter();
   const { user } = useUserContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [confirmationData] = useState<TarjetaActivacionConfirmationData | null>(
@@ -43,31 +42,15 @@ export default function ActivarConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Bloqueo y Activación",
-      backHref: "/tarjeta/bloqueo-activacion/activar",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/tarjeta/bloqueo-activacion");
-    }
-  }, [confirmationData, router]);
-
-  if (!confirmationData) {
-    return null;
-  }
-
   const handleBack = () => {
+    if (!confirmationData) return;
     router.push(
       `/tarjeta/bloqueo-activacion/activar?cardId=${confirmationData.cardId}`,
     );
   };
 
   const handleConfirm = async () => {
+    if (!confirmationData) return;
     setIsLoading(true);
     try {
       sessionStorage.setItem(
@@ -77,7 +60,6 @@ export default function ActivarConfirmacionPage() {
 
       const { documentType, documentNumber } = user ?? {};
       if (documentType && documentNumber) {
-        // TODO: swap trnType to card-activation-specific value when backend exposes it.
         await sendTransactionOtp({
           documentType,
           documentNumber,
@@ -93,27 +75,27 @@ export default function ActivarConfirmacionPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={BREADCRUMBS} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={TARJETA_ACTIVACION_STEPS} />
-      </div>
-
-      <TarjetaActivacionConfirmationCard confirmationData={confirmationData} />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Activar Tarjeta"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={BREADCRUMBS}
+      welcomeBarTitle="Bloqueo y Activación"
+      welcomeBarBackHref="/tarjeta/bloqueo-activacion/activar"
+      fallbackPath="/tarjeta/bloqueo-activacion"
+      steps={TARJETA_ACTIVACION_STEPS}
+      hasData={!!confirmationData}
+      isSubmitting={isLoading}
+      confirmLabel="Activar Tarjeta"
+      submittingLabel="Procesando..."
+      volverColorClass="text-brand-navy"
+      breadcrumbsWrapped={false}
+      noDataFallback={null}
+      onBack={handleBack}
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <TarjetaActivacionConfirmationCard
+          confirmationData={confirmationData}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

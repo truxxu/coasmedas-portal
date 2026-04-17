@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ProtectionPaymentConfirmationCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  ProtectionPaymentConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import { PROTECTION_PAYMENT_STEPS } from "@/src/mocks";
 import type {
   ProtectionPaymentDetailsFormData,
@@ -27,7 +27,6 @@ import type {
 export default function ProteccionConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const { user } = useUserContext();
 
   const [paymentMethod] = useState<ProtectionPaymentMethod>(() => {
@@ -72,23 +71,8 @@ export default function ProteccionConfirmacionPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago de Protección y Actividades",
-      backHref: "/pagos/pagar-mis-productos/proteccion",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmation) {
-      router.push("/pagos/pagar-mis-productos/proteccion");
-    }
-  }, [confirmation, router]);
-
   const handleConfirm = async () => {
     if (!confirmation) return;
-
     setIsLoading(true);
 
     try {
@@ -97,7 +81,6 @@ export default function ProteccionConfirmacionPage() {
         JSON.stringify(confirmation),
       );
 
-      // Pre-build transaction request
       const sourceAccountStr = sessionStorage.getItem(
         "protectionSourceAccountApi",
       );
@@ -152,45 +135,26 @@ export default function ProteccionConfirmacionPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push("/pagos/pagar-mis-productos/proteccion");
-  };
-
-  if (!confirmation) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-[15px] text-brand-gray-high">Cargando...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pagos de Protección"]} />
-      </div>
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={PROTECTION_PAYMENT_STEPS} />
-      </div>
-
-      <ProtectionPaymentConfirmationCard
-        confirmation={confirmation}
-        hideBalances={hideBalances}
-      />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pagos de Protección"]}
+      welcomeBarTitle="Pago de Protección y Actividades"
+      welcomeBarBackHref="/pagos/pagar-mis-productos/proteccion"
+      fallbackPath="/pagos/pagar-mis-productos/proteccion"
+      steps={PROTECTION_PAYMENT_STEPS}
+      hasData={!!confirmation}
+      isSubmitting={isLoading}
+      submittingLabel="Procesando..."
+      volverColorClass="text-brand-navy"
+      onBack={() => router.push("/pagos/pagar-mis-productos/proteccion")}
+      onConfirm={handleConfirm}
+    >
+      {confirmation && (
+        <ProtectionPaymentConfirmationCard
+          confirmation={confirmation}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

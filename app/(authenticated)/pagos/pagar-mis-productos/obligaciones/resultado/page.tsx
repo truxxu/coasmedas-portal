@@ -1,24 +1,33 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ObligacionResultCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import { ObligacionResultCard, ResultPageShell } from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import { OBLIGACION_PAYMENT_STEPS } from "@/src/mocks/mockObligacionPaymentData";
 import { ObligacionTransactionResult } from "@/src/types/obligacion-payment";
 
+const SESSION_KEYS = [
+  "obligacionPaymentProductId",
+  "obligacionPaymentValor",
+  "obligacionPaymentProduct",
+  "obligacionPaymentConfirmation",
+  "obligacionPaymentMethod",
+  "obligacionSourceAccountId",
+  "obligacionSourceAccountDisplay",
+  "obligacionSourceAccountApi",
+  "obligacionTargetProductApi",
+  "obligacionTransactionRequest",
+  "obligacionPaymentResult",
+  "pseTransactionError",
+];
+
 export default function ResultadoPage() {
-  const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
-  const router = useRouter();
   const { hideBalances } = useUIContext();
 
   const [result] = useState<ObligacionTransactionResult | null>(() => {
     if (typeof window === "undefined") return null;
 
-    // Try to read real API result first (stored by codigo-sms page)
     const apiResultStr = sessionStorage.getItem("obligacionPaymentResult");
     if (apiResultStr) {
       try {
@@ -28,7 +37,6 @@ export default function ResultadoPage() {
       }
     }
 
-    // Check for PSE error
     const pseErrorStr = sessionStorage.getItem("pseTransactionError");
     if (pseErrorStr) {
       const productStr = sessionStorage.getItem("obligacionPaymentProduct");
@@ -51,74 +59,37 @@ export default function ResultadoPage() {
     return null;
   });
 
-  const breadcrumbItems = [
-    "Inicio",
-    "Pagos",
-    "Pagar mis productos",
-    "Pago de Obligaciones",
-  ];
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago de Obligaciones",
-      backHref: "/pagos/pagar-mis-productos",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!result) {
-      router.push("/pagos/pagar-mis-productos/obligaciones");
-    }
-  }, [result, router]);
-
-  const handlePrintSave = () => {
-    window.print();
-  };
-
-  const handleFinish = () => {
-    sessionStorage.removeItem("obligacionPaymentProductId");
-    sessionStorage.removeItem("obligacionPaymentValor");
-    sessionStorage.removeItem("obligacionPaymentProduct");
-    sessionStorage.removeItem("obligacionPaymentConfirmation");
-    sessionStorage.removeItem("obligacionPaymentMethod");
-    sessionStorage.removeItem("obligacionSourceAccountId");
-    sessionStorage.removeItem("obligacionSourceAccountDisplay");
-    sessionStorage.removeItem("obligacionSourceAccountApi");
-    sessionStorage.removeItem("obligacionTargetProductApi");
-    sessionStorage.removeItem("obligacionTransactionRequest");
-    sessionStorage.removeItem("obligacionPaymentResult");
-    sessionStorage.removeItem("pseTransactionError");
-
-    router.push("/pagos");
-  };
-
-  if (!result) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-[15px] text-gray-600">Cargando resultado...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={breadcrumbItems} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={4} steps={OBLIGACION_PAYMENT_STEPS} />
-      </div>
-
-      <ObligacionResultCard result={result} hideBalances={hideBalances} />
-
-      <div className="flex justify-end gap-4">
-        <Button variant="secondary" onClick={handlePrintSave}>
-          Imprimir/Guardar
-        </Button>
-        <Button variant="primary" onClick={handleFinish}>
-          Finalizar
-        </Button>
-      </div>
-    </div>
+    <ResultPageShell
+      breadcrumbs={[
+        "Inicio",
+        "Pagos",
+        "Pagar mis productos",
+        "Pago de Obligaciones",
+      ]}
+      welcomeBarTitle="Pago de Obligaciones"
+      welcomeBarBackHref="/pagos/pagar-mis-productos"
+      startFlowPath="/pagos/pagar-mis-productos/obligaciones"
+      homePath="/pagos"
+      sessionKeysToClean={SESSION_KEYS}
+      steps={OBLIGACION_PAYMENT_STEPS}
+      stepperCurrentStep={4}
+      hasResult={!!result}
+      actionsClassName="flex justify-end gap-4"
+      renderActions={({ printSave, clearAndGoToHome }) => (
+        <>
+          <Button variant="secondary" onClick={printSave}>
+            Imprimir/Guardar
+          </Button>
+          <Button variant="primary" onClick={clearAndGoToHome}>
+            Finalizar
+          </Button>
+        </>
+      )}
+    >
+      {result && (
+        <ObligacionResultCard result={result} hideBalances={hideBalances} />
+      )}
+    </ResultPageShell>
   );
 }

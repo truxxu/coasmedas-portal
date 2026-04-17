@@ -20,11 +20,14 @@ export interface ResultPageShellProps {
   startFlowPath: string;
   homePath?: string;
   sessionKeysToClean: string[];
-  steps: Step[];
+  steps?: Step[];
   stepperCurrentStep?: number;
+  showStepper?: boolean;
   hasResult: boolean;
+  hideActions?: boolean;
   newTransactionLabel?: string;
   renderActions?: (helpers: ResultActionHelpers) => ReactNode;
+  actionsClassName?: string;
   children: ReactNode;
 }
 
@@ -37,9 +40,12 @@ export function ResultPageShell({
   sessionKeysToClean,
   steps,
   stepperCurrentStep = 5,
+  showStepper = true,
   hasResult,
+  hideActions = false,
   newTransactionLabel = "Realizar otra transaccion",
   renderActions,
+  actionsClassName = "flex flex-wrap justify-end gap-3",
   children,
 }: ResultPageShellProps) {
   const router = useRouter();
@@ -86,33 +92,37 @@ export function ResultPageShell({
         <Breadcrumbs items={breadcrumbs} />
       </div>
 
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={stepperCurrentStep} steps={steps} />
-      </div>
+      {showStepper && steps && (
+        <div className="-mx-8 bg-white shadow-sm">
+          <Stepper currentStep={stepperCurrentStep} steps={steps} />
+        </div>
+      )}
 
       {children}
 
-      <div className="flex flex-wrap justify-end gap-3">
-        {renderActions ? (
-          renderActions({
-            printSave: handlePrintSave,
-            clearAndGoToStart: handleNewTransaction,
-            clearAndGoToHome: handleFinish,
-          })
-        ) : (
-          <>
-            <Button variant="secondary" onClick={handlePrintSave}>
-              Imprimir/Guardar
-            </Button>
-            <Button variant="secondary" onClick={handleNewTransaction}>
-              {newTransactionLabel}
-            </Button>
-            <Button variant="primary" onClick={handleFinish}>
-              Finalizar
-            </Button>
-          </>
-        )}
-      </div>
+      {!hideActions && (
+        <div className={actionsClassName}>
+          {renderActions ? (
+            renderActions({
+              printSave: handlePrintSave,
+              clearAndGoToStart: handleNewTransaction,
+              clearAndGoToHome: handleFinish,
+            })
+          ) : (
+            <>
+              <Button variant="secondary" onClick={handlePrintSave}>
+                Imprimir/Guardar
+              </Button>
+              <Button variant="secondary" onClick={handleNewTransaction}>
+                {newTransactionLabel}
+              </Button>
+              <Button variant="primary" onClick={handleFinish}>
+                Finalizar
+              </Button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

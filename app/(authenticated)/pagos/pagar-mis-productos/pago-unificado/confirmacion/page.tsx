@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { PaymentConfirmationCard } from "@/src/organisms";
-import { Button } from "@/src/atoms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  PaymentConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import { PaymentConfirmationData, PendingPayments } from "@/src/types/payment";
 import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 import { maskNumber } from "@/src/utils";
@@ -19,7 +19,6 @@ import type { SavingsAccountResponse } from "@/types/api/products";
 import type { PaymentProduct } from "@/types/api/payments";
 
 export default function ConfirmacionPage() {
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { user } = useUserContext();
@@ -72,20 +71,6 @@ export default function ConfirmacionPage() {
     };
   });
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago Unificado",
-      backHref: "/pagos/pagar-mis-productos",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/pagos/pagar-mis-productos/pago-unificado");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirm = async () => {
     if (!confirmationData) return;
 
@@ -94,7 +79,6 @@ export default function ConfirmacionPage() {
       JSON.stringify(confirmationData),
     );
 
-    // Pre-build transaction request
     const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
     const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
     if (sourceAccountStr && productsStr) {
@@ -132,37 +116,26 @@ export default function ConfirmacionPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push("/pagos/pagar-mis-productos/pago-unificado");
-  };
-
-  if (!confirmationData) {
-    return null;
-  }
-
   return (
-    <div className="space-y-6">
-      <Breadcrumbs
-        items={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
-      />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={PAYMENT_STEPS} />
-      </div>
-
-      <PaymentConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      <div className="flex justify-between">
-        <Button variant="ghost" onClick={handleBack}>
-          Volver
-        </Button>
-        <Button variant="primary" onClick={handleConfirm}>
-          Confirmar Pago
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pagar mis productos", "Pago Unificado"]}
+      welcomeBarTitle="Pago Unificado"
+      welcomeBarBackHref="/pagos/pagar-mis-productos"
+      fallbackPath="/pagos/pagar-mis-productos/pago-unificado"
+      steps={PAYMENT_STEPS}
+      hasData={!!confirmationData}
+      volverStyle="ghost"
+      breadcrumbsWrapped={false}
+      noDataFallback={null}
+      onBack={() => router.push("/pagos/pagar-mis-productos/pago-unificado")}
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <PaymentConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { ObligacionConfirmationCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar, useUserContext } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  ObligacionConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import {
   OBLIGACION_PAYMENT_STEPS,
   OBLIGACION_PAYMENT_STEPS_ACCOUNT,
@@ -28,7 +28,6 @@ import type {
 } from "@/types/api/products";
 
 export default function ConfirmacionPage() {
-  const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { user } = useUserContext();
@@ -53,9 +52,7 @@ export default function ConfirmacionPage() {
       "obligacionSourceAccountDisplay",
     );
 
-    if (!productStr || !valor) {
-      return null;
-    }
+    if (!productStr || !valor) return null;
 
     const product: ObligacionPaymentProduct = JSON.parse(productStr);
 
@@ -89,30 +86,8 @@ export default function ConfirmacionPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const breadcrumbItems = [
-    "Inicio",
-    "Pagos",
-    "Pagar mis productos",
-    "Pago de Obligaciones",
-  ];
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pago de Obligaciones",
-      backHref: "/pagos/pagar-mis-productos/obligaciones",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/pagos/pagar-mis-productos/obligaciones");
-    }
-  }, [confirmationData, router]);
-
   const handleConfirm = async () => {
     if (!confirmationData) return;
-
     setIsLoading(true);
 
     try {
@@ -121,7 +96,6 @@ export default function ConfirmacionPage() {
         JSON.stringify(confirmationData),
       );
 
-      // Pre-build transaction request
       const sourceAccountStr = sessionStorage.getItem(
         "obligacionSourceAccountApi",
       );
@@ -176,48 +150,37 @@ export default function ConfirmacionPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push("/pagos/pagar-mis-productos/obligaciones");
-  };
-
-  if (!confirmationData) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-[15px] text-gray-600">Cargando...</div>
-      </div>
-    );
-  }
-
   const currentSteps =
     paymentMethod === "pse"
       ? OBLIGACION_PAYMENT_STEPS
       : OBLIGACION_PAYMENT_STEPS_ACCOUNT;
 
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={breadcrumbItems} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={currentSteps} />
-      </div>
-
-      <ObligacionConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-      />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={[
+        "Inicio",
+        "Pagos",
+        "Pagar mis productos",
+        "Pago de Obligaciones",
+      ]}
+      welcomeBarTitle="Pago de Obligaciones"
+      welcomeBarBackHref="/pagos/pagar-mis-productos/obligaciones"
+      fallbackPath="/pagos/pagar-mis-productos/obligaciones"
+      steps={currentSteps}
+      hasData={!!confirmationData}
+      isSubmitting={isLoading}
+      submittingLabel="Procesando..."
+      volverColorClass="text-brand-navy"
+      breadcrumbsWrapped={false}
+      onBack={() => router.push("/pagos/pagar-mis-productos/obligaciones")}
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <ObligacionConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

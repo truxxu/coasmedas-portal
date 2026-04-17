@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { TarjetaPaymentConfirmationCard } from "@/src/organisms";
-import { useUIContext, useUserContext, useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  TarjetaPaymentConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext, useUserContext } from "@/src/contexts";
 import { TarjetaPaymentConfirmationData } from "@/src/types/tarjeta-payment";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
 import { TARJETA_PAYMENT_STEPS } from "@/src/mocks";
@@ -17,7 +18,6 @@ export default function PagarTarjetaConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
   const { user } = useUserContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,31 +46,13 @@ export default function PagarTarjetaConfirmacionPage() {
     },
   );
 
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar Tarjeta",
-      backHref: "/tarjeta/pagar",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    if (!confirmationData) {
-      router.push("/tarjeta");
-    }
-  }, [confirmationData, router]);
-
-  if (!confirmationData) {
-    return null;
-  }
-
   const handleBack = () => {
     const cardId = sessionStorage.getItem("tarjetaPaymentCardId") ?? "";
     router.push(`/tarjeta/pagar?cardId=${cardId}`);
   };
 
   const handleConfirm = async () => {
-    if (!termsAccepted) return;
+    if (!termsAccepted || !confirmationData) return;
     setIsLoading(true);
     try {
       sessionStorage.setItem(
@@ -95,36 +77,30 @@ export default function PagarTarjetaConfirmacionPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <Breadcrumbs items={BREADCRUMBS} />
-
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={TARJETA_PAYMENT_STEPS} />
-      </div>
-
-      <TarjetaPaymentConfirmationCard
-        confirmationData={confirmationData}
-        hideBalances={hideBalances}
-        termsAccepted={termsAccepted}
-        onTermsChange={setTermsAccepted}
-      />
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-navy hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button
-          variant="primary"
-          onClick={handleConfirm}
-          disabled={!termsAccepted || isLoading}
-        >
-          {isLoading ? "Procesando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={BREADCRUMBS}
+      welcomeBarTitle="Pagar Tarjeta"
+      welcomeBarBackHref="/tarjeta/pagar"
+      fallbackPath="/tarjeta"
+      steps={TARJETA_PAYMENT_STEPS}
+      hasData={!!confirmationData}
+      isSubmitting={isLoading}
+      confirmDisabled={!termsAccepted}
+      submittingLabel="Procesando..."
+      volverColorClass="text-brand-navy"
+      breadcrumbsWrapped={false}
+      noDataFallback={null}
+      onBack={handleBack}
+      onConfirm={handleConfirm}
+    >
+      {confirmationData && (
+        <TarjetaPaymentConfirmationCard
+          confirmationData={confirmationData}
+          hideBalances={hideBalances}
+          termsAccepted={termsAccepted}
+          onTermsChange={setTermsAccepted}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }

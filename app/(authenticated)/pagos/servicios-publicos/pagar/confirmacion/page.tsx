@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/atoms";
-import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { UtilityPaymentConfirmationCard } from "@/src/organisms";
-import { useUIContext } from "@/src/contexts/UIContext";
-import { useWelcomeBar } from "@/src/contexts";
+import {
+  ConfirmationPageShell,
+  UtilityPaymentConfirmationCard,
+} from "@/src/organisms";
+import { useUIContext } from "@/src/contexts";
 import { mockRegisteredServices, UTILITY_PAYMENT_STEPS } from "@/src/mocks";
 import type {
   UtilityPaymentDetails,
@@ -16,23 +16,12 @@ import type {
 export default function PagarServiciosConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [confirmation, setConfirmation] =
     useState<UtilityPaymentConfirmation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Configure WelcomeBar on mount, clear on unmount
   useEffect(() => {
-    setWelcomeBar({
-      title: "Pago de Servicios Públicos",
-      backHref: "/pagos/servicios-publicos/pagar/detalle",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    // Check if we have details data
     const detailsStr = sessionStorage.getItem("utilityPaymentDetails");
     if (!detailsStr) {
       router.push("/pagos/servicios-publicos/pagar/detalle");
@@ -57,10 +46,9 @@ export default function PagarServiciosConfirmacionPage() {
       invoiceReference = service?.reference || "";
     }
 
-    // Build confirmation data from details + mock user context
     const confirmationData: UtilityPaymentConfirmation = {
-      holderName: "CAMILO ANDRES CRUZ", // Would come from user context
-      holderDocument: "CC 1.***.***234", // Would come from user context (masked)
+      holderName: "CAMILO ANDRES CRUZ",
+      holderDocument: "CC 1.***.***234",
       serviceToPay,
       invoiceReference,
       productToDebit:
@@ -73,17 +61,13 @@ export default function PagarServiciosConfirmacionPage() {
 
   const handleConfirm = async () => {
     if (!confirmation) return;
-
     setIsLoading(true);
-
     try {
-      // Store confirmation data in sessionStorage
       sessionStorage.setItem(
         "utilityPaymentConfirmation",
         JSON.stringify(confirmation),
       );
 
-      // Check payment method from details
       const detailsStr = sessionStorage.getItem("utilityPaymentDetails");
       const details: UtilityPaymentDetails | null = detailsStr
         ? JSON.parse(detailsStr)
@@ -91,10 +75,8 @@ export default function PagarServiciosConfirmacionPage() {
       const isPSE = details?.paymentMethod === "pse";
 
       if (isPSE) {
-        // Navigate to PSE loading page
         router.push("/pagos/servicios-publicos/pagar/pse");
       } else {
-        // Simulate SMS send delay for account-based payment
         await new Promise((resolve) => setTimeout(resolve, 1000));
         router.push("/pagos/servicios-publicos/pagar/codigo-sms");
       }
@@ -105,50 +87,25 @@ export default function PagarServiciosConfirmacionPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push("/pagos/servicios-publicos/pagar/detalle");
-  };
-
-  if (!confirmation) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-brand-gray-high">Cargando...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={["Inicio", "Pagos", "Pago Servicio Publico"]} />
-      </div>
-
-      {/* Stepper */}
-      <div className="-mx-8 bg-white shadow-sm">
-        <Stepper currentStep={2} steps={UTILITY_PAYMENT_STEPS} />
-      </div>
-
-      {/* Confirmation Card */}
-      <UtilityPaymentConfirmationCard
-        confirmation={confirmation}
-        hideBalances={hideBalances}
-      />
-
-      {/* Footer Actions */}
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={handleBack}
-          disabled={isLoading}
-          className="text-sm font-medium text-brand-teal-dark hover:underline disabled:opacity-50"
-        >
-          Volver
-        </button>
-        <Button variant="primary" onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? "Procesando..." : "Confirmar Pago"}
-        </Button>
-      </div>
-    </div>
+    <ConfirmationPageShell
+      breadcrumbs={["Inicio", "Pagos", "Pago Servicio Publico"]}
+      welcomeBarTitle="Pago de Servicios Públicos"
+      welcomeBarBackHref="/pagos/servicios-publicos/pagar/detalle"
+      fallbackPath="/pagos/servicios-publicos/pagar/detalle"
+      steps={UTILITY_PAYMENT_STEPS}
+      hasData={!!confirmation}
+      isSubmitting={isLoading}
+      submittingLabel="Procesando..."
+      onBack={() => router.push("/pagos/servicios-publicos/pagar/detalle")}
+      onConfirm={handleConfirm}
+    >
+      {confirmation && (
+        <UtilityPaymentConfirmationCard
+          confirmation={confirmation}
+          hideBalances={hideBalances}
+        />
+      )}
+    </ConfirmationPageShell>
   );
 }
