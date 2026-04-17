@@ -23,21 +23,19 @@ export default function DetallePage() {
   const [amount, setAmount] = useState("");
   const [concept, setConcept] = useState("");
   const [error, setError] = useState("");
-  const [recipient, setRecipient] = useState<RegisteredNetworkAccount | null>(
-    null,
-  );
-
-  useEffect(() => {
-    // Read selected recipient from sessionStorage
+  const [recipient] = useState<RegisteredNetworkAccount | null>(() => {
+    if (typeof window === "undefined") return null;
     const recipientData = sessionStorage.getItem(
       "networkTransferSelectedRecipient",
     );
-    if (!recipientData) {
+    return recipientData ? JSON.parse(recipientData) : null;
+  });
+
+  useEffect(() => {
+    if (!recipient) {
       router.replace("/transferencias/internas/cuentas-mi-red");
-      return;
     }
-    setRecipient(JSON.parse(recipientData));
-  }, [router]);
+  }, [recipient, router]);
 
   useEffect(() => {
     setWelcomeBar({

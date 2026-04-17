@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 const RESEND_COOLDOWN_SECONDS = 60;
 
 export interface SMSCodeVerificationConfig {
-  /** Valid code for mock validation (optional when using onSubmit) */
-  validCode?: string;
   /** Session storage key to check for session validation */
   sessionKey: string;
   /** Path to redirect if session is invalid */
@@ -56,17 +54,18 @@ export function useSMSCodeVerification(
     }
   }, [router, config.sessionKey, config.fallbackPath]);
 
-  // Countdown timer for resend button
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (resendCountdown > 0) {
-      timer = setTimeout(() => {
-        setResendCountdown((prev) => prev - 1);
-      }, 1000);
-    } else if (resendCountdown === 0 && isResendDisabled) {
+    if (resendCountdown <= 0) return;
+    const timer = setTimeout(() => {
+      setResendCountdown((prev) => prev - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [resendCountdown]);
+
+  useEffect(() => {
+    if (resendCountdown === 0 && isResendDisabled) {
       setIsResendDisabled(false);
     }
-    return () => clearTimeout(timer);
   }, [resendCountdown, isResendDisabled]);
 
   const handleCodeChange = useCallback((newCode: string) => {
@@ -103,16 +102,10 @@ export function useSMSCodeVerification(
         config.onSuccess?.(code);
         router.push(config.successPath);
       } else {
-        // Legacy mock flow: compare against validCode
+        // Mock flow: accept any 6-digit code
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        if (code === config.validCode) {
-          config.onSuccess?.(code);
-          router.push(config.successPath);
-        } else {
-          config.onError?.(code);
-          setError("Codigo incorrecto. Por favor intenta nuevamente.");
-        }
+        config.onSuccess?.(code);
+        router.push(config.successPath);
       }
     } catch (err) {
       config.onError?.(code);

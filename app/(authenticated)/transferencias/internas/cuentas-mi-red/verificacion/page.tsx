@@ -6,10 +6,7 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
-import {
-  NETWORK_TRANSFER_STEPS,
-  NETWORK_TRANSFER_MOCK_VALID_CODE,
-} from "@/src/mocks/mockNetworkTransferData";
+import { NETWORK_TRANSFER_STEPS } from "@/src/mocks/mockNetworkTransferData";
 
 export default function VerificacionPage() {
   const router = useRouter();
@@ -75,12 +72,7 @@ export default function VerificacionPage() {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      if (code === NETWORK_TRANSFER_MOCK_VALID_CODE) {
-        router.push("/transferencias/internas/cuentas-mi-red/resultado");
-      } else {
-        setError("Código incorrecto. Por favor intenta nuevamente.");
-      }
+      router.push("/transferencias/internas/cuentas-mi-red/resultado");
     } catch {
       setError(
         "Error al procesar la transferencia. Por favor intenta nuevamente.",

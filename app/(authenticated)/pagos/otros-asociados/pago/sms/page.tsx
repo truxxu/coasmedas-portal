@@ -7,10 +7,7 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { CodeInputCard } from "@/src/organisms";
 import { useWelcomeBar } from "@/src/contexts";
 import { useSMSCodeVerification } from "@/src/hooks";
-import {
-  OTROS_ASOCIADOS_PAYMENT_STEPS,
-  OTROS_ASOCIADOS_MOCK_VALID_CODE,
-} from "@/src/mocks";
+import { OTROS_ASOCIADOS_PAYMENT_STEPS } from "@/src/mocks";
 
 export default function OtrosAsociadosSmsPage() {
   const router = useRouter();
@@ -26,7 +23,6 @@ export default function OtrosAsociadosSmsPage() {
     handleResendCode,
     handleSubmit,
   } = useSMSCodeVerification({
-    validCode: OTROS_ASOCIADOS_MOCK_VALID_CODE,
     sessionKey: "otrosAsociadosConfirmation",
     fallbackPath: "/pagos/otros-asociados/pago",
     successPath: "/pagos/otros-asociados/pago/resultado",

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { Card, Button } from "@/src/atoms";
 import { Breadcrumbs } from "@/src/molecules";
 import {
   AccountRegistrationForm,
@@ -12,20 +13,26 @@ import {
 import { useWelcomeBar } from "@/src/contexts";
 import {
   mockRegisteredAccounts,
-  mockBanks,
-  mockCooperativas,
   mockDocumentTypes,
   mockAccountTypes,
 } from "@/src/mocks";
+import { listBanks, listEntities } from "@/services/transfers.service";
+import { isAuthError } from "@/lib/api/errors";
 import type {
   AccountRegistrationFormData,
   AccountRegistrationPageState,
   RegisteredAccount,
+  BankOption,
+  CooperativaOption,
 } from "@/src/types";
 
 export default function InscribirCuentasPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  const [banks, setBanks] = useState<BankOption[]>([]);
+  const [cooperativas, setCooperativas] = useState<CooperativaOption[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const [pageState, setPageState] = useState<AccountRegistrationPageState>({
     mode: "register",
@@ -45,6 +52,36 @@ export default function InscribirCuentasPage() {
     return () => clearWelcomeBar();
   }, [setWelcomeBar, clearWelcomeBar]);
 
+  // Fetch banks and entities from API
+  const fetchBanksAndEntities = useCallback(async () => {
+    try {
+      setLoading(true);
+      setLoadError(null);
+
+      const [banksRes, entitiesRes] = await Promise.all([
+        listBanks(),
+        listEntities(),
+      ]);
+
+      setBanks(banksRes.map((b) => ({ value: b.code, label: b.name })));
+      setCooperativas(
+        entitiesRes.map((e) => ({ value: e.code, label: e.name })),
+      );
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push("/login");
+        return;
+      }
+      setLoadError("No fue posible cargar la informacion. Intente nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    fetchBanksAndEntities();
+  }, [fetchBanksAndEntities]);
+
   // Get initial data for edit mode
   const getEditingAccountData = (): AccountRegistrationFormData | undefined => {
     if (pageState.mode !== "edit" || !pageState.editingAccountId) {
@@ -62,10 +99,8 @@ export default function InscribirCuentasPage() {
       // Create new account
       const bankName =
         data.accountBankType === "otro_banco"
-          ? mockBanks.find((b) => b.value === data.entidadFinanciera)?.label ||
-            ""
-          : mockCooperativas.find((c) => c.value === data.cooperativa)?.label ||
-            "";
+          ? banks.find((b) => b.value === data.entidadFinanciera)?.label || ""
+          : cooperativas.find((c) => c.value === data.cooperativa)?.label || "";
 
       const holderName =
         data.tipoTitular === "persona_natural"
@@ -94,10 +129,8 @@ export default function InscribirCuentasPage() {
       // Update existing account
       const bankName =
         data.accountBankType === "otro_banco"
-          ? mockBanks.find((b) => b.value === data.entidadFinanciera)?.label ||
-            ""
-          : mockCooperativas.find((c) => c.value === data.cooperativa)?.label ||
-            "";
+          ? banks.find((b) => b.value === data.entidadFinanciera)?.label || ""
+          : cooperativas.find((c) => c.value === data.cooperativa)?.label || "";
 
       const holderName =
         data.tipoTitular === "persona_natural"
@@ -197,6 +230,47 @@ export default function InscribirCuentasPage() {
     }));
   };
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Breadcrumbs
+            items={["Inicio", "Transferencias", "Inscribir Cuenta"]}
+          />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="p-6 md:p-8">
+            <div className="animate-pulse space-y-4">
+              <div className="h-6 bg-gray-200 rounded w-3/4" />
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-10 bg-gray-200 rounded w-full" />
+              <div className="h-10 bg-gray-200 rounded w-full" />
+              <div className="h-10 bg-gray-200 rounded w-full" />
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Breadcrumbs
+            items={["Inicio", "Transferencias", "Inscribir Cuenta"]}
+          />
+        </div>
+        <Card className="p-6 md:p-8 text-center">
+          <p className="text-brand-error mb-4">{loadError}</p>
+          <Button variant="primary" onClick={fetchBanksAndEntities}>
+            Reintentar
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -210,8 +284,8 @@ export default function InscribirCuentasPage() {
         <AccountRegistrationForm
           mode={pageState.mode}
           initialData={getEditingAccountData()}
-          banks={mockBanks}
-          cooperativas={mockCooperativas}
+          banks={banks}
+          cooperativas={cooperativas}
           documentTypes={mockDocumentTypes}
           accountTypes={mockAccountTypes}
           onSubmit={handleFormSubmit}

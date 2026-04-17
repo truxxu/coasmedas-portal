@@ -113,7 +113,8 @@ Productos (expandable)
 ├── Aportes
 ├── Ahorros
 ├── Inversiones
-└── Protección
+├── Protección
+└── Coaspocket
 ```
 
 Each sub-item links to `/productos/{product-name}`:
@@ -122,12 +123,13 @@ Each sub-item links to `/productos/{product-name}`:
 - `/productos/ahorros`
 - `/productos/inversiones`
 - `/productos/proteccion`
+- `/productos/coaspocket`
 
 ### Reusable Components
 
 #### 1. TransactionHistoryCard (Box 2)
 
-**Reused on**: Aportes, Ahorros, Inversiones pages
+**Reused on**: Aportes, Ahorros, Inversiones, Coaspocket pages
 
 **Props:**
 
@@ -151,7 +153,7 @@ interface Transaction {
 
 #### 2. DownloadReportsCard (Box 3)
 
-**Reused on**: Aportes, Ahorros, Inversiones pages
+**Reused on**: Aportes, Ahorros, Inversiones, Coaspocket pages
 
 **Props:**
 
@@ -270,8 +272,10 @@ app/(authenticated)/productos/
 │   └── page.tsx               # Ahorros page (future)
 ├── inversiones/
 │   └── page.tsx               # Inversiones page (future)
-└── proteccion/
-    └── page.tsx               # Protección page (future)
+├── proteccion/
+│   └── page.tsx               # Protección page (future)
+└── coaspocket/
+    └── page.tsx               # Coaspocket page (future)
 
 src/
 ├── atoms/
@@ -303,6 +307,7 @@ const productSubItems = [
   { label: "Ahorros", href: "/productos/ahorros" },
   { label: "Inversiones", href: "/productos/inversiones" },
   { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" },
 ];
 ```
 

@@ -9,7 +9,6 @@ import { useWelcomeBar } from "@/src/contexts";
 import { useSMSCodeVerification } from "@/src/hooks";
 import {
   UTILITY_PAYMENT_STEPS,
-  UTILITY_MOCK_VALID_CODE,
   mockUtilityPaymentResult,
   mockUtilityPaymentResultError,
 } from "@/src/mocks";
@@ -54,7 +53,6 @@ export default function PagarServiciosCodigoSmsPage() {
     handleResendCode,
     handleSubmit,
   } = useSMSCodeVerification({
-    validCode: UTILITY_MOCK_VALID_CODE,
     sessionKey: "utilityPaymentConfirmation",
     fallbackPath: "/pagos/servicios-publicos/pagar/detalle",
     successPath: "/pagos/servicios-publicos/pagar/respuesta",

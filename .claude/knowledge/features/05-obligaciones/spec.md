@@ -163,6 +163,7 @@ const productSubItems = [
   { label: "Obligaciones", href: "/productos/obligaciones" }, // NEW
   { label: "Inversiones", href: "/productos/inversiones" },
   { label: "Protección", href: "/productos/proteccion" },
+  { label: "Coaspocket", href: "/productos/coaspocket" },
 ];
 ```
 

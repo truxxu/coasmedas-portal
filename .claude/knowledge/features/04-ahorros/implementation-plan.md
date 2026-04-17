@@ -870,6 +870,7 @@ Phase 7: Polish & Testing
 The `ProductCarousel` component created in this feature will be **reusable** for:
 
 - `/productos/inversiones` - Investment products
+- `/productos/coaspocket` - Digital wallet products
 - Any future multi-product display pages
 
 To reuse with different card designs, consider refactoring to accept a `renderCard` prop:
