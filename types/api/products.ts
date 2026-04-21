@@ -46,6 +46,20 @@ export interface BalanceSummary {
   proteccion: string;
 }
 
+/**
+ * Request for POST /products/contributions/movements.
+ * Aportes-specific movements with server-side date range filtering.
+ */
+export interface ContributionsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
 // ─── /movements Response ───
 
 export interface MovementItem {
@@ -59,6 +73,24 @@ export interface MovementItem {
   valorTransaccion: string | number;
   saldoPorTrn: string | number;
   descripcion: string;
+}
+
+// ─── /products/contributions/movements Response ───
+
+export interface ContributionsMovementItem {
+  /** Format: YYYYMMDD */
+  fechaTransaccion: string;
+  /** "C" = credit, "D" = debit */
+  tipoTransaccion: string;
+  valorTransaccion: string | number;
+  descripcion: string;
+}
+
+export interface ContributionsMovementsResponse {
+  saldoFecha: string | number;
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: ContributionsMovementItem[];
 }
 
 // ─── /products/savings Response ───

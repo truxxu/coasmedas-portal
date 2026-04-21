@@ -2,6 +2,7 @@ import { normalizeMoney, normalizeString } from "@/types/api/common";
 import type {
   BalanceSummary,
   MovementItem,
+  ContributionsMovementItem,
   SavingsAccountResponse,
   CreditAccountResponse,
   InvestmentAccountResponse,
@@ -81,6 +82,33 @@ export function mapMovementToTransaction(
 export function mapMovements(items: MovementItem[]): Transaction[] {
   return items
     .map(mapMovementToTransaction)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+export function mapContributionsMovementToTransaction(
+  item: ContributionsMovementItem,
+  index: number,
+): Transaction {
+  const amount = normalizeMoney(item.valorTransaccion);
+  const tipo = item.tipoTransaccion.toUpperCase();
+  const type: TransactionType =
+    tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
+  const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
+
+  return {
+    id: String(index + 1),
+    description: item.descripcion.replace(/_+$/, "").trim(),
+    date: parseApiDate(item.fechaTransaccion),
+    amount: signedAmount,
+    type,
+  };
+}
+
+export function mapContributionsMovements(
+  items: ContributionsMovementItem[],
+): Transaction[] {
+  return items
+    .map(mapContributionsMovementToTransaction)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 

@@ -18,6 +18,8 @@ import type {
   CreditAccountResponse,
   InvestmentAccountResponse,
   ContributionsResponse,
+  ContributionsMovementsRequest,
+  ContributionsMovementsResponse,
   ProtectionAccountResponse,
 } from "@/types/api/products";
 
@@ -104,6 +106,22 @@ export async function getProductsContributions(
   params: ProductsRequest,
 ): Promise<ContributionsResponse> {
   return apiPost<ContributionsResponse>("/products/contributions", params);
+}
+
+/**
+ * Query contributions (aportes) transaction movements within a date range.
+ *
+ * @endpoint POST /products/contributions/movements
+ * @auth JWT
+ * @status ✅ Used in aportes page
+ */
+export async function getContributionsMovements(
+  params: ContributionsMovementsRequest,
+): Promise<ContributionsMovementsResponse> {
+  return apiPost<ContributionsMovementsResponse>(
+    "/products/contributions/movements",
+    params,
+  );
 }
 
 /**

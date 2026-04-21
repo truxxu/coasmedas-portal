@@ -13,20 +13,20 @@ import { mockAvailableMonths } from "@/src/mocks";
 import {
   maskNumber,
   mapContributionsResponse,
-  mapMovements,
+  mapContributionsMovements,
   getDateMonthsAgo,
+  getTodayDate,
   formatApiDate,
 } from "@/src/utils";
 import { AportesProduct, Transaction } from "@/src/types";
 import {
   getProductsContributions,
-  getMovements,
+  getContributionsMovements,
 } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 
 interface AportesMeta {
   idCuenta: string;
-  codigoProductoCobis: string;
 }
 
 export default function AportesPage() {
@@ -65,24 +65,22 @@ export default function AportesPage() {
 
       const meta: AportesMeta = {
         idCuenta: String(contributions.aportes.idCuentaAportes),
-        codigoProductoCobis: String(
-          contributions.aportes.codigoProductoCobisAportes,
-        ),
       };
       setAportesMeta(meta);
 
       // Fetch initial movements
       const version = ++fetchVersionRef.current;
       setTransactionsLoading(true);
-      const movements = await getMovements({
+      const response = await getContributionsMovements({
         ...params,
-        codigoProductoCobis: meta.codigoProductoCobis,
         idCuenta: meta.idCuenta,
-        fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
+        startDate: formatApiDate(getDateMonthsAgo(3)),
+        endDate: formatApiDate(getTodayDate()),
+        indPag: "1",
       });
 
       if (fetchVersionRef.current === version) {
-        setTransactions(mapMovements(movements));
+        setTransactions(mapContributionsMovements(response.records));
       }
     } catch (err) {
       if (isAuthError(err)) {
@@ -107,16 +105,16 @@ export default function AportesPage() {
       const version = ++fetchVersionRef.current;
       try {
         setTransactionsLoading(true);
-        const movements = await getMovements({
+        const response = await getContributionsMovements({
           documentType,
           documentNumber,
-          codigoProductoCobis: aportesMeta.codigoProductoCobis,
           idCuenta: aportesMeta.idCuenta,
-          fechaConsulta: formatApiDate(startDate),
+          startDate: formatApiDate(startDate),
+          endDate: formatApiDate(endDate),
+          indPag: "1",
         });
         if (fetchVersionRef.current === version) {
-          const mapped = mapMovements(movements);
-          setTransactions(mapped.filter((t) => t.date <= endDate));
+          setTransactions(mapContributionsMovements(response.records));
         }
       } catch (err) {
         if (isAuthError(err)) {
