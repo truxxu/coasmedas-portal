@@ -63,10 +63,12 @@ export function CoaspocketCarousel({
     setCanScrollLeft(scrollLeft > 0);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    // Calculate current page
+    // Calculate current page (one page == one full viewport of cards)
     const cardWidth = clientWidth / visibleItems;
-    const page = Math.round(scrollLeft / cardWidth);
-    setCurrentPage(Math.min(page, totalPages - 1));
+    const gap = 20;
+    const pageStep = visibleItems * (cardWidth + gap);
+    const page = pageStep > 0 ? Math.round(scrollLeft / pageStep) : 0;
+    setCurrentPage(Math.min(page, Math.max(totalPages - 1, 0)));
   }, [visibleItems, totalPages]);
 
   useEffect(() => {
@@ -82,10 +84,13 @@ export function CoaspocketCarousel({
   // Scroll handlers
   const scrollToPage = (page: number) => {
     if (!containerRef.current) return;
-    const cardWidth = containerRef.current.clientWidth / visibleItems;
+    const { clientWidth, scrollWidth } = containerRef.current;
+    const cardWidth = clientWidth / visibleItems;
     const gap = 20; // gap-5 = 20px
+    const maxScroll = Math.max(scrollWidth - clientWidth, 0);
+    const target = Math.min(page * visibleItems * (cardWidth + gap), maxScroll);
     containerRef.current.scrollTo({
-      left: page * (cardWidth + gap),
+      left: target,
       behavior: "smooth",
     });
   };
