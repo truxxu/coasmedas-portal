@@ -25,6 +25,8 @@ import type {
   ProtectionAccountResponse,
   PocketsRequest,
   PocketsResponse,
+  PocketsMovementsRequest,
+  PocketsMovementsResponse,
 } from "@/types/api/products";
 
 // ─── Balances ───
@@ -168,4 +170,20 @@ export async function getProductsPockets(
   params: PocketsRequest,
 ): Promise<PocketsResponse> {
   return apiPost<PocketsResponse>("/products/pockets", params);
+}
+
+/**
+ * Query pocket (bolsillo) transaction movements within a date range.
+ *
+ * @endpoint POST /products/pockets/movements
+ * @auth JWT
+ * @status ✅ Used in coaspocket page
+ */
+export async function getPocketsMovements(
+  params: PocketsMovementsRequest,
+): Promise<PocketsMovementsResponse> {
+  return apiPost<PocketsMovementsResponse>(
+    "/products/pockets/movements",
+    params,
+  );
 }

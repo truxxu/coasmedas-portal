@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { InfoBox } from "@/src/atoms";
@@ -10,16 +10,23 @@ import {
   DownloadReportsCard,
 } from "@/src/organisms";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
-import { CoaspocketProduct } from "@/src/types";
+import { CoaspocketProduct, Transaction } from "@/src/types";
 import {
-  mockCoaspocketTransactions,
   mockCoaspocketAvailableMonths,
   mockCoaspocketInfoText,
 } from "@/src/mocks";
-import { maskNumber, mapPockets } from "@/src/utils";
+import {
+  maskNumber,
+  mapPockets,
+  mapMovements,
+  getDateMonthsAgo,
+  getTodayDate,
+  formatApiDate,
+} from "@/src/utils";
 import {
   getProductsSavings,
   getProductsPockets,
+  getPocketsMovements,
 } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 
@@ -29,13 +36,17 @@ export default function CoaspocketPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
   const [products, setProducts] = useState<CoaspocketProduct[]>([]);
+  const [idCuenta, setIdCuenta] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] =
     useState<CoaspocketProduct | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState(
     mockCoaspocketAvailableMonths[0]?.value || "",
   );
+  const fetchVersionRef = useRef(0);
 
   useEffect(() => {
     setWelcomeBar({ title: "Coaspocket", backHref: "/home" });
@@ -43,6 +54,44 @@ export default function CoaspocketPage() {
   }, [setWelcomeBar, clearWelcomeBar]);
 
   const { documentType, documentNumber } = user ?? {};
+
+  const fetchMovements = useCallback(
+    async (
+      accountId: string,
+      idBolsillo: string,
+      startDate: string,
+      endDate: string,
+    ) => {
+      if (!documentType || !documentNumber) return;
+
+      const version = ++fetchVersionRef.current;
+      try {
+        setTransactionsLoading(true);
+        const response = await getPocketsMovements({
+          documentType,
+          documentNumber,
+          idCuenta: accountId,
+          idBolsillo,
+          startDate: formatApiDate(startDate),
+          endDate: formatApiDate(endDate),
+          indPag: "1",
+        });
+        if (fetchVersionRef.current === version) {
+          setTransactions(mapMovements(response.records ?? []));
+        }
+      } catch (err) {
+        if (isAuthError(err)) {
+          router.push("/login");
+          return;
+        }
+      } finally {
+        if (fetchVersionRef.current === version) {
+          setTransactionsLoading(false);
+        }
+      }
+    },
+    [documentType, documentNumber, router],
+  );
 
   const fetchData = useCallback(async () => {
     if (!documentType || !documentNumber) return;
@@ -57,19 +106,34 @@ export default function CoaspocketPage() {
       if (savings.length === 0) {
         setProducts([]);
         setSelectedProduct(null);
+        setIdCuenta(null);
         return;
       }
 
-      const idCuenta = savings[0].idCuenta;
+      const accountId = savings[0].idCuenta;
+      setIdCuenta(accountId);
+
       const response = await getProductsPockets({
         ...params,
-        idCuenta,
+        idCuenta: accountId,
         indPag: "1",
       });
 
       const mapped = mapPockets(response.records ?? []);
       setProducts(mapped);
-      setSelectedProduct(mapped[0] ?? null);
+      const first = mapped[0] ?? null;
+      setSelectedProduct(first);
+
+      if (first) {
+        await fetchMovements(
+          accountId,
+          first.id,
+          getDateMonthsAgo(3),
+          getTodayDate(),
+        );
+      } else {
+        setTransactions([]);
+      }
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -79,7 +143,7 @@ export default function CoaspocketPage() {
     } finally {
       setLoading(false);
     }
-  }, [documentType, documentNumber, router]);
+  }, [documentType, documentNumber, router, fetchMovements]);
 
   useEffect(() => {
     fetchData();
@@ -90,23 +154,32 @@ export default function CoaspocketPage() {
     return `Consulta de Movimientos - Bolsillo ${selectedProduct.title} (No.${maskNumber(selectedProduct.pocketNumber)})`;
   }, [selectedProduct]);
 
-  const handleProductSelect = (product: CoaspocketProduct) => {
-    setSelectedProduct(product);
-    // TODO: Fetch transactions for selected product when endpoint available
-  };
+  const handleProductSelect = useCallback(
+    (product: CoaspocketProduct) => {
+      setSelectedProduct(product);
+      if (idCuenta) {
+        fetchMovements(
+          idCuenta,
+          product.id,
+          getDateMonthsAgo(3),
+          getTodayDate(),
+        );
+      }
+    },
+    [idCuenta, fetchMovements],
+  );
 
   const handleCreatePocket = () => {
     // TODO: Navigate to create pocket flow or open modal
   };
 
-  const handleFilter = (startDate: string, endDate: string) => {
-    // TODO: Call API to filter transactions when endpoint available
-    console.log("Filtering:", {
-      startDate,
-      endDate,
-      productId: selectedProduct?.id,
-    });
-  };
+  const handleFilter = useCallback(
+    async (startDate: string, endDate: string) => {
+      if (!selectedProduct || !idCuenta) return;
+      await fetchMovements(idCuenta, selectedProduct.id, startDate, endDate);
+    },
+    [selectedProduct, idCuenta, fetchMovements],
+  );
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
@@ -166,8 +239,9 @@ export default function CoaspocketPage() {
           <TransactionHistoryCard
             title={transactionTitle}
             subtitle="Últimos movimientos registrados."
-            transactions={mockCoaspocketTransactions}
+            transactions={transactions}
             onFilter={handleFilter}
+            loading={transactionsLoading}
             infoBox={<InfoBox>{mockCoaspocketInfoText}</InfoBox>}
           />
 

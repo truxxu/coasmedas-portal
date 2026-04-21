@@ -232,6 +232,29 @@ export interface PocketsResponse {
   records: PocketRecord[];
 }
 
+// ─── /products/pockets/movements ───
+
+/**
+ * Request for POST /products/pockets/movements.
+ * Pocket-specific movements with server-side date range filtering.
+ */
+export interface PocketsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  idBolsillo: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface PocketsMovementsResponse {
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: MovementItem[];
+}
+
 // ─── /products/protection Response ───
 
 export interface ProtectionAccountResponse {
