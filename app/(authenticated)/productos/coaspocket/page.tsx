@@ -1,35 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Breadcrumbs } from "@/src/molecules";
-import { InfoBox } from "@/src/atoms";
-import {
-  CoaspocketCarousel,
-  TransactionHistoryCard,
-  DownloadReportsCard,
-  CreatePocketModal,
-} from "@/src/organisms";
+import { Breadcrumbs, SavingsAccountSelectorRow } from "@/src/molecules";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
-import { CoaspocketProduct, Transaction } from "@/src/types";
-import {
-  mockCoaspocketAvailableMonths,
-  mockCoaspocketInfoText,
-} from "@/src/mocks";
-import {
-  maskNumber,
-  mapPockets,
-  mapMovements,
-  getDateMonthsAgo,
-  getTodayDate,
-  formatApiDate,
-} from "@/src/utils";
-import {
-  getProductsSavings,
-  getProductsPockets,
-  getPocketsMovements,
-  createPocket,
-} from "@/services/products.service";
+import { SavingsProduct } from "@/src/types";
+import { mapSavingsProducts } from "@/src/utils";
+import { getProductsSavings } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 
 export default function CoaspocketPage() {
@@ -37,21 +14,9 @@ export default function CoaspocketPage() {
   const router = useRouter();
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
 
-  const [products, setProducts] = useState<CoaspocketProduct[]>([]);
-  const [idCuenta, setIdCuenta] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] =
-    useState<CoaspocketProduct | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [products, setProducts] = useState<SavingsProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState(
-    mockCoaspocketAvailableMonths[0]?.value || "",
-  );
-  const [createOpen, setCreateOpen] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState<string | null>(null);
-  const fetchVersionRef = useRef(0);
 
   useEffect(() => {
     setWelcomeBar({ title: "Coaspocket", backHref: "/home" });
@@ -60,44 +25,6 @@ export default function CoaspocketPage() {
 
   const { documentType, documentNumber } = user ?? {};
 
-  const fetchMovements = useCallback(
-    async (
-      accountId: string,
-      idBolsillo: string,
-      startDate: string,
-      endDate: string,
-    ) => {
-      if (!documentType || !documentNumber) return;
-
-      const version = ++fetchVersionRef.current;
-      try {
-        setTransactionsLoading(true);
-        const response = await getPocketsMovements({
-          documentType,
-          documentNumber,
-          idCuenta: accountId,
-          idBolsillo,
-          startDate: formatApiDate(startDate),
-          endDate: formatApiDate(endDate),
-          indPag: "1",
-        });
-        if (fetchVersionRef.current === version) {
-          setTransactions(mapMovements(response.records ?? []));
-        }
-      } catch (err) {
-        if (isAuthError(err)) {
-          router.push("/login");
-          return;
-        }
-      } finally {
-        if (fetchVersionRef.current === version) {
-          setTransactionsLoading(false);
-        }
-      }
-    },
-    [documentType, documentNumber, router],
-  );
-
   const fetchData = useCallback(async () => {
     if (!documentType || !documentNumber) return;
 
@@ -105,40 +32,11 @@ export default function CoaspocketPage() {
       setLoading(true);
       setError(null);
 
-      const params = { documentType, documentNumber };
-      const savings = await getProductsSavings(params);
-
-      if (savings.length === 0) {
-        setProducts([]);
-        setSelectedProduct(null);
-        setIdCuenta(null);
-        return;
-      }
-
-      const accountId = savings[0].idCuenta;
-      setIdCuenta(accountId);
-
-      const response = await getProductsPockets({
-        ...params,
-        idCuenta: accountId,
-        indPag: "1",
+      const apiProducts = await getProductsSavings({
+        documentType,
+        documentNumber,
       });
-
-      const mapped = mapPockets(response.records ?? []);
-      setProducts(mapped);
-      const first = mapped[0] ?? null;
-      setSelectedProduct(first);
-
-      if (first) {
-        await fetchMovements(
-          accountId,
-          first.id,
-          getDateMonthsAgo(3),
-          getTodayDate(),
-        );
-      } else {
-        setTransactions([]);
-      }
+      setProducts(mapSavingsProducts(apiProducts));
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -148,86 +46,20 @@ export default function CoaspocketPage() {
     } finally {
       setLoading(false);
     }
-  }, [documentType, documentNumber, router, fetchMovements]);
+  }, [documentType, documentNumber, router]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const transactionTitle = useMemo(() => {
-    if (!selectedProduct) return "Consulta de Movimientos";
-    return `Consulta de Movimientos - Bolsillo ${selectedProduct.title} (No.${maskNumber(selectedProduct.pocketNumber)})`;
-  }, [selectedProduct]);
-
-  const handleProductSelect = useCallback(
-    (product: CoaspocketProduct) => {
-      setSelectedProduct(product);
-      if (idCuenta) {
-        fetchMovements(
-          idCuenta,
-          product.id,
-          getDateMonthsAgo(3),
-          getTodayDate(),
-        );
-      }
-    },
-    [idCuenta, fetchMovements],
-  );
-
-  const handleCreatePocket = () => {
-    if (!idCuenta) return;
-    setCreateError(null);
-    setCreateOpen(true);
-  };
-
-  const handleCloseCreate = () => {
-    if (creating) return;
-    setCreateOpen(false);
-    setCreateError(null);
-  };
-
-  const handleCreateSubmit = async (nombreBolsillo: string) => {
-    if (!documentType || !documentNumber || !idCuenta) return;
-    setCreating(true);
-    setCreateError(null);
-    try {
-      await createPocket({
-        documentType,
-        documentNumber,
-        idCuenta,
-        nombreBolsillo,
-      });
-      setCreateOpen(false);
-      await fetchData();
-    } catch (err) {
-      if (isAuthError(err)) {
-        router.push("/login");
-        return;
-      }
-      setCreateError("No fue posible crear el bolsillo. Intente nuevamente.");
-    } finally {
-      setCreating(false);
-    }
-  };
-
-  const handleFilter = useCallback(
-    async (startDate: string, endDate: string) => {
-      if (!selectedProduct || !idCuenta) return;
-      await fetchMovements(idCuenta, selectedProduct.id, startDate, endDate);
-    },
-    [selectedProduct, idCuenta, fetchMovements],
-  );
-
-  const handleMonthChange = (month: string) => {
-    setSelectedMonth(month);
-  };
-
-  const handleDownload = () => {
-    // TODO: Trigger PDF download when endpoint available
-    console.log("Downloading:", {
-      month: selectedMonth,
-      productId: selectedProduct?.id,
-    });
+  const handleSelect = (product: SavingsProduct) => {
+    const query = new URLSearchParams({
+      name: product.title,
+      number: product.productNumber,
+    }).toString();
+    router.push(
+      `/productos/coaspocket/${encodeURIComponent(product.id)}?${query}`,
+    );
   };
 
   if (error) {
@@ -253,7 +85,8 @@ export default function CoaspocketPage() {
         <Breadcrumbs items={["Inicio", "Productos", "Coaspocket"]} />
         <div className="bg-white rounded-2xl p-6 animate-pulse space-y-4">
           <div className="h-6 w-48 bg-gray-200 rounded" />
-          <div className="h-32 w-full bg-gray-200 rounded" />
+          <div className="h-16 w-full bg-gray-200 rounded" />
+          <div className="h-16 w-full bg-gray-200 rounded" />
         </div>
       </div>
     );
@@ -263,41 +96,34 @@ export default function CoaspocketPage() {
     <div className="space-y-6">
       <Breadcrumbs items={["Inicio", "Productos", "Coaspocket"]} />
 
-      <CoaspocketCarousel
-        title="Resumen de Bolsillos"
-        products={products}
-        selectedProductId={selectedProduct?.id}
-        onProductSelect={handleProductSelect}
-        onCreatePocket={handleCreatePocket}
-      />
+      <div className="bg-white rounded-2xl p-6 space-y-4">
+        <div>
+          <h2 className="text-[21px] font-bold text-brand-navy">
+            Gestión de Bolsillos
+          </h2>
+          <p className="text-[14px] text-brand-gray-high mt-1">
+            Selecciona la cuenta de ahorros para ver y gestionar sus bolsillos.
+          </p>
+        </div>
 
-      {products.length > 0 && selectedProduct && (
-        <>
-          <TransactionHistoryCard
-            title={transactionTitle}
-            subtitle="Últimos movimientos registrados."
-            transactions={transactions}
-            onFilter={handleFilter}
-            loading={transactionsLoading}
-            infoBox={<InfoBox>{mockCoaspocketInfoText}</InfoBox>}
-          />
-
-          <DownloadReportsCard
-            availableMonths={mockCoaspocketAvailableMonths}
-            selectedMonth={selectedMonth}
-            onMonthChange={handleMonthChange}
-            onDownload={handleDownload}
-          />
-        </>
-      )}
-
-      <CreatePocketModal
-        isOpen={createOpen}
-        onClose={handleCloseCreate}
-        onSubmit={handleCreateSubmit}
-        submitting={creating}
-        error={createError}
-      />
+        {products.length === 0 ? (
+          <p className="text-sm text-brand-gray-high py-6 text-center">
+            No tienes cuentas de ahorro disponibles.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {products.map((product) => (
+              <SavingsAccountSelectorRow
+                key={product.id}
+                title={product.title}
+                productNumber={product.productNumber}
+                balance={product.balance}
+                onClick={() => handleSelect(product)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

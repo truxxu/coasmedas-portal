@@ -17,6 +17,8 @@ interface CoaspocketCarouselProps {
   onProductSelect: OnCoaspocketSelect;
   onCreatePocket: OnCreatePocket;
   className?: string;
+  accountName?: string;
+  accountNumber?: string;
 }
 
 export function CoaspocketCarousel({
@@ -26,6 +28,8 @@ export function CoaspocketCarousel({
   onProductSelect,
   onCreatePocket,
   className = "",
+  accountName,
+  accountNumber,
 }: CoaspocketCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -101,9 +105,15 @@ export function CoaspocketCarousel({
   return (
     <div className={`bg-white rounded-2xl p-6 ${className}`}>
       {/* Title */}
-      <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
-        {title}
-      </h2>
+      <div className="mb-4">
+        <h2 className="text-[20px] font-bold text-brand-navy-dark">{title}</h2>
+        {accountName && (
+          <p className="text-[14px] text-brand-gray-high mt-1">
+            {accountName}
+            {accountNumber ? ` ${accountNumber}` : ""}
+          </p>
+        )}
+      </div>
 
       {/* Carousel Container */}
       <div className="relative">
