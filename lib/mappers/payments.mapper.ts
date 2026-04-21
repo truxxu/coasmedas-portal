@@ -17,6 +17,8 @@ import type {
   PaymentProduct,
   PaymentAccountTarget,
   PaymentTransactionResult,
+  UnifiedPaymentRecord,
+  UnifiedPaymentResponse,
 } from "@/types/api/payments";
 import type {
   SavingsAccountResponse,
@@ -28,6 +30,9 @@ import type {
   PaymentAccount,
   PendingPayments,
   TransactionResult,
+  UnifiedCategory,
+  UnifiedRecordView,
+  UnifiedRecordsByCategory,
 } from "@/src/types/payment";
 import type {
   AportesPaymentBreakdown,
@@ -377,4 +382,98 @@ export function buildUnifiedTargets(
     tipoProducto: p.tipoProducto,
     vlrPago: normalizeMoney(p.pagoMinimo),
   }));
+}
+
+// ─── Unified Payment (/payment/unified) ───
+
+const TIPO_PRODUCTO_BY_CATEGORY: Record<UnifiedCategory, string> = {
+  aportes: "AP",
+  obligaciones: "CR",
+  proteccion: "PR",
+};
+
+export function categorizeUnifiedRecord(
+  r: UnifiedPaymentRecord,
+): UnifiedCategory {
+  const name = (r.nombreProductoCobis || "").toUpperCase();
+  if (name.includes("APORTE")) return "aportes";
+  if (name.includes("OBLIGACION") || name.includes("CREDITO"))
+    return "obligaciones";
+  return "proteccion";
+}
+
+export function mapUnifiedRecordToView(
+  r: UnifiedPaymentRecord,
+): UnifiedRecordView {
+  const apertura = parseApiDate(r.fechaApertura);
+  const limite = parseApiDate(r.fechaLimitePago);
+  return {
+    category: categorizeUnifiedRecord(r),
+    idCuenta: normalizeString(r.idCuenta),
+    linea: r.descripcionLinea,
+    fechaApertura: apertura ? formatDate(apertura) : "",
+    saldoTotal: normalizeMoney(r.saldoTotal),
+    fechaLimitePago: limite ? formatDate(limite) : "",
+    valorEnMora: normalizeMoney(r.valorEnMora),
+    pagoMinimo: normalizeMoney(r.pagoMinimo),
+  };
+}
+
+export function mapUnifiedResponseToRecordViews(
+  res: UnifiedPaymentResponse,
+): UnifiedRecordsByCategory {
+  const groups: UnifiedRecordsByCategory = {
+    aportes: [],
+    obligaciones: [],
+    proteccion: [],
+  };
+  for (const record of res.records) {
+    const view = mapUnifiedRecordToView(record);
+    groups[view.category].push(view);
+  }
+  return groups;
+}
+
+/**
+ * Map UnifiedPaymentResponse → PendingPayments (category totals + grand total).
+ */
+export function mapUnifiedResponseToPendingPayments(
+  res: UnifiedPaymentResponse,
+): PendingPayments {
+  let aportes = 0;
+  let obligaciones = 0;
+  let proteccion = 0;
+
+  for (const record of res.records) {
+    const amount = normalizeMoney(record.pagoMinimo);
+    const category = categorizeUnifiedRecord(record);
+    if (category === "aportes") aportes += amount;
+    else if (category === "obligaciones") obligaciones += amount;
+    else proteccion += amount;
+  }
+
+  return {
+    aportes,
+    obligaciones,
+    proteccion,
+    total: normalizeMoney(res.valorPagoMinimo),
+  };
+}
+
+/**
+ * Build PaymentAccountTarget[] from unified records for
+ * POST /payment/internal/createTransaction.
+ */
+export function buildUnifiedTargetsFromRecords(
+  records: UnifiedPaymentRecord[],
+): PaymentAccountTarget[] {
+  return records.map((r) => {
+    const category = categorizeUnifiedRecord(r);
+    return {
+      idCuenta: normalizeString(r.idCuenta),
+      numeroCuenta: r.descripcionLinea,
+      tipoProducto: TIPO_PRODUCTO_BY_CATEGORY[category],
+      vlrPago: normalizeMoney(r.pagoMinimo),
+    };
+  });
 }

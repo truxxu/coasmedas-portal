@@ -108,3 +108,40 @@ export interface PayzenTransactionResult {
   /** URL to redirect user to complete payment */
   paymentUrl: string;
 }
+
+// ─── /payment/unified ───
+
+/**
+ * Request for POST /payment/unified.
+ */
+export interface UnifiedPaymentRequest extends UserIdentification {
+  /** Pagination indicator; "1" returns the first page. */
+  indPag: string;
+}
+
+/**
+ * Single product/account record inside a unified payment response.
+ */
+export interface UnifiedPaymentRecord {
+  codigoProductoCobis: number;
+  nombreProductoCobis: string;
+  descripcionLinea: string;
+  /** Format: YYYYMMDD */
+  fechaApertura: string;
+  saldoTotal: string | number;
+  /** Format: YYYYMMDD */
+  fechaLimitePago: string;
+  valorEnMora: string | number;
+  pagoMinimo: string | number;
+  idCuenta: number | string;
+}
+
+/**
+ * Response for POST /payment/unified.
+ */
+export interface UnifiedPaymentResponse {
+  valorPagoMinimo: string | number;
+  totalCuentas: string | number;
+  nroCuentasPaginaActual: string | number;
+  records: UnifiedPaymentRecord[];
+}

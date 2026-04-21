@@ -12,11 +12,12 @@ import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 import { maskNumber } from "@/src/utils";
 import {
   buildAccountReference,
-  buildUnifiedTargets,
+  buildUnifiedTargetsFromRecords,
+  mapUnifiedResponseToRecordViews,
 } from "@/lib/mappers/payments.mapper";
 import { sendTransactionOtp } from "@/services/auth.service";
 import type { SavingsAccountResponse } from "@/types/api/products";
-import type { PaymentProduct } from "@/types/api/payments";
+import type { UnifiedPaymentRecord } from "@/types/api/payments";
 
 export default function ConfirmacionPage() {
   const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
@@ -30,10 +31,20 @@ export default function ConfirmacionPage() {
     const accountId = sessionStorage.getItem("paymentAccountId");
     const paymentMethod = sessionStorage.getItem("paymentMethod");
     const pendingStr = sessionStorage.getItem("unifiedPendingPayments");
+    const recordsStr = sessionStorage.getItem("unifiedRecordsData");
 
     if (!accountId || !pendingStr) return null;
 
     const pending: PendingPayments = JSON.parse(pendingStr);
+    const records: UnifiedPaymentRecord[] = recordsStr
+      ? JSON.parse(recordsStr)
+      : [];
+    const recordsByCategory = mapUnifiedResponseToRecordViews({
+      records,
+      valorPagoMinimo: pending.total,
+      totalCuentas: records.length,
+      nroCuentasPaginaActual: records.length,
+    });
 
     const userName =
       user?.fullName ||
@@ -52,6 +63,7 @@ export default function ConfirmacionPage() {
         debitAccount: "PSE (Pagos con otras entidades)",
         debitAccountNumber: "",
         totalAmount: pending.total,
+        recordsByCategory,
       };
     }
 
@@ -69,6 +81,7 @@ export default function ConfirmacionPage() {
       debitAccount: sourceAccount.nombreProducto,
       debitAccountNumber: maskNumber(sourceAccount.numeroCuenta),
       totalAmount: pending.total,
+      recordsByCategory,
     };
   });
 
@@ -96,14 +109,14 @@ export default function ConfirmacionPage() {
 
     // Pre-build transaction request
     const sourceAccountStr = sessionStorage.getItem("unifiedSourceAccountApi");
-    const productsStr = sessionStorage.getItem("unifiedPaymentProducts");
-    if (sourceAccountStr && productsStr) {
+    const recordsStr = sessionStorage.getItem("unifiedRecordsData");
+    if (sourceAccountStr && recordsStr) {
       const sourceAccount: SavingsAccountResponse =
         JSON.parse(sourceAccountStr);
-      const products: PaymentProduct[] = JSON.parse(productsStr);
+      const records: UnifiedPaymentRecord[] = JSON.parse(recordsStr);
       const txRequest = {
         origen: buildAccountReference(sourceAccount),
-        cuentas: buildUnifiedTargets(products),
+        cuentas: buildUnifiedTargetsFromRecords(records),
         vlrPagoTotal: confirmationData.totalAmount,
       };
       sessionStorage.setItem(
@@ -116,7 +129,7 @@ export default function ConfirmacionPage() {
     if (paymentMethod === "pse") {
       router.push("/pagos/pagar-mis-productos/pago-unificado/pse");
     } else {
-      if (!sourceAccountStr || !productsStr) {
+      if (!sourceAccountStr || !recordsStr) {
         router.push("/pagos/pagar-mis-productos/pago-unificado");
         return;
       }

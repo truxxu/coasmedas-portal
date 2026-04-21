@@ -40,6 +40,7 @@
 ## 5. Payments
 
 - [x] POST `/payment/products` ✅ Auth: JWT
+- [x] POST `/payment/unified` ✅ Auth: JWT
 - [x] POST `/payment/internal/sources/savings` ✅ Auth: JWT
 - [x] POST `/payment/internal/sources/credits` ✅ Auth: JWT
 - [x] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP
