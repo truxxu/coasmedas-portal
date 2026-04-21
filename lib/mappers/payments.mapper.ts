@@ -19,6 +19,7 @@ import type {
   PaymentTransactionResult,
   UnifiedPaymentRecord,
   UnifiedPaymentResponse,
+  PaymentProtectionAccount,
 } from "@/types/api/payments";
 import type {
   SavingsAccountResponse,
@@ -168,6 +169,22 @@ export function mapProtectionToPaymentProduct(
     id: item.idCuenta,
     title: item.nombreProducto,
     productNumber: maskNumber(item.numeroCuenta),
+    nextPaymentAmount: normalizeMoney(item.pagoMinimo),
+    status: diasMora > 0 ? "inactivo" : "activo",
+  };
+}
+
+/**
+ * Map /payment/protection record → ProtectionPaymentProduct.
+ */
+export function mapPaymentProtectionToProduct(
+  item: PaymentProtectionAccount,
+): ProtectionPaymentProduct {
+  const diasMora = normalizeMoney(item.diasMora);
+  return {
+    id: String(item.idCuentaPago),
+    title: item.descripcionProducto,
+    productNumber: maskNumber(item.numeroProducto),
     nextPaymentAmount: normalizeMoney(item.pagoMinimo),
     status: diasMora > 0 ? "inactivo" : "activo",
   };

@@ -30,6 +30,7 @@ export {
   getPaymentSourcesCredits,
   createPaymentTransaction,
   createPayzenTransaction,
+  getPaymentProtection,
 } from "./payments.service";
 
 export {

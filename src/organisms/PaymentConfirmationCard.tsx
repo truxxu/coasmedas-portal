@@ -59,7 +59,7 @@ export const PaymentConfirmationCard: React.FC<
       {renderRow("Línea:", record.linea)}
       {renderRow("Fecha Apertura:", record.fechaApertura)}
       {renderRow("Saldo Total:", displayAmount(record.saldoTotal))}
-      {renderRow("Saldo Límite:", record.fechaLimitePago)}
+      {renderRow("Fecha Límite:", record.fechaLimitePago)}
       {category !== "proteccion" &&
         renderRow("Valor Mora:", displayAmount(record.valorEnMora))}
       {renderRow("Pago Mínimo:", displayAmount(record.pagoMinimo))}

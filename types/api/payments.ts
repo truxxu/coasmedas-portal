@@ -145,3 +145,33 @@ export interface UnifiedPaymentResponse {
   nroCuentasPaginaActual: string | number;
   records: UnifiedPaymentRecord[];
 }
+
+// ─── /payment/protection ───
+
+export interface PaymentProtectionRequest extends UserIdentification {
+  /** Pagination indicator, required by backend. Use "1" for first page. */
+  indPag: string;
+}
+
+export interface PaymentProtectionAccount {
+  numeroProducto: string;
+  nombreProducto: string;
+  pagoMinimo: string | number;
+  pagoTotal: string | number;
+  diasMora: string | number;
+  /** Format: YYYYMMDD */
+  fechaPago: string;
+  codigoProductoCobis: string | number;
+  indicadorDebitoCreditoTransferenciasInternas: string | number;
+  indicadorTransaccionesDebitoPagoProductosCoasmedasTransferenciasExternas:
+    | string
+    | number;
+  idCuentaPago: string | number;
+  descripcionProducto: string;
+}
+
+export interface PaymentProtectionResponse {
+  totalCuentas: string;
+  nroCuentasPaginaActual: string;
+  records: PaymentProtectionAccount[];
+}
