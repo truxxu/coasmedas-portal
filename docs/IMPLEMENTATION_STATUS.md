@@ -35,6 +35,7 @@
 - [x] POST `/products/investments` ✅ Auth: JWT
 - [x] POST `/products/contributions` ✅ Auth: JWT
 - [x] POST `/products/protection` ✅ Auth: JWT
+- [x] POST `/products/pockets` ✅ Auth: JWT
 
 ## 5. Payments
 

@@ -23,6 +23,8 @@ import type {
   SavingsMovementsRequest,
   SavingsMovementsResponse,
   ProtectionAccountResponse,
+  PocketsRequest,
+  PocketsResponse,
 } from "@/types/api/products";
 
 // ─── Balances ───
@@ -153,4 +155,17 @@ export async function getProductsProtection(
   params: ProductsRequest,
 ): Promise<ProtectionAccountResponse[]> {
   return apiPost<ProtectionAccountResponse[]>("/products/protection", params);
+}
+
+/**
+ * Query user's coaspocket (bolsillos) for a given savings account.
+ *
+ * @endpoint POST /products/pockets
+ * @auth JWT
+ * @status ✅ Used in coaspocket page
+ */
+export async function getProductsPockets(
+  params: PocketsRequest,
+): Promise<PocketsResponse> {
+  return apiPost<PocketsResponse>("/products/pockets", params);
 }

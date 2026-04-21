@@ -206,6 +206,32 @@ export interface ContributionsResponse {
   ahorroPermanente?: AhorroPermanenteDetail;
 }
 
+// ─── /products/pockets ───
+
+/**
+ * Request for POST /products/pockets.
+ * Lists coaspocket (bolsillos) associated with a savings account.
+ */
+export interface PocketsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface PocketRecord {
+  idBolsillo: number;
+  nombreBolsillo: string;
+  /** "ACTIVO" | "INACTIVO" (uppercase from backend) */
+  estado: string;
+  saldo: string | number;
+}
+
+export interface PocketsResponse {
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: PocketRecord[];
+}
+
 // ─── /products/protection Response ───
 
 export interface ProtectionAccountResponse {
