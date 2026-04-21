@@ -66,13 +66,42 @@ export interface MovementItem {
   /** Format: YYYYMMDD */
   fechaTransaccion: string;
   /** Format: HHMMSS */
-  horaTransaccion: string;
-  referencia: string;
+  horaTransaccion?: string;
+  referencia?: string;
   /** DB = debit, CR = credit */
   tipoTransaccion: string;
   valorTransaccion: string | number;
-  saldoPorTrn: string | number;
+  saldoPorTrn?: string | number;
   descripcion: string;
+}
+
+// ─── /products/savings/movements ───
+
+/**
+ * Request for POST /products/savings/movements.
+ * Savings-specific movements with server-side date range filtering.
+ */
+export interface SavingsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface SavingsMovementsResponse {
+  saldoDisponibleTemp: string | number;
+  saldoCanjeTemp: string | number;
+  saldoRemesasTemp: string | number;
+  saldoBolsilloTemp: string | number;
+  /** Format: YYYYMMDD (may be "19000101" when no movements) */
+  ultimoMovimiento: string;
+  descripcionMovimiento: string;
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: MovementItem[];
 }
 
 // ─── /products/contributions/movements Response ───

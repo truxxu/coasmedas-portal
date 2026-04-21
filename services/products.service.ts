@@ -20,6 +20,8 @@ import type {
   ContributionsResponse,
   ContributionsMovementsRequest,
   ContributionsMovementsResponse,
+  SavingsMovementsRequest,
+  SavingsMovementsResponse,
   ProtectionAccountResponse,
 } from "@/types/api/products";
 
@@ -66,6 +68,22 @@ export async function getProductsSavings(
   params: ProductsRequest,
 ): Promise<SavingsAccountResponse[]> {
   return apiPost<SavingsAccountResponse[]>("/products/savings", params);
+}
+
+/**
+ * Query savings transaction movements within a date range.
+ *
+ * @endpoint POST /products/savings/movements
+ * @auth JWT
+ * @status ✅ Used in ahorros page
+ */
+export async function getSavingsMovements(
+  params: SavingsMovementsRequest,
+): Promise<SavingsMovementsResponse> {
+  return apiPost<SavingsMovementsResponse>(
+    "/products/savings/movements",
+    params,
+  );
 }
 
 /**
