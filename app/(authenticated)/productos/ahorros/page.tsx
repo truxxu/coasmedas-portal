@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import {
@@ -166,9 +166,13 @@ export default function AhorrosPage() {
     fetchData();
   }, [fetchData]);
 
-  const transactionTitle = selectedProduct
-    ? `Consulta de Movimientos - Cuenta de Ahorros (${maskNumber(selectedProduct.productNumber)})`
-    : "Consulta de Movimientos";
+  const transactionTitle = useMemo(
+    () =>
+      selectedProduct
+        ? `Consulta de Movimientos - Cuenta de Ahorros (${maskNumber(selectedProduct.productNumber)})`
+        : "Consulta de Movimientos",
+    [selectedProduct],
+  );
 
   const handleProductSelect = useCallback(
     (product: SavingsProduct) => {

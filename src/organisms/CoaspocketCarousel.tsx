@@ -55,7 +55,13 @@ export function CoaspocketCarousel({
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
-  // Update scroll state
+  // Keep latest values in a ref so the scroll handler identity is stable and
+  // we don't re-register the listener on every visibleItems/totalPages change.
+  const scrollDepsRef = useRef({ visibleItems, totalPages });
+  useEffect(() => {
+    scrollDepsRef.current = { visibleItems, totalPages };
+  }, [visibleItems, totalPages]);
+
   const updateScrollState = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -63,23 +69,28 @@ export function CoaspocketCarousel({
     setCanScrollLeft(scrollLeft > 0);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    // Calculate current page (one page == one full viewport of cards)
-    const cardWidth = clientWidth / visibleItems;
+    const { visibleItems: vi, totalPages: tp } = scrollDepsRef.current;
+    const cardWidth = clientWidth / vi;
     const gap = 20;
-    const pageStep = visibleItems * (cardWidth + gap);
+    const pageStep = vi * (cardWidth + gap);
     const page = pageStep > 0 ? Math.round(scrollLeft / pageStep) : 0;
-    setCurrentPage(Math.min(page, Math.max(totalPages - 1, 0)));
-  }, [visibleItems, totalPages]);
+    setCurrentPage(Math.min(page, Math.max(tp - 1, 0)));
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener("scroll", updateScrollState);
+    container.addEventListener("scroll", updateScrollState, { passive: true });
     updateScrollState();
 
     return () => container.removeEventListener("scroll", updateScrollState);
   }, [updateScrollState]);
+
+  // Recompute page indicator when layout inputs change without re-registering listener.
+  useEffect(() => {
+    updateScrollState();
+  }, [visibleItems, totalPages, updateScrollState]);
 
   // Scroll handlers
   const scrollToPage = (page: number) => {

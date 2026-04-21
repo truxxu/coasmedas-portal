@@ -261,23 +261,19 @@ export default function CoaspocketAccountPage() {
     <div className="space-y-6">
       <Breadcrumbs items={["Inicio", "Productos", "Coaspocket"]} />
 
-      {(() => {
-        const displayName = accountInfo?.name ?? queryAccountName;
-        const displayNumber = accountInfo?.number ?? queryAccountNumber;
-        return (
-          <CoaspocketCarousel
-            title={"Mis Bolsillos Coas"}
-            products={products}
-            selectedProductId={selectedProduct?.id}
-            onProductSelect={handleProductSelect}
-            onCreatePocket={handleCreatePocket}
-            accountName={displayName}
-            accountNumber={
-              displayNumber ? maskNumber(displayNumber) : undefined
-            }
-          />
-        );
-      })()}
+      <CoaspocketCarousel
+        title={"Mis Bolsillos Coas"}
+        products={products}
+        selectedProductId={selectedProduct?.id}
+        onProductSelect={handleProductSelect}
+        onCreatePocket={handleCreatePocket}
+        accountName={accountInfo?.name ?? queryAccountName}
+        accountNumber={
+          (accountInfo?.number ?? queryAccountNumber)
+            ? maskNumber(accountInfo?.number ?? queryAccountNumber ?? "")
+            : undefined
+        }
+      />
 
       {products.length > 0 && selectedProduct && (
         <>

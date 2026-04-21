@@ -68,7 +68,6 @@ export default function PagoUnificadoPage() {
 
       setSavingsApiData(savingsRes);
       setUnifiedRecords(unifiedRes.records);
-      console.log(unifiedRes);
 
       const mappedAccounts = savingsRes.map(mapSavingsToPaymentAccount);
       setAccounts(mappedAccounts);
