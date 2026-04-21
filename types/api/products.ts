@@ -232,6 +232,23 @@ export interface PocketsResponse {
   records: PocketRecord[];
 }
 
+// ─── /products/pockets/create ───
+
+/**
+ * Request for POST /products/pockets/create.
+ * Creates a new coaspocket (bolsillo) under the given savings account.
+ */
+export interface CreatePocketRequest extends UserIdentification {
+  idCuenta: string;
+  nombreBolsillo: string;
+}
+
+export interface CreatePocketResponse {
+  idBolsillo?: number | string;
+  nombreBolsillo?: string;
+  [key: string]: unknown;
+}
+
 // ─── /products/pockets/movements ───
 
 /**

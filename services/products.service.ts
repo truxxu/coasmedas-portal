@@ -27,6 +27,8 @@ import type {
   PocketsResponse,
   PocketsMovementsRequest,
   PocketsMovementsResponse,
+  CreatePocketRequest,
+  CreatePocketResponse,
 } from "@/types/api/products";
 
 // ─── Balances ───
@@ -186,4 +188,17 @@ export async function getPocketsMovements(
     "/products/pockets/movements",
     params,
   );
+}
+
+/**
+ * Create a new coaspocket (bolsillo) under a savings account.
+ *
+ * @endpoint POST /products/pockets/create
+ * @auth JWT
+ * @status 🆕 Used in coaspocket page
+ */
+export async function createPocket(
+  params: CreatePocketRequest,
+): Promise<CreatePocketResponse> {
+  return apiPost<CreatePocketResponse>("/products/pockets/create", params);
 }

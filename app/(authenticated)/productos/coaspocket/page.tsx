@@ -8,6 +8,7 @@ import {
   CoaspocketCarousel,
   TransactionHistoryCard,
   DownloadReportsCard,
+  CreatePocketModal,
 } from "@/src/organisms";
 import { useWelcomeBar, useUserContext } from "@/src/contexts";
 import { CoaspocketProduct, Transaction } from "@/src/types";
@@ -27,6 +28,7 @@ import {
   getProductsSavings,
   getProductsPockets,
   getPocketsMovements,
+  createPocket,
 } from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
 
@@ -46,6 +48,9 @@ export default function CoaspocketPage() {
   const [selectedMonth, setSelectedMonth] = useState(
     mockCoaspocketAvailableMonths[0]?.value || "",
   );
+  const [createOpen, setCreateOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
   const fetchVersionRef = useRef(0);
 
   useEffect(() => {
@@ -170,7 +175,39 @@ export default function CoaspocketPage() {
   );
 
   const handleCreatePocket = () => {
-    // TODO: Navigate to create pocket flow or open modal
+    if (!idCuenta) return;
+    setCreateError(null);
+    setCreateOpen(true);
+  };
+
+  const handleCloseCreate = () => {
+    if (creating) return;
+    setCreateOpen(false);
+    setCreateError(null);
+  };
+
+  const handleCreateSubmit = async (nombreBolsillo: string) => {
+    if (!documentType || !documentNumber || !idCuenta) return;
+    setCreating(true);
+    setCreateError(null);
+    try {
+      await createPocket({
+        documentType,
+        documentNumber,
+        idCuenta,
+        nombreBolsillo,
+      });
+      setCreateOpen(false);
+      await fetchData();
+    } catch (err) {
+      if (isAuthError(err)) {
+        router.push("/login");
+        return;
+      }
+      setCreateError("No fue posible crear el bolsillo. Intente nuevamente.");
+    } finally {
+      setCreating(false);
+    }
   };
 
   const handleFilter = useCallback(
@@ -253,6 +290,14 @@ export default function CoaspocketPage() {
           />
         </>
       )}
+
+      <CreatePocketModal
+        isOpen={createOpen}
+        onClose={handleCloseCreate}
+        onSubmit={handleCreateSubmit}
+        submitting={creating}
+        error={createError}
+      />
     </div>
   );
 }
