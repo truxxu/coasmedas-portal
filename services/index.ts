@@ -17,6 +17,7 @@ export {
 export {
   getBalances,
   getMovements,
+  getConsolidatedMovements,
   getProductsSavings,
   getProductsCredits,
   getProductsInvestments,
@@ -30,6 +31,7 @@ export {
   getPaymentSourcesCredits,
   createPaymentTransaction,
   createPayzenTransaction,
+  getPaymentProtection,
 } from "./payments.service";
 
 export {

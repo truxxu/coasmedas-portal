@@ -2,11 +2,13 @@ import { normalizeMoney, normalizeString } from "@/types/api/common";
 import type {
   BalanceSummary,
   MovementItem,
+  ContributionsMovementItem,
   SavingsAccountResponse,
   CreditAccountResponse,
   InvestmentAccountResponse,
   ContributionsResponse,
   ProtectionAccountResponse,
+  PocketRecord,
 } from "@/types/api/products";
 import type { Transaction, TransactionType } from "@/src/types/transaction";
 import type { SavingsProduct, SavingsStatus } from "@/src/types/savings";
@@ -23,6 +25,10 @@ import type {
   ProteccionProduct,
   ProteccionStatus,
 } from "@/src/types/proteccion";
+import type {
+  CoaspocketProduct,
+  CoaspocketStatus,
+} from "@/src/types/coaspocket";
 import { parseApiDate, parseApiTime, getTodayDate } from "./dates";
 
 // ─── Balance Summary ───
@@ -81,6 +87,33 @@ export function mapMovementToTransaction(
 export function mapMovements(items: MovementItem[]): Transaction[] {
   return items
     .map(mapMovementToTransaction)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+export function mapContributionsMovementToTransaction(
+  item: ContributionsMovementItem,
+  index: number,
+): Transaction {
+  const amount = normalizeMoney(item.valorTransaccion);
+  const tipo = item.tipoTransaccion.toUpperCase();
+  const type: TransactionType =
+    tipo === "C" || tipo === "CR" ? "CREDITO" : "DEBITO";
+  const signedAmount = type === "DEBITO" ? -Math.abs(amount) : Math.abs(amount);
+
+  return {
+    id: String(index + 1),
+    description: item.descripcion.replace(/_+$/, "").trim(),
+    date: parseApiDate(item.fechaTransaccion),
+    amount: signedAmount,
+    type,
+  };
+}
+
+export function mapContributionsMovements(
+  items: ContributionsMovementItem[],
+): Transaction[] {
+  return items
+    .map(mapContributionsMovementToTransaction)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -225,4 +258,25 @@ export function mapProtectionProducts(
   items: ProtectionAccountResponse[],
 ): ProteccionProduct[] {
   return items.map(mapProtectionResponse);
+}
+
+// ─── Coaspocket / Bolsillos ───
+
+function mapPocketStatus(estado?: string): CoaspocketStatus {
+  return estado?.toUpperCase() === "ACTIVO" ? "activo" : "inactivo";
+}
+
+export function mapPocketResponse(item: PocketRecord): CoaspocketProduct {
+  const id = String(item.idBolsillo);
+  return {
+    id,
+    title: item.nombreBolsillo,
+    pocketNumber: id,
+    balance: normalizeMoney(item.saldo),
+    status: mapPocketStatus(item.estado),
+  };
+}
+
+export function mapPockets(items: PocketRecord[]): CoaspocketProduct[] {
+  return items.map(mapPocketResponse);
 }

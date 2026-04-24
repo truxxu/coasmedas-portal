@@ -47,6 +47,30 @@ export interface PendingPayments {
 }
 
 /**
+ * Unified payment category buckets used in the Pago Unificado confirmation view.
+ */
+export type UnifiedCategory = "aportes" | "obligaciones" | "proteccion";
+
+/**
+ * UI-ready record rendered on the confirmation screen.
+ */
+export interface UnifiedRecordView {
+  category: UnifiedCategory;
+  idCuenta: string;
+  linea: string;
+  fechaApertura: string;
+  saldoTotal: number;
+  fechaLimitePago: string;
+  valorEnMora: number;
+  pagoMinimo: number;
+}
+
+export type UnifiedRecordsByCategory = Record<
+  UnifiedCategory,
+  UnifiedRecordView[]
+>;
+
+/**
  * Step 1: Payment details form data
  */
 export interface PaymentDetailsFormData {
@@ -65,6 +89,7 @@ export interface PaymentConfirmationData {
   debitAccount: string;
   debitAccountNumber: string;
   totalAmount: number;
+  recordsByCategory?: UnifiedRecordsByCategory;
 }
 
 /**

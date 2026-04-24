@@ -727,6 +727,61 @@ All responses follow this structure:
 
 ### 5. Payments
 
+#### `POST /payment/unified`
+
+- **Status:** :white_check_mark: Implemented (web) | Auth: JWT
+- **Description:** Returns detailed pending payments across all products for the unified payment flow.
+
+**Request:**
+
+```json
+{
+  "documentType": "CC",
+  "documentNumber": "1234567890",
+  "indPag": "1"
+}
+```
+
+**Response:**
+
+```json
+{
+  "statusCode": 0,
+  "statusDesc": "Transacción exitosa",
+  "payload": {
+    "valorPagoMinimo": "1880976.00",
+    "totalCuentas": "4",
+    "nroCuentasPaginaActual": "4",
+    "records": [
+      {
+        "codigoProductoCobis": 22,
+        "nombreProductoCobis": "APORTES",
+        "descripcionLinea": "000000014007200",
+        "fechaApertura": "20011211",
+        "saldoTotal": "18437163.27",
+        "fechaLimitePago": "20260310",
+        "valorEnMora": "0",
+        "pagoMinimo": "0",
+        "idCuenta": 48595
+      },
+      {
+        "codigoProductoCobis": 7,
+        "nombreProductoCobis": "OBLIGACIONES",
+        "descripcionLinea": "LINEA DE CREDITO PARA EL HOGAR  030-1",
+        "fechaApertura": "20230118",
+        "saldoTotal": "3040695.00",
+        "fechaLimitePago": "20260310",
+        "valorEnMora": "0",
+        "pagoMinimo": "118755.00",
+        "idCuenta": 422941
+      }
+    ]
+  }
+}
+```
+
+Records are categorized on the client by `nombreProductoCobis` (`APORTES` → aportes, `OBLIGACIONES`/`CREDITO` → obligaciones, otherwise → protección).
+
 #### `POST /payment/products`
 
 - **Status:** :white_check_mark: Used in mobile | Auth: JWT
