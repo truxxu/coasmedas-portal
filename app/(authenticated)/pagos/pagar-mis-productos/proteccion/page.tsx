@@ -14,17 +14,18 @@ import type {
   ProtectionPaymentMethod,
   ProtectionPaymentSourceAccount,
 } from "@/src/types";
-import { getPaymentSourcesSavings } from "@/services/payments.service";
-import { getProductsProtection } from "@/services/products.service";
+import {
+  getPaymentSourcesSavings,
+  getPaymentProtection,
+} from "@/services/payments.service";
 import { isAuthError } from "@/lib/api/errors";
 import {
   mapSavingsToSourceAccount,
-  mapProtectionToPaymentProduct,
+  mapPaymentProtectionToProduct,
 } from "@/lib/mappers/payments.mapper";
-import type {
-  SavingsAccountResponse,
-  ProtectionAccountResponse,
-} from "@/types/api/products";
+import type { SavingsAccountResponse } from "@/types/api/products";
+import type { PaymentProtectionAccount } from "@/types/api/payments";
+import type { ProtectionAccountResponse } from "@/types/api/products";
 import type { ObligacionSourceAccount } from "@/src/types/obligacion-payment";
 
 const initialFormData: ProtectionPaymentDetailsFormData = {
@@ -60,7 +61,7 @@ export default function ProteccionDetallePage() {
     SavingsAccountResponse[]
   >([]);
   const [protectionApiData, setProtectionApiData] = useState<
-    ProtectionAccountResponse[]
+    PaymentProtectionAccount[]
   >([]);
 
   useEffect(() => {
@@ -83,11 +84,12 @@ export default function ProteccionDetallePage() {
       const params = { documentType, documentNumber };
       const [savingsRes, protectionRes] = await Promise.all([
         getPaymentSourcesSavings(params),
-        getProductsProtection(params),
+        getPaymentProtection({ ...params, indPag: "1" }),
       ]);
 
       setSavingsApiData(savingsRes);
-      setProtectionApiData(protectionRes);
+      setProtectionApiData(protectionRes.records);
+      console.log(protectionRes);
 
       // Map savings → ProtectionPaymentSourceAccount (same shape as ObligacionSourceAccount)
       const mappedAccounts: ProtectionPaymentSourceAccount[] = savingsRes.map(
@@ -98,7 +100,9 @@ export default function ProteccionDetallePage() {
       );
       setSourceAccounts(mappedAccounts);
 
-      const mappedProducts = protectionRes.map(mapProtectionToPaymentProduct);
+      const mappedProducts = protectionRes.records.map(
+        mapPaymentProtectionToProduct,
+      );
       setProducts(mappedProducts);
     } catch (err) {
       if (isAuthError(err)) {
@@ -199,12 +203,22 @@ export default function ProteccionDetallePage() {
     }
     if (selectedProduct) {
       const protectionApi = protectionApiData.find(
-        (p) => String(p.idCuenta) === String(selectedProduct.id),
+        (p) => String(p.idCuentaPago) === String(selectedProduct.id),
       );
       if (protectionApi) {
+        const legacyShape: ProtectionAccountResponse = {
+          numeroCuenta: protectionApi.numeroProducto,
+          nombreProducto: protectionApi.nombreProducto,
+          pagoMinimo: protectionApi.pagoMinimo,
+          pagoTotal: protectionApi.pagoTotal,
+          diasMora: protectionApi.diasMora,
+          fechaPago: protectionApi.fechaPago,
+          idCuenta: String(protectionApi.idCuentaPago),
+          codigoProductoCobis: String(protectionApi.codigoProductoCobis),
+        };
         sessionStorage.setItem(
           "protectionTargetProductApi",
-          JSON.stringify(protectionApi),
+          JSON.stringify(legacyShape),
         );
       }
     }

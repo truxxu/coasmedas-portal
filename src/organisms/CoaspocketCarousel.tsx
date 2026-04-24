@@ -17,6 +17,8 @@ interface CoaspocketCarouselProps {
   onProductSelect: OnCoaspocketSelect;
   onCreatePocket: OnCreatePocket;
   className?: string;
+  accountName?: string;
+  accountNumber?: string;
 }
 
 export function CoaspocketCarousel({
@@ -26,6 +28,8 @@ export function CoaspocketCarousel({
   onProductSelect,
   onCreatePocket,
   className = "",
+  accountName,
+  accountNumber,
 }: CoaspocketCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -51,7 +55,13 @@ export function CoaspocketCarousel({
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
-  // Update scroll state
+  // Keep latest values in a ref so the scroll handler identity is stable and
+  // we don't re-register the listener on every visibleItems/totalPages change.
+  const scrollDepsRef = useRef({ visibleItems, totalPages });
+  useEffect(() => {
+    scrollDepsRef.current = { visibleItems, totalPages };
+  }, [visibleItems, totalPages]);
+
   const updateScrollState = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -59,29 +69,39 @@ export function CoaspocketCarousel({
     setCanScrollLeft(scrollLeft > 0);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    // Calculate current page
-    const cardWidth = clientWidth / visibleItems;
-    const page = Math.round(scrollLeft / cardWidth);
-    setCurrentPage(Math.min(page, totalPages - 1));
-  }, [visibleItems, totalPages]);
+    const { visibleItems: vi, totalPages: tp } = scrollDepsRef.current;
+    const cardWidth = clientWidth / vi;
+    const gap = 20;
+    const pageStep = vi * (cardWidth + gap);
+    const page = pageStep > 0 ? Math.round(scrollLeft / pageStep) : 0;
+    setCurrentPage(Math.min(page, Math.max(tp - 1, 0)));
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener("scroll", updateScrollState);
+    container.addEventListener("scroll", updateScrollState, { passive: true });
     updateScrollState();
 
     return () => container.removeEventListener("scroll", updateScrollState);
   }, [updateScrollState]);
 
+  // Recompute page indicator when layout inputs change without re-registering listener.
+  useEffect(() => {
+    updateScrollState();
+  }, [visibleItems, totalPages, updateScrollState]);
+
   // Scroll handlers
   const scrollToPage = (page: number) => {
     if (!containerRef.current) return;
-    const cardWidth = containerRef.current.clientWidth / visibleItems;
+    const { clientWidth, scrollWidth } = containerRef.current;
+    const cardWidth = clientWidth / visibleItems;
     const gap = 20; // gap-5 = 20px
+    const maxScroll = Math.max(scrollWidth - clientWidth, 0);
+    const target = Math.min(page * visibleItems * (cardWidth + gap), maxScroll);
     containerRef.current.scrollTo({
-      left: page * (cardWidth + gap),
+      left: target,
       behavior: "smooth",
     });
   };
@@ -101,9 +121,15 @@ export function CoaspocketCarousel({
   return (
     <div className={`bg-white rounded-2xl p-6 ${className}`}>
       {/* Title */}
-      <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
-        {title}
-      </h2>
+      <div className="mb-4">
+        <h2 className="text-[20px] font-bold text-brand-navy-dark">{title}</h2>
+        {accountName && (
+          <p className="text-[14px] text-brand-gray-high mt-1">
+            {accountName}
+            {accountNumber ? ` ${accountNumber}` : ""}
+          </p>
+        )}
+      </div>
 
       {/* Carousel Container */}
       <div className="relative">

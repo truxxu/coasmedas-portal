@@ -108,3 +108,70 @@ export interface PayzenTransactionResult {
   /** URL to redirect user to complete payment */
   paymentUrl: string;
 }
+
+// ─── /payment/unified ───
+
+/**
+ * Request for POST /payment/unified.
+ */
+export interface UnifiedPaymentRequest extends UserIdentification {
+  /** Pagination indicator; "1" returns the first page. */
+  indPag: string;
+}
+
+/**
+ * Single product/account record inside a unified payment response.
+ */
+export interface UnifiedPaymentRecord {
+  codigoProductoCobis: number;
+  nombreProductoCobis: string;
+  descripcionLinea: string;
+  /** Format: YYYYMMDD */
+  fechaApertura: string;
+  saldoTotal: string | number;
+  /** Format: YYYYMMDD */
+  fechaLimitePago: string;
+  valorEnMora: string | number;
+  pagoMinimo: string | number;
+  idCuenta: number | string;
+}
+
+/**
+ * Response for POST /payment/unified.
+ */
+export interface UnifiedPaymentResponse {
+  valorPagoMinimo: string | number;
+  totalCuentas: string | number;
+  nroCuentasPaginaActual: string | number;
+  records: UnifiedPaymentRecord[];
+}
+
+// ─── /payment/protection ───
+
+export interface PaymentProtectionRequest extends UserIdentification {
+  /** Pagination indicator, required by backend. Use "1" for first page. */
+  indPag: string;
+}
+
+export interface PaymentProtectionAccount {
+  numeroProducto: string;
+  nombreProducto: string;
+  pagoMinimo: string | number;
+  pagoTotal: string | number;
+  diasMora: string | number;
+  /** Format: YYYYMMDD */
+  fechaPago: string;
+  codigoProductoCobis: string | number;
+  indicadorDebitoCreditoTransferenciasInternas: string | number;
+  indicadorTransaccionesDebitoPagoProductosCoasmedasTransferenciasExternas:
+    | string
+    | number;
+  idCuentaPago: string | number;
+  descripcionProducto: string;
+}
+
+export interface PaymentProtectionResponse {
+  totalCuentas: string;
+  nroCuentasPaginaActual: string;
+  records: PaymentProtectionAccount[];
+}

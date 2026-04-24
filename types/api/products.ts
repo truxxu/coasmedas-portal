@@ -24,6 +24,16 @@ export interface MovementsRequest extends UserIdentification {
 }
 
 /**
+ * Request for POST /movements — consolidated mode.
+ * When only user identification + indPag are sent, the backend returns
+ * recent movements across all of the user's products.
+ */
+export interface ConsolidatedMovementsRequest extends UserIdentification {
+  /** Pagination indicator — "1" for first page */
+  indPag?: string;
+}
+
+/**
  * Request for product-list endpoints (savings, credits, investments, contributions, protection).
  */
 export interface ProductsRequest extends UserIdentification {
@@ -46,19 +56,80 @@ export interface BalanceSummary {
   proteccion: string;
 }
 
+/**
+ * Request for POST /products/contributions/movements.
+ * Aportes-specific movements with server-side date range filtering.
+ */
+export interface ContributionsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
 // ─── /movements Response ───
 
 export interface MovementItem {
   /** Format: YYYYMMDD */
   fechaTransaccion: string;
   /** Format: HHMMSS */
-  horaTransaccion: string;
-  referencia: string;
-  /** DB = debit, CR = credit */
+  horaTransaccion?: string;
+  referencia?: string;
+  /** DB/CR (product-scoped) or D/C (consolidated) — debit / credit */
   tipoTransaccion: string;
   valorTransaccion: string | number;
-  saldoPorTrn: string | number;
+  saldoPorTrn?: string | number;
   descripcion: string;
+}
+
+// ─── /products/savings/movements ───
+
+/**
+ * Request for POST /products/savings/movements.
+ * Savings-specific movements with server-side date range filtering.
+ */
+export interface SavingsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface SavingsMovementsResponse {
+  saldoDisponibleTemp: string | number;
+  saldoCanjeTemp: string | number;
+  saldoRemesasTemp: string | number;
+  saldoBolsilloTemp: string | number;
+  /** Format: YYYYMMDD (may be "19000101" when no movements) */
+  ultimoMovimiento: string;
+  descripcionMovimiento: string;
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: MovementItem[];
+}
+
+// ─── /products/contributions/movements Response ───
+
+export interface ContributionsMovementItem {
+  /** Format: YYYYMMDD */
+  fechaTransaccion: string;
+  /** "C" = credit, "D" = debit */
+  tipoTransaccion: string;
+  valorTransaccion: string | number;
+  descripcion: string;
+}
+
+export interface ContributionsMovementsResponse {
+  saldoFecha: string | number;
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: ContributionsMovementItem[];
 }
 
 // ─── /products/savings Response ───
@@ -143,6 +214,72 @@ export interface ContributionsResponse {
   aportes: AportesDetail;
   /** Omitted when idCuentaAhorroPermanente == 0 */
   ahorroPermanente?: AhorroPermanenteDetail;
+}
+
+// ─── /products/pockets ───
+
+/**
+ * Request for POST /products/pockets.
+ * Lists coaspocket (bolsillos) associated with a savings account.
+ */
+export interface PocketsRequest extends UserIdentification {
+  idCuenta: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface PocketRecord {
+  idBolsillo: number;
+  nombreBolsillo: string;
+  /** "ACTIVO" | "INACTIVO" (uppercase from backend) */
+  estado: string;
+  saldo: string | number;
+}
+
+export interface PocketsResponse {
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: PocketRecord[];
+}
+
+// ─── /products/pockets/create ───
+
+/**
+ * Request for POST /products/pockets/create.
+ * Creates a new coaspocket (bolsillo) under the given savings account.
+ */
+export interface CreatePocketRequest extends UserIdentification {
+  idCuenta: string;
+  nombreBolsillo: string;
+}
+
+export interface CreatePocketResponse {
+  idBolsillo?: number | string;
+  nombreBolsillo?: string;
+  [key: string]: unknown;
+}
+
+// ─── /products/pockets/movements ───
+
+/**
+ * Request for POST /products/pockets/movements.
+ * Pocket-specific movements with server-side date range filtering.
+ */
+export interface PocketsMovementsRequest extends UserIdentification {
+  idCuenta: string;
+  idBolsillo: string;
+  /** Format: YYYYMMDD */
+  startDate: string;
+  /** Format: YYYYMMDD */
+  endDate: string;
+  /** Pagination indicator */
+  indPag?: string;
+}
+
+export interface PocketsMovementsResponse {
+  nroMovimientos: string;
+  nroMovimientosPaginaActual: string;
+  records: MovementItem[];
 }
 
 // ─── /products/protection Response ───

@@ -35,10 +35,12 @@
 - [x] POST `/products/investments` ✅ Auth: JWT
 - [x] POST `/products/contributions` ✅ Auth: JWT
 - [x] POST `/products/protection` ✅ Auth: JWT
+- [x] POST `/products/pockets` ✅ Auth: JWT
 
 ## 5. Payments
 
 - [x] POST `/payment/products` ✅ Auth: JWT
+- [x] POST `/payment/unified` ✅ Auth: JWT
 - [x] POST `/payment/internal/sources/savings` ✅ Auth: JWT
 - [x] POST `/payment/internal/sources/credits` ✅ Auth: JWT
 - [x] POST `/payment/internal/createTransaction` ✅ Auth: JWT + OTP

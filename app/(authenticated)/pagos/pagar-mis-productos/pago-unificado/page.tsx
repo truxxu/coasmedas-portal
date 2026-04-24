@@ -11,15 +11,15 @@ import { PAYMENT_STEPS } from "@/src/mocks/mockPaymentData";
 import { PaymentAccount, PendingPayments } from "@/src/types/payment";
 import {
   getPaymentSourcesSavings,
-  getPaymentProducts,
+  getUnifiedPayment,
 } from "@/services/payments.service";
 import { isAuthError } from "@/lib/api/errors";
 import {
   mapSavingsToPaymentAccount,
-  mapPaymentProductsToPendingPayments,
+  mapUnifiedResponseToPendingPayments,
 } from "@/lib/mappers/payments.mapper";
 import type { SavingsAccountResponse } from "@/types/api/products";
-import type { PaymentProduct } from "@/types/api/payments";
+import type { UnifiedPaymentRecord } from "@/types/api/payments";
 
 export default function PagoUnificadoPage() {
   const { clearWelcomeBar, setWelcomeBar } = useWelcomeBar();
@@ -39,7 +39,9 @@ export default function PagoUnificadoPage() {
   const [savingsApiData, setSavingsApiData] = useState<
     SavingsAccountResponse[]
   >([]);
-  const [paymentProducts, setPaymentProducts] = useState<PaymentProduct[]>([]);
+  const [unifiedRecords, setUnifiedRecords] = useState<UnifiedPaymentRecord[]>(
+    [],
+  );
 
   useEffect(() => {
     setWelcomeBar({
@@ -59,18 +61,18 @@ export default function PagoUnificadoPage() {
       setLoadError(null);
 
       const params = { documentType, documentNumber };
-      const [savingsRes, productsRes] = await Promise.all([
+      const [savingsRes, unifiedRes] = await Promise.all([
         getPaymentSourcesSavings(params),
-        getPaymentProducts(params),
+        getUnifiedPayment({ ...params, indPag: "1" }),
       ]);
 
       setSavingsApiData(savingsRes);
-      setPaymentProducts(productsRes);
+      setUnifiedRecords(unifiedRes.records);
 
       const mappedAccounts = savingsRes.map(mapSavingsToPaymentAccount);
       setAccounts(mappedAccounts);
 
-      const pending = mapPaymentProductsToPendingPayments(productsRes);
+      const pending = mapUnifiedResponseToPendingPayments(unifiedRes);
       setPendingPayments(pending);
     } catch (err) {
       if (isAuthError(err)) {
@@ -124,8 +126,8 @@ export default function PagoUnificadoPage() {
       );
     }
     sessionStorage.setItem(
-      "unifiedPaymentProducts",
-      JSON.stringify(paymentProducts),
+      "unifiedRecordsData",
+      JSON.stringify(unifiedRecords),
     );
     sessionStorage.setItem(
       "unifiedPendingPayments",

@@ -12,13 +12,24 @@ import type {
   BalancesRequest,
   BalanceSummary,
   MovementsRequest,
+  ConsolidatedMovementsRequest,
   MovementItem,
   ProductsRequest,
   SavingsAccountResponse,
   CreditAccountResponse,
   InvestmentAccountResponse,
   ContributionsResponse,
+  ContributionsMovementsRequest,
+  ContributionsMovementsResponse,
+  SavingsMovementsRequest,
+  SavingsMovementsResponse,
   ProtectionAccountResponse,
+  PocketsRequest,
+  PocketsResponse,
+  PocketsMovementsRequest,
+  PocketsMovementsResponse,
+  CreatePocketRequest,
+  CreatePocketResponse,
 } from "@/types/api/products";
 
 // ─── Balances ───
@@ -51,6 +62,19 @@ export async function getMovements(
   return apiPost<MovementItem[]>("/movements", params);
 }
 
+/**
+ * Query consolidated recent movements across all of the user's products.
+ *
+ * @endpoint POST /movements
+ * @auth JWT
+ * @status ✅ Used on home dashboard (recent transactions)
+ */
+export async function getConsolidatedMovements(
+  params: ConsolidatedMovementsRequest,
+): Promise<MovementItem[]> {
+  return apiPost<MovementItem[]>("/movements", params);
+}
+
 // ─── Products ───
 
 /**
@@ -64,6 +88,22 @@ export async function getProductsSavings(
   params: ProductsRequest,
 ): Promise<SavingsAccountResponse[]> {
   return apiPost<SavingsAccountResponse[]>("/products/savings", params);
+}
+
+/**
+ * Query savings transaction movements within a date range.
+ *
+ * @endpoint POST /products/savings/movements
+ * @auth JWT
+ * @status ✅ Used in ahorros page
+ */
+export async function getSavingsMovements(
+  params: SavingsMovementsRequest,
+): Promise<SavingsMovementsResponse> {
+  return apiPost<SavingsMovementsResponse>(
+    "/products/savings/movements",
+    params,
+  );
 }
 
 /**
@@ -107,6 +147,22 @@ export async function getProductsContributions(
 }
 
 /**
+ * Query contributions (aportes) transaction movements within a date range.
+ *
+ * @endpoint POST /products/contributions/movements
+ * @auth JWT
+ * @status ✅ Used in aportes page
+ */
+export async function getContributionsMovements(
+  params: ContributionsMovementsRequest,
+): Promise<ContributionsMovementsResponse> {
+  return apiPost<ContributionsMovementsResponse>(
+    "/products/contributions/movements",
+    params,
+  );
+}
+
+/**
  * Query user's protection/insurance products.
  *
  * @endpoint POST /products/protection
@@ -117,4 +173,46 @@ export async function getProductsProtection(
   params: ProductsRequest,
 ): Promise<ProtectionAccountResponse[]> {
   return apiPost<ProtectionAccountResponse[]>("/products/protection", params);
+}
+
+/**
+ * Query user's coaspocket (bolsillos) for a given savings account.
+ *
+ * @endpoint POST /products/pockets
+ * @auth JWT
+ * @status ✅ Used in coaspocket page
+ */
+export async function getProductsPockets(
+  params: PocketsRequest,
+): Promise<PocketsResponse> {
+  return apiPost<PocketsResponse>("/products/pockets", params);
+}
+
+/**
+ * Query pocket (bolsillo) transaction movements within a date range.
+ *
+ * @endpoint POST /products/pockets/movements
+ * @auth JWT
+ * @status ✅ Used in coaspocket page
+ */
+export async function getPocketsMovements(
+  params: PocketsMovementsRequest,
+): Promise<PocketsMovementsResponse> {
+  return apiPost<PocketsMovementsResponse>(
+    "/products/pockets/movements",
+    params,
+  );
+}
+
+/**
+ * Create a new coaspocket (bolsillo) under a savings account.
+ *
+ * @endpoint POST /products/pockets/create
+ * @auth JWT
+ * @status 🆕 Used in coaspocket page
+ */
+export async function createPocket(
+  params: CreatePocketRequest,
+): Promise<CreatePocketResponse> {
+  return apiPost<CreatePocketResponse>("/products/pockets/create", params);
 }

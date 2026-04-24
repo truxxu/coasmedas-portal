@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import {
@@ -17,15 +17,49 @@ import {
   mapSavingsProducts,
   mapMovements,
   getDateMonthsAgo,
+  getTodayDate,
   formatApiDate,
+  parseApiDate,
 } from "@/src/utils";
-import { getProductsSavings, getMovements } from "@/services/products.service";
-import type { SavingsAccountResponse } from "@/types/api/products";
+import {
+  getProductsSavings,
+  getSavingsMovements,
+} from "@/services/products.service";
+import type {
+  SavingsAccountResponse,
+  SavingsMovementsResponse,
+} from "@/types/api/products";
+import { normalizeMoney } from "@/types/api/common";
 import { isAuthError } from "@/lib/api/errors";
 
-interface ProductMeta {
-  idCuenta: string;
-  codigoProductoCobis: string;
+interface AhorroInfo {
+  saldoDisponible: number;
+  canjeTotal: number;
+  remesas: number;
+  numTransacciones: number;
+  ultimoMovimiento: string;
+}
+
+const EMPTY_AHORRO_INFO: AhorroInfo = {
+  saldoDisponible: 0,
+  canjeTotal: 0,
+  remesas: 0,
+  numTransacciones: 0,
+  ultimoMovimiento: "-",
+};
+
+function buildAhorroInfo(response: SavingsMovementsResponse): AhorroInfo {
+  const parsedLast = parseApiDate(response.ultimoMovimiento);
+  return {
+    saldoDisponible: normalizeMoney(response.saldoDisponibleTemp),
+    canjeTotal: normalizeMoney(response.saldoCanjeTemp),
+    remesas: normalizeMoney(response.saldoRemesasTemp),
+    numTransacciones: Number(response.nroMovimientos) || 0,
+    ultimoMovimiento:
+      !parsedLast || response.ultimoMovimiento === "19000101"
+        ? "-"
+        : parsedLast,
+  };
 }
 
 export default function AhorrosPage() {
@@ -35,12 +69,13 @@ export default function AhorrosPage() {
 
   const [products, setProducts] = useState<SavingsProduct[]>([]);
   const [productMetaMap, setProductMetaMap] = useState<
-    Record<string, ProductMeta>
+    Record<string, { idCuenta: string }>
   >({});
   const [selectedProduct, setSelectedProduct] = useState<SavingsProduct | null>(
     null,
   );
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [ahorroInfo, setAhorroInfo] = useState<AhorroInfo>(EMPTY_AHORRO_INFO);
   const [loading, setLoading] = useState(true);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,21 +92,23 @@ export default function AhorrosPage() {
   const { documentType, documentNumber } = user ?? {};
 
   const fetchMovements = useCallback(
-    async (meta: ProductMeta) => {
+    async (idCuenta: string, startDate: string, endDate: string) => {
       if (!documentType || !documentNumber) return;
 
       const version = ++fetchVersionRef.current;
       try {
         setTransactionsLoading(true);
-        const movements = await getMovements({
+        const response = await getSavingsMovements({
           documentType,
           documentNumber,
-          codigoProductoCobis: meta.codigoProductoCobis,
-          idCuenta: meta.idCuenta,
-          fechaConsulta: formatApiDate(getDateMonthsAgo(3)),
+          idCuenta,
+          startDate: formatApiDate(startDate),
+          endDate: formatApiDate(endDate),
+          indPag: "1",
         });
         if (fetchVersionRef.current === version) {
-          setTransactions(mapMovements(movements));
+          setTransactions(mapMovements(response.records));
+          setAhorroInfo(buildAhorroInfo(response));
         }
       } catch (err) {
         if (isAuthError(err)) {
@@ -100,20 +137,19 @@ export default function AhorrosPage() {
       const mapped = mapSavingsProducts(apiProducts);
       setProducts(mapped);
 
-      // Build metadata map
-      const metaMap: Record<string, ProductMeta> = {};
+      const metaMap: Record<string, { idCuenta: string }> = {};
       apiProducts.forEach((p: SavingsAccountResponse) => {
-        metaMap[p.idCuenta] = {
-          idCuenta: p.idCuenta,
-          codigoProductoCobis: String(p.codigoProductoCobis),
-        };
+        metaMap[p.idCuenta] = { idCuenta: p.idCuenta };
       });
       setProductMetaMap(metaMap);
 
-      // Auto-select first product and fetch its movements
       if (mapped.length > 0) {
         setSelectedProduct(mapped[0]);
-        await fetchMovements(metaMap[mapped[0].id]);
+        await fetchMovements(
+          metaMap[mapped[0].id].idCuenta,
+          getDateMonthsAgo(3),
+          getTodayDate(),
+        );
       }
     } catch (err) {
       if (isAuthError(err)) {
@@ -130,16 +166,20 @@ export default function AhorrosPage() {
     fetchData();
   }, [fetchData]);
 
-  const transactionTitle = selectedProduct
-    ? `Consulta de Movimientos - Cuenta de Ahorros (${maskNumber(selectedProduct.productNumber)})`
-    : "Consulta de Movimientos";
+  const transactionTitle = useMemo(
+    () =>
+      selectedProduct
+        ? `Consulta de Movimientos - Cuenta de Ahorros (${maskNumber(selectedProduct.productNumber)})`
+        : "Consulta de Movimientos",
+    [selectedProduct],
+  );
 
   const handleProductSelect = useCallback(
     (product: SavingsProduct) => {
       setSelectedProduct(product);
       const meta = productMetaMap[product.id];
       if (meta) {
-        fetchMovements(meta);
+        fetchMovements(meta.idCuenta, getDateMonthsAgo(3), getTodayDate());
       }
     },
     [productMetaMap, fetchMovements],
@@ -147,36 +187,12 @@ export default function AhorrosPage() {
 
   const handleFilter = useCallback(
     async (startDate: string, endDate: string) => {
-      if (!documentType || !documentNumber || !selectedProduct) return;
+      if (!selectedProduct) return;
       const meta = productMetaMap[selectedProduct.id];
       if (!meta) return;
-
-      const version = ++fetchVersionRef.current;
-      try {
-        setTransactionsLoading(true);
-        const movements = await getMovements({
-          documentType,
-          documentNumber,
-          codigoProductoCobis: meta.codigoProductoCobis,
-          idCuenta: meta.idCuenta,
-          fechaConsulta: formatApiDate(startDate),
-        });
-        if (fetchVersionRef.current === version) {
-          const mapped = mapMovements(movements);
-          setTransactions(mapped.filter((t) => t.date <= endDate));
-        }
-      } catch (err) {
-        if (isAuthError(err)) {
-          router.push("/login");
-          return;
-        }
-      } finally {
-        if (fetchVersionRef.current === version) {
-          setTransactionsLoading(false);
-        }
-      }
+      await fetchMovements(meta.idCuenta, startDate, endDate);
     },
-    [documentType, documentNumber, selectedProduct, productMetaMap, router],
+    [selectedProduct, productMetaMap, fetchMovements],
   );
 
   const handleMonthChange = (month: string) => {
@@ -234,12 +250,12 @@ export default function AhorrosPage() {
         <>
           <AhorrosInfoCard
             saldoTotal={selectedProduct.balance}
-            saldoDisponible={selectedProduct.balance}
+            saldoDisponible={ahorroInfo.saldoDisponible}
             canjeLocal={0}
-            canjeTotal={0}
-            remesas={0}
-            numTransacciones={0}
-            ultimoMovimiento="-"
+            canjeTotal={ahorroInfo.canjeTotal}
+            remesas={ahorroInfo.remesas}
+            numTransacciones={ahorroInfo.numTransacciones}
+            ultimoMovimiento={ahorroInfo.ultimoMovimiento}
           />
 
           <TransactionHistoryCard
