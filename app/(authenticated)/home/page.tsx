@@ -8,10 +8,13 @@ import {
   RecentTransactions,
 } from "@/src/organisms";
 import { useUserContext } from "@/src/contexts";
-import { parseBalanceSummary } from "@/src/utils";
-import { getBalances } from "@/services/products.service";
+import { parseBalanceSummary, mapMovements } from "@/src/utils";
+import {
+  getBalances,
+  getConsolidatedMovements,
+} from "@/services/products.service";
 import { isAuthError } from "@/lib/api/errors";
-import { mockConsolidatedTransactions } from "@/src/mocks";
+import { Transaction } from "@/src/types";
 
 export default function HomePage() {
   const { user } = useUserContext();
@@ -20,6 +23,7 @@ export default function HomePage() {
   const [consolidatedSavings, setConsolidatedSavings] = useState<number | null>(
     null,
   );
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,11 +36,14 @@ export default function HomePage() {
 
       const params = { documentType, documentNumber };
 
-      const balancesRaw = await getBalances(params);
+      const [balancesRaw, movementsRaw] = await Promise.all([
+        getBalances(params),
+        getConsolidatedMovements({ ...params, indPag: "1" }),
+      ]);
 
-      // Parse consolidated balance summary and extract savings total
       const summary = parseBalanceSummary(balancesRaw);
       setConsolidatedSavings(summary.ahorro);
+      setTransactions(mapMovements(movementsRaw).slice(0, 5));
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -76,10 +83,7 @@ export default function HomePage() {
         loading={loading}
       />
       <QuickAccessGrid />
-      <RecentTransactions
-        transactions={mockConsolidatedTransactions}
-        loading={loading}
-      />
+      <RecentTransactions transactions={transactions} loading={loading} />
     </>
   );
 }

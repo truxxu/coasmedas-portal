@@ -17,6 +17,10 @@ import type {
   PaymentTransactionResult,
   CreatePayzenTransactionRequest,
   PayzenTransactionResult,
+  UnifiedPaymentRequest,
+  UnifiedPaymentResponse,
+  PaymentProtectionRequest,
+  PaymentProtectionResponse,
 } from "@/types/api/payments";
 import type {
   SavingsAccountResponse,
@@ -36,6 +40,31 @@ export async function getPaymentProducts(
   params: PaymentProductsRequest,
 ): Promise<PaymentProduct[]> {
   return apiPost<PaymentProduct[]>("/payment/products", params);
+}
+
+/**
+ * Fetch detailed pending payments for the unified payment flow.
+ *
+ * @endpoint POST /payment/unified
+ * @auth JWT
+ * @status ✅ Implemented (Pago Unificado)
+ */
+export async function getUnifiedPayment(
+  params: UnifiedPaymentRequest,
+): Promise<UnifiedPaymentResponse> {
+  return apiPost<UnifiedPaymentResponse>("/payment/unified", params);
+}
+
+/**
+ * List protection products available for payment.
+ *
+ * @endpoint POST /payment/protection
+ * @auth JWT
+ */
+export async function getPaymentProtection(
+  params: PaymentProtectionRequest,
+): Promise<PaymentProtectionResponse> {
+  return apiPost<PaymentProtectionResponse>("/payment/protection", params);
 }
 
 // ─── Payment Sources ───

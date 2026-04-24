@@ -49,3 +49,4 @@ export { ExcessPaymentRadioGroup } from "./ExcessPaymentRadioGroup";
 export { TarjetaCreditoProductCard } from "./TarjetaCreditoProductCard";
 export { CardActionOptionCard } from "./CardActionOptionCard";
 export { CardActionListItem } from "./CardActionListItem";
+export { SavingsAccountSelectorRow } from "./SavingsAccountSelectorRow";
