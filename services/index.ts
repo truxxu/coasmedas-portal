@@ -17,6 +17,7 @@ export {
 export {
   getBalances,
   getMovements,
+  getConsolidatedMovements,
   getProductsSavings,
   getProductsCredits,
   getProductsInvestments,

@@ -24,6 +24,16 @@ export interface MovementsRequest extends UserIdentification {
 }
 
 /**
+ * Request for POST /movements — consolidated mode.
+ * When only user identification + indPag are sent, the backend returns
+ * recent movements across all of the user's products.
+ */
+export interface ConsolidatedMovementsRequest extends UserIdentification {
+  /** Pagination indicator — "1" for first page */
+  indPag?: string;
+}
+
+/**
  * Request for product-list endpoints (savings, credits, investments, contributions, protection).
  */
 export interface ProductsRequest extends UserIdentification {
@@ -68,7 +78,7 @@ export interface MovementItem {
   /** Format: HHMMSS */
   horaTransaccion?: string;
   referencia?: string;
-  /** DB = debit, CR = credit */
+  /** DB/CR (product-scoped) or D/C (consolidated) — debit / credit */
   tipoTransaccion: string;
   valorTransaccion: string | number;
   saldoPorTrn?: string | number;

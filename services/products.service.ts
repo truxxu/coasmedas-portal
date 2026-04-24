@@ -12,6 +12,7 @@ import type {
   BalancesRequest,
   BalanceSummary,
   MovementsRequest,
+  ConsolidatedMovementsRequest,
   MovementItem,
   ProductsRequest,
   SavingsAccountResponse,
@@ -57,6 +58,19 @@ export async function getBalances(
  */
 export async function getMovements(
   params: MovementsRequest,
+): Promise<MovementItem[]> {
+  return apiPost<MovementItem[]>("/movements", params);
+}
+
+/**
+ * Query consolidated recent movements across all of the user's products.
+ *
+ * @endpoint POST /movements
+ * @auth JWT
+ * @status ✅ Used on home dashboard (recent transactions)
+ */
+export async function getConsolidatedMovements(
+  params: ConsolidatedMovementsRequest,
 ): Promise<MovementItem[]> {
   return apiPost<MovementItem[]>("/movements", params);
 }
