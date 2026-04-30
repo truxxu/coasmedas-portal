@@ -55,6 +55,7 @@ export { ProtectionPaymentConfirmationCard } from "./ProtectionPaymentConfirmati
 export { ProtectionPaymentResultCard } from "./ProtectionPaymentResultCard";
 export { InternasFlowGrid } from "./InternasFlowGrid";
 export { ExternasFlowGrid } from "./ExternasFlowGrid";
+export { BrebFlowGrid } from "./BrebFlowGrid";
 export { TransferDetailsCard } from "./TransferDetailsCard";
 export { TransferConfirmationCard } from "./TransferConfirmationCard";
 export { TransferResultCard } from "./TransferResultCard";
