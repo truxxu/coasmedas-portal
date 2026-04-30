@@ -77,13 +77,18 @@ export function GenerarQrCard({ defaultSourceAccountId }: GenerarQrCardProps) {
       }`,
     };
     try {
-      if (typeof navigator !== "undefined" && "share" in navigator) {
-        await navigator.share(shareData);
+      if (typeof navigator === "undefined") {
+        setShareMessage("Compartir no está disponible en este navegador.");
+        return;
+      }
+      const nav: Navigator = navigator;
+      if (typeof nav.share === "function") {
+        await nav.share(shareData);
         setShareMessage(null);
         return;
       }
-      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(generated.payload);
+      if (nav.clipboard?.writeText) {
+        await nav.clipboard.writeText(generated.payload);
         setShareMessage("Código copiado al portapapeles.");
         return;
       }
