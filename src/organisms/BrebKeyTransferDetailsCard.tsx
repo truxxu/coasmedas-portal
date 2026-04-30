@@ -16,6 +16,8 @@ interface BrebKeyTransferDetailsCardProps {
   error?: string;
 }
 
+const NON_DIGITS = /[^0-9]/g;
+
 export function BrebKeyTransferDetailsCard({
   sourceAccounts,
   selectedSourceId,
@@ -35,7 +37,7 @@ export function BrebKeyTransferDetailsCard({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, "");
+    const value = e.target.value.replace(NON_DIGITS, "");
     onAmountChange(value);
   };
 

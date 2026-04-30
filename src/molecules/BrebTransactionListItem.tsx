@@ -1,13 +1,14 @@
 "use client";
 
+import { memo } from "react";
 import { ChevronIcon } from "@/src/atoms";
-import { useHideBalances } from "@/src/hooks";
 import { formatCurrency, maskCurrency } from "@/src/utils";
 import { BREB_TRANSACTION_STATUS_LABELS } from "@/src/mocks/mockBrebTransactionHistoryData";
 import type { BrebTransaction } from "@/src/types/brebTransactionHistory";
 
 interface BrebTransactionListItemProps {
   transaction: BrebTransaction;
+  hideBalances: boolean;
   onClick: (id: string) => void;
 }
 
@@ -29,11 +30,11 @@ function formatBrebDate(iso: string): string {
   return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
 }
 
-export function BrebTransactionListItem({
+function BrebTransactionListItemImpl({
   transaction,
+  hideBalances,
   onClick,
 }: BrebTransactionListItemProps) {
-  const { hideBalances } = useHideBalances();
   const isCredit = transaction.sign === "credit";
 
   const amountStr = hideBalances
@@ -77,3 +78,5 @@ export function BrebTransactionListItem({
     </button>
   );
 }
+
+export const BrebTransactionListItem = memo(BrebTransactionListItemImpl);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, CurrencyInput } from "@/src/atoms";
@@ -28,7 +28,10 @@ const QR_PLACEHOLDER_SVG = (
 </svg>`;
 
 export function GenerarQrCard({ defaultSourceAccountId }: GenerarQrCardProps) {
-  const sourceAccountOptions = getBrebGenerateQrSourceAccountOptions();
+  const sourceAccountOptions = useMemo(
+    () => getBrebGenerateQrSourceAccountOptions(),
+    [],
+  );
   const [generated, setGenerated] = useState<BrebGeneratedQr | null>(null);
   const [shareMessage, setShareMessage] = useState<string | null>(null);
 

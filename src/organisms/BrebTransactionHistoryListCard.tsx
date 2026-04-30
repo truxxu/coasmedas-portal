@@ -4,6 +4,7 @@ import {
   BrebTransactionFilterBar,
   BrebTransactionListItem,
 } from "@/src/molecules";
+import { useHideBalances } from "@/src/hooks";
 import type {
   BrebTransaction,
   BrebTransactionFilter,
@@ -22,6 +23,7 @@ export function BrebTransactionHistoryListCard({
   onFilter,
   onSelectTransaction,
 }: BrebTransactionHistoryListCardProps) {
+  const { hideBalances } = useHideBalances();
   return (
     <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
       <h2 className="text-[21px] font-bold text-brand-navy mb-6">
@@ -40,6 +42,7 @@ export function BrebTransactionHistoryListCard({
             <BrebTransactionListItem
               key={tx.id}
               transaction={tx}
+              hideBalances={hideBalances}
               onClick={onSelectTransaction}
             />
           ))

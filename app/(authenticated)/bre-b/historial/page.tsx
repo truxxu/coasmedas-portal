@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { BrebTransactionHistoryListCard } from "@/src/organisms";
@@ -51,9 +51,12 @@ export default function HistorialBrebPage() {
     });
   }, [filter]);
 
-  const handleSelectTransaction = (id: string) => {
-    router.push(`/bre-b/historial/${encodeURIComponent(id)}`);
-  };
+  const handleSelectTransaction = useCallback(
+    (id: string) => {
+      router.push(`/bre-b/historial/${encodeURIComponent(id)}`);
+    },
+    [router],
+  );
 
   const handleBack = () => {
     router.push("/bre-b");
