@@ -5,17 +5,23 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyModificationResultCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import { BREB_KEY_MODIFICATION_STEPS } from "@/src/mocks";
 import type { BrebKeyModificationResult } from "@/src/types/brebKeyModification";
+import {
+  BREB_SESSION_KEYS,
+  clearBrebFlow,
+} from "@/src/constants/brebSessionKeys";
 
 export default function ModificarLlaveResultadoPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Modificar Llave");
 
   const [result] = useState<BrebKeyModificationResult | null>(() => {
     if (typeof window === "undefined") return null;
-    const raw = sessionStorage.getItem("brebKeyModificationResult");
+    const raw = sessionStorage.getItem(
+      BREB_SESSION_KEYS.keyModification.result,
+    );
     if (!raw) return null;
     try {
       return JSON.parse(raw) as BrebKeyModificationResult;
@@ -25,21 +31,12 @@ export default function ModificarLlaveResultadoPage() {
   });
 
   useEffect(() => {
-    setWelcomeBar({ title: "Modificar Llave" });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!result) {
       router.push("/bre-b/gestionar-llaves");
     }
   }, [result, router]);
 
-  const clearSessionStorage = () => {
-    sessionStorage.removeItem("brebKeyModificationForm");
-    sessionStorage.removeItem("brebKeyModificationConfirmation");
-    sessionStorage.removeItem("brebKeyModificationResult");
-  };
+  const clearSessionStorage = () => clearBrebFlow("keyModification");
 
   const handleFinish = () => {
     clearSessionStorage();

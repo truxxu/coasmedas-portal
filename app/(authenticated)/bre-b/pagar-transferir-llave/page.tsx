@@ -1,30 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyTransferDetailsCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import { mockBrebSourceAccounts, BREB_KEY_TRANSFER_STEPS } from "@/src/mocks";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebKeyTransferPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con Llave", "/bre-b");
 
   const [selectedSourceId, setSelectedSourceId] = useState("");
   const [destinationKey, setDestinationKey] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar con Llave",
-      backHref: "/bre-b",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleConfirm = () => {
     setError("");
@@ -50,9 +44,15 @@ export default function BrebKeyTransferPage() {
       return;
     }
 
-    sessionStorage.setItem("brebKeyTransferSourceId", selectedSourceId);
-    sessionStorage.setItem("brebKeyTransferDestinationKey", destinationKey);
-    sessionStorage.setItem("brebKeyTransferAmount", amount);
+    sessionStorage.setItem(
+      BREB_SESSION_KEYS.keyTransfer.sourceId,
+      selectedSourceId,
+    );
+    sessionStorage.setItem(
+      BREB_SESSION_KEYS.keyTransfer.destinationKey,
+      destinationKey,
+    );
+    sessionStorage.setItem(BREB_SESSION_KEYS.keyTransfer.amount, amount);
 
     router.push("/bre-b/pagar-transferir-llave/confirmacion");
   };

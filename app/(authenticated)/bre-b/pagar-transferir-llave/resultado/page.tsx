@@ -5,18 +5,23 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyTransferResultCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import type { BrebKeyTransferResult } from "@/src/types/brebKeyTransfer";
 import { BREB_KEY_TRANSFER_STEPS } from "@/src/mocks";
+import {
+  BREB_SESSION_KEYS,
+  clearBrebFlow,
+} from "@/src/constants/brebSessionKeys";
 
 export default function BrebKeyTransferResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con Llave");
 
   const [result] = useState<BrebKeyTransferResult | null>(() => {
     if (typeof window === "undefined") return null;
-    const data = sessionStorage.getItem("brebKeyTransferResult");
+    const data = sessionStorage.getItem(BREB_SESSION_KEYS.keyTransfer.result);
     if (!data) return null;
     try {
       return JSON.parse(data) as BrebKeyTransferResult;
@@ -26,23 +31,12 @@ export default function BrebKeyTransferResultadoPage() {
   });
 
   useEffect(() => {
-    setWelcomeBar({ title: "Pagar con Llave" });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!result) {
       router.push("/bre-b/pagar-transferir-llave");
     }
   }, [result, router]);
 
-  const clearSessionStorage = () => {
-    sessionStorage.removeItem("brebKeyTransferSourceId");
-    sessionStorage.removeItem("brebKeyTransferDestinationKey");
-    sessionStorage.removeItem("brebKeyTransferAmount");
-    sessionStorage.removeItem("brebKeyTransferConfirmation");
-    sessionStorage.removeItem("brebKeyTransferResult");
-  };
+  const clearSessionStorage = () => clearBrebFlow("keyTransfer");
 
   const handleDownload = () => {
     window.print();
@@ -59,8 +53,8 @@ export default function BrebKeyTransferResultadoPage() {
   };
 
   const handleRetry = () => {
-    sessionStorage.removeItem("brebKeyTransferConfirmation");
-    sessionStorage.removeItem("brebKeyTransferResult");
+    sessionStorage.removeItem(BREB_SESSION_KEYS.keyTransfer.confirmation);
+    sessionStorage.removeItem(BREB_SESSION_KEYS.keyTransfer.result);
     router.push("/bre-b/pagar-transferir-llave");
   };
 

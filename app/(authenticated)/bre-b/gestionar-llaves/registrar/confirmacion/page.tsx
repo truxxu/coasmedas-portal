@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyRegistrationConfirmationCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import {
   BREB_KEY_REGISTRATION_STEPS,
   BREB_KEY_TYPE_LABELS,
@@ -15,14 +15,15 @@ import type {
   BrebKeyRegistrationConfirmationData,
   BrebKeyRegistrationFormData,
 } from "@/src/types/brebKeyRegistration";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function RegistrarLlaveConfirmacionPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Registrar Llave", "/bre-b/gestionar-llaves/registrar");
 
   const [data] = useState<BrebKeyRegistrationConfirmationData | null>(() => {
     if (typeof window === "undefined") return null;
-    const raw = sessionStorage.getItem("brebKeyRegistrationForm");
+    const raw = sessionStorage.getItem(BREB_SESSION_KEYS.keyRegistration.form);
     if (!raw) return null;
     let form: BrebKeyRegistrationFormData;
     try {
@@ -44,14 +45,6 @@ export default function RegistrarLlaveConfirmacionPage() {
   });
 
   useEffect(() => {
-    setWelcomeBar({
-      title: "Registrar Llave",
-      backHref: "/bre-b/gestionar-llaves/registrar",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!data) {
       router.push("/bre-b/gestionar-llaves/registrar");
     }
@@ -60,7 +53,7 @@ export default function RegistrarLlaveConfirmacionPage() {
   const handleConfirm = () => {
     if (!data) return;
     sessionStorage.setItem(
-      "brebKeyRegistrationConfirmation",
+      BREB_SESSION_KEYS.keyRegistration.confirmation,
       JSON.stringify(data),
     );
     router.push("/bre-b/gestionar-llaves/registrar/sms");

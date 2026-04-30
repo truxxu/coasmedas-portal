@@ -7,7 +7,7 @@ import {
   BrebTransactionDetailCard,
   BrebReversalSuccessModal,
 } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import {
   markBrebTransactionUnderReview,
   mockBrebTransactions,
@@ -19,7 +19,7 @@ type ModalState = "none" | "confirm" | "success";
 export default function HistorialBrebDetailPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Detalle de Transacción", "/bre-b/historial");
 
   const id = useMemo(() => {
     const raw = params?.id;
@@ -35,14 +35,6 @@ export default function HistorialBrebDetailPage() {
     initialTransaction,
   );
   const [modal, setModal] = useState<ModalState>("none");
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Detalle de Transacción",
-      backHref: "/bre-b/historial",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
 
   useEffect(() => {
     if (!initialTransaction) {

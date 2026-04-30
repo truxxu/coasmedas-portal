@@ -1,22 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { GenerarQrCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 
 export default function BrebGenerateQrPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Generar QR",
-      backHref: "/bre-b",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
+  useBrebPageHeader("Generar QR", "/bre-b");
 
   return (
     <div className="space-y-6">

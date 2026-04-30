@@ -1,27 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { BrebQrScannerCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import { mockBrebQrDecodedPayload } from "@/src/mocks";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebQrPaymentPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar con QR",
-      backHref: "/bre-b",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
+  useBrebPageHeader("Pagar con QR", "/bre-b");
 
   const handleScan = () => {
     sessionStorage.setItem(
-      "brebQrDecoded",
+      BREB_SESSION_KEYS.qrPayment.decoded,
       JSON.stringify(mockBrebQrDecodedPayload),
     );
     router.push("/bre-b/pagar-qr/detalle");

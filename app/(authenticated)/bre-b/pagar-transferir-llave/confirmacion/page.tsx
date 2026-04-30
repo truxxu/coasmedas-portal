@@ -5,24 +5,30 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyTransferConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import type { BrebKeyTransferConfirmationData } from "@/src/types/brebKeyTransfer";
 import { mockBrebSourceAccounts, BREB_KEY_TRANSFER_STEPS } from "@/src/mocks";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebKeyTransferConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con Llave", "/bre-b/pagar-transferir-llave");
 
   const [confirmationData] = useState<BrebKeyTransferConfirmationData | null>(
     () => {
       if (typeof window === "undefined") return null;
 
-      const sourceId = sessionStorage.getItem("brebKeyTransferSourceId");
-      const destinationKey = sessionStorage.getItem(
-        "brebKeyTransferDestinationKey",
+      const sourceId = sessionStorage.getItem(
+        BREB_SESSION_KEYS.keyTransfer.sourceId,
       );
-      const amount = sessionStorage.getItem("brebKeyTransferAmount");
+      const destinationKey = sessionStorage.getItem(
+        BREB_SESSION_KEYS.keyTransfer.destinationKey,
+      );
+      const amount = sessionStorage.getItem(
+        BREB_SESSION_KEYS.keyTransfer.amount,
+      );
 
       if (!sourceId || !destinationKey || !amount) return null;
 
@@ -39,14 +45,6 @@ export default function BrebKeyTransferConfirmacionPage() {
   );
 
   useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar con Llave",
-      backHref: "/bre-b/pagar-transferir-llave",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!confirmationData) {
       router.push("/bre-b/pagar-transferir-llave");
     }
@@ -55,7 +53,7 @@ export default function BrebKeyTransferConfirmacionPage() {
   const handleConfirmPayment = () => {
     if (!confirmationData) return;
     sessionStorage.setItem(
-      "brebKeyTransferConfirmation",
+      BREB_SESSION_KEYS.keyTransfer.confirmation,
       JSON.stringify(confirmationData),
     );
     router.push("/bre-b/pagar-transferir-llave/sms");

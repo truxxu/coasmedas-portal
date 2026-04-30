@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Breadcrumbs,
@@ -9,7 +9,7 @@ import {
   type BrebKeyAction,
 } from "@/src/molecules";
 import { BrebKeysListCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import {
   BREB_KEY_TYPE_LABELS,
   mockRegisteredKeys,
@@ -18,7 +18,7 @@ import type { BrebRegisteredKey } from "@/src/types/brebKeyRegistration";
 
 export default function GestionarLlavesPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Gestionar Llaves", "/bre-b");
 
   const [keys, setKeys] = useState<BrebRegisteredKey[]>(mockRegisteredKeys);
   const [confirmModal, setConfirmModal] = useState<{
@@ -28,14 +28,6 @@ export default function GestionarLlavesPage() {
   const [successAction, setSuccessAction] = useState<BrebKeyAction | null>(
     null,
   );
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Gestionar Llaves",
-      backHref: "/bre-b",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
 
   const confirmTarget = useMemo(() => {
     if (!confirmModal) return null;

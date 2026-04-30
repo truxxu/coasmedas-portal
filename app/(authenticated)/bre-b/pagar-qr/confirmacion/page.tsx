@@ -5,25 +5,31 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebQrPaymentConfirmationCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import type {
   BrebQrDecodedPayload,
   BrebQrPaymentConfirmationData,
 } from "@/src/types/brebQrPayment";
 import { mockBrebSourceAccounts, BREB_QR_PAYMENT_STEPS } from "@/src/mocks";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebQrPaymentConfirmacionPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con QR", "/bre-b/pagar-qr/detalle");
 
   const [confirmationData] = useState<BrebQrPaymentConfirmationData | null>(
     () => {
       if (typeof window === "undefined") return null;
 
-      const decodedStr = sessionStorage.getItem("brebQrDecoded");
-      const sourceId = sessionStorage.getItem("brebQrSourceId");
-      const amount = sessionStorage.getItem("brebQrAmount");
+      const decodedStr = sessionStorage.getItem(
+        BREB_SESSION_KEYS.qrPayment.decoded,
+      );
+      const sourceId = sessionStorage.getItem(
+        BREB_SESSION_KEYS.qrPayment.sourceId,
+      );
+      const amount = sessionStorage.getItem(BREB_SESSION_KEYS.qrPayment.amount);
 
       if (!decodedStr || !sourceId || !amount) return null;
 
@@ -47,14 +53,6 @@ export default function BrebQrPaymentConfirmacionPage() {
   );
 
   useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar con QR",
-      backHref: "/bre-b/pagar-qr/detalle",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!confirmationData) {
       router.push("/bre-b/pagar-qr");
     }
@@ -63,7 +61,7 @@ export default function BrebQrPaymentConfirmacionPage() {
   const handleConfirmPayment = () => {
     if (!confirmationData) return;
     sessionStorage.setItem(
-      "brebQrConfirmation",
+      BREB_SESSION_KEYS.qrPayment.confirmation,
       JSON.stringify(confirmationData),
     );
     router.push("/bre-b/pagar-qr/sms");

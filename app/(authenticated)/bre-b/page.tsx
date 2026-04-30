@@ -1,22 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { BrebFlowGrid } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 
 export default function BreBPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Bre-B",
-      backHref: "/home",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
+  useBrebPageHeader("Bre-B", "/home");
 
   const handleSelectFlow = (flowId: string) => {
     if (flowId === "pagar-transferir-llave") {

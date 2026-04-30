@@ -5,18 +5,23 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebQrPaymentResultCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import type { BrebQrPaymentResult } from "@/src/types/brebQrPayment";
 import { BREB_QR_PAYMENT_STEPS } from "@/src/mocks";
+import {
+  BREB_SESSION_KEYS,
+  clearBrebFlow,
+} from "@/src/constants/brebSessionKeys";
 
 export default function BrebQrPaymentResultadoPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con QR");
 
   const [result] = useState<BrebQrPaymentResult | null>(() => {
     if (typeof window === "undefined") return null;
-    const data = sessionStorage.getItem("brebQrResult");
+    const data = sessionStorage.getItem(BREB_SESSION_KEYS.qrPayment.result);
     if (!data) return null;
     try {
       return JSON.parse(data) as BrebQrPaymentResult;
@@ -26,23 +31,12 @@ export default function BrebQrPaymentResultadoPage() {
   });
 
   useEffect(() => {
-    setWelcomeBar({ title: "Pagar con QR" });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!result) {
       router.push("/bre-b/pagar-qr");
     }
   }, [result, router]);
 
-  const clearSessionStorage = () => {
-    sessionStorage.removeItem("brebQrDecoded");
-    sessionStorage.removeItem("brebQrSourceId");
-    sessionStorage.removeItem("brebQrAmount");
-    sessionStorage.removeItem("brebQrConfirmation");
-    sessionStorage.removeItem("brebQrResult");
-  };
+  const clearSessionStorage = () => clearBrebFlow("qrPayment");
 
   const handleDownload = () => {
     window.print();
@@ -59,8 +53,8 @@ export default function BrebQrPaymentResultadoPage() {
   };
 
   const handleRetry = () => {
-    sessionStorage.removeItem("brebQrConfirmation");
-    sessionStorage.removeItem("brebQrResult");
+    sessionStorage.removeItem(BREB_SESSION_KEYS.qrPayment.confirmation);
+    sessionStorage.removeItem(BREB_SESSION_KEYS.qrPayment.result);
     router.push("/bre-b/pagar-qr");
   };
 

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyModificationDetailsCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import {
   BREB_KEY_MODIFICATION_STEPS,
   mockBrebAvailableNewKeys,
@@ -14,11 +14,29 @@ import {
   mockRegisteredKeys,
 } from "@/src/mocks";
 import type { BrebKeyModificationFormData } from "@/src/types/brebKeyModification";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
+
+function readPersistedForm(
+  keyId: string,
+): { newKeyId: string; accountId: string } | null {
+  if (typeof window === "undefined" || !keyId) return null;
+  const raw = sessionStorage.getItem(BREB_SESSION_KEYS.keyModification.form);
+  if (!raw) return null;
+  try {
+    const stored = JSON.parse(raw) as BrebKeyModificationFormData;
+    if (stored.currentKeyId === keyId) {
+      return { newKeyId: stored.newKeyId, accountId: stored.accountId };
+    }
+  } catch {
+    // ignore corrupt session payload
+  }
+  return null;
+}
 
 function ModificarLlaveDetallePageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Modificar Llave", "/bre-b/gestionar-llaves");
 
   const keyId = searchParams.get("id") ?? "";
   const currentKey = useMemo(
@@ -26,36 +44,20 @@ function ModificarLlaveDetallePageInner() {
     [keyId],
   );
 
-  const [selectedNewKeyId, setSelectedNewKeyId] = useState("");
+  const [selectedNewKeyId, setSelectedNewKeyId] = useState(
+    () => readPersistedForm(keyId)?.newKeyId ?? "",
+  );
   const [accountId, setAccountId] = useState(
-    mockBrebRegistrationAccounts[0]?.id ?? "",
+    () =>
+      readPersistedForm(keyId)?.accountId ??
+      mockBrebRegistrationAccounts[0]?.id ??
+      "",
   );
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setWelcomeBar({
-      title: "Modificar Llave",
-      backHref: "/bre-b/gestionar-llaves",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
     if (!currentKey) {
       router.replace("/bre-b/gestionar-llaves");
-      return;
-    }
-    const raw = sessionStorage.getItem("brebKeyModificationForm");
-    if (!raw) return;
-    try {
-      const stored = JSON.parse(raw) as BrebKeyModificationFormData;
-      if (stored.currentKeyId === currentKey.id) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSelectedNewKeyId(stored.newKeyId);
-        setAccountId(stored.accountId);
-      }
-    } catch {
-      // ignore
     }
   }, [currentKey, router]);
 
@@ -112,7 +114,10 @@ function ModificarLlaveDetallePageInner() {
       newKeyValue: selectedKey.value,
       accountId,
     };
-    sessionStorage.setItem("brebKeyModificationForm", JSON.stringify(form));
+    sessionStorage.setItem(
+      BREB_SESSION_KEYS.keyModification.form,
+      JSON.stringify(form),
+    );
     router.push("/bre-b/gestionar-llaves/modificar/confirmacion");
   };
 

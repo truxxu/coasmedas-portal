@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyRegistrationDetailsCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import {
   BREB_KEY_REGISTRATION_STEPS,
   generateRandomBrebKey,
@@ -16,10 +16,11 @@ import type {
   BrebKeyRegistrationFormData,
   BrebKeyType,
 } from "@/src/types/brebKeyRegistration";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function RegistrarLlaveDetallePage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Registrar Llave", "/bre-b/gestionar-llaves");
 
   const [keyType, setKeyType] = useState<BrebKeyType | "">("");
   const [keyValue, setKeyValue] = useState("");
@@ -27,14 +28,6 @@ export default function RegistrarLlaveDetallePage() {
     mockBrebRegistrationAccounts[0]?.id ?? "",
   );
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setWelcomeBar({
-      title: "Registrar Llave",
-      backHref: "/bre-b/gestionar-llaves",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
 
   const handleKeyTypeChange = (value: BrebKeyType | "") => {
     setKeyType(value);
@@ -70,7 +63,10 @@ export default function RegistrarLlaveDetallePage() {
       keyValue,
       accountId,
     };
-    sessionStorage.setItem("brebKeyRegistrationForm", JSON.stringify(form));
+    sessionStorage.setItem(
+      BREB_SESSION_KEYS.keyRegistration.form,
+      JSON.stringify(form),
+    );
     router.push("/bre-b/gestionar-llaves/registrar/confirmacion");
   };
 

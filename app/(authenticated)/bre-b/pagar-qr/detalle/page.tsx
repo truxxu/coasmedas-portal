@@ -5,43 +5,38 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebQrPaymentDetailsCard } from "@/src/organisms";
-import { useUIContext, useWelcomeBar } from "@/src/contexts";
+import { useUIContext } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import { mockBrebSourceAccounts, BREB_QR_PAYMENT_STEPS } from "@/src/mocks";
 import type { BrebQrDecodedPayload } from "@/src/types/brebQrPayment";
+import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebQrPaymentDetailsPage() {
   const router = useRouter();
   const { hideBalances } = useUIContext();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Pagar con QR", "/bre-b/pagar-qr");
 
-  const [decoded, setDecoded] = useState<BrebQrDecodedPayload | null>(null);
+  const [decoded] = useState<BrebQrDecodedPayload | null>(() => {
+    if (typeof window === "undefined") return null;
+    const data = sessionStorage.getItem(BREB_SESSION_KEYS.qrPayment.decoded);
+    if (!data) return null;
+    try {
+      return JSON.parse(data) as BrebQrDecodedPayload;
+    } catch {
+      return null;
+    }
+  });
   const [selectedSourceId, setSelectedSourceId] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(() =>
+    decoded ? String(decoded.amount) : "",
+  );
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setWelcomeBar({
-      title: "Pagar con QR",
-      backHref: "/bre-b/pagar-qr",
-    });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
-
-  useEffect(() => {
-    const data = sessionStorage.getItem("brebQrDecoded");
-    if (!data) {
-      router.push("/bre-b/pagar-qr");
-      return;
-    }
-    try {
-      const parsed = JSON.parse(data) as BrebQrDecodedPayload;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDecoded(parsed);
-      setAmount(String(parsed.amount));
-    } catch {
+    if (!decoded) {
       router.push("/bre-b/pagar-qr");
     }
-  }, [router]);
+  }, [decoded, router]);
 
   const handleConfirm = () => {
     setError("");
@@ -64,8 +59,11 @@ export default function BrebQrPaymentDetailsPage() {
       return;
     }
 
-    sessionStorage.setItem("brebQrSourceId", selectedSourceId);
-    sessionStorage.setItem("brebQrAmount", amount);
+    sessionStorage.setItem(
+      BREB_SESSION_KEYS.qrPayment.sourceId,
+      selectedSourceId,
+    );
+    sessionStorage.setItem(BREB_SESSION_KEYS.qrPayment.amount, amount);
 
     router.push("/bre-b/pagar-qr/confirmacion");
   };

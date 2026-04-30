@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { BrebTransactionHistoryListCard } from "@/src/organisms";
-import { useWelcomeBar } from "@/src/contexts";
+import { useBrebPageHeader } from "@/src/hooks";
 import { mockBrebTransactions } from "@/src/mocks/mockBrebTransactionHistoryData";
 import type { BrebTransactionFilter } from "@/src/types/brebTransactionHistory";
 
@@ -22,18 +22,13 @@ const REFERENCE_NOW = new Date("2025-10-15T00:00:00");
 
 export default function HistorialBrebPage() {
   const router = useRouter();
-  const { setWelcomeBar, clearWelcomeBar } = useWelcomeBar();
+  useBrebPageHeader("Historial Bre-B", "/bre-b");
 
   const [filter, setFilter] = useState<BrebTransactionFilter>({
     dateRange: "ultimos_30",
     type: "todos",
     status: "todos",
   });
-
-  useEffect(() => {
-    setWelcomeBar({ title: "Historial Bre-B", backHref: "/bre-b" });
-    return () => clearWelcomeBar();
-  }, [setWelcomeBar, clearWelcomeBar]);
 
   const filteredTransactions = useMemo(() => {
     const days = DATE_RANGE_DAYS[filter.dateRange];
