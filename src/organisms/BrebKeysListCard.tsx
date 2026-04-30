@@ -9,6 +9,8 @@ interface BrebKeysListCardProps {
   keys: BrebRegisteredKey[];
   onRegisterNewKey: () => void;
   onModifyKey?: (keyId: string) => void;
+  onToggleBlockKey?: (keyId: string) => void;
+  onCancelKey?: (keyId: string) => void;
 }
 
 const STATUS_STYLES: Record<
@@ -29,6 +31,8 @@ export function BrebKeysListCard({
   keys,
   onRegisterNewKey,
   onModifyKey,
+  onToggleBlockKey,
+  onCancelKey,
 }: BrebKeysListCardProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
@@ -97,32 +101,47 @@ export function BrebKeysListCard({
                         role="menu"
                         className="absolute right-0 mt-2 w-44 rounded-md border border-brand-border bg-white shadow-md z-10"
                       >
-                        {["Modificar", "Bloquear", "Cancelar", "Portar"].map(
-                          (action) => {
-                            const isModificar =
-                              action === "Modificar" && onModifyKey;
-                            return (
-                              <button
-                                key={action}
-                                type="button"
-                                role="menuitem"
-                                disabled={!isModificar}
-                                onClick={() => {
-                                  if (!isModificar) return;
-                                  setOpenMenuId(null);
-                                  onModifyKey(key.id);
-                                }}
-                                className={
-                                  isModificar
-                                    ? "block w-full text-left px-4 py-2 text-[14px] text-brand-text-black hover:bg-brand-gray-light"
-                                    : "block w-full text-left px-4 py-2 text-[14px] text-brand-gray-medium cursor-not-allowed"
-                                }
-                              >
-                                {action}
-                              </button>
-                            );
-                          },
+                        <MenuItem
+                          label="Modificar"
+                          enabled={Boolean(onModifyKey)}
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onModifyKey?.(key.id);
+                          }}
+                        />
+                        {key.status === "activa" ? (
+                          <MenuItem
+                            label="Bloquear"
+                            enabled={Boolean(onToggleBlockKey)}
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onToggleBlockKey?.(key.id);
+                            }}
+                          />
+                        ) : (
+                          <MenuItem
+                            label="Activar"
+                            enabled={Boolean(onToggleBlockKey)}
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onToggleBlockKey?.(key.id);
+                            }}
+                          />
                         )}
+                        <MenuItem
+                          label="Cancelar"
+                          enabled={Boolean(onCancelKey)}
+                          destructive
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onCancelKey?.(key.id);
+                          }}
+                        />
+                        <MenuItem
+                          label="Portar"
+                          enabled={false}
+                          onClick={() => {}}
+                        />
                       </div>
                     )}
                   </div>
@@ -133,5 +152,37 @@ export function BrebKeysListCard({
         })}
       </ul>
     </Card>
+  );
+}
+
+interface MenuItemProps {
+  label: string;
+  enabled: boolean;
+  destructive?: boolean;
+  onClick: () => void;
+}
+
+function MenuItem({ label, enabled, destructive, onClick }: MenuItemProps) {
+  const baseClasses = "block w-full text-left px-4 py-2 text-[14px]";
+
+  let stateClasses: string;
+  if (!enabled) {
+    stateClasses = "text-brand-gray-medium cursor-not-allowed";
+  } else if (destructive) {
+    stateClasses = "text-[#FF0D00] hover:bg-red-50";
+  } else {
+    stateClasses = "text-brand-text-black hover:bg-brand-gray-light";
+  }
+
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      disabled={!enabled}
+      onClick={onClick}
+      className={`${baseClasses} ${stateClasses}`}
+    >
+      {label}
+    </button>
   );
 }

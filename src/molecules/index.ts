@@ -50,3 +50,6 @@ export { TarjetaCreditoProductCard } from "./TarjetaCreditoProductCard";
 export { CardActionOptionCard } from "./CardActionOptionCard";
 export { CardActionListItem } from "./CardActionListItem";
 export { SavingsAccountSelectorRow } from "./SavingsAccountSelectorRow";
+export { BrebKeyActionConfirmModal } from "./BrebKeyActionConfirmModal";
+export type { BrebKeyAction } from "./BrebKeyActionConfirmModal";
+export { BrebKeyActionSuccessModal } from "./BrebKeyActionSuccessModal";
