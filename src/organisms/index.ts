@@ -84,6 +84,7 @@ export { BrebKeyTransferDetailsCard } from "./BrebKeyTransferDetailsCard";
 export { BrebKeyTransferConfirmationCard } from "./BrebKeyTransferConfirmationCard";
 export { BrebKeyTransferResultCard } from "./BrebKeyTransferResultCard";
 export { BrebQrScannerCard } from "./BrebQrScannerCard";
+export { GenerarQrCard } from "./GenerarQrCard";
 export { BrebQrPaymentDetailsCard } from "./BrebQrPaymentDetailsCard";
 export { BrebQrPaymentConfirmationCard } from "./BrebQrPaymentConfirmationCard";
 export { BrebQrPaymentResultCard } from "./BrebQrPaymentResultCard";

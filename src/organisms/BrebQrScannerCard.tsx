@@ -5,9 +5,13 @@ import { Button, Card } from "@/src/atoms";
 
 interface BrebQrScannerCardProps {
   onScan: () => void;
+  onGenerate: () => void;
 }
 
-export function BrebQrScannerCard({ onScan }: BrebQrScannerCardProps) {
+export function BrebQrScannerCard({
+  onScan,
+  onGenerate,
+}: BrebQrScannerCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileClick = () => {
@@ -68,7 +72,7 @@ export function BrebQrScannerCard({ onScan }: BrebQrScannerCardProps) {
             Genera tu propio código QR para que otros te paguen fácilmente.
           </p>
           <div>
-            <Button variant="primary" disabled>
+            <Button variant="primary" onClick={onGenerate}>
               Generar mi QR
             </Button>
           </div>
