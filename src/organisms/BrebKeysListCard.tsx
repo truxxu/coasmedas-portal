@@ -8,6 +8,7 @@ import type { BrebRegisteredKey } from "@/src/types/brebKeyRegistration";
 interface BrebKeysListCardProps {
   keys: BrebRegisteredKey[];
   onRegisterNewKey: () => void;
+  onModifyKey?: (keyId: string) => void;
 }
 
 const STATUS_STYLES: Record<
@@ -27,6 +28,7 @@ const STATUS_STYLES: Record<
 export function BrebKeysListCard({
   keys,
   onRegisterNewKey,
+  onModifyKey,
 }: BrebKeysListCardProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
@@ -96,17 +98,30 @@ export function BrebKeysListCard({
                         className="absolute right-0 mt-2 w-44 rounded-md border border-brand-border bg-white shadow-md z-10"
                       >
                         {["Modificar", "Bloquear", "Cancelar", "Portar"].map(
-                          (action) => (
-                            <button
-                              key={action}
-                              type="button"
-                              role="menuitem"
-                              disabled
-                              className="block w-full text-left px-4 py-2 text-[14px] text-brand-gray-medium cursor-not-allowed"
-                            >
-                              {action}
-                            </button>
-                          ),
+                          (action) => {
+                            const isModificar =
+                              action === "Modificar" && onModifyKey;
+                            return (
+                              <button
+                                key={action}
+                                type="button"
+                                role="menuitem"
+                                disabled={!isModificar}
+                                onClick={() => {
+                                  if (!isModificar) return;
+                                  setOpenMenuId(null);
+                                  onModifyKey(key.id);
+                                }}
+                                className={
+                                  isModificar
+                                    ? "block w-full text-left px-4 py-2 text-[14px] text-brand-text-black hover:bg-brand-gray-light"
+                                    : "block w-full text-left px-4 py-2 text-[14px] text-brand-gray-medium cursor-not-allowed"
+                                }
+                              >
+                                {action}
+                              </button>
+                            );
+                          },
                         )}
                       </div>
                     )}

@@ -22,6 +22,7 @@ export * from "./mockBrebKeyTransferData";
 export * from "./mockBrebQrPaymentData";
 export * from "./mockBrebGenerateQrData";
 export * from "./mockBrebKeyRegistrationData";
+export * from "./mockBrebKeyModificationData";
 export * from "./mockScheduledTransferData";
 export * from "./tarjetaCredito";
 export * from "./mockTarjetaPaymentData";

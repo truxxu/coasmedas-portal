@@ -23,6 +23,10 @@ export default function GestionarLlavesPage() {
     router.push("/bre-b/gestionar-llaves/registrar");
   };
 
+  const handleModifyKey = (keyId: string) => {
+    router.push(`/bre-b/gestionar-llaves/modificar?id=${keyId}`);
+  };
+
   const handleBack = () => {
     router.push("/bre-b");
   };
@@ -36,6 +40,7 @@ export default function GestionarLlavesPage() {
       <BrebKeysListCard
         keys={mockRegisteredKeys}
         onRegisterNewKey={handleRegisterNewKey}
+        onModifyKey={handleModifyKey}
       />
 
       <div className="flex justify-start items-center">
