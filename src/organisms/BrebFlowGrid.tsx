@@ -31,7 +31,7 @@ const BREB_FLOWS: BrebOption[] = [
     description:
       "Administrar tus llaves para recibir dinero: regístralas, modifícalas o bloquéalas.",
     href: "/bre-b/gestionar-llaves",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "historial",
