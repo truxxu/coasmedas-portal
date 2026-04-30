@@ -18,6 +18,7 @@ export * from "./mockPSERechargeData";
 export * from "./mockAccountRegistrationData";
 export * from "./mockExternalTransferData";
 export * from "./mockRedCoopTransferData";
+export * from "./mockBrebKeyTransferData";
 export * from "./mockScheduledTransferData";
 export * from "./tarjetaCredito";
 export * from "./mockTarjetaPaymentData";

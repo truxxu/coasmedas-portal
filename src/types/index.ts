@@ -25,3 +25,4 @@ export * from "./redCoopTransfer";
 export * from "./scheduledTransfer";
 export * from "./tarjetaCredito";
 export * from "./breb";
+export * from "./brebKeyTransfer";

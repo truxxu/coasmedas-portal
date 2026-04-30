@@ -15,7 +15,7 @@ const BREB_FLOWS: BrebOption[] = [
     description:
       "Usa un número de celular, email, documento u otra llave para enviar dinero.",
     href: "/bre-b/pagar-transferir-llave",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "pagar-qr",
