@@ -23,7 +23,7 @@ const BREB_FLOWS: BrebOption[] = [
     description:
       "Escanea un código para pagar o generar el tuyo para recibir dinero.",
     href: "/bre-b/pagar-qr",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "gestionar-llaves",

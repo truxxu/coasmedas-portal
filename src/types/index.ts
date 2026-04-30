@@ -26,3 +26,4 @@ export * from "./scheduledTransfer";
 export * from "./tarjetaCredito";
 export * from "./breb";
 export * from "./brebKeyTransfer";
+export * from "./brebQrPayment";
