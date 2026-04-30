@@ -35,6 +35,7 @@ export default function BrebQrPaymentDetailsPage() {
     }
     try {
       const parsed = JSON.parse(data) as BrebQrDecodedPayload;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDecoded(parsed);
       setAmount(String(parsed.amount));
     } catch {

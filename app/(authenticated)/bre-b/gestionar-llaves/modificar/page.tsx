@@ -50,6 +50,7 @@ function ModificarLlaveDetallePageInner() {
     try {
       const stored = JSON.parse(raw) as BrebKeyModificationFormData;
       if (stored.currentKeyId === currentKey.id) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedNewKeyId(stored.newKeyId);
         setAccountId(stored.accountId);
       }
