@@ -53,3 +53,6 @@ export { SavingsAccountSelectorRow } from "./SavingsAccountSelectorRow";
 export { BrebKeyActionConfirmModal } from "./BrebKeyActionConfirmModal";
 export type { BrebKeyAction } from "./BrebKeyActionConfirmModal";
 export { BrebKeyActionSuccessModal } from "./BrebKeyActionSuccessModal";
+export { BrebTransactionListItem } from "./BrebTransactionListItem";
+export { BrebTransactionFilterBar } from "./BrebTransactionFilterBar";
+export { BrebReversalConfirmModal } from "./BrebReversalConfirmModal";

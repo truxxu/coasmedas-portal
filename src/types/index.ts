@@ -29,3 +29,4 @@ export * from "./brebKeyTransfer";
 export * from "./brebQrPayment";
 export * from "./brebGenerateQr";
 export * from "./brebKeyRegistration";
+export * from "./brebTransactionHistory";

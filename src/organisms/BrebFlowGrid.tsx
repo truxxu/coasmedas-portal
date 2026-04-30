@@ -39,7 +39,7 @@ const BREB_FLOWS: BrebOption[] = [
     description:
       "Consulta tus últimos movimientos y solicita devoluciones si es necesario.",
     href: "/bre-b/historial",
-    enabled: false,
+    enabled: true,
   },
 ];
 

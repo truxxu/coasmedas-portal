@@ -121,3 +121,6 @@ export { TarjetaClaveDetailsCard } from "./TarjetaClaveDetailsCard";
 export { TarjetaClaveConfirmationCard } from "./TarjetaClaveConfirmationCard";
 export { TarjetaClaveResultCard } from "./TarjetaClaveResultCard";
 export { TarjetaSmsCodePage } from "./TarjetaSmsCodePage";
+export { BrebTransactionHistoryListCard } from "./BrebTransactionHistoryListCard";
+export { BrebTransactionDetailCard } from "./BrebTransactionDetailCard";
+export { BrebReversalSuccessModal } from "./BrebReversalSuccessModal";
