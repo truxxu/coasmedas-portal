@@ -56,8 +56,6 @@ function ModificarLlaveDetallePageInner() {
   useEffect(() => {
     if (!user || !idKeyCustomer) return;
     let cancelled = false;
-    setLoadingKey(true);
-    setLoadError(null);
     listBrebKeys(buildBrebDeviceContext(user))
       .then((res) => {
         if (cancelled) return;
@@ -70,6 +68,7 @@ function ModificarLlaveDetallePageInner() {
         }
         setCurrentApiKey(apiKey);
         setCurrentKey(mapBrebKeyToUi(apiKey));
+        setLoadError(null);
       })
       .catch((e) => {
         if (cancelled) return;
@@ -96,7 +95,6 @@ function ModificarLlaveDetallePageInner() {
   useEffect(() => {
     if (!user?.documentType || !user?.documentNumber) return;
     let cancelled = false;
-    setLoadingAccounts(true);
     listBrebAccounts({
       documentType: user.documentType,
       documentNumber: user.documentNumber,

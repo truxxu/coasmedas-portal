@@ -64,20 +64,23 @@ export default function HistorialBrebPage() {
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-    fetchTxs(filter.dateRange)
-      .catch((e) => {
-        if (cancelled) return;
-        setError(
-          e instanceof ApiError
-            ? e.message
-            : "No se pudo cargar el historial. Intente nuevamente.",
-        );
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setLoading(true);
+      setError(null);
+      fetchTxs(filter.dateRange)
+        .catch((e) => {
+          if (cancelled) return;
+          setError(
+            e instanceof ApiError
+              ? e.message
+              : "No se pudo cargar el historial. Intente nuevamente.",
+          );
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    });
     return () => {
       cancelled = true;
     };

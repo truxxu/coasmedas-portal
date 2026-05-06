@@ -44,8 +44,6 @@ export default function RegistrarLlaveDetallePage() {
   useEffect(() => {
     if (!user?.documentType || !user?.documentNumber) return;
     let cancelled = false;
-    setLoadingAccounts(true);
-    setLoadError(null);
     listBrebAccounts({
       documentType: user.documentType,
       documentNumber: user.documentNumber,
@@ -55,6 +53,7 @@ export default function RegistrarLlaveDetallePage() {
         rawAccountsRef.current = new Map(res.map((a) => [a.numeroCuenta, a]));
         setAccounts(res);
         setAccountId((prev) => prev || res[0]?.numeroCuenta || "");
+        setLoadError(null);
       })
       .catch((e) => {
         if (cancelled) return;
