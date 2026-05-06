@@ -16,15 +16,14 @@ import {
   mapBrebTxMovementToUi,
 } from "@/src/utils";
 import type { BrebTransaction } from "@/src/types/brebTransactionHistory";
+import { BREB_HISTORIAL_CACHE_KEY } from "@/src/constants/brebSessionKeys";
 
 type ModalState = "none" | "confirm" | "success";
-
-const CACHE_KEY = "breb:historial";
 
 function readCachedTransaction(id: string): BrebTransaction | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = sessionStorage.getItem(CACHE_KEY);
+    const raw = sessionStorage.getItem(BREB_HISTORIAL_CACHE_KEY);
     if (!raw) return null;
     const list: BrebTransaction[] = JSON.parse(raw);
     return list.find((t) => t.id === id) ?? null;
@@ -68,9 +67,12 @@ export default function HistorialBrebDetailPage() {
           .map((m) => mapBrebTxMovementToUi(m, ctx.documentNumber))
           .filter((x): x is BrebTransaction => x !== null);
         try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify(mapped));
+          sessionStorage.setItem(
+            BREB_HISTORIAL_CACHE_KEY,
+            JSON.stringify(mapped),
+          );
         } catch {
-          // ignore
+          // sessionStorage may be unavailable (private mode, quota).
         }
         const found = mapped.find((t) => t.id === id);
         if (found) {

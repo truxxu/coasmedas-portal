@@ -53,7 +53,6 @@ function ModificarLlaveDetallePageInner() {
   const [error, setError] = useState("");
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  // Load the key being modified.
   useEffect(() => {
     if (!user || !idKeyCustomer) return;
     let cancelled = false;
@@ -88,14 +87,12 @@ function ModificarLlaveDetallePageInner() {
     };
   }, [user, idKeyCustomer, router]);
 
-  // Redirect if id missing.
   useEffect(() => {
     if (!idKeyCustomer) {
       router.replace("/bre-b/gestionar-llaves");
     }
   }, [idKeyCustomer, router]);
 
-  // Load accounts.
   useEffect(() => {
     if (!user?.documentType || !user?.documentNumber) return;
     let cancelled = false;
@@ -108,15 +105,6 @@ function ModificarLlaveDetallePageInner() {
         if (cancelled) return;
         rawAccountsRef.current = new Map(res.map((a) => [a.numeroCuenta, a]));
         setAccounts(res);
-        // Default to the account currently associated with the key, when available.
-        setAccountId((prev) => {
-          if (prev) return prev;
-          const associated = currentApiKey?.numberAccount;
-          if (associated && rawAccountsRef.current.has(associated)) {
-            return associated;
-          }
-          return res[0]?.numeroCuenta || "";
-        });
       })
       .catch((e) => {
         if (cancelled) return;
@@ -132,7 +120,21 @@ function ModificarLlaveDetallePageInner() {
     return () => {
       cancelled = true;
     };
-  }, [user?.documentType, user?.documentNumber, currentApiKey]);
+  }, [user?.documentType, user?.documentNumber]);
+
+  // Default account selection: prefer the one currently associated with the
+  // key. Runs once accounts and key are both available; user input wins.
+  useEffect(() => {
+    if (accounts.length === 0) return;
+    setAccountId((prev) => {
+      if (prev) return prev;
+      const associated = currentApiKey?.numberAccount;
+      if (associated && rawAccountsRef.current.has(associated)) {
+        return associated;
+      }
+      return accounts[0]?.numeroCuenta || "";
+    });
+  }, [accounts, currentApiKey?.numberAccount]);
 
   const accountOptions = useMemo<BrebModificationAccountOption[]>(
     () =>

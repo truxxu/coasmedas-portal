@@ -18,6 +18,7 @@ import type {
   BrebTransactionDateRange,
   BrebTransactionFilter,
 } from "@/src/types/brebTransactionHistory";
+import { BREB_HISTORIAL_CACHE_KEY } from "@/src/constants/brebSessionKeys";
 
 export default function HistorialBrebPage() {
   const router = useRouter();
@@ -48,7 +49,10 @@ export default function HistorialBrebPage() {
         .filter((x): x is BrebTransaction => x !== null);
       setAllTxs(mapped);
       try {
-        sessionStorage.setItem("breb:historial", JSON.stringify(mapped));
+        sessionStorage.setItem(
+          BREB_HISTORIAL_CACHE_KEY,
+          JSON.stringify(mapped),
+        );
       } catch {
         // sessionStorage may be unavailable (private mode, quota); detail
         // page will fall back to refetching.

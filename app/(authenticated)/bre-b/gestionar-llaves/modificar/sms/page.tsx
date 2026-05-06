@@ -11,9 +11,10 @@ import type {
   BrebKeyModificationResult,
 } from "@/src/types/brebKeyModification";
 import type { UpdateBrebKeyRequest } from "@/types/api/breb";
-import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
-
-const SUCCESS_STATE_CODE = "U000";
+import {
+  BREB_KEY_SUCCESS_STATE_CODE,
+  BREB_SESSION_KEYS,
+} from "@/src/constants/brebSessionKeys";
 
 export default function ModificarLlaveSmsPage() {
   const { user } = useUserContext();
@@ -50,9 +51,8 @@ export default function ModificarLlaveSmsPage() {
           firstName: user.firstName,
           surName: user.lastName,
         };
-        console.log(req);
         const res = await updateBrebKey(req);
-        if (res.stateCode !== SUCCESS_STATE_CODE) {
+        if (res.stateCode !== BREB_KEY_SUCCESS_STATE_CODE) {
           throw new ApiError(
             -1,
             res.stateDescriptionSystem ??

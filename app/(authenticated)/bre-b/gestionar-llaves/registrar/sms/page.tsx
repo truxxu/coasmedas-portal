@@ -11,9 +11,10 @@ import type {
   BrebKeyRegistrationResult,
 } from "@/src/types/brebKeyRegistration";
 import type { CreateBrebKeyRequest } from "@/types/api/breb";
-import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
-
-const SUCCESS_STATE_CODE = "U000";
+import {
+  BREB_KEY_SUCCESS_STATE_CODE,
+  BREB_SESSION_KEYS,
+} from "@/src/constants/brebSessionKeys";
 
 export default function RegistrarLlaveSmsPage() {
   const { user } = useUserContext();
@@ -50,7 +51,7 @@ export default function RegistrarLlaveSmsPage() {
           surName: user.lastName,
         };
         const res = await createBrebKey(req);
-        if (res.stateCode !== SUCCESS_STATE_CODE) {
+        if (res.stateCode !== BREB_KEY_SUCCESS_STATE_CODE) {
           throw new ApiError(
             -1,
             res.stateDescriptionSystem ??

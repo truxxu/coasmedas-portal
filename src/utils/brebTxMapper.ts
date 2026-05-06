@@ -26,10 +26,12 @@ const STATE_TO_STATUS: Record<string, BrebTransactionStatus> = {
   SCHD: "revision_en_curso",
 };
 
+const NON_NUMERIC = /[^0-9.\-]/g;
+
 function toNumber(value: unknown): number | null {
   if (typeof value === "number" && Number.isFinite(value)) return value;
   if (typeof value === "string") {
-    const cleaned = value.replace(/[^0-9.\-]/g, "");
+    const cleaned = value.replace(NON_NUMERIC, "");
     if (!cleaned) return null;
     const n = Number(cleaned);
     return Number.isFinite(n) ? n : null;

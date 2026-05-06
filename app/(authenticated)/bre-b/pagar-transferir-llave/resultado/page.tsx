@@ -170,7 +170,10 @@ export default function BrebKeyTransferResultadoPage() {
       cancelledRef.current = true;
       if (timer) clearTimeout(timer);
     };
-  }, [router, user]);
+    // user is captured by closure for buildBrebDeviceContext; re-poll only
+    // when the logged-in identity changes, not when context rehydrates.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, user?.documentNumber]);
 
   const clearSessionStorage = () => clearBrebFlow("keyTransfer");
 

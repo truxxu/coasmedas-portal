@@ -39,7 +39,6 @@ export default function BrebKeyTransferPage() {
   const [error, setError] = useState("");
   const [resolving, setResolving] = useState(false);
 
-  // Load real source accounts.
   useEffect(() => {
     if (!user?.documentType || !user?.documentNumber) return;
     let cancelled = false;
