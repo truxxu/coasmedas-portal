@@ -11,6 +11,7 @@ interface BrebKeyActionConfirmModalProps {
   action: BrebKeyAction;
   keyTypeLabel: string;
   keyValue: string;
+  pending?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -43,6 +44,7 @@ export function BrebKeyActionConfirmModal({
   action,
   keyTypeLabel,
   keyValue,
+  pending = false,
   onConfirm,
   onCancel,
 }: BrebKeyActionConfirmModalProps) {
@@ -70,7 +72,7 @@ export function BrebKeyActionConfirmModal({
     >
       <div
         className="absolute inset-0 bg-black/50"
-        onClick={onCancel}
+        onClick={pending ? undefined : onCancel}
         aria-hidden="true"
       />
 
@@ -96,6 +98,7 @@ export function BrebKeyActionConfirmModal({
             type="button"
             variant="secondary"
             onClick={onCancel}
+            disabled={pending}
             className="flex-1 h-10 bg-brand-border hover:bg-brand-gray-low text-brand-text-black"
           >
             Cancelar
@@ -104,13 +107,25 @@ export function BrebKeyActionConfirmModal({
             type="button"
             variant="primary"
             onClick={onConfirm}
+            disabled={pending}
+            aria-busy={pending}
             className={
               isDestructive
                 ? "flex-1 h-10 bg-[#FF0D00] hover:bg-[#d70b00] text-white"
                 : "flex-1 h-10 bg-brand-primary hover:bg-brand-primary-dark text-white"
             }
           >
-            {confirmLabel}
+            {pending ? (
+              <span className="inline-flex items-center gap-2">
+                <span
+                  className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin"
+                  aria-hidden="true"
+                />
+                Procesando...
+              </span>
+            ) : (
+              confirmLabel
+            )}
           </Button>
         </div>
       </div>

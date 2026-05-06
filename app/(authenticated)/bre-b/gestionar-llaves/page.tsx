@@ -27,6 +27,14 @@ import { BREB_KEY_TYPE_LABELS } from "@/src/mocks/mockBrebKeyRegistrationData";
 import type { BrebRegisteredKey } from "@/src/types/brebKeyRegistration";
 import type { BrebKey, KeyMutationRequest } from "@/types/api/breb";
 
+const SUCCESS_STATE_CODE = "U000";
+
+const ACTION_FALLBACK_ERROR: Record<BrebKeyAction, string> = {
+  bloquear: "No se pudo bloquear la llave. Intente nuevamente.",
+  activar: "No se pudo activar la llave. Intente nuevamente.",
+  cancelar: "No se pudo cancelar la llave. Intente nuevamente.",
+};
+
 export default function GestionarLlavesPage() {
   const router = useRouter();
   useBrebPageHeader("Gestionar Llaves", "/bre-b");
@@ -137,12 +145,18 @@ export default function GestionarLlavesPage() {
     setActionPending(true);
     setError(null);
     try {
-      if (confirmModal.action === "cancelar") {
-        await deleteBrebKey(mutation);
-      } else if (confirmModal.action === "bloquear") {
-        await blockBrebKey(mutation);
-      } else {
-        await unblockBrebKey(mutation);
+      const res =
+        confirmModal.action === "cancelar"
+          ? await deleteBrebKey(mutation)
+          : confirmModal.action === "bloquear"
+            ? await blockBrebKey(mutation)
+            : await unblockBrebKey(mutation);
+      if (res.stateCode && res.stateCode !== SUCCESS_STATE_CODE) {
+        throw new ApiError(
+          -1,
+          res.stateDescriptionSystem ??
+            ACTION_FALLBACK_ERROR[confirmModal.action],
+        );
       }
       await fetchKeys();
       setSuccessAction(confirmModal.action);
@@ -213,6 +227,7 @@ export default function GestionarLlavesPage() {
           confirmTarget ? BREB_KEY_TYPE_LABELS[confirmTarget.type] : ""
         }
         keyValue={confirmTarget?.value ?? ""}
+        pending={actionPending}
         onConfirm={handleConfirm}
         onCancel={handleCancelModal}
       />
