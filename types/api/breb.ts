@@ -61,15 +61,31 @@ export interface BrebAccount {
 
 /**
  * BRE-B key as returned by `/bre-b/keys/list` and `/bre-b/keys/resolve`.
+ *
+ * Note: response field names differ from the request field names used for
+ * mutations (which prefix account fields with `source`). Map accordingly when
+ * building create/update/block/unblock/delete requests.
  */
 export interface BrebKey {
   idKeyCustomer: string;
   stateKeyCustomer: BrebKeyState;
   typeKeyCustomer: BrebKeyType;
   valueKeyCustomer: string;
-  sourceNumberAccount: string;
-  sourceTypeAccount: BrebAccountType;
-  sourceSubTypeAccount: BrebAccountSubType;
+  numberAccount: string;
+  typeAccount: BrebAccountType;
+  subTypeAccount: BrebAccountSubType;
+  accountDescription?: string;
+  creationDateTime?: string;
+  statusUpdateDateTime?: string;
+  entity?: string;
+  entityIdentification?: string;
+  entityName?: string;
+  resolutionId?: string | null;
+  typeKeyCustomerDescription?: string;
+  stateKeyCustomerDescription?: string;
+  endToEndIdentification?: string;
+  storage?: string;
+  receptorNode?: string;
 }
 
 // ─── Accounts ───
