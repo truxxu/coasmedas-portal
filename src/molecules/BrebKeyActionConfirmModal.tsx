@@ -111,7 +111,7 @@ export function BrebKeyActionConfirmModal({
             aria-busy={pending}
             className={
               isDestructive
-                ? "flex-1 h-10 bg-[#FF0D00] hover:bg-[#d70b00] text-white"
+                ? "flex-1 h-10 bg-brand-error hover:bg-brand-error-dark text-white"
                 : "flex-1 h-10 bg-brand-primary hover:bg-brand-primary-dark text-white"
             }
           >

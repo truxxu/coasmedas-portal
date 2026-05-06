@@ -154,7 +154,7 @@ export default function RegistrarLlaveDetallePage() {
       {loadError && (
         <div
           role="alert"
-          className="rounded-md border border-[#FF0D00] bg-[#FFEBEE] px-4 py-3 text-sm text-[#FF0D00]"
+          className="rounded-md border border-brand-error bg-brand-danger-bg px-4 py-3 text-sm text-brand-error"
         >
           {loadError}
         </div>

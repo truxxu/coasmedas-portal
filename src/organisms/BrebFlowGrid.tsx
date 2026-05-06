@@ -53,7 +53,7 @@ export function BrebFlowGrid({
         <h2 className="text-[21px] font-bold text-brand-navy mb-2 text-center">
           Zona Bre-B
         </h2>
-        <p className="text-[15px] text-gray-900 text-center">
+        <p className="text-[15px] text-brand-text-black text-center">
           Realiza pagos y transferencias inmediatas de forma segura y sencilla.
           Administra tus llaves y consulta tu historial de transacciones.
         </p>

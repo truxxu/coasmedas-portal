@@ -13,8 +13,8 @@ interface BrebTransactionDetailCardProps {
 }
 
 const STATUS_COLOR: Record<BrebTransaction["status"], string> = {
-  exitosa: "text-[#00a44c]",
-  fallida: "text-[#e1182c]",
+  exitosa: "text-brand-success-icon",
+  fallida: "text-brand-error",
   revision_en_curso: "text-black",
 };
 

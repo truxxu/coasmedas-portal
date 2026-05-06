@@ -19,11 +19,11 @@ const STATUS_STYLES: Record<
 > = {
   activa: {
     label: "Activa",
-    className: "bg-[#d6f5e0] text-[#0b6637]",
+    className: "bg-green-50 text-brand-positive",
   },
   bloqueada: {
     label: "Bloqueada",
-    className: "bg-[#fdecc8] text-[#915916]",
+    className: "bg-amber-50 text-amber-800",
   },
 };
 
@@ -169,7 +169,7 @@ function MenuItem({ label, enabled, destructive, onClick }: MenuItemProps) {
   if (!enabled) {
     stateClasses = "text-brand-gray-medium cursor-not-allowed";
   } else if (destructive) {
-    stateClasses = "text-[#FF0D00] hover:bg-red-50";
+    stateClasses = "text-brand-error hover:bg-brand-danger-bg";
   } else {
     stateClasses = "text-brand-text-black hover:bg-brand-gray-light";
   }

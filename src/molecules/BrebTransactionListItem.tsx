@@ -13,8 +13,8 @@ interface BrebTransactionListItemProps {
 }
 
 const STATUS_COLOR: Record<BrebTransaction["status"], string> = {
-  exitosa: "text-[#008706]",
-  fallida: "text-[#e1182c]",
+  exitosa: "text-brand-positive",
+  fallida: "text-brand-error",
   revision_en_curso: "text-black",
 };
 
@@ -60,7 +60,7 @@ function BrebTransactionListItemImpl({
         <div className="text-right">
           <p
             className={`text-[15px] font-normal ${
-              isCredit ? "text-[#008706]" : "text-[#e1182c]"
+              isCredit ? "text-brand-positive" : "text-brand-error"
             }`}
           >
             {amountStr}

@@ -101,7 +101,7 @@ export function BrebKeyModificationDetailsCard({
             readOnly
             value={keyValue}
             placeholder=""
-            className="w-full h-11 px-3 rounded-md border border-brand-footer-text bg-[#e7e7e7] text-[16px] text-brand-text-black outline-none"
+            className="w-full h-11 px-3 rounded-md border border-brand-footer-text bg-brand-gray-light text-[16px] text-brand-text-black outline-none"
           />
         </div>
 
@@ -117,7 +117,7 @@ export function BrebKeyModificationDetailsCard({
             value={accountId}
             onChange={(e) => onAccountChange(e.target.value)}
             disabled={loadingAccounts || accounts.length === 0}
-            className="w-full h-11 px-3 rounded-md border border-brand-footer-text text-[16px] text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none disabled:bg-[#e7e7e7] disabled:cursor-not-allowed"
+            className="w-full h-11 px-3 rounded-md border border-brand-footer-text text-[16px] text-brand-text-black focus:border-brand-primary focus:ring-2 focus:ring-brand-primary focus:outline-none disabled:bg-brand-gray-light disabled:cursor-not-allowed"
           >
             {loadingAccounts ? (
               <option value="">Cargando cuentas...</option>
