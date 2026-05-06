@@ -7,8 +7,13 @@ import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyTransferConfirmationCard } from "@/src/organisms";
 import { useUIContext } from "@/src/contexts";
 import { useBrebPageHeader } from "@/src/hooks";
-import type { BrebKeyTransferConfirmationData } from "@/src/types/brebKeyTransfer";
-import { mockBrebSourceAccounts, BREB_KEY_TRANSFER_STEPS } from "@/src/mocks";
+import { describeBrebAccount, maskNumber } from "@/src/utils";
+import type {
+  BrebKeyTransferConfirmationData,
+  BrebResolvedDestination,
+} from "@/src/types/brebKeyTransfer";
+import type { BrebAccount } from "@/types/api/breb";
+import { BREB_KEY_TRANSFER_STEPS } from "@/src/mocks";
 import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
 
 export default function BrebKeyTransferConfirmacionPage() {
@@ -20,8 +25,8 @@ export default function BrebKeyTransferConfirmacionPage() {
     () => {
       if (typeof window === "undefined") return null;
 
-      const sourceId = sessionStorage.getItem(
-        BREB_SESSION_KEYS.keyTransfer.sourceId,
+      const sourceAccountStr = sessionStorage.getItem(
+        BREB_SESSION_KEYS.keyTransfer.sourceAccount,
       );
       const destinationKey = sessionStorage.getItem(
         BREB_SESSION_KEYS.keyTransfer.destinationKey,
@@ -29,17 +34,58 @@ export default function BrebKeyTransferConfirmacionPage() {
       const amount = sessionStorage.getItem(
         BREB_SESSION_KEYS.keyTransfer.amount,
       );
+      const resolvedStr = sessionStorage.getItem(
+        BREB_SESSION_KEYS.keyTransfer.resolvedKey,
+      );
 
-      if (!sourceId || !destinationKey || !amount) return null;
+      if (!sourceAccountStr || !destinationKey || !amount || !resolvedStr) {
+        return null;
+      }
 
-      const source = mockBrebSourceAccounts.find((acc) => acc.id === sourceId);
-      if (!source) return null;
+      let source: BrebAccount;
+      let resolved: BrebResolvedDestination;
+      try {
+        source = JSON.parse(sourceAccountStr) as BrebAccount;
+        resolved = JSON.parse(resolvedStr) as BrebResolvedDestination;
+      } catch {
+        return null;
+      }
+
+      const sourceLabel =
+        source.nombreProducto?.trim() ||
+        source.aliasCuenta?.trim() ||
+        describeBrebAccount(source.tipoCuenta, source.subtipoCuenta);
+      const sourceTypeAccountDescription =
+        source.nombreProducto?.trim() ||
+        describeBrebAccount(source.tipoCuenta, source.subtipoCuenta);
+
+      const targetKey = resolved.key;
 
       return {
-        sourceProduct: `${source.type} (${source.maskedNumber})`,
-        destinationHolder: "Usuario Desconocido",
+        sourceProduct: `${sourceLabel} (${maskNumber(source.numeroCuenta)})`,
+        destinationHolder:
+          `${resolved.firstName ?? ""} ${resolved.surname ?? ""}`.trim() ||
+          "Destinatario",
         destinationKey,
         amount: Number(amount),
+        sourceNumberAccount: source.numeroCuenta,
+        sourceTypeAccount: source.tipoCuenta,
+        sourceSubTypeAccount: source.subtipoCuenta,
+        sourceTypeAccountDescription,
+        targetNode: targetKey.receptorNode ?? "",
+        targetResolutionId: targetKey.resolutionId ?? "",
+        targetEntity: targetKey.entity ?? "",
+        targetNumberAccount: targetKey.numberAccount,
+        targetTypeAccount: targetKey.typeAccount,
+        targetSubTypeAccount: targetKey.subTypeAccount,
+        targetTypeAccountDescription:
+          targetKey.accountDescription?.trim() ||
+          describeBrebAccount(targetKey.typeAccount, targetKey.subTypeAccount),
+        targetTypeKeyCustomer: targetKey.typeKeyCustomer,
+        targetIdentification: resolved.identification,
+        targetTypeIdentification: resolved.typeIdentification,
+        targetFirstName: resolved.firstName,
+        targetSurName: resolved.surname,
       };
     },
   );

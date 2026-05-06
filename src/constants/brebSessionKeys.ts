@@ -8,9 +8,12 @@ export const BREB_SESSION_KEYS = {
   },
   keyTransfer: {
     sourceId: "brebKeyTransferSourceId",
+    sourceAccount: "brebKeyTransferSourceAccount",
     destinationKey: "brebKeyTransferDestinationKey",
     amount: "brebKeyTransferAmount",
+    resolvedKey: "brebKeyTransferResolvedKey",
     confirmation: "brebKeyTransferConfirmation",
+    paymentId: "brebKeyTransferPaymentId",
     result: "brebKeyTransferResult",
   },
   keyRegistration: {

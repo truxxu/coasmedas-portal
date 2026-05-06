@@ -208,7 +208,11 @@ export interface InitBrebTxRequest extends BrebDeviceContext {
   sourceSurName: string;
   sourceNumberAccount: string;
   sourceTypeAccount: BrebAccountType;
-  sourceSubTypeAccount: BrebAccountSubType;
+  /**
+   * Omitted when the source account is a rotating credit line (`tipoCuenta`
+   * = `"CR"`), per Visionamos backend spec — credit accounts have no subtype.
+   */
+  sourceSubTypeAccount?: BrebAccountSubType;
   sourceTypeAccountDescription: string;
   targetNode: string;
   targetResolutionId: string;
@@ -217,7 +221,8 @@ export interface InitBrebTxRequest extends BrebDeviceContext {
   targetEntity: string;
   targetNumberAccount: string;
   targetTypeAccount: BrebAccountType;
-  targetSubTypeAccount: BrebAccountSubType;
+  /** Omitted when the destination key has no associated subtype. */
+  targetSubTypeAccount?: BrebAccountSubType;
   targetTypeAccountDescription: string;
   targetIdentification: string;
   targetTypeIdentification: string;

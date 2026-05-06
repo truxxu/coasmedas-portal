@@ -20,6 +20,22 @@ export const mockBrebKeyTransferConfirmation: BrebKeyTransferConfirmationData =
     destinationHolder: "Usuario Desconocido",
     destinationKey: "3456789011",
     amount: 45000,
+    sourceNumberAccount: "1234567890",
+    sourceTypeAccount: "AH",
+    sourceSubTypeAccount: "AV",
+    sourceTypeAccountDescription: "Cuenta de Ahorros",
+    targetNode: "",
+    targetResolutionId: "",
+    targetEntity: "",
+    targetNumberAccount: "",
+    targetTypeAccount: "AH",
+    targetSubTypeAccount: "AV",
+    targetTypeAccountDescription: "Cuenta de Ahorros",
+    targetTypeKeyCustomer: "M",
+    targetIdentification: "",
+    targetTypeIdentification: "",
+    targetFirstName: "Usuario",
+    targetSurName: "Desconocido",
   };
 
 export const mockBrebKeyTransferResultSuccess: BrebKeyTransferResult = {

@@ -30,10 +30,16 @@ export function BrebKeyTransferDetailsCard({
   error,
 }: BrebKeyTransferDetailsCardProps) {
   const formatSourceOption = (account: BrebSourceAccount) => {
+    const baseLabel = `${account.type}${
+      account.maskedNumber ? ` (${account.maskedNumber})` : ""
+    }`;
+    if (account.balance <= 0) {
+      return baseLabel;
+    }
     const balance = hideBalances
       ? maskCurrency()
       : formatCurrency(account.balance);
-    return `${account.type} - Saldo: ${balance}`;
+    return `${baseLabel} - Saldo: ${balance}`;
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
