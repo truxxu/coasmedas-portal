@@ -1,3 +1,5 @@
+import type { BrebAccountSubType, BrebAccountType } from "@/types/api/breb";
+
 export type BrebKeyType = "celular" | "correo" | "documento" | "aleatoria";
 
 export type BrebKeyStatus = "activa" | "bloqueada";
@@ -15,6 +17,10 @@ export interface BrebKeyRegistrationFormData {
   keyType: BrebKeyType | "";
   keyValue: string;
   accountId: string;
+  sourceNumberAccount: string;
+  sourceTypeAccount: BrebAccountType;
+  sourceSubTypeAccount: BrebAccountSubType;
+  sourceTypeAccountDescription: string;
 }
 
 export interface BrebKeyRegistrationConfirmationData {
@@ -22,6 +28,10 @@ export interface BrebKeyRegistrationConfirmationData {
   keyTypeLabel: string;
   keyValue: string;
   accountLabel: string;
+  sourceNumberAccount: string;
+  sourceTypeAccount: BrebAccountType;
+  sourceSubTypeAccount: BrebAccountSubType;
+  sourceTypeAccountDescription: string;
 }
 
 export interface BrebKeyRegistrationResult {
@@ -30,4 +40,5 @@ export interface BrebKeyRegistrationResult {
   keyTypeLabel: string;
   accountLabel: string;
   message?: string;
+  errorCode?: string;
 }

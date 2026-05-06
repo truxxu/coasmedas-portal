@@ -6,11 +6,8 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyRegistrationConfirmationCard } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
-import {
-  BREB_KEY_REGISTRATION_STEPS,
-  BREB_KEY_TYPE_LABELS,
-  mockBrebRegistrationAccounts,
-} from "@/src/mocks";
+import { maskNumber } from "@/src/utils";
+import { BREB_KEY_REGISTRATION_STEPS, BREB_KEY_TYPE_LABELS } from "@/src/mocks";
 import type {
   BrebKeyRegistrationConfirmationData,
   BrebKeyRegistrationFormData,
@@ -31,16 +28,17 @@ export default function RegistrarLlaveConfirmacionPage() {
     } catch {
       return null;
     }
-    if (!form.keyType) return null;
-    const account = mockBrebRegistrationAccounts.find(
-      (a) => a.id === form.accountId,
-    );
-    if (!account) return null;
+    if (!form.keyType || !form.sourceNumberAccount) return null;
+    const accountLabel = `${form.sourceTypeAccountDescription} (${maskNumber(form.sourceNumberAccount)})`;
     return {
       keyType: form.keyType,
       keyTypeLabel: BREB_KEY_TYPE_LABELS[form.keyType],
       keyValue: form.keyValue,
-      accountLabel: account.label,
+      accountLabel,
+      sourceNumberAccount: form.sourceNumberAccount,
+      sourceTypeAccount: form.sourceTypeAccount,
+      sourceSubTypeAccount: form.sourceSubTypeAccount,
+      sourceTypeAccountDescription: form.sourceTypeAccountDescription,
     };
   });
 

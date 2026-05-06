@@ -89,7 +89,10 @@ export { BrebQrPaymentDetailsCard } from "./BrebQrPaymentDetailsCard";
 export { BrebQrPaymentConfirmationCard } from "./BrebQrPaymentConfirmationCard";
 export { BrebQrPaymentResultCard } from "./BrebQrPaymentResultCard";
 export { BrebKeysListCard } from "./BrebKeysListCard";
-export { BrebKeyRegistrationDetailsCard } from "./BrebKeyRegistrationDetailsCard";
+export {
+  BrebKeyRegistrationDetailsCard,
+  type BrebRegistrationAccountOption,
+} from "./BrebKeyRegistrationDetailsCard";
 export { BrebKeyRegistrationConfirmationCard } from "./BrebKeyRegistrationConfirmationCard";
 export { BrebKeyRegistrationResultCard } from "./BrebKeyRegistrationResultCard";
 export { BrebKeyModificationDetailsCard } from "./BrebKeyModificationDetailsCard";
