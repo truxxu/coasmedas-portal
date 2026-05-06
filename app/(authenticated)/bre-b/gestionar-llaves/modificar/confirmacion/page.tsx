@@ -6,12 +6,7 @@ import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
 import { BrebKeyModificationConfirmationCard } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
-import {
-  BREB_KEY_MODIFICATION_STEPS,
-  BREB_KEY_TYPE_LABELS,
-  mockBrebRegistrationAccounts,
-  mockRegisteredKeys,
-} from "@/src/mocks";
+import { BREB_KEY_MODIFICATION_STEPS, BREB_KEY_TYPE_LABELS } from "@/src/mocks";
 import type {
   BrebKeyModificationConfirmationData,
   BrebKeyModificationFormData,
@@ -32,19 +27,18 @@ export default function ModificarLlaveConfirmacionPage() {
     } catch {
       return null;
     }
-    const currentKey = mockRegisteredKeys.find(
-      (k) => k.id === form.currentKeyId,
-    );
-    const account = mockBrebRegistrationAccounts.find(
-      (a) => a.id === form.accountId,
-    );
-    if (!currentKey || !account) return null;
     return {
-      currentKeyTypeLabel: BREB_KEY_TYPE_LABELS[currentKey.type],
-      currentKeyValue: currentKey.value,
+      idKeyCustomer: form.idKeyCustomer,
+      currentKeyTypeLabel: BREB_KEY_TYPE_LABELS[form.currentKeyType],
+      currentKeyValue: form.currentKeyValue,
+      newKeyType: form.newKeyType,
       newKeyTypeLabel: BREB_KEY_TYPE_LABELS[form.newKeyType],
       newKeyValue: form.newKeyValue,
-      accountLabel: account.label,
+      accountLabel: form.accountLabel,
+      sourceNumberAccount: form.sourceNumberAccount,
+      sourceTypeAccount: form.sourceTypeAccount,
+      sourceSubTypeAccount: form.sourceSubTypeAccount,
+      sourceTypeAccountDescription: form.sourceTypeAccountDescription,
     };
   });
 

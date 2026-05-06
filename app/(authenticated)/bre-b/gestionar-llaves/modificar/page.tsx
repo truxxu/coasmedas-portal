@@ -1,118 +1,202 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/src/atoms";
 import { Breadcrumbs, Stepper } from "@/src/molecules";
-import { BrebKeyModificationDetailsCard } from "@/src/organisms";
+import {
+  BrebKeyModificationDetailsCard,
+  type BrebModificationAccountOption,
+} from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
+import { useUserContext } from "@/src/contexts";
+import { listBrebAccounts, listBrebKeys } from "@/services";
+import {
+  buildBrebDeviceContext,
+  describeBrebAccount,
+  mapBrebKeyToUi,
+  maskNumber,
+} from "@/src/utils";
+import { ApiError } from "@/lib/api/errors";
 import {
   BREB_KEY_MODIFICATION_STEPS,
-  mockBrebAvailableNewKeys,
-  mockBrebKeysInUseElsewhere,
-  mockBrebRegistrationAccounts,
-  mockRegisteredKeys,
+  generateRandomBrebKey,
+  mockBrebKeyRegistrationDefaults,
 } from "@/src/mocks";
+import type {
+  BrebKeyType,
+  BrebRegisteredKey,
+} from "@/src/types/brebKeyRegistration";
 import type { BrebKeyModificationFormData } from "@/src/types/brebKeyModification";
+import type { BrebAccount, BrebKey } from "@/types/api/breb";
 import { BREB_SESSION_KEYS } from "@/src/constants/brebSessionKeys";
-
-function readPersistedForm(
-  keyId: string,
-): { newKeyId: string; accountId: string } | null {
-  if (typeof window === "undefined" || !keyId) return null;
-  const raw = sessionStorage.getItem(BREB_SESSION_KEYS.keyModification.form);
-  if (!raw) return null;
-  try {
-    const stored = JSON.parse(raw) as BrebKeyModificationFormData;
-    if (stored.currentKeyId === keyId) {
-      return { newKeyId: stored.newKeyId, accountId: stored.accountId };
-    }
-  } catch {
-    // ignore corrupt session payload
-  }
-  return null;
-}
 
 function ModificarLlaveDetallePageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   useBrebPageHeader("Modificar Llave", "/bre-b/gestionar-llaves");
+  const { user } = useUserContext();
 
-  const keyId = searchParams.get("id") ?? "";
-  const currentKey = useMemo(
-    () => mockRegisteredKeys.find((k) => k.id === keyId),
-    [keyId],
-  );
+  const idKeyCustomer = searchParams.get("id") ?? "";
 
-  const [selectedNewKeyId, setSelectedNewKeyId] = useState(
-    () => readPersistedForm(keyId)?.newKeyId ?? "",
-  );
-  const [accountId, setAccountId] = useState(
-    () =>
-      readPersistedForm(keyId)?.accountId ??
-      mockBrebRegistrationAccounts[0]?.id ??
-      "",
-  );
+  const [currentApiKey, setCurrentApiKey] = useState<BrebKey | null>(null);
+  const [currentKey, setCurrentKey] = useState<BrebRegisteredKey | null>(null);
+  const [loadingKey, setLoadingKey] = useState(true);
+
+  const [accounts, setAccounts] = useState<BrebAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
+  const rawAccountsRef = useRef<Map<string, BrebAccount>>(new Map());
+
+  const [keyType, setKeyType] = useState<BrebKeyType | "">("");
+  const [keyValue, setKeyValue] = useState("");
+  const [accountId, setAccountId] = useState("");
   const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState<string | null>(null);
 
+  // Load the key being modified.
   useEffect(() => {
-    if (!currentKey) {
+    if (!user || !idKeyCustomer) return;
+    let cancelled = false;
+    setLoadingKey(true);
+    setLoadError(null);
+    listBrebKeys(buildBrebDeviceContext(user))
+      .then((res) => {
+        if (cancelled) return;
+        const apiKey = res.keysCustomers.find(
+          (k) => k.idKeyCustomer === idKeyCustomer,
+        );
+        if (!apiKey) {
+          router.replace("/bre-b/gestionar-llaves");
+          return;
+        }
+        setCurrentApiKey(apiKey);
+        setCurrentKey(mapBrebKeyToUi(apiKey));
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setLoadError(
+          e instanceof ApiError
+            ? e.message
+            : "No se pudo cargar la llave. Intente nuevamente.",
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingKey(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, idKeyCustomer, router]);
+
+  // Redirect if id missing.
+  useEffect(() => {
+    if (!idKeyCustomer) {
       router.replace("/bre-b/gestionar-llaves");
     }
-  }, [currentKey, router]);
+  }, [idKeyCustomer, router]);
 
-  if (!currentKey) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <span className="text-brand-gray-medium">Cargando...</span>
-      </div>
-    );
-  }
+  // Load accounts.
+  useEffect(() => {
+    if (!user?.documentType || !user?.documentNumber) return;
+    let cancelled = false;
+    setLoadingAccounts(true);
+    listBrebAccounts({
+      documentType: user.documentType,
+      documentNumber: user.documentNumber,
+    })
+      .then((res) => {
+        if (cancelled) return;
+        rawAccountsRef.current = new Map(res.map((a) => [a.numeroCuenta, a]));
+        setAccounts(res);
+        // Default to the account currently associated with the key, when available.
+        setAccountId((prev) => {
+          if (prev) return prev;
+          const associated = currentApiKey?.numberAccount;
+          if (associated && rawAccountsRef.current.has(associated)) {
+            return associated;
+          }
+          return res[0]?.numeroCuenta || "";
+        });
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setLoadError(
+          e instanceof ApiError
+            ? e.message
+            : "No se pudieron cargar las cuentas. Intente nuevamente.",
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingAccounts(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.documentType, user?.documentNumber, currentApiKey]);
 
-  const selectedKey = mockBrebAvailableNewKeys.find(
-    (k) => k.id === selectedNewKeyId,
+  const accountOptions = useMemo<BrebModificationAccountOption[]>(
+    () =>
+      accounts.map((a) => ({
+        id: a.numeroCuenta,
+        label: `${a.nombreProducto || a.aliasCuenta || "Cuenta"} (${maskNumber(a.numeroCuenta)})`,
+      })),
+    [accounts],
   );
-  const isSelectedSameAsCurrent =
-    selectedKey !== undefined &&
-    selectedKey.value === currentKey.value &&
-    selectedKey.type === currentKey.type;
 
-  const isFormValid = Boolean(
-    selectedNewKeyId && !isSelectedSameAsCurrent && accountId,
-  );
-
-  const handleSelectNewKey = (id: string) => {
-    setSelectedNewKeyId(id);
+  const handleKeyTypeChange = (value: BrebKeyType | "") => {
+    setKeyType(value);
     setError("");
-  };
-
-  const handleAccountChange = (id: string) => {
-    setAccountId(id);
-    setError("");
+    if (value === "") {
+      setKeyValue("");
+      return;
+    }
+    if (value === "aleatoria") {
+      setKeyValue(generateRandomBrebKey());
+    } else {
+      setKeyValue(mockBrebKeyRegistrationDefaults[value]);
+    }
   };
 
   const handleContinue = () => {
     setError("");
-    if (!selectedNewKeyId) {
-      setError("Selecciona una llave nueva.");
+    if (!currentKey) return;
+    if (!keyType) {
+      setError("Por favor selecciona un tipo de llave");
       return;
     }
-    if (isSelectedSameAsCurrent) {
+    if (!keyValue) {
+      setError("La llave registrada no es válida");
+      return;
+    }
+    if (keyType === currentKey.type && keyValue === currentKey.value) {
       setError("Selecciona una llave diferente a la actual.");
       return;
     }
     if (!accountId) {
-      setError("Selecciona una cuenta a asociar.");
+      setError("Por favor selecciona una cuenta a asociar");
       return;
     }
-    if (!selectedKey) return;
+    const account = rawAccountsRef.current.get(accountId);
+    if (!account) {
+      setError("La cuenta seleccionada no es válida");
+      return;
+    }
 
+    const accountOption = accountOptions.find((o) => o.id === accountId);
     const form: BrebKeyModificationFormData = {
-      currentKeyId: currentKey.id,
-      newKeyId: selectedKey.id,
-      newKeyType: selectedKey.type,
-      newKeyValue: selectedKey.value,
+      idKeyCustomer: currentKey.id,
+      currentKeyType: currentKey.type,
+      currentKeyValue: currentKey.value,
+      newKeyType: keyType,
+      newKeyValue: keyValue,
       accountId,
+      accountLabel: accountOption?.label ?? "",
+      sourceNumberAccount: account.numeroCuenta,
+      sourceTypeAccount: account.tipoCuenta,
+      sourceSubTypeAccount: account.subtipoCuenta,
+      sourceTypeAccountDescription:
+        account.nombreProducto?.trim() ||
+        describeBrebAccount(account.tipoCuenta, account.subtipoCuenta),
     };
     sessionStorage.setItem(
       BREB_SESSION_KEYS.keyModification.form,
@@ -125,6 +209,18 @@ function ModificarLlaveDetallePageInner() {
     router.push("/bre-b/gestionar-llaves");
   };
 
+  const isFormValid = Boolean(
+    currentKey && keyType && keyValue && accountId && !loadingAccounts,
+  );
+
+  if (loadingKey || !currentKey) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <span className="text-brand-gray-medium">Cargando...</span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -135,15 +231,24 @@ function ModificarLlaveDetallePageInner() {
         <Stepper currentStep={1} steps={BREB_KEY_MODIFICATION_STEPS} />
       </div>
 
+      {loadError && (
+        <div
+          role="alert"
+          className="rounded-md border border-[#FF0D00] bg-[#FFEBEE] px-4 py-3 text-sm text-[#FF0D00]"
+        >
+          {loadError}
+        </div>
+      )}
+
       <BrebKeyModificationDetailsCard
         currentKey={currentKey}
-        availableKeys={mockBrebAvailableNewKeys}
-        keysInUseElsewhere={mockBrebKeysInUseElsewhere}
-        accountOptions={mockBrebRegistrationAccounts}
-        selectedNewKeyId={selectedNewKeyId}
+        keyType={keyType}
+        keyValue={keyValue}
         accountId={accountId}
-        onSelectNewKey={handleSelectNewKey}
-        onAccountChange={handleAccountChange}
+        accounts={accountOptions}
+        loadingAccounts={loadingAccounts}
+        onKeyTypeChange={handleKeyTypeChange}
+        onAccountChange={setAccountId}
         error={error}
       />
 
