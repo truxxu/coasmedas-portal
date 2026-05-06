@@ -1,50 +1,94 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { BrebTransactionHistoryListCard } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
-import { mockBrebTransactions } from "@/src/mocks/mockBrebTransactionHistoryData";
-import type { BrebTransactionFilter } from "@/src/types/brebTransactionHistory";
-
-const DATE_RANGE_DAYS: Record<
-  BrebTransactionFilter["dateRange"],
-  number | null
-> = {
-  ultimos_30: 30,
-  ultimos_60: 60,
-  ultimos_90: 90,
-  todos: null,
-};
-
-const REFERENCE_NOW = new Date("2025-10-15T00:00:00");
+import { useUserContext } from "@/src/contexts";
+import { listBrebTxs } from "@/services";
+import {
+  buildBrebDeviceContext,
+  buildDateRangeParams,
+  mapBrebTxMovementToUi,
+} from "@/src/utils";
+import { ApiError } from "@/lib/api/errors";
+import type {
+  BrebTransaction,
+  BrebTransactionDateRange,
+  BrebTransactionFilter,
+} from "@/src/types/brebTransactionHistory";
 
 export default function HistorialBrebPage() {
   const router = useRouter();
   useBrebPageHeader("Historial Bre-B", "/bre-b");
+  const { user } = useUserContext();
 
+  const [allTxs, setAllTxs] = useState<BrebTransaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<BrebTransactionFilter>({
     dateRange: "ultimos_30",
     type: "todos",
     status: "todos",
   });
 
-  const filteredTransactions = useMemo(() => {
-    const days = DATE_RANGE_DAYS[filter.dateRange];
-    return mockBrebTransactions.filter((tx) => {
-      if (filter.type !== "todos" && tx.type !== filter.type) return false;
-      if (filter.status !== "todos" && tx.status !== filter.status)
-        return false;
-      if (days !== null) {
-        const txDate = new Date(tx.date);
-        const diffDays =
-          (REFERENCE_NOW.getTime() - txDate.getTime()) / (1000 * 60 * 60 * 24);
-        if (diffDays > days) return false;
+  const fetchTxs = useCallback(
+    async (range: BrebTransactionDateRange) => {
+      if (!user) return;
+      const ctx = buildBrebDeviceContext(user);
+      const dateParams = buildDateRangeParams(range);
+      const res = await listBrebTxs({
+        documentType: ctx.documentType,
+        documentNumber: ctx.documentNumber,
+        ...dateParams,
+      });
+      const mapped = res.movements
+        .map((m) => mapBrebTxMovementToUi(m, ctx.documentNumber))
+        .filter((x): x is BrebTransaction => x !== null);
+      setAllTxs(mapped);
+      try {
+        sessionStorage.setItem("breb:historial", JSON.stringify(mapped));
+      } catch {
+        // sessionStorage may be unavailable (private mode, quota); detail
+        // page will fall back to refetching.
       }
-      return true;
-    });
-  }, [filter]);
+    },
+    [user],
+  );
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetchTxs(filter.dateRange)
+      .catch((e) => {
+        if (cancelled) return;
+        setError(
+          e instanceof ApiError
+            ? e.message
+            : "No se pudo cargar el historial. Intente nuevamente.",
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, filter.dateRange, fetchTxs]);
+
+  const filteredTransactions = useMemo(
+    () =>
+      allTxs.filter((tx) => {
+        if (filter.type !== "todos" && tx.type !== filter.type) return false;
+        if (filter.status !== "todos" && tx.status !== filter.status)
+          return false;
+        return true;
+      }),
+    [allTxs, filter.type, filter.status],
+  );
 
   const handleSelectTransaction = useCallback(
     (id: string) => {
@@ -63,12 +107,27 @@ export default function HistorialBrebPage() {
         <Breadcrumbs items={["Inicio", "Bre-B", "Historial Bre-B"]} />
       </div>
 
-      <BrebTransactionHistoryListCard
-        transactions={filteredTransactions}
-        filter={filter}
-        onFilter={setFilter}
-        onSelectTransaction={handleSelectTransaction}
-      />
+      {error && (
+        <div
+          role="alert"
+          className="rounded-md border border-[#FF0D00] bg-[#FFEBEE] px-4 py-3 text-sm text-[#FF0D00]"
+        >
+          {error}
+        </div>
+      )}
+
+      {loading ? (
+        <div className="flex items-center justify-center rounded-2xl bg-white p-12 text-sm text-brand-gray-high">
+          Cargando historial...
+        </div>
+      ) : (
+        <BrebTransactionHistoryListCard
+          transactions={filteredTransactions}
+          filter={filter}
+          onFilter={setFilter}
+          onSelectTransaction={handleSelectTransaction}
+        />
+      )}
 
       <div className="flex justify-start">
         <button

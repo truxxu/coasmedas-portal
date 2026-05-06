@@ -264,13 +264,69 @@ export interface ListBrebTxsRequest extends UserIdentification {
 }
 
 /**
- * Single movement entry. Backend doc shows `movements: [...]` without
- * specifying item shape — kept loose until backend confirms.
+ * Per-party detail inside a movement. `typeOperation` is `"D"` for the source
+ * (sender) and `"C"` for the target (receiver). Direction from the logged-in
+ * user's perspective must be derived by comparing `identification` to the
+ * user's document number.
+ */
+export interface BrebTxPaymentDetail {
+  entity?: string;
+  entityIdentification?: string;
+  entityName?: string | null;
+  node?: string | null;
+  nodeName?: string | null;
+  identification?: string;
+  typeIdentification?: string;
+  name?: string;
+  /** "D" (source/sender) or "C" (target/receiver). */
+  typeOperation?: "D" | "C" | string;
+  typeOperationDescription?: string;
+  /** "Bre-B - Enviar" / "Bre-B - Recibir". */
+  paymentDescription?: string;
+  numberAccount?: string;
+  typeAccount?: string;
+  subTypeAccount?: string;
+  typeAccountDescription?: string;
+  /** Bre-B key used by the party (often empty). */
+  valueKeyCustomer?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Single movement entry returned by `/bre-b/txs/list`. Index signature kept
+ * so unexpected backend fields don't break typing.
  */
 export interface BrebTxMovement {
+  paymentId?: string;
+  endToEndIndentification?: string;
+  /** Amount as string per backend MapFrame convention. */
+  amount?: string | number;
+  /** ISO timestamp, e.g. "2026-04-22T15:09:25.797". */
+  datePayment?: string;
+  /** State code ("ACSC" = settled/successful, "RJCT" = rejected, etc). */
+  stateOperation?: string;
+  stateOperationDescription?: string;
+  sourcePaymentDetail?: BrebTxPaymentDetail;
+  targetPaymentDetail?: BrebTxPaymentDetail;
   [key: string]: unknown;
+}
+
+export interface BrebTxPagination {
+  currentPage?: string;
+  totalPages?: string;
+  totalElements?: string;
+  firstRequestTimestamp?: string;
 }
 
 export interface ListBrebTxsResponse {
   movements: BrebTxMovement[];
+  date?: string;
+  hour?: string;
+  sequence?: string;
+  channel?: string;
+  paginationMovements?: BrebTxPagination;
+  stateCode?: string;
+  stateCodeVIS?: string;
+  stateDescriptionSystem?: string;
+  stateDescriptionCustomer?: string;
 }

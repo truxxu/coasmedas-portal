@@ -6,3 +6,4 @@ export * from "./productMappers";
 export * from "./transaction";
 export * from "./brebDeviceContext";
 export * from "./brebKeyMapper";
+export * from "./brebTxMapper";

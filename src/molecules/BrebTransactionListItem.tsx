@@ -60,7 +60,7 @@ function BrebTransactionListItemImpl({
         <div className="text-right">
           <p
             className={`text-[15px] font-normal ${
-              isCredit ? "text-[#008706]" : "text-black"
+              isCredit ? "text-[#008706]" : "text-[#e1182c]"
             }`}
           >
             {amountStr}
