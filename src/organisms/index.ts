@@ -57,6 +57,7 @@ export { InternasFlowGrid } from "./InternasFlowGrid";
 export { ExternasFlowGrid } from "./ExternasFlowGrid";
 export { BrebFlowGrid } from "./BrebFlowGrid";
 export { OtrosServiciosFlowGrid } from "./OtrosServiciosFlowGrid";
+export { GestionDocumentalFlowGrid } from "./GestionDocumentalFlowGrid";
 export { TransferDetailsCard } from "./TransferDetailsCard";
 export { TransferConfirmationCard } from "./TransferConfirmationCard";
 export { TransferResultCard } from "./TransferResultCard";

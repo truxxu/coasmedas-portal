@@ -1,14 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import { OtrosServiciosFlowGrid } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
 
 export default function OtrosServiciosPage() {
   useBrebPageHeader("Otros Servicios", "/home");
+  const router = useRouter();
 
-  const handleSelectFlow = (_flowId: string) => {
-    // Sub-flows will be wired in upcoming tasks.
+  const handleSelectFlow = (flowId: string) => {
+    if (flowId === "gestion-documental") {
+      router.push("/otros-servicios/gestion-documental");
+    }
   };
 
   return (
