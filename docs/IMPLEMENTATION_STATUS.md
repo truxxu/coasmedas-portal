@@ -72,18 +72,18 @@
 
 ## 9. BRE-B (Key-Based Instant Transfers)
 
-- [ ] POST `/bre-b/accounts/list` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/list` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/resolve` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/create` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/update` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/delete` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/block` ✅ Auth: JWT
-- [ ] POST `/bre-b/keys/unblock` ✅ Auth: JWT
-- [ ] POST `/bre-b/terms/accept` ✅ Auth: JWT
-- [ ] POST `/bre-b/txs/init` ✅ Auth: JWT
-- [ ] POST `/bre-b/txs/status` ✅ Auth: JWT
-- [ ] POST `/bre-b/txs/list` ✅ Auth: JWT
+- [x] POST `/bre-b/accounts/list` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/list` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/resolve` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/create` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/update` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/delete` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/block` ✅ Auth: JWT
+- [x] POST `/bre-b/keys/unblock` ✅ Auth: JWT
+- [x] POST `/bre-b/terms/accept` ✅ Auth: JWT
+- [x] POST `/bre-b/txs/init` ✅ Auth: JWT
+- [x] POST `/bre-b/txs/status` ✅ Auth: JWT
+- [x] POST `/bre-b/txs/list` ✅ Auth: JWT
 
 ## 10. Endpoints Not in Backend (UI Features Without API)
 
@@ -133,8 +133,8 @@ These endpoints are **needed by the portal UI** but do **not exist** in the back
 | Internal Transfers            | 7      | 7           | 0         |
 | External Transfers (Banks)    | 5      | 5           | 0         |
 | External Transfers (Entities) | 3      | 3           | 0         |
-| BRE-B                         | 12     | 0           | 12        |
-| **Subtotal (existing API)**   | **46** | **34**      | **12**    |
+| BRE-B                         | 12     | 12          | 0         |
+| **Subtotal (existing API)**   | **46** | **46**      | **0**     |
 
 ### Missing from Backend API
 

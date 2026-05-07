@@ -41,6 +41,15 @@
   --brand-primary-dark: #00a5d8;
   --brand-error-dark: #cc0000;
   --brand-navy-blue: #1d4e8f;
+
+  /* Notice/banner surfaces */
+  --brand-danger-bg: #fdecee;
+  --brand-danger-border: #f3c2c5;
+  --brand-danger-text: #9c1721;
+  --brand-info-bg: #eff9ff;
+  --brand-info-border: #cce6f1;
+  --brand-primary-light: #f0fbff;
+  --brand-navy-deep: #0e2744;
 }
 
 @theme inline {
@@ -76,6 +85,13 @@
   --color-brand-primary-dark: var(--brand-primary-dark);
   --color-brand-error-dark: var(--brand-error-dark);
   --color-brand-navy-blue: var(--brand-navy-blue);
+  --color-brand-danger-bg: var(--brand-danger-bg);
+  --color-brand-danger-border: var(--brand-danger-border);
+  --color-brand-danger-text: var(--brand-danger-text);
+  --color-brand-info-bg: var(--brand-info-bg);
+  --color-brand-info-border: var(--brand-info-border);
+  --color-brand-primary-light: var(--brand-primary-light);
+  --color-brand-navy-deep: var(--brand-navy-deep);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
