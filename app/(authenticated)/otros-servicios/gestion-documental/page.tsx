@@ -14,6 +14,10 @@ export default function GestionDocumentalPage() {
       router.push("/otros-servicios/gestion-documental/solicitar-extractos");
     } else if (flowId === "estado-solicitudes") {
       router.push("/otros-servicios/gestion-documental/estado-solicitudes");
+    } else if (flowId === "certificados-tributarios") {
+      router.push(
+        "/otros-servicios/gestion-documental/certificados-tributarios",
+      );
     }
   };
 
