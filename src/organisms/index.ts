@@ -95,7 +95,10 @@ export {
 } from "./BrebKeyRegistrationDetailsCard";
 export { BrebKeyRegistrationConfirmationCard } from "./BrebKeyRegistrationConfirmationCard";
 export { BrebKeyRegistrationResultCard } from "./BrebKeyRegistrationResultCard";
-export { BrebKeyModificationDetailsCard } from "./BrebKeyModificationDetailsCard";
+export {
+  BrebKeyModificationDetailsCard,
+  type BrebModificationAccountOption,
+} from "./BrebKeyModificationDetailsCard";
 export { BrebKeyModificationConfirmationCard } from "./BrebKeyModificationConfirmationCard";
 export { BrebKeyModificationResultCard } from "./BrebKeyModificationResultCard";
 export { AuthHydrator } from "./AuthHydrator";
