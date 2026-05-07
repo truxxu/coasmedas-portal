@@ -62,6 +62,8 @@ export { SolicitarExtractosCard } from "./SolicitarExtractosCard";
 export { SolicitarExtractosSuccessModal } from "./SolicitarExtractosSuccessModal";
 export { CertificadosTributariosCard } from "./CertificadosTributariosCard";
 export { CertificadosTributariosSuccessModal } from "./CertificadosTributariosSuccessModal";
+export { CertificadosProductosCard } from "./CertificadosProductosCard";
+export { CertificadosProductosSuccessModal } from "./CertificadosProductosSuccessModal";
 export { EstadoSolicitudesCard } from "./EstadoSolicitudesCard";
 export { CancelSolicitudConfirmModal } from "./CancelSolicitudConfirmModal";
 export { CancelSolicitudResultModal } from "./CancelSolicitudResultModal";

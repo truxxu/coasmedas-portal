@@ -18,6 +18,8 @@ export default function GestionDocumentalPage() {
       router.push(
         "/otros-servicios/gestion-documental/certificados-tributarios",
       );
+    } else if (flowId === "certificados-productos") {
+      router.push("/otros-servicios/gestion-documental/certificados-productos");
     }
   };
 
