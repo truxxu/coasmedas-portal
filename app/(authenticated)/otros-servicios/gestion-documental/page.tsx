@@ -12,6 +12,8 @@ export default function GestionDocumentalPage() {
   const handleSelectFlow = (flowId: string) => {
     if (flowId === "solicitar-extractos") {
       router.push("/otros-servicios/gestion-documental/solicitar-extractos");
+    } else if (flowId === "estado-solicitudes") {
+      router.push("/otros-servicios/gestion-documental/estado-solicitudes");
     }
   };
 

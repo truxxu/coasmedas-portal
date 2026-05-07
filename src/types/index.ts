@@ -31,3 +31,4 @@ export * from "./brebGenerateQr";
 export * from "./brebKeyRegistration";
 export * from "./brebTransactionHistory";
 export * from "./otrosServicios";
+export * from "./estadoSolicitudes";

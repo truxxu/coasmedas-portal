@@ -56,3 +56,4 @@ export { BrebKeyActionSuccessModal } from "./BrebKeyActionSuccessModal";
 export { BrebTransactionListItem } from "./BrebTransactionListItem";
 export { BrebTransactionFilterBar } from "./BrebTransactionFilterBar";
 export { BrebReversalConfirmModal } from "./BrebReversalConfirmModal";
+export { SolicitudListItem } from "./SolicitudListItem";

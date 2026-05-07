@@ -26,5 +26,6 @@ export { CurrencyInput } from "./CurrencyInput";
 export { Checkbox } from "./Checkbox";
 export { SuccessIcon } from "./SuccessIcon";
 export { ErrorIcon } from "./ErrorIcon";
+export { SolicitudStatusBadge } from "./SolicitudStatusBadge";
 export { Tabs } from "./Tabs";
 export type { TabItem } from "./Tabs";
