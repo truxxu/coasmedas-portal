@@ -1,0 +1,188 @@
+"use client";
+
+import { useState } from "react";
+import { Button, Card } from "@/src/atoms";
+import { BREB_KEY_TYPE_LABELS } from "@/src/mocks/mockBrebKeyRegistrationData";
+import type { BrebRegisteredKey } from "@/src/types/brebKeyRegistration";
+
+interface BrebKeysListCardProps {
+  keys: BrebRegisteredKey[];
+  onRegisterNewKey: () => void;
+  onModifyKey?: (keyId: string) => void;
+  onToggleBlockKey?: (keyId: string) => void;
+  onCancelKey?: (keyId: string) => void;
+}
+
+const STATUS_STYLES: Record<
+  BrebRegisteredKey["status"],
+  { label: string; className: string }
+> = {
+  activa: {
+    label: "Activa",
+    className: "bg-green-50 text-brand-positive",
+  },
+  bloqueada: {
+    label: "Bloqueada",
+    className: "bg-amber-50 text-amber-800",
+  },
+};
+
+export function BrebKeysListCard({
+  keys,
+  onRegisterNewKey,
+  onModifyKey,
+  onToggleBlockKey,
+  onCancelKey,
+}: BrebKeysListCardProps) {
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+  const toggleMenu = (id: string) => {
+    setOpenMenuId((current) => (current === id ? null : id));
+  };
+
+  return (
+    <Card className="space-y-6 p-8">
+      <div className="flex items-start justify-between gap-4">
+        <h2 className="text-[19px] font-bold text-brand-navy">
+          Gestón de mis Llaves Bre-B
+        </h2>
+        <Button variant="primary" onClick={onRegisterNewKey}>
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden className="text-lg leading-none">
+              +
+            </span>
+            Registrar Nueva Llave
+          </span>
+        </Button>
+      </div>
+
+      <ul className="divide-y divide-brand-border">
+        {keys.map((key) => {
+          const status = STATUS_STYLES[key.status];
+          const typeLabel = BREB_KEY_TYPE_LABELS[key.type];
+          const isMenuOpen = openMenuId === key.id;
+
+          return (
+            <li key={key.id} className="py-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-[16px] font-bold text-brand-gray-high">
+                    {typeLabel}: {key.value}
+                  </p>
+                  <p className="mt-1 text-[14px] text-brand-gray-high">
+                    Asociada a Cta. Ahorros {key.associatedAccountMasked} | Últ.
+                    Mod. : {key.lastModified}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <span
+                    className={`px-3 py-1 rounded-full text-[12px] font-medium ${status.className}`}
+                  >
+                    {status.label}
+                  </span>
+
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => toggleMenu(key.id)}
+                      aria-haspopup="menu"
+                      aria-expanded={isMenuOpen}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-brand-border bg-white text-[15px] font-medium text-brand-text-black hover:bg-brand-gray-light transition-colors"
+                    >
+                      Acciones
+                      <span aria-hidden className="text-[10px]">
+                        ▼
+                      </span>
+                    </button>
+
+                    {isMenuOpen && (
+                      <div
+                        role="menu"
+                        className="absolute right-0 mt-2 w-44 rounded-md border border-brand-border bg-white shadow-md z-10"
+                      >
+                        <MenuItem
+                          label="Modificar"
+                          enabled={Boolean(onModifyKey)}
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onModifyKey?.(key.id);
+                          }}
+                        />
+                        {key.status === "activa" ? (
+                          <MenuItem
+                            label="Bloquear"
+                            enabled={Boolean(onToggleBlockKey)}
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onToggleBlockKey?.(key.id);
+                            }}
+                          />
+                        ) : (
+                          <MenuItem
+                            label="Activar"
+                            enabled={Boolean(onToggleBlockKey)}
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onToggleBlockKey?.(key.id);
+                            }}
+                          />
+                        )}
+                        <MenuItem
+                          label="Cancelar"
+                          enabled={Boolean(onCancelKey)}
+                          destructive
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onCancelKey?.(key.id);
+                          }}
+                        />
+                        <MenuItem
+                          label="Portar"
+                          enabled={false}
+                          onClick={() => {}}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </Card>
+  );
+}
+
+interface MenuItemProps {
+  label: string;
+  enabled: boolean;
+  destructive?: boolean;
+  onClick: () => void;
+}
+
+function MenuItem({ label, enabled, destructive, onClick }: MenuItemProps) {
+  const baseClasses = "block w-full text-left px-4 py-2 text-[14px]";
+
+  let stateClasses: string;
+  if (!enabled) {
+    stateClasses = "text-brand-gray-medium cursor-not-allowed";
+  } else if (destructive) {
+    stateClasses = "text-brand-error hover:bg-brand-danger-bg";
+  } else {
+    stateClasses = "text-brand-text-black hover:bg-brand-gray-light";
+  }
+
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      disabled={!enabled}
+      onClick={onClick}
+      className={`${baseClasses} ${stateClasses}`}
+    >
+      {label}
+    </button>
+  );
+}
