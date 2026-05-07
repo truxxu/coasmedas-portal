@@ -1,15 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import {
   CertificadosProductosCard,
-  CertificadosProductosSuccessModal,
+  SolicitudSuccessModal,
 } from "@/src/organisms";
-import { useBrebPageHeader, useUser } from "@/src/hooks";
+import { useBrebPageHeader, useUser, useSolicitudFlow } from "@/src/hooks";
 import { CERTIFICADO_PRODUCTO_OPTIONS } from "@/src/constants/certificadosProductos";
-import type { CertificadosProductosFormData } from "@/src/schemas/certificadosProductosSchema";
 
 export default function CertificadosProductosPage() {
   useBrebPageHeader(
@@ -17,53 +14,32 @@ export default function CertificadosProductosPage() {
     "/otros-servicios/gestion-documental",
   );
 
-  const router = useRouter();
   const user = useUser();
-  const [submitting, setSubmitting] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleSubmit = async (_data: CertificadosProductosFormData) => {
-    setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    setSubmitting(false);
-    setModalOpen(true);
-  };
-
-  const handleVerEstado = () => {
-    setModalOpen(false);
-    router.push("/otros-servicios/gestion-documental/estado-solicitudes");
-  };
-
-  const handleSolicitarOtro = () => {
-    setModalOpen(false);
-  };
-
-  const handleBack = () => {
-    router.push("/otros-servicios/gestion-documental");
-  };
+  const { submitting, modalOpen, submit, closeModal, goToEstado, goBack } =
+    useSolicitudFlow();
 
   const userName = user?.fullName || user?.firstName;
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Gestión Documental", "Certificados de Productos"]}
-        />
-      </div>
+      <Breadcrumbs
+        items={["Inicio", "Gestión Documental", "Certificados de Productos"]}
+      />
 
       <CertificadosProductosCard
         productoOptions={CERTIFICADO_PRODUCTO_OPTIONS}
         userName={userName}
         submitting={submitting}
-        onSubmit={handleSubmit}
-        onBack={handleBack}
+        onSubmit={submit}
+        onBack={goBack}
       />
 
-      <CertificadosProductosSuccessModal
+      <SolicitudSuccessModal
         isOpen={modalOpen}
-        onPrimaryAction={handleVerEstado}
-        onSecondaryAction={handleSolicitarOtro}
+        titleId="certificados-productos-success-title"
+        message="Tu solicitud de certificado de producto ha sido exitosa. Recuerda que para acceder al documento, la clave es tu número de identificación. Serás notificado una vez tu certificado esté disponible en el módulo de estado de solicitudes."
+        onPrimaryAction={goToEstado}
+        onSecondaryAction={closeModal}
       />
     </div>
   );

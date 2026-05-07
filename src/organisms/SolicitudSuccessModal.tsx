@@ -4,17 +4,27 @@ import { useRef } from "react";
 import { Button, SuccessIcon } from "@/src/atoms";
 import { useModalA11y } from "@/src/hooks";
 
-interface CertificadosProductosSuccessModalProps {
+interface SolicitudSuccessModalProps {
   isOpen: boolean;
+  titleId: string;
+  message: string;
+  title?: string;
+  primaryLabel?: string;
+  secondaryLabel?: string;
   onPrimaryAction: () => void;
   onSecondaryAction: () => void;
 }
 
-export function CertificadosProductosSuccessModal({
+export function SolicitudSuccessModal({
   isOpen,
+  titleId,
+  message,
+  title = "¡Solicitud Exitosa!",
+  primaryLabel = "Ver Estado de Solicitudes",
+  secondaryLabel = "Solicitar Otro",
   onPrimaryAction,
   onSecondaryAction,
-}: CertificadosProductosSuccessModalProps) {
+}: SolicitudSuccessModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -32,7 +42,7 @@ export function CertificadosProductosSuccessModal({
       className="fixed inset-0 z-50 flex items-center justify-center"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="certificados-productos-success-title"
+      aria-labelledby={titleId}
     >
       <div
         className="absolute inset-0 bg-black/50"
@@ -48,18 +58,12 @@ export function CertificadosProductosSuccessModal({
           <SuccessIcon size="lg" />
         </div>
 
-        <h2
-          id="certificados-productos-success-title"
-          className="text-xl font-bold text-brand-navy mb-3"
-        >
-          ¡Solicitud Exitosa!
+        <h2 id={titleId} className="text-xl font-bold text-brand-navy mb-3">
+          {title}
         </h2>
 
         <p className="text-sm text-brand-gray-high mb-6 leading-[18px]">
-          Tu solicitud de certificado de producto ha sido exitosa. Recuerda que
-          para acceder al documento, la clave es tu número de identificación.
-          Serás notificado una vez tu certificado esté disponible en el módulo
-          de estado de solicitudes.
+          {message}
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap">
@@ -70,7 +74,7 @@ export function CertificadosProductosSuccessModal({
             onClick={onPrimaryAction}
             className="py-6 flex-1"
           >
-            Ver Estado de Solicitudes
+            {primaryLabel}
           </Button>
           <Button
             type="button"
@@ -78,7 +82,7 @@ export function CertificadosProductosSuccessModal({
             onClick={onSecondaryAction}
             className="py-6 flex-1"
           >
-            Solicitar Otro
+            {secondaryLabel}
           </Button>
         </div>
       </div>

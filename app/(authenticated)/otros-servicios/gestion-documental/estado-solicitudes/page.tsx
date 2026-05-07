@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { BackButton } from "@/src/atoms";
 import { Breadcrumbs } from "@/src/molecules";
 import {
   EstadoSolicitudesCard,
@@ -35,7 +36,6 @@ export default function EstadoSolicitudesPage() {
 
   const handleConfirm = async () => {
     setConfirmOpen(false);
-    // Placeholder for backend call.
     await new Promise((resolve) => setTimeout(resolve, 400));
     if (selectedId) {
       setSolicitudes((prev) =>
@@ -63,11 +63,9 @@ export default function EstadoSolicitudesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Gestión Documental", "Estado de Solicitudes"]}
-        />
-      </div>
+      <Breadcrumbs
+        items={["Inicio", "Gestión Documental", "Estado de Solicitudes"]}
+      />
 
       <EstadoSolicitudesCard
         solicitudes={solicitudes}
@@ -75,29 +73,7 @@ export default function EstadoSolicitudesPage() {
         onCancelRequest={handleCancelClick}
       />
 
-      <button
-        type="button"
-        onClick={handleBack}
-        className="inline-flex items-center gap-2 text-brand-navy text-[14px] font-medium hover:underline"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M10 12L6 8L10 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        Volver
-      </button>
+      <BackButton onClick={handleBack} />
 
       <CancelSolicitudConfirmModal
         isOpen={confirmOpen}

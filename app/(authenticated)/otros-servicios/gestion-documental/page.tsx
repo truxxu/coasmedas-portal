@@ -2,36 +2,31 @@
 
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
-import { GestionDocumentalFlowGrid } from "@/src/organisms";
+import { FlowGrid } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
+import { GESTION_DOCUMENTAL_FLOWS } from "@/src/constants/otrosServicios";
+import type { OtrosServiciosOption } from "@/src/types";
 
 export default function GestionDocumentalPage() {
   useBrebPageHeader("Gestión Documental", "/otros-servicios");
   const router = useRouter();
 
-  const handleSelectFlow = (flowId: string) => {
-    if (flowId === "solicitar-extractos") {
-      router.push("/otros-servicios/gestion-documental/solicitar-extractos");
-    } else if (flowId === "estado-solicitudes") {
-      router.push("/otros-servicios/gestion-documental/estado-solicitudes");
-    } else if (flowId === "certificados-tributarios") {
-      router.push(
-        "/otros-servicios/gestion-documental/certificados-tributarios",
-      );
-    } else if (flowId === "certificados-productos") {
-      router.push("/otros-servicios/gestion-documental/certificados-productos");
-    }
+  const handleSelect = (option: OtrosServiciosOption) => {
+    router.push(option.href);
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Otros Servicios", "Gestión Documental"]}
-        />
-      </div>
+      <Breadcrumbs
+        items={["Inicio", "Otros Servicios", "Gestión Documental"]}
+      />
 
-      <GestionDocumentalFlowGrid onSelectFlow={handleSelectFlow} />
+      <FlowGrid
+        title="Gestión Documental"
+        subtitle="Aquí podrás realizar la solicitud de tus documentos de tus productos con Coasmedas como paz y salvo y certificaciones."
+        options={GESTION_DOCUMENTAL_FLOWS}
+        onSelect={handleSelect}
+      />
     </div>
   );
 }

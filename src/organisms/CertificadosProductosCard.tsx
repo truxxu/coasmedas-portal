@@ -27,7 +27,6 @@ export function CertificadosProductosCard({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<CertificadosProductosFormData>({
     resolver: yupResolver(certificadosProductosSchema),
@@ -35,13 +34,7 @@ export function CertificadosProductosCard({
   });
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        onSubmit(data);
-        reset({ tipoProducto: "" });
-      })}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card className="p-6 md:p-8 space-y-6">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">

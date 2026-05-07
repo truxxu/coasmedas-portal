@@ -29,7 +29,6 @@ export function CertificadosTributariosCard({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<CertificadosTributariosFormData>({
     resolver: yupResolver(certificadosTributariosSchema),
@@ -37,13 +36,7 @@ export function CertificadosTributariosCard({
   });
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        onSubmit(data);
-        reset({ tipoCertificado: "", anio: "" });
-      })}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Card className="p-6 md:p-8 space-y-6">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-brand-navy mb-2">

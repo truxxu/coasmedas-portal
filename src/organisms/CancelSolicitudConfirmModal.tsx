@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Button, SuccessIcon } from "@/src/atoms";
+import { Button } from "@/src/atoms";
 import { useModalA11y } from "@/src/hooks";
 
 interface CancelSolicitudConfirmModalProps {
@@ -44,10 +44,6 @@ export function CancelSolicitudConfirmModal({
         ref={modalRef}
         className="relative bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center"
       >
-        <div className="flex justify-center mb-4">
-          <SuccessIcon size="md" />
-        </div>
-
         <h2
           id="cancel-solicitud-confirm-title"
           className="text-xl font-bold text-brand-navy mb-3"

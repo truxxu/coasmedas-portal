@@ -1,15 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
-import {
-  SolicitarExtractosCard,
-  SolicitarExtractosSuccessModal,
-} from "@/src/organisms";
-import { useBrebPageHeader, useUser } from "@/src/hooks";
+import { SolicitarExtractosCard, SolicitudSuccessModal } from "@/src/organisms";
+import { useBrebPageHeader, useUser, useSolicitudFlow } from "@/src/hooks";
 import { mockExtractoProducts } from "@/src/mocks";
-import type { SolicitarExtractosFormData } from "@/src/schemas/solicitarExtractosSchema";
 
 export default function SolicitarExtractosPage() {
   useBrebPageHeader(
@@ -17,54 +11,32 @@ export default function SolicitarExtractosPage() {
     "/otros-servicios/gestion-documental",
   );
 
-  const router = useRouter();
   const user = useUser();
-  const [submitting, setSubmitting] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleSubmit = async (_data: SolicitarExtractosFormData) => {
-    // TODO: replace with real backend call once endpoint is available.
-    setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    setSubmitting(false);
-    setModalOpen(true);
-  };
-
-  const handleVerEstado = () => {
-    setModalOpen(false);
-    router.push("/otros-servicios/gestion-documental/estado-solicitudes");
-  };
-
-  const handleSolicitarOtro = () => {
-    setModalOpen(false);
-  };
-
-  const handleBack = () => {
-    router.push("/otros-servicios/gestion-documental");
-  };
+  const { submitting, modalOpen, submit, closeModal, goToEstado, goBack } =
+    useSolicitudFlow();
 
   const userName = user?.fullName || user?.firstName;
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Breadcrumbs
-          items={["Inicio", "Gestión Documental", "Solicitar Extractos"]}
-        />
-      </div>
+      <Breadcrumbs
+        items={["Inicio", "Gestión Documental", "Solicitar Extractos"]}
+      />
 
       <SolicitarExtractosCard
         productOptions={mockExtractoProducts}
         userName={userName}
         submitting={submitting}
-        onSubmit={handleSubmit}
-        onBack={handleBack}
+        onSubmit={submit}
+        onBack={goBack}
       />
 
-      <SolicitarExtractosSuccessModal
+      <SolicitudSuccessModal
         isOpen={modalOpen}
-        onPrimaryAction={handleVerEstado}
-        onSecondaryAction={handleSolicitarOtro}
+        titleId="solicitar-extractos-success-title"
+        message="Tu solicitud de extracto ha sido exitosa. Serás notificado una vez tu extracto esté disponible en el módulo de estado de solicitudes."
+        onPrimaryAction={goToEstado}
+        onSecondaryAction={closeModal}
       />
     </div>
   );
