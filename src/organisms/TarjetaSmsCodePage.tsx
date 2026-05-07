@@ -37,6 +37,13 @@ export interface TarjetaSmsCodePageProps<TConfirmation, TResult> {
     confirmation: TConfirmation,
     meta: TarjetaSmsMetadata,
   ) => TResult;
+  /**
+   * Optional async verification step executed before `buildResult`. Use this
+   * to perform a real backend call (e.g. createBrebKey). If it throws, the
+   * error message bubbles up to the SMS card via `useSMSCodeVerification` and
+   * the user remains on this step.
+   */
+  onVerify?: (confirmation: TConfirmation) => Promise<void>;
 }
 
 export function TarjetaSmsCodePage<TConfirmation, TResult>({
@@ -50,6 +57,7 @@ export function TarjetaSmsCodePage<TConfirmation, TResult>({
   steps,
   submitLabel,
   buildResult,
+  onVerify,
 }: TarjetaSmsCodePageProps<TConfirmation, TResult>) {
   const router = useRouter();
   const { user } = useUserContext();
@@ -76,7 +84,11 @@ export function TarjetaSmsCodePage<TConfirmation, TResult>({
       }
       const confirmation = JSON.parse(confirmationStr) as TConfirmation;
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      if (onVerify) {
+        await onVerify(confirmation);
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 800));
+      }
 
       const meta: TarjetaSmsMetadata = {
         fechaTransaccion: formatNowDate(),

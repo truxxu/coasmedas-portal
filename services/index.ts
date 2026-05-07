@@ -51,3 +51,18 @@ export {
   queryEntityProduct,
   createExternalEntityTransfer,
 } from "./transfers.service";
+
+export {
+  listBrebAccounts,
+  listBrebKeys,
+  resolveBrebKey,
+  createBrebKey,
+  updateBrebKey,
+  deleteBrebKey,
+  blockBrebKey,
+  unblockBrebKey,
+  acceptBrebTerms,
+  initBrebTx,
+  getBrebTxStatus,
+  listBrebTxs,
+} from "./breb.service";
