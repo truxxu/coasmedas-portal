@@ -142,3 +142,6 @@ export { ProductSecurityCard } from "./ProductSecurityCard";
 export { ProductSecurityConfirmModal } from "./ProductSecurityConfirmModal";
 export type { ProductSecurityAction } from "./ProductSecurityConfirmModal";
 export { ProductSecurityResultModal } from "./ProductSecurityResultModal";
+export { AdminProductsListCard } from "./AdminProductsListCard";
+export { AdminProductEditForm } from "./AdminProductEditForm";
+export { AdminProductResultCard } from "./AdminProductResultCard";

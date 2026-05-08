@@ -58,3 +58,6 @@ export { BrebTransactionFilterBar } from "./BrebTransactionFilterBar";
 export { BrebReversalConfirmModal } from "./BrebReversalConfirmModal";
 export { SolicitudListItem } from "./SolicitudListItem";
 export { ProductSecurityRow } from "./ProductSecurityRow";
+export { ProductLimitsRow } from "./ProductLimitsRow";
+export { ChannelLimitsAccordion } from "./ChannelLimitsAccordion";
+export { AdminProductListItem } from "./AdminProductListItem";

@@ -33,3 +33,4 @@ export * from "./brebTransactionHistory";
 export * from "./otrosServicios";
 export * from "./estadoSolicitudes";
 export * from "./productSecurity";
+export * from "./administracionProductos";

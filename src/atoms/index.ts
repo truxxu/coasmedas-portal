@@ -30,3 +30,4 @@ export { ErrorIcon } from "./ErrorIcon";
 export { SolicitudStatusBadge } from "./SolicitudStatusBadge";
 export { Tabs } from "./Tabs";
 export type { TabItem } from "./Tabs";
+export { Accordion } from "./Accordion";
