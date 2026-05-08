@@ -6,7 +6,6 @@ import {
   type FieldErrors,
   type UseFormRegister,
   type Path,
-  type FieldValues,
 } from "react-hook-form";
 import { ErrorMessage } from "@/src/atoms";
 import type { AdminProductoFormValues } from "@/src/schemas/adminProductoSchema";

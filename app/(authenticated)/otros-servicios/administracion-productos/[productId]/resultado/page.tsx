@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   useParams,
   useRouter,
@@ -33,19 +33,16 @@ export default function AdminProductoResultadoPage() {
       : "Administración de Productos",
   );
 
-  const [data, setData] = useState<AdminProductoFormValues | undefined>();
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const [data] = useState<AdminProductoFormValues | undefined>(() => {
+    if (typeof window === "undefined") return undefined;
     const raw = sessionStorage.getItem(`adminProductoDraft:${productId}`);
-    if (raw) {
-      try {
-        setData(JSON.parse(raw) as AdminProductoFormValues);
-      } catch {
-        // ignore parse errors
-      }
+    if (!raw) return undefined;
+    try {
+      return JSON.parse(raw) as AdminProductoFormValues;
+    } catch {
+      return undefined;
     }
-  }, [productId]);
+  });
 
   if (!product) {
     notFound();
