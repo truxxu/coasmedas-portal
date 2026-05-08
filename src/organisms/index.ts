@@ -145,3 +145,4 @@ export { ProductSecurityResultModal } from "./ProductSecurityResultModal";
 export { AdminProductsListCard } from "./AdminProductsListCard";
 export { AdminProductEditForm } from "./AdminProductEditForm";
 export { AdminProductResultCard } from "./AdminProductResultCard";
+export { DatosPersonalesCard } from "./DatosPersonalesCard";
