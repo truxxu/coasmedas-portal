@@ -183,7 +183,7 @@ export function ScheduleTransferForm({
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-[#004266] hover:underline"
+            className="text-sm font-medium text-brand-teal-dark hover:underline"
           >
             Volver
           </button>
@@ -192,7 +192,7 @@ export function ScheduleTransferForm({
             disabled={!isValid}
             className={
               isValid
-                ? "bg-[#00B8ED] text-white rounded-md shadow-sm px-7 py-2 text-sm font-bold"
+                ? "bg-brand-primary text-white rounded-md shadow-sm px-7 py-2 text-sm font-bold"
                 : "bg-[#8FE6FF] text-white rounded-md px-7 py-2 text-sm font-bold cursor-not-allowed"
             }
           >

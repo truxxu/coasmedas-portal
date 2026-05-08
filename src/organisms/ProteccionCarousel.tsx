@@ -101,7 +101,7 @@ export function ProteccionCarousel({
         <h2 className="text-[20px] font-bold text-brand-navy-dark mb-4">
           {title}
         </h2>
-        <p className="text-[#58585B] text-center py-8">
+        <p className="text-brand-gray-high text-center py-8">
           No hay productos disponibles en esta categoria.
         </p>
       </div>

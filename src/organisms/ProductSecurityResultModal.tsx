@@ -70,7 +70,7 @@ export function ProductSecurityResultModal({
             type="button"
             variant="primary"
             onClick={onClose}
-            className="px-8 h-10 bg-[#00B8ED] hover:opacity-90 text-white"
+            className="px-8 h-10 bg-brand-primary hover:opacity-90 text-white"
           >
             Finalizar
           </Button>

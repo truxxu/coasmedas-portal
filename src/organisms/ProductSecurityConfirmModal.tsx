@@ -81,7 +81,7 @@ export function ProductSecurityConfirmModal({
             type="button"
             variant="primary"
             onClick={onConfirm}
-            className="flex-1 h-10 bg-[#00B8ED] hover:opacity-90 text-white"
+            className="flex-1 h-10 bg-brand-primary hover:opacity-90 text-white"
           >
             Sí, continuar
           </Button>

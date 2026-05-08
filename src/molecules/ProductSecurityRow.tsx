@@ -19,7 +19,7 @@ function ProductSecurityRowImpl({
 }: ProductSecurityRowProps) {
   const isActive = item.status === "activo";
   const statusLabel = isActive ? "Activo" : "Bloqueado";
-  const statusColor = isActive ? "text-[#00a44c]" : "text-[#e1182c]";
+  const statusColor = isActive ? "text-brand-success-icon" : "text-brand-error";
 
   const handleChange = useCallback(
     (next: boolean) => onToggleRequest(item.id, next),
