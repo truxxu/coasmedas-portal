@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Label, Input, ErrorMessage } from "@/src/atoms";
@@ -62,6 +63,8 @@ export function AdminProductEditForm({
   onSubmit,
   onCancel,
 }: AdminProductEditFormProps) {
+  const defaultValues = useMemo(() => buildDefaults(product), [product]);
+
   const {
     register,
     handleSubmit,
@@ -70,7 +73,7 @@ export function AdminProductEditForm({
     formState: { errors, isSubmitting },
   } = useForm<AdminProductoFormValues>({
     resolver: yupResolver(adminProductoSchema),
-    defaultValues: buildDefaults(product),
+    defaultValues,
     mode: "onBlur",
   });
 

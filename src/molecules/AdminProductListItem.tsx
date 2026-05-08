@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useCallback } from "react";
 import { Button } from "@/src/atoms";
 import { formatCurrency, formatDate } from "@/src/utils";
 import type { AdminProduct } from "@/src/types";
@@ -10,11 +11,15 @@ interface AdminProductListItemProps {
   hideBalances?: boolean;
 }
 
-export function AdminProductListItem({
+function AdminProductListItemImpl({
   product,
   onManage,
   hideBalances = false,
 }: AdminProductListItemProps) {
+  const handleManage = useCallback(
+    () => onManage(product),
+    [onManage, product],
+  );
   const dailyTx = product.globalLimits.transactions.daily;
   const dailyAmount = product.globalLimits.amounts.daily;
 
@@ -33,10 +38,12 @@ export function AdminProductListItem({
         </p>
       </div>
       <div className="md:ml-4">
-        <Button variant="secondary" size="sm" onClick={() => onManage(product)}>
+        <Button variant="secondary" size="sm" onClick={handleManage}>
           Gestionar
         </Button>
       </div>
     </div>
   );
 }
+
+export const AdminProductListItem = memo(AdminProductListItemImpl);

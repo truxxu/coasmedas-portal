@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { Breadcrumbs } from "@/src/molecules";
 import {
@@ -28,9 +28,12 @@ export default function GestionSeguridadProductosPage() {
   const [resultAction, setResultAction] =
     useState<ProductSecurityAction | null>(null);
 
-  const handleToggleRequest = (id: string, nextChecked: boolean) => {
-    setPending({ id, action: nextChecked ? "unblock" : "block" });
-  };
+  const handleToggleRequest = useCallback(
+    (id: string, nextChecked: boolean) => {
+      setPending({ id, action: nextChecked ? "unblock" : "block" });
+    },
+    [],
+  );
 
   const handleConfirm = () => {
     if (!pending) return;

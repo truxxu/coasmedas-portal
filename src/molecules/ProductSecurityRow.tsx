@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useCallback } from "react";
 import { Switch } from "@/src/atoms";
 import { maskNumber } from "@/src/utils/formatCurrency";
 import { formatDateCapitalized } from "@/src/utils/dates";
@@ -7,11 +8,11 @@ import type { ProductSecurityItem } from "@/src/types";
 
 interface ProductSecurityRowProps {
   item: ProductSecurityItem;
-  onToggleRequest: (nextChecked: boolean) => void;
+  onToggleRequest: (id: string, nextChecked: boolean) => void;
   showDivider?: boolean;
 }
 
-export function ProductSecurityRow({
+function ProductSecurityRowImpl({
   item,
   onToggleRequest,
   showDivider = true,
@@ -19,6 +20,11 @@ export function ProductSecurityRow({
   const isActive = item.status === "activo";
   const statusLabel = isActive ? "Activo" : "Bloqueado";
   const statusColor = isActive ? "text-[#00a44c]" : "text-[#e1182c]";
+
+  const handleChange = useCallback(
+    (next: boolean) => onToggleRequest(item.id, next),
+    [item.id, onToggleRequest],
+  );
 
   return (
     <div
@@ -40,10 +46,12 @@ export function ProductSecurityRow({
         </span>
         <Switch
           checked={isActive}
-          onChange={onToggleRequest}
+          onChange={handleChange}
           ariaLabel={`${statusLabel} ${item.title}`}
         />
       </div>
     </div>
   );
 }
+
+export const ProductSecurityRow = memo(ProductSecurityRowImpl);

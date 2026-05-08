@@ -35,7 +35,7 @@ export function ProductSecurityCard({
           <ProductSecurityRow
             key={item.id}
             item={item}
-            onToggleRequest={(next) => onToggleRequest(item.id, next)}
+            onToggleRequest={onToggleRequest}
             showDivider={idx < products.length - 1}
           />
         ))}
