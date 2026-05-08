@@ -33,3 +33,4 @@ export * from "./mockTarjetaActivacionData";
 export * from "./mockTarjetaClaveData";
 export * from "./extractoProducts";
 export * from "./solicitudes";
+export * from "./productSecurity";

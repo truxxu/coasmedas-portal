@@ -138,3 +138,7 @@ export { TarjetaSmsCodePage } from "./TarjetaSmsCodePage";
 export { BrebTransactionHistoryListCard } from "./BrebTransactionHistoryListCard";
 export { BrebTransactionDetailCard } from "./BrebTransactionDetailCard";
 export { BrebReversalSuccessModal } from "./BrebReversalSuccessModal";
+export { ProductSecurityCard } from "./ProductSecurityCard";
+export { ProductSecurityConfirmModal } from "./ProductSecurityConfirmModal";
+export type { ProductSecurityAction } from "./ProductSecurityConfirmModal";
+export { ProductSecurityResultModal } from "./ProductSecurityResultModal";

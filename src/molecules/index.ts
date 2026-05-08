@@ -57,3 +57,4 @@ export { BrebTransactionListItem } from "./BrebTransactionListItem";
 export { BrebTransactionFilterBar } from "./BrebTransactionFilterBar";
 export { BrebReversalConfirmModal } from "./BrebReversalConfirmModal";
 export { SolicitudListItem } from "./SolicitudListItem";
+export { ProductSecurityRow } from "./ProductSecurityRow";

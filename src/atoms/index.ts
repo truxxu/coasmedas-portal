@@ -13,6 +13,7 @@ export { AppStoreButton } from "./AppStoreButton";
 export { GooglePlayButton } from "./GooglePlayButton";
 export { Avatar } from "./Avatar";
 export { Toggle } from "./Toggle";
+export { Switch } from "./Switch";
 export { Divider } from "./Divider";
 export { ChevronIcon } from "./ChevronIcon";
 export { DateInput } from "./DateInput";

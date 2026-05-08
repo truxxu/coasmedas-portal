@@ -39,7 +39,7 @@ export const SEGURIDAD_FLOWS: OtrosServiciosOption[] = [
     title: "Gestión de Seguridad de Productos",
     description: "Activa y desactiva el uso de tus productos financieros.",
     href: "/otros-servicios/seguridad/gestion-seguridad-productos",
-    enabled: false,
+    enabled: true,
   },
 ];
 
