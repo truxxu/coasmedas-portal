@@ -8,7 +8,7 @@ import {
   type Path,
   type FieldValues,
 } from "react-hook-form";
-import { CurrencyInput, ErrorMessage } from "@/src/atoms";
+import { ErrorMessage } from "@/src/atoms";
 import type { AdminProductoFormValues } from "@/src/schemas/adminProductoSchema";
 
 type LimitsPath =
@@ -140,16 +140,32 @@ export function ProductLimitsRow({
                   <Controller
                     name={path}
                     control={control}
-                    render={({ field }) => (
-                      <CurrencyInput
-                        value={Number(field.value) || 0}
-                        onChange={field.onChange}
-                        prefix=""
-                        hasError={!!error}
-                        disabled={disabled}
-                        className="w-32"
-                      />
-                    )}
+                    render={({ field }) => {
+                      const numericValue = Number(field.value) || 0;
+                      const display = numericValue.toLocaleString("es-CO");
+                      return (
+                        <input
+                          id={path}
+                          type="text"
+                          inputMode="numeric"
+                          disabled={disabled}
+                          value={display}
+                          onChange={(e) => {
+                            const cleaned = e.target.value.replace(
+                              /[^\d]/g,
+                              "",
+                            );
+                            field.onChange(cleaned ? parseInt(cleaned, 10) : 0);
+                          }}
+                          onBlur={field.onBlur}
+                          className={`w-32 h-8 px-2 text-right text-sm border rounded ${
+                            error
+                              ? "border-red-600"
+                              : "border-brand-border focus:border-brand-primary"
+                          } focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed`}
+                        />
+                      );
+                    }}
                   />
                 </div>
                 {error && (
