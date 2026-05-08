@@ -33,6 +33,16 @@ export const OTROS_SERVICIOS_FLOWS: OtrosServiciosOption[] = [
   },
 ];
 
+export const SEGURIDAD_FLOWS: OtrosServiciosOption[] = [
+  {
+    id: "gestion-seguridad-productos",
+    title: "Gestión de Seguridad de Productos",
+    description: "Activa y desactiva el uso de tus productos financieros.",
+    href: "/otros-servicios/seguridad/gestion-seguridad-productos",
+    enabled: false,
+  },
+];
+
 export const GESTION_DOCUMENTAL_FLOWS: OtrosServiciosOption[] = [
   {
     id: "solicitar-extractos",
