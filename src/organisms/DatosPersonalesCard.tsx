@@ -1,24 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Card, Tabs, type TabItem } from "@/src/atoms";
-import { FormField, InfoNoteBox, SelectField } from "@/src/molecules";
-import {
-  datosPersonalesSchema,
-  type DatosPersonalesFormValues,
-} from "@/src/schemas/datosPersonalesSchema";
+import { Card, Tabs, type TabItem } from "@/src/atoms";
+import { FormField, SelectField } from "@/src/molecules";
 import {
   GENDER_OPTIONS,
   OCCUPATION_OPTIONS,
 } from "@/src/mocks/mockDatosPersonalesData";
-import type { DatosPersonalesTab } from "@/src/types";
+import type { DatosPersonalesFormData, DatosPersonalesTab } from "@/src/types";
+import { formatCurrency } from "@/src/utils";
 
 interface DatosPersonalesCardProps {
   firstName: string;
-  defaultValues: DatosPersonalesFormValues;
-  onSubmit: (data: DatosPersonalesFormValues) => void;
+  defaultValues: DatosPersonalesFormData;
   onCancel: () => void;
 }
 
@@ -41,34 +35,16 @@ function ReadOnlyRow({ label, value }: { label: string; value: string }) {
 export function DatosPersonalesCard({
   firstName,
   defaultValues,
-  onSubmit,
   onCancel,
 }: DatosPersonalesCardProps) {
   const [activeTab, setActiveTab] = useState<DatosPersonalesTab>("info-basica");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty, isSubmitting },
-  } = useForm<DatosPersonalesFormValues>({
-    resolver: yupResolver(datosPersonalesSchema),
-    defaultValues,
-    mode: "onBlur",
-  });
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
       <Card className="p-6 md:p-8 space-y-6">
         <h2 className="text-[19px] font-bold text-[#04193e]">
           Bienvenido {firstName} al módulo datos personales
         </h2>
-
-        <InfoNoteBox>
-          Por favor ten en cuenta que esta actualización será enviada para
-          validación y si es aprobada tus datos se actualizarán, también serás
-          notificado de este cambio por los canales actuales que tienes con la
-          cooperativa (Mail-SMS).
-        </InfoNoteBox>
 
         <Tabs
           tabs={TABS}
@@ -108,31 +84,36 @@ export function DatosPersonalesCard({
         >
           <SelectField
             label="Género"
+            name="contacto.gender"
             options={GENDER_OPTIONS}
-            {...register("contacto.gender")}
-            error={errors.contacto?.gender?.message}
+            defaultValue={defaultValues.contacto.gender}
+            disabled
           />
           <FormField
             label="Teléfono celular"
+            name="contacto.mobilePhone"
             inputMode="numeric"
-            {...register("contacto.mobilePhone")}
-            error={errors.contacto?.mobilePhone?.message}
+            defaultValue={defaultValues.contacto.mobilePhone}
+            disabled
           />
           <FormField
             label="E-mail"
+            name="contacto.email"
             type="email"
-            {...register("contacto.email")}
-            error={errors.contacto?.email?.message}
+            defaultValue={defaultValues.contacto.email}
+            disabled
           />
           <FormField
             label="Departamento de residencia"
-            {...register("contacto.residenceState")}
-            error={errors.contacto?.residenceState?.message}
+            name="contacto.residenceState"
+            defaultValue={defaultValues.contacto.residenceState}
+            disabled
           />
           <FormField
             label="Ciudad/Municipio de residencia"
-            {...register("contacto.residenceCity")}
-            error={errors.contacto?.residenceCity?.message}
+            name="contacto.residenceCity"
+            defaultValue={defaultValues.contacto.residenceCity}
+            disabled
           />
         </div>
 
@@ -144,45 +125,53 @@ export function DatosPersonalesCard({
         >
           <FormField
             label="Empresa"
-            {...register("laborales.company")}
-            error={errors.laborales?.company?.message}
+            name="laborales.company"
+            defaultValue={defaultValues.laborales.company}
+            disabled
           />
           <FormField
             label="Teléfono celular"
+            name="laborales.workPhone"
             inputMode="numeric"
-            {...register("laborales.workPhone")}
-            error={errors.laborales?.workPhone?.message}
+            defaultValue={defaultValues.laborales.workPhone}
+            disabled
           />
           <FormField
             label="Cargo"
-            {...register("laborales.position")}
-            error={errors.laborales?.position?.message}
+            name="laborales.position"
+            defaultValue={defaultValues.laborales.position}
+            disabled
           />
           <FormField
             label="Dirección de trabajo"
-            {...register("laborales.workAddress")}
-            error={errors.laborales?.workAddress?.message}
+            name="laborales.workAddress"
+            defaultValue={defaultValues.laborales.workAddress}
+            disabled
           />
           <FormField
             label="Ciudad de trabajo"
-            {...register("laborales.workCity")}
-            error={errors.laborales?.workCity?.message}
+            name="laborales.workCity"
+            defaultValue={defaultValues.laborales.workCity}
+            disabled
           />
           <FormField
             label="Departamento de trabajo"
-            {...register("laborales.workState")}
-            error={errors.laborales?.workState?.message}
+            name="laborales.workState"
+            defaultValue={defaultValues.laborales.workState}
+            disabled
           />
           <SelectField
             label="Ocupación"
+            name="laborales.occupation"
             options={OCCUPATION_OPTIONS}
-            {...register("laborales.occupation")}
-            error={errors.laborales?.occupation?.message}
+            defaultValue={defaultValues.laborales.occupation}
+            disabled
           />
           <FormField
             label="Actividad económica"
-            {...register("laborales.economicActivity")}
-            error={errors.laborales?.economicActivity?.message}
+            name="laborales.economicActivity"
+            defaultValue={defaultValues.laborales.economicActivity}
+            disabled
           />
         </div>
 
@@ -194,42 +183,39 @@ export function DatosPersonalesCard({
         >
           <FormField
             label="Ingresos mensuales"
-            type="number"
-            inputMode="numeric"
-            {...register("financieros.monthlyIncome", { valueAsNumber: true })}
-            error={errors.financieros?.monthlyIncome?.message}
+            name="financieros.monthlyIncome"
+            defaultValue={formatCurrency(
+              defaultValues.financieros.monthlyIncome,
+            )}
+            disabled
           />
           <FormField
             label="Otros ingresos"
-            type="number"
-            inputMode="numeric"
-            {...register("financieros.otherIncome", { valueAsNumber: true })}
-            error={errors.financieros?.otherIncome?.message}
+            name="financieros.otherIncome"
+            defaultValue={formatCurrency(defaultValues.financieros.otherIncome)}
+            disabled
           />
           <FormField
             label="Egresos mensuales"
-            type="number"
-            inputMode="numeric"
-            {...register("financieros.monthlyExpenses", {
-              valueAsNumber: true,
-            })}
-            error={errors.financieros?.monthlyExpenses?.message}
+            name="financieros.monthlyExpenses"
+            defaultValue={formatCurrency(
+              defaultValues.financieros.monthlyExpenses,
+            )}
+            disabled
           />
           <FormField
             label="Total activos"
-            type="number"
-            inputMode="numeric"
-            {...register("financieros.totalAssets", { valueAsNumber: true })}
-            error={errors.financieros?.totalAssets?.message}
+            name="financieros.totalAssets"
+            defaultValue={formatCurrency(defaultValues.financieros.totalAssets)}
+            disabled
           />
           <FormField
             label="Total pasivos"
-            type="number"
-            inputMode="numeric"
-            {...register("financieros.totalLiabilities", {
-              valueAsNumber: true,
-            })}
-            error={errors.financieros?.totalLiabilities?.message}
+            name="financieros.totalLiabilities"
+            defaultValue={formatCurrency(
+              defaultValues.financieros.totalLiabilities,
+            )}
+            disabled
           />
         </div>
       </Card>
@@ -258,14 +244,7 @@ export function DatosPersonalesCard({
           </svg>
           Volver
         </button>
-        <Button
-          type="submit"
-          variant={isDirty ? "primary" : "disabled"}
-          disabled={!isDirty || isSubmitting}
-        >
-          Actualizar Datos
-        </Button>
       </div>
-    </form>
+    </div>
   );
 }
