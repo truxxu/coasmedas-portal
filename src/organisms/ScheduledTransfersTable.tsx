@@ -137,7 +137,7 @@ export function ScheduledTransfersTable({
                       ? maskCurrency()
                       : formatCurrency(transfer.amount)}
                   </td>
-                  <td className="text-[13.7px] text-[#003500] font-medium py-3 pr-4">
+                  <td className="text-[13.7px] text-brand-positive font-medium py-3 pr-4">
                     {transfer.status}
                   </td>
                   <td className="text-[13.7px] py-3">

@@ -24,7 +24,7 @@ export function ProductSecurityCard({
       <h2 className="text-[22px] font-bold text-brand-navy">
         Gestión de Seguridad
       </h2>
-      <p className="text-sm text-[#374151] mt-2">
+      <p className="text-sm text-brand-gray-high mt-2">
         Hola {userName.toUpperCase()}, en este módulo puedes activar y
         desactivar tus productos. Los productos bloqueados no se podrán
         utilizar.

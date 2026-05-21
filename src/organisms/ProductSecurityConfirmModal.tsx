@@ -64,7 +64,9 @@ export function ProductSecurityConfirmModal({
           {title}
         </h2>
 
-        <p className="text-sm text-[#374151] mb-6 leading-relaxed">{message}</p>
+        <p className="text-sm text-brand-gray-high mb-6 leading-relaxed">
+          {message}
+        </p>
 
         <div className="flex gap-3">
           <Button

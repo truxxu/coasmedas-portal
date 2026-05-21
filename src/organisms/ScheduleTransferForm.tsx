@@ -193,7 +193,7 @@ export function ScheduleTransferForm({
             className={
               isValid
                 ? "bg-brand-primary text-white rounded-md shadow-sm px-7 py-2 text-sm font-bold"
-                : "bg-[#8FE6FF] text-white rounded-md px-7 py-2 text-sm font-bold cursor-not-allowed"
+                : "bg-brand-primary-disabled text-white rounded-md px-7 py-2 text-sm font-bold cursor-not-allowed"
             }
           >
             Programar

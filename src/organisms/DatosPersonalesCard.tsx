@@ -42,7 +42,7 @@ export function DatosPersonalesCard({
   return (
     <div>
       <Card className="p-6 md:p-8 space-y-6">
-        <h2 className="text-[19px] font-bold text-[#04193e]">
+        <h2 className="text-[19px] font-bold text-brand-navy-deep">
           Bienvenido {firstName} al módulo datos personales
         </h2>
 
