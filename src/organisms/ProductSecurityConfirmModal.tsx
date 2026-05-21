@@ -3,8 +3,7 @@
 import { useRef } from "react";
 import { Button, SuccessIcon } from "@/src/atoms";
 import { useModalA11y } from "@/src/hooks";
-
-export type ProductSecurityAction = "block" | "unblock";
+import type { ProductSecurityAction } from "@/src/types";
 
 interface ProductSecurityConfirmModalProps {
   isOpen: boolean;

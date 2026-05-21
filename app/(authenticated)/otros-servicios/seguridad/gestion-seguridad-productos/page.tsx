@@ -2,31 +2,33 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/src/molecules";
 import {
   ProductSecurityCard,
   ProductSecurityConfirmModal,
-  ProductSecurityResultModal,
-  type ProductSecurityAction,
 } from "@/src/organisms";
 import { useBrebPageHeader } from "@/src/hooks";
 import { mockProductSecurityItems } from "@/src/mocks";
-import type { ProductSecurityItem } from "@/src/types";
+import type {
+  ProductSecurityAction,
+  ProductSecurityDraft,
+  ProductSecurityItem,
+} from "@/src/types";
 
 interface PendingToggle {
   id: string;
   action: ProductSecurityAction;
 }
 
+const BASE_PATH = "/otros-servicios/seguridad/gestion-seguridad-productos";
+
 export default function GestionSeguridadProductosPage() {
   useBrebPageHeader("Gestión de Productos", "/otros-servicios/seguridad");
 
-  const [products, setProducts] = useState<ProductSecurityItem[]>(
-    mockProductSecurityItems,
-  );
+  const router = useRouter();
+  const [products] = useState<ProductSecurityItem[]>(mockProductSecurityItems);
   const [pending, setPending] = useState<PendingToggle | null>(null);
-  const [resultAction, setResultAction] =
-    useState<ProductSecurityAction | null>(null);
 
   const handleToggleRequest = useCallback(
     (id: string, nextChecked: boolean) => {
@@ -37,24 +39,26 @@ export default function GestionSeguridadProductosPage() {
 
   const handleConfirm = () => {
     if (!pending) return;
-    const today = new Date().toISOString().slice(0, 10);
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === pending.id
-          ? {
-              ...p,
-              status: pending.action === "block" ? "bloqueado" : "activo",
-              lastUpdate: today,
-            }
-          : p,
-      ),
-    );
-    setResultAction(pending.action);
+    const product = products.find((p) => p.id === pending.id);
+    if (!product) {
+      setPending(null);
+      return;
+    }
+    const newStatus = pending.action === "block" ? "bloqueado" : "activo";
+    const draft: ProductSecurityDraft = {
+      productId: product.id,
+      action: pending.action,
+      title: product.title,
+      productNumber: product.productNumber,
+      newStatus,
+      lastUpdate: new Date().toISOString().slice(0, 10),
+    };
+    sessionStorage.setItem("seguridadProductoDraft", JSON.stringify(draft));
     setPending(null);
+    router.push(`${BASE_PATH}/codigo-sms`);
   };
 
   const handleCancel = () => setPending(null);
-  const handleResultClose = () => setResultAction(null);
 
   return (
     <div className="space-y-6">
@@ -95,12 +99,6 @@ export default function GestionSeguridadProductosPage() {
         action={pending?.action ?? "block"}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
-      />
-
-      <ProductSecurityResultModal
-        isOpen={resultAction !== null}
-        action={resultAction ?? "block"}
-        onClose={handleResultClose}
       />
     </div>
   );
