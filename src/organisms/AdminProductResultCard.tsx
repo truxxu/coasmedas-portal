@@ -31,7 +31,7 @@ export function AdminProductResultCard({
         <h2 className="text-xl font-bold text-brand-error">
           No fue posible guardar tus cambios
         </h2>
-        <p className="text-sm text-brand-gray-high">
+        <p className="text-md text-brand-gray-high">
           Ocurrió un error al actualizar los límites. Por favor intenta
           nuevamente.
         </p>
@@ -59,15 +59,15 @@ export function AdminProductResultCard({
       <h2 className="text-xl font-bold text-brand-primary">
         ¡Tus nuevos límites han sido guardados!
       </h2>
-      <p className="text-sm text-brand-gray-high">
+      <p className="text-md text-brand-gray-high">
         Los cambios para {product.displayName} ya están activos.
       </p>
 
       <div className="text-left border border-brand-border rounded-md p-4 bg-gray-50 space-y-2">
-        <p className="text-sm font-medium text-brand-primary">
+        <p className="text-md font-medium text-brand-primary">
           Resumen de límites globales
         </p>
-        <div className="grid grid-cols-2 gap-3 text-sm text-brand-text-secondary">
+        <div className="grid grid-cols-2 gap-3 text-md text-brand-text-secondary">
           <div>
             <p className="font-medium">Transacciones</p>
             <p>Diarias: {limits.transactions.daily}</p>
