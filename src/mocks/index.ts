@@ -31,3 +31,8 @@ export * from "./mockTarjetaAvanceData";
 export * from "./mockTarjetaBloqueoData";
 export * from "./mockTarjetaActivacionData";
 export * from "./mockTarjetaClaveData";
+export * from "./extractoProducts";
+export * from "./solicitudes";
+export * from "./productSecurity";
+export * from "./mockAdminProducts";
+export * from "./mockDatosPersonalesData";

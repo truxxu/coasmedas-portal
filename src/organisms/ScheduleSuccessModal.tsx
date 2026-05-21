@@ -83,7 +83,7 @@ export function ScheduleSuccessModal({
       >
         <h2
           id="schedule-modal-title"
-          className="text-[20px] font-bold text-[#005066] mb-3"
+          className="text-[20px] font-bold text-brand-navy mb-3"
         >
           Programación Nueva
         </h2>
@@ -96,7 +96,7 @@ export function ScheduleSuccessModal({
           ref={acceptButtonRef}
           type="button"
           onClick={onAccept}
-          className="bg-[#00B8ED] text-white rounded-md px-8 py-2 text-sm font-bold hover:bg-[#009bcc] transition-colors"
+          className="bg-brand-primary text-white rounded-md px-8 py-2 text-sm font-bold hover:bg-brand-primary-dark transition-colors"
         >
           Aceptar
         </button>
