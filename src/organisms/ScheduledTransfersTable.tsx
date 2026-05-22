@@ -84,7 +84,7 @@ export function ScheduledTransfersTable({
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#E4E6EA]">
+              <tr className="border-b border-brand-border">
                 <th className="text-left text-[15px] font-normal text-black py-3 pr-4">
                   TIPO
                 </th>
@@ -115,7 +115,7 @@ export function ScheduledTransfersTable({
               {transfers.map((transfer) => (
                 <tr
                   key={transfer.id}
-                  className="border-b border-[#E4E6EA] last:border-b-0"
+                  className="border-b border-brand-border last:border-b-0"
                 >
                   <td className="text-[13.7px] text-black py-3 pr-4">
                     {transfer.type}
@@ -137,7 +137,7 @@ export function ScheduledTransfersTable({
                       ? maskCurrency()
                       : formatCurrency(transfer.amount)}
                   </td>
-                  <td className="text-[13.7px] text-[#003500] font-medium py-3 pr-4">
+                  <td className="text-[13.7px] text-brand-positive font-medium py-3 pr-4">
                     {transfer.status}
                   </td>
                   <td className="text-[13.7px] py-3">
@@ -162,7 +162,7 @@ export function ScheduledTransfersTable({
         <button
           type="button"
           onClick={onBack}
-          className="text-sm font-medium text-[#004266] hover:underline"
+          className="text-sm font-medium text-brand-teal-dark hover:underline"
         >
           Volver
         </button>

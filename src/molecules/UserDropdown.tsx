@@ -17,15 +17,8 @@ const dropdownOptions: DropdownOption[] = [
     id: "datos",
     label: "Mis Datos Personales",
     icon: "/icons/profile.svg",
-    href: "/perfil/datos",
+    href: "/otros-servicios/datos-personales",
   },
-  {
-    id: "clave",
-    label: "Cambiar Clave del Portal",
-    icon: "/icons/key.svg",
-    href: "/perfil/cambiar-clave",
-  },
-  { id: "ayuda", label: "Ayuda", icon: "/icons/help.svg", href: "/ayuda" },
   {
     id: "logout",
     label: "Cerrar Sesión",
