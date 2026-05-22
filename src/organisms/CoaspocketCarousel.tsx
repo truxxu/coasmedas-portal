@@ -51,7 +51,7 @@ export function CoaspocketCarousel({
     };
 
     updateVisibleItems();
-    window.addEventListener("resize", updateVisibleItems);
+    window.addEventListener("resize", updateVisibleItems, { passive: true });
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
