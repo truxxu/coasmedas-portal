@@ -6,6 +6,8 @@ import {
   useState,
   useEffect,
   useRef,
+  useCallback,
+  useMemo,
   ReactNode,
 } from "react";
 
@@ -42,33 +44,45 @@ export function UIProvider({ children }: { children: ReactNode }) {
     }
   }, [hideBalances]);
 
-  const toggleHideBalances = () => setHideBalances(!hideBalances);
+  const toggleHideBalances = useCallback(
+    () => setHideBalances((v: boolean) => !v),
+    [],
+  );
 
-  const toggleSidebarItem = (itemId: string) => {
+  const toggleSidebarItem = useCallback((itemId: string) => {
     setSidebarExpanded((prev) => ({
       ...prev,
       [itemId]: !prev[itemId],
     }));
-  };
+  }, []);
 
-  const toggleMobileSidebar = () => setMobileSidebarOpen(!mobileSidebarOpen);
-
-  return (
-    <UIContext.Provider
-      value={{
-        hideBalances,
-        setHideBalances,
-        toggleHideBalances,
-        sidebarExpanded,
-        toggleSidebarItem,
-        mobileSidebarOpen,
-        setMobileSidebarOpen,
-        toggleMobileSidebar,
-      }}
-    >
-      {children}
-    </UIContext.Provider>
+  const toggleMobileSidebar = useCallback(
+    () => setMobileSidebarOpen((v) => !v),
+    [],
   );
+
+  const value = useMemo(
+    () => ({
+      hideBalances,
+      setHideBalances,
+      toggleHideBalances,
+      sidebarExpanded,
+      toggleSidebarItem,
+      mobileSidebarOpen,
+      setMobileSidebarOpen,
+      toggleMobileSidebar,
+    }),
+    [
+      hideBalances,
+      sidebarExpanded,
+      mobileSidebarOpen,
+      toggleHideBalances,
+      toggleSidebarItem,
+      toggleMobileSidebar,
+    ],
+  );
+
+  return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 }
 
 export function useUIContext() {
