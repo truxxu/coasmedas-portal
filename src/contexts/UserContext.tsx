@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
   ReactNode,
 } from "react";
 import { User, Session } from "@/src/types";
@@ -53,21 +54,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = !!user;
 
-  return (
-    <UserContext.Provider
-      value={{
-        user,
-        session,
-        isAuthenticated,
-        setUser,
-        setSession,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      session,
+      isAuthenticated,
+      setUser,
+      setSession,
+      login,
+      logout,
+    }),
+    [user, session, isAuthenticated, login, logout],
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export function useUserContext() {

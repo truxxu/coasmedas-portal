@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CurrencyInput } from "@/src/atoms";
 import { FormField, SelectField } from "@/src/molecules";
 import { TarjetaCreditoProduct } from "@/src/types/tarjetaCredito";
@@ -40,10 +40,14 @@ export const TarjetaAvanceDetailsCard: React.FC<
   errors,
   onChange,
 }) => {
-  const destinationOptions = destinationAccounts.map((account) => ({
-    value: account.id,
-    label: `${account.displayName} (${account.maskedNumber})`,
-  }));
+  const destinationOptions = useMemo(
+    () =>
+      destinationAccounts.map((account) => ({
+        value: account.id,
+        label: `${account.displayName} (${account.maskedNumber})`,
+      })),
+    [destinationAccounts],
+  );
 
   return (
     <Card className="space-y-6 p-6">

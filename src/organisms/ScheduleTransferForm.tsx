@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DateInput } from "@/src/atoms";
@@ -66,25 +66,41 @@ export function ScheduleTransferForm({
     }
   }, [isRecurring, setValue]);
 
-  const transactionTypeOptions = TRANSACTION_TYPE_OPTIONS.map((opt) => ({
-    value: opt.value,
-    label: opt.label,
-  }));
+  const transactionTypeOptions = useMemo(
+    () =>
+      TRANSACTION_TYPE_OPTIONS.map((opt) => ({
+        value: opt.value,
+        label: opt.label,
+      })),
+    [],
+  );
 
-  const periodicityOptions = PERIODICITY_OPTIONS.map((opt) => ({
-    value: opt.value,
-    label: opt.label,
-  }));
+  const periodicityOptions = useMemo(
+    () =>
+      PERIODICITY_OPTIONS.map((opt) => ({
+        value: opt.value,
+        label: opt.label,
+      })),
+    [],
+  );
 
-  const sourceAccountOptions = sourceAccounts.map((acc) => ({
-    value: acc.id,
-    label: `${acc.name} - Saldos: ${hideBalances ? maskCurrency() : formatCurrency(acc.balance)}`,
-  }));
+  const sourceAccountOptions = useMemo(
+    () =>
+      sourceAccounts.map((acc) => ({
+        value: acc.id,
+        label: `${acc.name} - Saldos: ${hideBalances ? maskCurrency() : formatCurrency(acc.balance)}`,
+      })),
+    [sourceAccounts, hideBalances],
+  );
 
-  const destinationAccountOptions = destinationAccounts.map((acc) => ({
-    value: acc.id,
-    label: `${acc.name} (${acc.accountNumber})`,
-  }));
+  const destinationAccountOptions = useMemo(
+    () =>
+      destinationAccounts.map((acc) => ({
+        value: acc.id,
+        label: `${acc.name} (${acc.accountNumber})`,
+      })),
+    [destinationAccounts],
+  );
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-sm">
