@@ -9,7 +9,7 @@ import { mockDatosPersonalesData } from "@/src/mocks";
 export default function DatosPersonalesPage() {
   useBrebPageHeader("Datos Personales", "/otros-servicios");
   const router = useRouter();
-  const { user } = useUser();
+  const user = useUser();
 
   const firstName =
     user?.firstName?.split(" ")[0] ??

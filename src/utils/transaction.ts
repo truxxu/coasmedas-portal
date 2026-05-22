@@ -1,17 +1,21 @@
+const DATE_FORMATTER = new Intl.DateTimeFormat("es-CO", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const TIME_FORMATTER = new Intl.DateTimeFormat("es-CO", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true,
+});
+
 export function formatNowDate(): string {
-  return new Intl.DateTimeFormat("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date());
+  return DATE_FORMATTER.format(new Date());
 }
 
 export function formatNowTime(): string {
-  return new Intl.DateTimeFormat("es-CO", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  }).format(new Date());
+  return TIME_FORMATTER.format(new Date());
 }
 
 export function generateApprovalNumber(): string {

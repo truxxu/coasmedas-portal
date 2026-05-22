@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useMemo,
   ReactNode,
 } from "react";
 
@@ -34,10 +35,13 @@ export function WelcomeBarProvider({ children }: { children: ReactNode }) {
     setConfig({});
   }, []);
 
+  const value = useMemo(
+    () => ({ config, setWelcomeBar, clearWelcomeBar }),
+    [config, setWelcomeBar, clearWelcomeBar],
+  );
+
   return (
-    <WelcomeBarContext.Provider
-      value={{ config, setWelcomeBar, clearWelcomeBar }}
-    >
+    <WelcomeBarContext.Provider value={value}>
       {children}
     </WelcomeBarContext.Provider>
   );
