@@ -47,23 +47,29 @@ export default function ConfirmacionPage() {
     // Read raw API data
     const savingsApiStr = sessionStorage.getItem("transferSourcesSavingsApi");
     const creditsApiStr = sessionStorage.getItem("transferSourcesCreditsApi");
-    const category = sessionStorage.getItem("transferSourceCategory");
-    const targetApiStr = sessionStorage.getItem("transferTargetApiData");
+    const targetSavingsStr = sessionStorage.getItem("transferTargetSavingsApi");
+    const targetCreditsStr = sessionStorage.getItem("transferTargetCreditsApi");
+    const targetInvestmentsStr = sessionStorage.getItem(
+      "transferTargetInvestmentsApi",
+    );
 
-    if (!savingsApiStr || !creditsApiStr || !category || !targetApiStr) {
+    if (
+      !savingsApiStr ||
+      !creditsApiStr ||
+      !targetSavingsStr ||
+      !targetCreditsStr ||
+      !targetInvestmentsStr
+    ) {
       return null;
     }
 
     const savingsData: SavingsAccountResponse[] = JSON.parse(savingsApiStr);
     const creditsData: CreditAccountResponse[] = JSON.parse(creditsApiStr);
 
-    // Only the matching target array is populated
-    const targetSavings: TransferTargetSavings[] =
-      category === "savings" ? JSON.parse(targetApiStr) : [];
-    const targetCredits: TransferTargetCredits[] =
-      category === "credits" ? JSON.parse(targetApiStr) : [];
+    const targetSavings: TransferTargetSavings[] = JSON.parse(targetSavingsStr);
+    const targetCredits: TransferTargetCredits[] = JSON.parse(targetCreditsStr);
     const targetInvestments: TransferTargetInvestments[] =
-      category === "investments" ? JSON.parse(targetApiStr) : [];
+      JSON.parse(targetInvestmentsStr);
 
     const sourceInfo = getSourceDisplayName(savingsData, creditsData, sourceId);
     const destinationName = getDestinationDisplayName(
