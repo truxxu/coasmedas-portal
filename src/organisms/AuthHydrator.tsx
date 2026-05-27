@@ -46,15 +46,10 @@ export function AuthHydrator({ children }: AuthHydratorProps) {
         setUser(mappedUser);
         setSession(createSession());
       } else {
-        // Fallback: minimal user from token claims
-        setUser({
-          firstName: "",
-          lastName: "",
-          documentType: "CC",
-          documentNumber: "",
-          email: "",
-        });
-        setSession(createSession());
+        // Profile cookie missing but token exists — inconsistent state.
+        // Re-authenticate rather than creating a session with empty fields.
+        router.replace("/login");
+        return;
       }
 
       setHydrated(true);

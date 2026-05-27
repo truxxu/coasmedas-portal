@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   AccountSummaryCard,
@@ -26,9 +26,13 @@ export default function HomePage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const autoRetryDoneRef = useRef(false);
 
   const fetchData = useCallback(async () => {
-    if (!documentType || !documentNumber) return;
+    if (!documentType || !documentNumber) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -36,14 +40,39 @@ export default function HomePage() {
 
       const params = { documentType, documentNumber };
 
-      const [balancesRaw, movementsRaw] = await Promise.all([
+      const [balancesResult, movementsResult] = await Promise.allSettled([
         getBalances(params),
         getConsolidatedMovements({ ...params, indPag: "1" }),
       ]);
 
-      const summary = parseBalanceSummary(balancesRaw);
-      setConsolidatedSavings(summary.ahorro);
-      setTransactions(mapMovements(movementsRaw).slice(0, 5));
+      for (const result of [balancesResult, movementsResult]) {
+        if (result.status === "rejected" && isAuthError(result.reason)) {
+          router.push("/login");
+          return;
+        }
+      }
+
+      if (balancesResult.status === "fulfilled") {
+        const summary = parseBalanceSummary(balancesResult.value);
+        setConsolidatedSavings(summary.ahorro);
+      }
+
+      if (movementsResult.status === "fulfilled") {
+        setTransactions(mapMovements(movementsResult.value).slice(0, 5));
+      }
+
+      const bothFailed =
+        balancesResult.status === "rejected" &&
+        movementsResult.status === "rejected";
+
+      if (bothFailed) {
+        if (!autoRetryDoneRef.current) {
+          autoRetryDoneRef.current = true;
+          setTimeout(() => fetchData(), 1500);
+          return;
+        }
+        setError("No fue posible cargar la información. Intente nuevamente.");
+      }
     } catch (err) {
       if (isAuthError(err)) {
         router.push("/login");
@@ -56,10 +85,14 @@ export default function HomePage() {
   }, [documentType, documentNumber, router]);
 
   useEffect(() => {
+    autoRetryDoneRef.current = false;
+  }, [documentType, documentNumber]);
+
+  useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  if (error) {
+  if (error && !loading) {
     return (
       <>
         <div className="bg-white rounded-[5px] p-6 mb-6 text-center">
